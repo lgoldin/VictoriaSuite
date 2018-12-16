@@ -134,7 +134,6 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(10, valor);
         }
 
-
         [TestMethod]
         public void PruebaDelExcell3()
         {
@@ -303,7 +302,6 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.AreEqual(4, valor);
         }
-
 
         [TestMethod]
         public void Int4()
