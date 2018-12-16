@@ -1,0 +1,13 @@
+*.suo
+obj
+bin
+Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.exe
+Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.ModelWPF.pdb
+Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.UI.SharedWPF.dll
+Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.pdb
+Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.UI.SharedWPF.pdb
+Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.ViewModelWPF.pdb
+Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.vshost.exe
+*.exe
+Code/TestResults
+Code/Victoria.UI.SharedWPF/Victoria.UI.SharedWPF.csproj.user

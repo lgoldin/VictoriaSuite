@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define Victoria.DesktopApp_TargetDir=$(var.Victoria.DesktopApp.TargetDir)?>
+  <Product Id="*" Name="Victoria IV" Language="1033" Version="4.0.0.9" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Victoria3.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="Images\top-banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="Images\dialog.bmp" />
+    
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)License.rtf" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+
+    <MajorUpgrade Schedule="afterInstallInitialize" AllowSameVersionUpgrades="yes" AllowDowngrades="no" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="Victoria IV" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="dlls_files" />
+      <ComponentGroupRef Id="Responsive_HTML5_files" />
+      <ComponentGroupRef Id="Responsive_HTML5_Manual_de_usuario_archivos_files" />
+      <ComponentGroupRef Id="Responsive_HTML5_template_Azure_Blue_files" />
+      <ComponentGroupRef Id="Responsive_HTML5_template_scripts_files" />
+      <ComponentGroupRef Id="Responsive_HTML5_template_styles_files" />
+      <ComponentGroupRef Id="Responsive_HTML5_whxdata_files" />
+      <ComponentGroupRef Id="templates_files" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+      <ComponentGroupRef Id="Manual_de_usuario_files" />
+      <ComponentGroupRef Id="Resources_files" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Victoria IV">
+          <Directory Id="Resources" Name="Resources" />
+          <Directory Id="Responsive_HTML5" Name="Responsive_HTML5">
+            <Directory Id="Responsive_HTML5_Manual_de_usuario_archivos" Name="Manual_de_usuario_archivos" />
+            <Directory Id="Responsive_HTML5_whxdata" Name="whxdata" />
+            <Directory Id="Responsive_HTML5_template" Name="template">
+              <Directory Id="Responsive_HTML5_template_styles" Name="styles" />
+              <Directory Id="Responsive_HTML5_template_scripts" Name="scripts" />
+              <Directory Id="Responsive_HTML5_template_Azure_Blue" Name="Azure_Blue" />
+            </Directory>
+          </Directory>
+          <Directory Id="templates" Name="templates" />
+          <Directory Id="dlls" Name="dlls" />
+          <Directory Id="Manual_de_usuario" Name="Manual de usuario" />
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Victoria" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="16fcb609-7357-4d39-b8e0-b5b924f61fc5">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\UTN\Victoria" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="16fcb609-7357-4d39-b8e0-b5b924f61fc6">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <RemoveFolder Id="RemoveDesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\UTN\Victoria" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+      <Component Id="DiagramDesigner.exe" Guid="852b3f52-5ea2-40ad-bf09-913aa19bb339">
+        <File Id="DiagramDesigner.exe" Name="DiagramDesigner.exe" Source="$(var.Victoria.DesktopApp_TargetDir)DiagramDesigner.exe" />
+      </Component>
+      <Component Id="System.Windows.dll" Guid="9940872e-718f-4fab-a410-8564e87085e4">
+        <File Id="System.Windows.dll" Name="System.Windows.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.dll" />
+      </Component>
+      <Component Id="Victoria_2.0.exe" Guid="dceb381a-0958-4413-b03c-09c0fda037d8">
+        <File Id="Victoria_2.0.exe" Name="Victoria 2.0.exe" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria 2.0.exe" />
+      </Component>
+      <Component Id="Victoria.exe" Guid="bc69412a-5f35-4304-8c29-4800b5d7261a">
+        <File Id="Victoria.exe" Name="Victoria.exe" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.exe" />
+      </Component>
+      <Component Id="Victoria.exe.config" Guid="5baafb3b-bcf4-4e4f-b38b-9d79150f7707">
+        <File Id="Victoria.exe.config" Name="Victoria.exe.config" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.exe.config" />
+      </Component>
+      <Component Id="Victoria.ModelWPF.dll" Guid="75aef42c-b015-41ea-b065-2164a36e353b">
+        <File Id="Victoria.ModelWPF.dll" Name="Victoria.ModelWPF.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.ModelWPF.dll" />
+      </Component>
+      <Component Id="Victoria.Shared.dll" Guid="62bc040e-3113-49ad-ab94-6d8e963fd843">
+        <File Id="Victoria.Shared.dll" Name="Victoria.Shared.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.Shared.dll" />
+      </Component>
+      <Component Id="Victoria.UI.SharedWPF.dll" Guid="0e5e7bb7-263e-4ed1-bddd-826a8127284b">
+        <File Id="Victoria.UI.SharedWPF.dll" Name="Victoria.UI.SharedWPF.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.UI.SharedWPF.dll" />
+      </Component>
+      <Component Id="Victoria.ViewModelWPF.dll" Guid="190118ed-ee5f-435a-8cda-102376ccc857">
+        <File Id="Victoria.ViewModelWPF.dll" Name="Victoria.ViewModelWPF.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.ViewModelWPF.dll" />
+      </Component>
+      <Component Id="Akka.dll" Guid="6353ab7e-02c8-4f64-a31b-d0821f6c6ccc">
+        <File Id="Akka.dll" Name="Akka.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Akka.dll" />
+      </Component>
+      <Component Id="Akka.Logger.Serilog.dll" Guid="3fceae66-bb79-49f9-93c8-f98573053e5b">
+        <File Id="Akka.Logger.Serilog.dll" Name="Akka.Logger.Serilog.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Akka.Logger.Serilog.dll" />
+      </Component>
+      <Component Id="Akka.Serialization.Hyperion.dll" Guid="85959db8-96c3-4dfe-aa22-7f90270c313a">
+        <File Id="Akka.Serialization.Hyperion.dll" Name="Akka.Serialization.Hyperion.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Akka.Serialization.Hyperion.dll" />
+      </Component>
+      <Component Id="Hyperion.dll" Guid="ee3b298d-3f75-4106-a76c-832bee34e62d">
+        <File Id="Hyperion.dll" Name="Hyperion.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Hyperion.dll" />
+      </Component>
+      <Component Id="Microsoft.Expression.Interactions.dll" Guid="9c9146f4-70ec-43e5-9425-08befa7f96dd">
+        <File Id="Microsoft.Expression.Interactions.dll" Name="Microsoft.Expression.Interactions.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Microsoft.Expression.Interactions.dll" />
+      </Component>
+      <Component Id="Newtonsoft.Json.dll" Guid="5074eef4-3f6a-4fd8-920c-626f2c818f29">
+        <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="OxyPlot.dll" Guid="6e2f13f4-1d18-4dad-9ce0-ba32907d9438">
+        <File Id="OxyPlot.dll" Name="OxyPlot.dll" Source="$(var.Victoria.DesktopApp_TargetDir)OxyPlot.dll" />
+      </Component>
+      <Component Id="OxyPlot.WindowsForms.dll" Guid="5bc8b4a6-26c1-4353-b7b0-dcbca0151c55">
+        <File Id="OxyPlot.WindowsForms.dll" Name="OxyPlot.WindowsForms.dll" Source="$(var.Victoria.DesktopApp_TargetDir)OxyPlot.WindowsForms.dll" />
+      </Component>
+      <Component Id="OxyPlot.Wpf.dll" Guid="12cc3df6-e132-46ca-aec3-8ab10f291017">
+        <File Id="OxyPlot.Wpf.dll" Name="OxyPlot.Wpf.dll" Source="$(var.Victoria.DesktopApp_TargetDir)OxyPlot.Wpf.dll" />
+      </Component>
+      <Component Id="OxyPlot.Xps.dll" Guid="8e9411d4-a192-4679-9f82-fb20883951aa">
+        <File Id="OxyPlot.Xps.dll" Name="OxyPlot.Xps.dll" Source="$(var.Victoria.DesktopApp_TargetDir)OxyPlot.Xps.dll" />
+      </Component>
+      <Component Id="Serilog.dll" Guid="b3ea9229-5769-4f5d-a467-727f6173131c">
+        <File Id="Serilog.dll" Name="Serilog.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Serilog.dll" />
+      </Component>
+      <Component Id="System.Collections.Immutable.dll" Guid="e308fe14-37d0-4259-bb06-6eafdd6788bd">
+        <File Id="System.Collections.Immutable.dll" Name="System.Collections.Immutable.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Collections.Immutable.dll" />
+      </Component>
+      <Component Id="System.Windows.Controls.DataVisualization.Toolkit.dll" Guid="40660cf9-f04d-4a8e-b0bf-86c0b9d54d9e">
+        <File Id="System.Windows.Controls.DataVisualization.Toolkit.dll" Name="System.Windows.Controls.DataVisualization.Toolkit.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.Controls.DataVisualization.Toolkit.dll" />
+      </Component>
+      <Component Id="System.Windows.Controls.Input.Toolkit.dll" Guid="5b5be545-260b-4685-a34a-7d70f408b7ec">
+        <File Id="System.Windows.Controls.Input.Toolkit.dll" Name="System.Windows.Controls.Input.Toolkit.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.Controls.Input.Toolkit.dll" />
+      </Component>
+      <Component Id="System.Windows.Controls.Layout.Toolkit.dll" Guid="9f530111-a6e1-4898-8e87-37e83b839323">
+        <File Id="System.Windows.Controls.Layout.Toolkit.dll" Name="System.Windows.Controls.Layout.Toolkit.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.Controls.Layout.Toolkit.dll" />
+      </Component>
+      <Component Id="WPFToolkit.dll" Guid="8da18e65-3953-446e-8f4d-c2f6468e11b8">
+        <File Id="WPFToolkit.dll" Name="WPFToolkit.dll" Source="$(var.Victoria.DesktopApp_TargetDir)WPFToolkit.dll" />
+      </Component>
+      <Component Id="System.Windows.Interactivity.dll" Guid="aaecc473-3f6e-4f7f-87c2-ea32ec79e409">
+        <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.Interactivity.dll" />
+      </Component>
+      <Component Id="jint.dll" Guid="c426c4c2-3e35-4c3f-abbe-53c7558c5d9e">
+        <File Id="jint.dll" Name="jint.dll" Source="$(var.Victoria.DesktopApp_TargetDir)jint.dll" />
+      </Component>
+      <Component Id="EPPlus.dll" Guid="c015ac62-f53c-4013-9026-05c4bd2e935a">
+        <File Id="EPPlus.dll" Name="EPPlus.dll" Source="$(var.Victoria.DesktopApp_TargetDir)EPPlus.dll" />
+      </Component>
+      <Component Id="itextsharp.dll" Guid="4277b32d-25f8-47ee-8043-1654535ff79a">
+        <File Id="itextsharp.dll" Name="itextsharp.dll" Source="$(var.Victoria.DesktopApp_TargetDir)itextsharp.dll" />
+      </Component>
+      <Component Id="Akka.Hocon.dll" Guid="492879f1-033e-42a0-80f0-e9d9664e0b5c">
+        <File Id="Akka.Hocon.dll" Name="Akka.Hocon.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Akka.Hocon.dll" />
+      </Component>
+      <Component Id="Victoria.ico" Guid="2c270bfe-e265-4d83-9503-6f87643f8d56">
+        <File Id="Victoria.ico" Name="Victoria.ico" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.ico" />
+      </Component>
+      <Component Id="VictoriaApp.ico" Guid="e52ff0f7-eb7c-4b90-ae70-d6a455349e69">
+        <File Id="VictoriaApp.ico" Name="VictoriaApp.ico" Source="$(var.Victoria.DesktopApp_TargetDir)VictoriaApp.ico" />
+      </Component>
+      <Component Id="itextsharp.pdfa.dll" Guid="8cc2796d-fe2b-430d-8868-a91b84a5b0f4">
+        <File Id="itextsharp.pdfa.dll" Name="itextsharp.pdfa.dll" Source="$(var.Victoria.DesktopApp_TargetDir)itextsharp.pdfa.dll" />
+      </Component>
+      <Component Id="XMLPrueba.xml" Guid="711c38aa-fb9b-42c5-99fa-a7ec4873ecbe">
+        <File Id="XMLPrueba.xml" Name="XMLPrueba.xml" Source="$(var.Victoria.DesktopApp_TargetDir)XMLPrueba.xml" />
+      </Component>
+      <Component Id="Victoria3.ico" Guid="bf66ea89-d671-4913-88ab-e57b69724d04">
+        <File Id="Victoria3.ico" Name="Victoria3.ico" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria3.ico" />
+      </Component>
+      <Component Id="victoria3_5.png" Guid="f2e98a37-00f2-459e-b19c-86a8deafcd43">
+        <File Id="victoria3_5.png" Name="victoria3-5.png" Source="$(var.Victoria.DesktopApp_TargetDir)victoria3-5.png" />
+      </Component>
+      <Component Id="Victoria.FormulaParser.dll" Guid="615bbbdf-ec3c-4372-8c2f-8420d751b96a">
+        <File Id="Victoria.FormulaParser.dll" Name="Victoria.FormulaParser.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.FormulaParser.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Responsive_HTML5_files" Directory="Responsive_HTML5">
+      <Component Id="Responsive_HTML5_helpvictoria.log" Guid="85998ebc-0181-4b72-ba0c-5e5a90f49e54">
+        <File Id="Responsive_HTML5_helpvictoria.log" Name="helpvictoria.log" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\helpvictoria.log" />
+      </Component>
+      <Component Id="Responsive_HTML5_helpvictoria_ex.log" Guid="4579bbd7-869e-42f9-a3cd-8f8ebc0d31bd">
+        <File Id="Responsive_HTML5_helpvictoria_ex.log" Name="helpvictoria_ex.log" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\helpvictoria_ex.log" />
+      </Component>
+      <Component Id="Responsive_HTML5_RoboHHRE.lng" Guid="d39f5dfd-a122-45d1-88b2-e01e521d0484">
+        <File Id="Responsive_HTML5_RoboHHRE.lng" Name="RoboHHRE.lng" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\RoboHHRE.lng" />
+      </Component>
+      <Component Id="Responsive_HTML5_access_cookies.htm" Guid="12bca254-9464-44b6-82af-109b9a26e868">
+        <File Id="Responsive_HTML5_access_cookies.htm" Name="access_cookies.htm" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\access_cookies.htm" />
+      </Component>
+      <Component Id="Responsive_HTML5_ehlpdhtm.js" Guid="f7b61684-b8b7-48ed-b53b-9201c38b99eb">
+        <File Id="Responsive_HTML5_ehlpdhtm.js" Name="ehlpdhtm.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\ehlpdhtm.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_index.htm" Guid="ae81086b-7e45-4a44-ba3f-fc45c38ea571">
+        <File Id="Responsive_HTML5_index.htm" Name="index.htm" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\index.htm" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario.css" Guid="0dfcd9ec-0961-43d0-ad79-780f01e0ea50">
+        <File Id="Responsive_HTML5_Manual_de_usuario.css" Name="Manual_de_usuario.css" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario.css" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario.htm" Guid="a002e4e8-3d44-4316-899d-17439ce09978">
+        <File Id="Responsive_HTML5_Manual_de_usuario.htm" Name="Manual_de_usuario.htm" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario.htm" />
+      </Component>
+      <Component Id="Responsive_HTML5_parentdata.js" Guid="234a91b1-23ad-4eed-91e3-99edff3e6e95">
+        <File Id="Responsive_HTML5_parentdata.js" Name="parentdata.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\parentdata.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_projectdata.js" Guid="5706b467-2836-4f82-becf-4b0fc196fdc1">
+        <File Id="Responsive_HTML5_projectdata.js" Name="projectdata.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\projectdata.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_screendata.js" Guid="af69070e-a8b1-4657-b77f-8cb3589609aa">
+        <File Id="Responsive_HTML5_screendata.js" Name="screendata.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\screendata.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_SearchOptions.xml" Guid="5ca6a588-21c8-4d62-8d40-b9b38bfecfe7">
+        <File Id="Responsive_HTML5_SearchOptions.xml" Name="SearchOptions.xml" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\SearchOptions.xml" />
+      </Component>
+      <Component Id="Responsive_HTML5_VictoriaApp.ico" Guid="a2a9f1b6-381f-4fde-b388-4858a4746128">
+        <File Id="Responsive_HTML5_VictoriaApp.ico" Name="VictoriaApp.ico" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\VictoriaApp.ico" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Responsive_HTML5_Manual_de_usuario_archivos_files" Directory="Responsive_HTML5_Manual_de_usuario_archivos">
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image001.png" Guid="a6e06a6f-33fb-45ba-b4d0-8199aae7e94a">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image001.png" Name="image001.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image001.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image003.png" Guid="68d42ec4-cf55-447d-b311-d0af56d2e8ad">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image003.png" Name="image003.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image003.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image004.png" Guid="e16cbb99-bd6d-4d12-81a4-38dcb61bece6">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image004.png" Name="image004.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image004.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image005.png" Guid="58ce4504-7c82-4c6f-b44c-83375b5dc2bf">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image005.png" Name="image005.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image005.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image007.png" Guid="3ce57e24-9d5a-4844-ac53-0b4684ad93dc">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image007.png" Name="image007.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image007.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image009.png" Guid="83263ea0-b31d-40ea-b560-b5cc197358b1">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image009.png" Name="image009.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image009.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image010.png" Guid="29e11b9a-6e6b-4dae-b520-5ad592806641">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image010.png" Name="image010.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image010.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image012.png" Guid="86e7ca65-420f-4e0d-9405-0a8f7d0c1a01">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image012.png" Name="image012.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image012.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image014.png" Guid="2b70ad87-58fc-4387-80d6-0c86d353e331">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image014.png" Name="image014.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image014.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image016.png" Guid="65fcc025-a887-40b2-a071-9b47eb68a8fe">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image016.png" Name="image016.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image016.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image018.png" Guid="6d72fb21-5b9e-41d6-8d95-8ec1bfe21c71">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image018.png" Name="image018.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image018.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image020.png" Guid="9c19d9c7-002b-4c29-8c7c-486c7ad3a4ac">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image020.png" Name="image020.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image020.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image022.png" Guid="72b3fda7-608f-4218-abd8-7990ad4831dd">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image022.png" Name="image022.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image022.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image024.png" Guid="1e115b55-f778-4dc4-a0a5-2924ddd1977e">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image024.png" Name="image024.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image024.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image026.png" Guid="e717bbd1-2d72-4e99-a291-88dec3d1eb8d">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image026.png" Name="image026.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image026.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image028.png" Guid="35860b80-d0e7-4df0-9d43-8ce7a49df84e">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image028.png" Name="image028.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image028.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image029.png" Guid="e5761d9a-4e1d-42f6-aa82-254d3683c453">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image029.png" Name="image029.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image029.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image031.png" Guid="c2a15ed4-9965-4ed3-983d-a285d606bf2f">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image031.png" Name="image031.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image031.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image033.png" Guid="1cb46968-b7e8-4b14-af80-65b5f234a43a">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image033.png" Name="image033.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image033.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image035.png" Guid="a6dcc53b-53c5-4e1e-9120-191db3c9c4b8">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image035.png" Name="image035.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image035.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image037.png" Guid="0de4ea60-eed9-4dfc-81b0-037f2469f8b4">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image037.png" Name="image037.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image037.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image039.png" Guid="0ffe7152-1326-4aef-bec2-36b204b9ae77">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image039.png" Name="image039.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image039.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image041.png" Guid="49826a4d-115e-4b44-ab07-dbd4c7b58d7a">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image041.png" Name="image041.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image041.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image043.png" Guid="4637019f-7d52-457a-98a7-c319ce9f39ce">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image043.png" Name="image043.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image043.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image045.png" Guid="4a1c32de-a1e7-4ae0-9d9c-3d52bf4f8dca">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image045.png" Name="image045.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image045.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image047.png" Guid="9710ab09-a862-4c48-865e-d63453699f52">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image047.png" Name="image047.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image047.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image049.png" Guid="c750f79e-ff5d-4aac-901a-aaf325a9ec59">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image049.png" Name="image049.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image049.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image051.png" Guid="e51ca4b3-dddf-48ff-80cd-5555210f6941">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image051.png" Name="image051.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image051.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image053.png" Guid="487ece81-dc05-4e03-9b59-04d96e2a6e38">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image053.png" Name="image053.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image053.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image055.png" Guid="f06ba3bb-f217-4f5e-91f1-3089f5cf0345">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image055.png" Name="image055.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image055.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image057.png" Guid="ec517174-6c52-472a-8c3d-83e0cdea7a05">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image057.png" Name="image057.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image057.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_Manual_de_usuario_archivos_image059.png" Guid="1e8f3142-db27-4fa7-9247-a65d4ae9f852">
+        <File Id="Responsive_HTML5_Manual_de_usuario_archivos_image059.png" Name="image059.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\Manual_de_usuario_archivos\image059.png" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Responsive_HTML5_template_Azure_Blue_files" Directory="Responsive_HTML5_template_Azure_Blue">
+      <Component Id="Responsive_HTML5_template_Azure_Blue_andsearch_mark.png" Guid="11c6fe9e-2850-4745-93f6-d1775df1ad79">
+        <File Id="Responsive_HTML5_template_Azure_Blue_andsearch_mark.png" Name="andsearch_mark.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\andsearch_mark.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_andsearch_nomark.png" Guid="624faea8-03c9-45e0-b871-4fdc159c2b42">
+        <File Id="Responsive_HTML5_template_Azure_Blue_andsearch_nomark.png" Name="andsearch_nomark.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\andsearch_nomark.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_back_mobile_filter.png" Guid="5ad7a26b-c3f3-4f3c-96a4-3f4900285b8f">
+        <File Id="Responsive_HTML5_template_Azure_Blue_back_mobile_filter.png" Name="back_mobile_filter.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\back_mobile_filter.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_back_mobile_ltr.png" Guid="5c6b49e9-9b17-4c95-bc25-47e0287f826f">
+        <File Id="Responsive_HTML5_template_Azure_Blue_back_mobile_ltr.png" Name="back_mobile_ltr.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\back_mobile_ltr.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_back_mobile_rtl.png" Guid="f516c239-cdc9-4108-b86d-3d715b65d869">
+        <File Id="Responsive_HTML5_template_Azure_Blue_back_mobile_rtl.png" Name="back_mobile_rtl.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\back_mobile_rtl.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_clearall.png" Guid="e9ba9e1b-2ad5-4722-aa22-3099947da284">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_clearall.png" Name="filter_clearall.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_clearall.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_desktop.png" Guid="fb866fcc-08d7-445b-9a37-e7e107c75cf0">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_desktop.png" Name="filter_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_desktop_applied.png" Guid="c1d749dc-ece6-4cee-a6f1-5c675b2d2d13">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_desktop_applied.png" Name="filter_desktop_applied.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_desktop_applied.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_mark.png" Guid="4ed175cd-6edb-4b44-a1d1-171a3e08d213">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_mark.png" Name="filter_mark.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_mark.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_mark_radio.png" Guid="da8eded2-da53-4a7f-869b-82008c6fbae7">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_mark_radio.png" Name="filter_mark_radio.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_mark_radio.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_mobile.png" Guid="c1ce44de-f35f-450d-8c6a-ec1819910963">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_mobile.png" Name="filter_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_mobile_applied.png" Guid="03d0adeb-b0f4-4ffd-810d-5713db6475f5">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_mobile_applied.png" Name="filter_mobile_applied.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_mobile_applied.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_nomark.png" Guid="7ccded49-c949-445c-b718-394b95cfcf1e">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_nomark.png" Name="filter_nomark.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_nomark.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_nomark_radio.png" Guid="5eadd77f-67cd-4293-9845-05718ab23a15">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_nomark_radio.png" Name="filter_nomark_radio.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_nomark_radio.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_tab.png" Guid="2a6cfc73-1174-45bd-ad1d-d81d9bfcaf55">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_tab.png" Name="filter_tab.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_tab.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_filter_tab_applied.png" Guid="56dbd1b4-ea11-4256-9097-3e8c83f5f7bf">
+        <File Id="Responsive_HTML5_template_Azure_Blue_filter_tab_applied.png" Name="filter_tab_applied.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\filter_tab_applied.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_glossary_desktop.png" Guid="8d165a88-5fd8-4d8b-8654-c2e85e221110">
+        <File Id="Responsive_HTML5_template_Azure_Blue_glossary_desktop.png" Name="glossary_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\glossary_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_glossary_mobile.png" Guid="973504f1-150d-4e21-a71e-6b54c6958d2f">
+        <File Id="Responsive_HTML5_template_Azure_Blue_glossary_mobile.png" Name="glossary_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\glossary_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_glossary_tab.png" Guid="57a10b18-5579-4d0f-a1a1-0fcd9e9badef">
+        <File Id="Responsive_HTML5_template_Azure_Blue_glossary_tab.png" Name="glossary_tab.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\glossary_tab.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_idx_topic.png" Guid="5e9062a8-84a8-4eed-b715-e64af6770c4c">
+        <File Id="Responsive_HTML5_template_Azure_Blue_idx_topic.png" Name="idx_topic.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\idx_topic.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_index_desktop.png" Guid="1467e9fa-93a0-49e9-847f-7fef8ffe1a61">
+        <File Id="Responsive_HTML5_template_Azure_Blue_index_desktop.png" Name="index_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\index_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_index_mobile.png" Guid="80eb8359-6159-4e5e-ac5f-92a4212ba3a7">
+        <File Id="Responsive_HTML5_template_Azure_Blue_index_mobile.png" Name="index_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\index_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_index_tab.png" Guid="1ec145ff-c4d2-47c5-a40d-5e863dde2973">
+        <File Id="Responsive_HTML5_template_Azure_Blue_index_tab.png" Name="index_tab.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\index_tab.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_layout.css" Guid="0b5a8a61-03ad-4ce8-8ed9-3ce9206729b3">
+        <File Id="Responsive_HTML5_template_Azure_Blue_layout.css" Name="layout.css" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\layout.css" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_loading.gif" Guid="6dd2c5c9-81c1-4f9a-944d-dec6c3b681fd">
+        <File Id="Responsive_HTML5_template_Azure_Blue_loading.gif" Name="loading.gif" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\loading.gif" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_logo.png" Guid="887065b0-fff8-482e-a9d4-9a868ca62cd1">
+        <File Id="Responsive_HTML5_template_Azure_Blue_logo.png" Name="logo.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\logo.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_menu.png" Guid="3ec86c7f-cc43-46e1-a00a-5be03946a9d2">
+        <File Id="Responsive_HTML5_template_Azure_Blue_menu.png" Name="menu.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\menu.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_next.png" Guid="7db9a5f5-478f-45c5-abfc-0ed745741aca">
+        <File Id="Responsive_HTML5_template_Azure_Blue_next.png" Name="next.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\next.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_next_active.png" Guid="1fb368ff-3317-417f-bf2c-0c0a5c03c9b7">
+        <File Id="Responsive_HTML5_template_Azure_Blue_next_active.png" Name="next_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\next_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_next_mobile.png" Guid="537f30be-9e7e-4a4c-9fd1-5bd704d07ef0">
+        <File Id="Responsive_HTML5_template_Azure_Blue_next_mobile.png" Name="next_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\next_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_next_mobile_active.png" Guid="51aa75d7-48ce-40d5-b3f1-9d912d548e92">
+        <File Id="Responsive_HTML5_template_Azure_Blue_next_mobile_active.png" Name="next_mobile_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\next_mobile_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_next_tab.png" Guid="56051091-cbb3-46f4-9961-ece6ab17dc0c">
+        <File Id="Responsive_HTML5_template_Azure_Blue_next_tab.png" Name="next_tab.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\next_tab.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_next_tab_active.png" Guid="11cae91a-d649-419c-ac12-35c41cd08cd2">
+        <File Id="Responsive_HTML5_template_Azure_Blue_next_tab_active.png" Name="next_tab_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\next_tab_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_previous.png" Guid="62c3ecde-5337-4490-b10b-e00423576bdf">
+        <File Id="Responsive_HTML5_template_Azure_Blue_previous.png" Name="previous.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\previous.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_previous_active.png" Guid="e4838b5c-6b82-4f73-ae40-9e29d0e12333">
+        <File Id="Responsive_HTML5_template_Azure_Blue_previous_active.png" Name="previous_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\previous_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_previous_mobile.png" Guid="197c2c90-f9a5-4164-8596-3ce5d0a244ac">
+        <File Id="Responsive_HTML5_template_Azure_Blue_previous_mobile.png" Name="previous_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\previous_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_previous_mobile_active.png" Guid="8a0526d9-bf95-463d-8541-5ae18e26b194">
+        <File Id="Responsive_HTML5_template_Azure_Blue_previous_mobile_active.png" Name="previous_mobile_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\previous_mobile_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_previous_tab.png" Guid="0902811d-5310-4d6b-9601-9b0fa1a54c93">
+        <File Id="Responsive_HTML5_template_Azure_Blue_previous_tab.png" Name="previous_tab.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\previous_tab.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_previous_tab_active.png" Guid="45fd474a-b4cf-4175-afb1-e25b715fd278">
+        <File Id="Responsive_HTML5_template_Azure_Blue_previous_tab_active.png" Name="previous_tab_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\previous_tab_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_print_desktop.png" Guid="1ad26142-dddd-40e5-9c00-44cba4f06f57">
+        <File Id="Responsive_HTML5_template_Azure_Blue_print_desktop.png" Name="print_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\print_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_search_desktop.png" Guid="bf2ed9a2-2411-44b5-b0e6-657c0457fc1d">
+        <File Id="Responsive_HTML5_template_Azure_Blue_search_desktop.png" Name="search_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\search_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_search_desktop_active.png" Guid="e9479c1a-b5e9-49a4-96c3-e42417cedd9e">
+        <File Id="Responsive_HTML5_template_Azure_Blue_search_desktop_active.png" Name="search_desktop_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\search_desktop_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_search_desktop_navigation.png" Guid="79e2130a-94c2-44c7-a7a6-b6e89a5d0375">
+        <File Id="Responsive_HTML5_template_Azure_Blue_search_desktop_navigation.png" Name="search_desktop_navigation.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\search_desktop_navigation.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_search_mobile.png" Guid="5f195227-23d4-452e-ac2f-91e2a08d5856">
+        <File Id="Responsive_HTML5_template_Azure_Blue_search_mobile.png" Name="search_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\search_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_search_mobile_active.png" Guid="21c838f2-d87f-4589-82e9-d11faa6be3aa">
+        <File Id="Responsive_HTML5_template_Azure_Blue_search_mobile_active.png" Name="search_mobile_active.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\search_mobile_active.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_search_mobile_navigation.png" Guid="21243ab4-d8c3-425e-a273-59b55b64af7f">
+        <File Id="Responsive_HTML5_template_Azure_Blue_search_mobile_navigation.png" Name="search_mobile_navigation.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\search_mobile_navigation.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_search_tab.png" Guid="23a9365d-bf84-4040-b21f-ae08df84ba99">
+        <File Id="Responsive_HTML5_template_Azure_Blue_search_tab.png" Name="search_tab.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\search_tab.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_slider_ltr.png" Guid="042ccc70-3a28-4371-9106-35e6f41f64bc">
+        <File Id="Responsive_HTML5_template_Azure_Blue_slider_ltr.png" Name="slider_ltr.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\slider_ltr.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_slider_open_ltr.png" Guid="0cf728fc-2af5-4128-861e-d1ed33733801">
+        <File Id="Responsive_HTML5_template_Azure_Blue_slider_open_ltr.png" Name="slider_open_ltr.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\slider_open_ltr.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_slider_open_rtl.png" Guid="81297c57-e315-4c01-b21c-c9fcd180b11c">
+        <File Id="Responsive_HTML5_template_Azure_Blue_slider_open_rtl.png" Name="slider_open_rtl.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\slider_open_rtl.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_slider_rtl.png" Guid="2fb46296-8544-4135-ab2b-d49909025aad">
+        <File Id="Responsive_HTML5_template_Azure_Blue_slider_rtl.png" Name="slider_rtl.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\slider_rtl.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_social_close_ltr.png" Guid="74062c96-c983-4ecf-a150-052900ad49cf">
+        <File Id="Responsive_HTML5_template_Azure_Blue_social_close_ltr.png" Name="social_close_ltr.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\social_close_ltr.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_social_close_rtl.png" Guid="0f50741d-9625-4c8b-b393-393a4acde26f">
+        <File Id="Responsive_HTML5_template_Azure_Blue_social_close_rtl.png" Name="social_close_rtl.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\social_close_rtl.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_social_open.png" Guid="7afa297c-4385-4208-bca1-26a2ca6ac9b9">
+        <File Id="Responsive_HTML5_template_Azure_Blue_social_open.png" Name="social_open.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\social_open.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_book_closed_desktop.png" Guid="fbb6b3e9-19a7-44d8-aa92-4c16220d77ce">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_book_closed_desktop.png" Name="toc_book_closed_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_book_closed_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_book_closed_mobile.png" Guid="124787fa-71ef-475f-bec3-89eaae27abb7">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_book_closed_mobile.png" Name="toc_book_closed_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_book_closed_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_book_open_desktop.png" Guid="b07d182d-92fb-450b-9800-7dc7a7edad07">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_book_open_desktop.png" Name="toc_book_open_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_book_open_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_book_open_drildown.png" Guid="cbc7a505-7f7a-4438-a898-60322c1943da">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_book_open_drildown.png" Name="toc_book_open_drildown.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_book_open_drildown.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_book_open_mobile.png" Guid="33d8fbf3-2cb2-4884-b2c8-45c6e37b104b">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_book_open_mobile.png" Name="toc_book_open_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_book_open_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_desktop.png" Guid="e679c877-6435-4d22-86c0-6832700ef024">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_desktop.png" Name="toc_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_link_desktop_ltr.png" Guid="5eeab10b-c14c-4171-b2d2-c326a8cde3ae">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_link_desktop_ltr.png" Name="toc_link_desktop_ltr.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_link_desktop_ltr.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_link_desktop_rtl.png" Guid="da392700-24c4-45cf-a79c-f6b1cdb6d550">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_link_desktop_rtl.png" Name="toc_link_desktop_rtl.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_link_desktop_rtl.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_link_mobile_ltr.png" Guid="5a99bab2-3c97-4e0e-b490-455a450af6d9">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_link_mobile_ltr.png" Name="toc_link_mobile_ltr.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_link_mobile_ltr.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_link_mobile_rtl.png" Guid="21963c02-5af9-4ca7-b9c7-9d6f2a823ffa">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_link_mobile_rtl.png" Name="toc_link_mobile_rtl.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_link_mobile_rtl.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_mobile.png" Guid="29f2748b-95c0-49ec-b1eb-0d84d017b319">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_mobile.png" Name="toc_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_tab.png" Guid="62a975da-15ff-4047-99cd-261f43fff1de">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_tab.png" Name="toc_tab.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_tab.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_topic_desktop.png" Guid="34cda71b-299f-4bcd-8c68-da220e1dbe9a">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_topic_desktop.png" Name="toc_topic_desktop.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_topic_desktop.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_toc_topic_mobile.png" Guid="0b7cd291-a89a-4a5a-9c6d-35a9bf5e86f9">
+        <File Id="Responsive_HTML5_template_Azure_Blue_toc_topic_mobile.png" Name="toc_topic_mobile.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\toc_topic_mobile.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_top.png" Guid="51106ef0-aee8-470f-a993-559af9e80e85">
+        <File Id="Responsive_HTML5_template_Azure_Blue_top.png" Name="top.png" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\top.png" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_Azure_Blue_usersettings.js" Guid="72c7e9bd-3d6b-4678-ac47-5a13c01fefaa">
+        <File Id="Responsive_HTML5_template_Azure_Blue_usersettings.js" Name="usersettings.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\Azure_Blue\usersettings.js" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Responsive_HTML5_template_scripts_files" Directory="Responsive_HTML5_template_scripts">
+      <Component Id="Responsive_HTML5_template_scripts_common.min.js" Guid="f666a14b-f1a2-4526-bb2a-5637a72dac7f">
+        <File Id="Responsive_HTML5_template_scripts_common.min.js" Name="common.min.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\common.min.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_constants.js" Guid="5dbb8f52-352e-4943-8610-1ca1f3df3882">
+        <File Id="Responsive_HTML5_template_scripts_constants.js" Name="constants.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\constants.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_glossarylist.js" Guid="1b612e3d-9693-46bf-b086-75856ebc7c23">
+        <File Id="Responsive_HTML5_template_scripts_glossarylist.js" Name="glossarylist.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\glossarylist.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_glossarylistloader.js" Guid="04fd59a1-ad61-4b82-b4c2-4b5ec7932057">
+        <File Id="Responsive_HTML5_template_scripts_glossarylistloader.js" Name="glossarylistloader.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\glossarylistloader.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_indextree.js" Guid="521263fc-49b1-4fc5-98a4-9cf8fe011b1f">
+        <File Id="Responsive_HTML5_template_scripts_indextree.js" Name="indextree.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\indextree.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_indextreeloader.js" Guid="c972031b-5b8f-422b-8689-7b69ab3d8e69">
+        <File Id="Responsive_HTML5_template_scripts_indextreeloader.js" Name="indextreeloader.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\indextreeloader.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_layout.min.js" Guid="829645a1-9b49-484b-b4f0-dd0bcede6325">
+        <File Id="Responsive_HTML5_template_scripts_layout.min.js" Name="layout.min.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\layout.min.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_loadcsh.js" Guid="aa50e828-6b48-4e36-b655-7e1071b39144">
+        <File Id="Responsive_HTML5_template_scripts_loadcsh.js" Name="loadcsh.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\loadcsh.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_loadparentdata.js" Guid="af6519b0-80a3-486b-a7a9-d344d1633d45">
+        <File Id="Responsive_HTML5_template_scripts_loadparentdata.js" Name="loadparentdata.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\loadparentdata.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_loadprojdata.js" Guid="dad1a5af-e069-4e6b-9857-50d2b5387359">
+        <File Id="Responsive_HTML5_template_scripts_loadprojdata.js" Name="loadprojdata.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\loadprojdata.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_loadscreen.js" Guid="6c14766c-d88f-4cb8-84ed-20076f9197ba">
+        <File Id="Responsive_HTML5_template_scripts_loadscreen.js" Name="loadscreen.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\loadscreen.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_mhfhost.js" Guid="e21594f0-4094-415b-bc55-a913c8b82f85">
+        <File Id="Responsive_HTML5_template_scripts_mhfhost.js" Name="mhfhost.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\mhfhost.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_mhlang.js" Guid="ab58d87f-abb2-4598-acb4-f2cb9ac465bd">
+        <File Id="Responsive_HTML5_template_scripts_mhlang.js" Name="mhlang.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\mhlang.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_mhtopic.js" Guid="dfd698d4-1460-4ef7-bf29-9edc3a56642e">
+        <File Id="Responsive_HTML5_template_scripts_mhtopic.js" Name="mhtopic.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\mhtopic.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_mhutils.js" Guid="114bb48d-ec22-4e94-8dba-e89cbf7b80c7">
+        <File Id="Responsive_HTML5_template_scripts_mhutils.js" Name="mhutils.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\mhutils.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_mhver.js" Guid="1b08defe-bb9c-4f76-b686-a473bbc5be93">
+        <File Id="Responsive_HTML5_template_scripts_mhver.js" Name="mhver.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\mhver.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_pageloader.js" Guid="c940c318-bd0c-4cc7-9b94-56f9d4376b51">
+        <File Id="Responsive_HTML5_template_scripts_pageloader.js" Name="pageloader.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\pageloader.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_projectdata.js" Guid="f67f01fb-4c36-4ad3-946a-71294414257c">
+        <File Id="Responsive_HTML5_template_scripts_projectdata.js" Name="projectdata.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\projectdata.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_rh.min.js" Guid="1aa61611-ac12-4776-9ea8-4b46f6d99735">
+        <File Id="Responsive_HTML5_template_scripts_rh.min.js" Name="rh.min.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\rh.min.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_search.js" Guid="552b8e8b-bd36-4d51-b8d2-f95494b03713">
+        <File Id="Responsive_HTML5_template_scripts_search.js" Name="search.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\search.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_settings.js" Guid="82fb07bd-1eab-4694-a262-85ed082c00f1">
+        <File Id="Responsive_HTML5_template_scripts_settings.js" Name="settings.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\settings.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_showhidecontrols.js" Guid="2bf31fe9-3d6d-4a37-85c7-62a1e7e58a42">
+        <File Id="Responsive_HTML5_template_scripts_showhidecontrols.js" Name="showhidecontrols.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\showhidecontrols.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_topic.min.js" Guid="bd017874-fa7f-48ba-a249-52ca18a6b1cf">
+        <File Id="Responsive_HTML5_template_scripts_topic.min.js" Name="topic.min.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\topic.min.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_utils.js" Guid="db830e30-55f5-45cf-a67a-930d2b58410a">
+        <File Id="Responsive_HTML5_template_scripts_utils.js" Name="utils.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\utils.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_scripts_XmlJsReader.js" Guid="b5c68597-8cd8-4e15-898b-2d5bc0e2c994">
+        <File Id="Responsive_HTML5_template_scripts_XmlJsReader.js" Name="XmlJsReader.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\scripts\XmlJsReader.js" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Responsive_HTML5_template_styles_files" Directory="Responsive_HTML5_template_styles">
+      <Component Id="Responsive_HTML5_template_styles_layout.min.css" Guid="b718c14b-9bc2-40ce-be73-be1045fce404">
+        <File Id="Responsive_HTML5_template_styles_layout.min.css" Name="layout.min.css" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\styles\layout.min.css" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_styles_layoutfix.min.css" Guid="f3bd4a43-d40b-4d8c-b9ad-f15d1680c046">
+        <File Id="Responsive_HTML5_template_styles_layoutfix.min.css" Name="layoutfix.min.css" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\styles\layoutfix.min.css" />
+      </Component>
+      <Component Id="Responsive_HTML5_template_styles_topic.min.css" Guid="13bf3cf4-5945-4501-9320-5fc28af86324">
+        <File Id="Responsive_HTML5_template_styles_topic.min.css" Name="topic.min.css" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\template\styles\topic.min.css" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Responsive_HTML5_whxdata_files" Directory="Responsive_HTML5_whxdata">
+      <Component Id="Responsive_HTML5_whxdata_csh.js" Guid="7306b8f4-61d3-4100-8695-78867bce2a54">
+        <File Id="Responsive_HTML5_whxdata_csh.js" Name="csh.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\csh.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_glo.js" Guid="4df33316-9c0b-4cdb-a4c5-c83851d7a271">
+        <File Id="Responsive_HTML5_whxdata_glo.js" Name="glo.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\glo.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_idx.js" Guid="25009ec2-b01b-476d-b3d4-09bda4930ccf">
+        <File Id="Responsive_HTML5_whxdata_idx.js" Name="idx.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\idx.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_packageindex_xml.js" Guid="c7f01c4a-85fb-449b-8876-67efc80e925c">
+        <File Id="Responsive_HTML5_whxdata_packageindex_xml.js" Name="packageindex_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\packageindex_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_0_xml.js" Guid="522e1171-805e-42bc-a151-b0d81bcfb2fa">
+        <File Id="Responsive_HTML5_whxdata_package_0_xml.js" Name="package_0_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_0_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_1_xml.js" Guid="69df7883-c822-4249-8a3f-9c9dd8369f16">
+        <File Id="Responsive_HTML5_whxdata_package_1_xml.js" Name="package_1_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_1_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_2_xml.js" Guid="601ff64b-bf28-446c-8f73-50ebcc327be0">
+        <File Id="Responsive_HTML5_whxdata_package_2_xml.js" Name="package_2_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_2_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_3_xml.js" Guid="28a848e3-e10b-4bea-8bf7-3bf3478b40ed">
+        <File Id="Responsive_HTML5_whxdata_package_3_xml.js" Name="package_3_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_3_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_4_xml.js" Guid="33abe93f-3153-49f9-a1de-0a9105853485">
+        <File Id="Responsive_HTML5_whxdata_package_4_xml.js" Name="package_4_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_4_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_5_xml.js" Guid="4aeef566-3cab-40f9-b52e-112933ef49ed">
+        <File Id="Responsive_HTML5_whxdata_package_5_xml.js" Name="package_5_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_5_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_6_xml.js" Guid="3177d3b0-8d85-496c-8f59-e9152244ec98">
+        <File Id="Responsive_HTML5_whxdata_package_6_xml.js" Name="package_6_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_6_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_7_xml.js" Guid="b431a0c9-9dd3-4540-9cdd-8f324a76fda7">
+        <File Id="Responsive_HTML5_whxdata_package_7_xml.js" Name="package_7_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_7_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_package_8_xml.js" Guid="704d8fa7-402a-4107-998c-2c1e2f81a556">
+        <File Id="Responsive_HTML5_whxdata_package_8_xml.js" Name="package_8_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\package_8_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_synonym.xml" Guid="63b587b0-e1c2-449b-bca2-2cd603e2b401">
+        <File Id="Responsive_HTML5_whxdata_synonym.xml" Name="synonym.xml" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\synonym.xml" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_synonym_xml.js" Guid="c5722317-5827-46cb-981d-5007d13cfcc8">
+        <File Id="Responsive_HTML5_whxdata_synonym_xml.js" Name="synonym_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\synonym_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc.js" Guid="ffb7f11c-d250-4735-9a75-f5f87ea1d4e4">
+        <File Id="Responsive_HTML5_whxdata_toc.js" Name="toc.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc.new.js" Guid="a1845743-5d98-4fe1-8ac6-abf146e417cf">
+        <File Id="Responsive_HTML5_whxdata_toc.new.js" Name="toc.new.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc.new.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc1.js" Guid="dd9fb491-41bc-4e15-803d-b68f224aee87">
+        <File Id="Responsive_HTML5_whxdata_toc1.js" Name="toc1.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc1.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc1.new.js" Guid="d7358646-946f-4f18-a1d6-606a0346897b">
+        <File Id="Responsive_HTML5_whxdata_toc1.new.js" Name="toc1.new.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc1.new.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc2.js" Guid="2f182926-a829-410b-8b29-ab34ba753e16">
+        <File Id="Responsive_HTML5_whxdata_toc2.js" Name="toc2.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc2.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc2.new.js" Guid="8ff65c01-2022-4f6d-aa67-d0eb1c73446c">
+        <File Id="Responsive_HTML5_whxdata_toc2.new.js" Name="toc2.new.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc2.new.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc3.js" Guid="a559f237-8e7b-4f9a-80d7-7ae8067e2381">
+        <File Id="Responsive_HTML5_whxdata_toc3.js" Name="toc3.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc3.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc3.new.js" Guid="de823a36-1db5-4e6a-868c-5d0d1acd10cd">
+        <File Id="Responsive_HTML5_whxdata_toc3.new.js" Name="toc3.new.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc3.new.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc4.js" Guid="11160b50-8239-4207-a730-d993e272b906">
+        <File Id="Responsive_HTML5_whxdata_toc4.js" Name="toc4.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc4.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc4.new.js" Guid="f6bc3fee-4408-4bb1-b950-1b129bc8db29">
+        <File Id="Responsive_HTML5_whxdata_toc4.new.js" Name="toc4.new.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc4.new.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc5.js" Guid="4c89614e-0ebc-46a7-8b9f-9f0b806648b4">
+        <File Id="Responsive_HTML5_whxdata_toc5.js" Name="toc5.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc5.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_toc5.new.js" Guid="4bcd4cfc-b3c0-42f0-a874-901fb6f7d690">
+        <File Id="Responsive_HTML5_whxdata_toc5.new.js" Name="toc5.new.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\toc5.new.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_topictableindex_xml.js" Guid="e3cfb81b-c68c-4baa-88b9-e9adf6b61eed">
+        <File Id="Responsive_HTML5_whxdata_topictableindex_xml.js" Name="topictableindex_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\topictableindex_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_topictable_0_xml.js" Guid="009c7742-9e86-497b-a11e-20f878ef9f3f">
+        <File Id="Responsive_HTML5_whxdata_topictable_0_xml.js" Name="topictable_0_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\topictable_0_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_whfts.xml" Guid="8919c4a4-3300-41c5-a5d8-cc943eb0ae84">
+        <File Id="Responsive_HTML5_whxdata_whfts.xml" Name="whfts.xml" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\whfts.xml" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_whfts_xml.js" Guid="219d6186-97b5-4d37-be7e-bf03b378b36d">
+        <File Id="Responsive_HTML5_whxdata_whfts_xml.js" Name="whfts_xml.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\whfts_xml.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_whtagdata.js" Guid="2158b58c-0e4e-4991-ae6e-ff4aaed49546">
+        <File Id="Responsive_HTML5_whxdata_whtagdata.js" Name="whtagdata.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\whtagdata.js" />
+      </Component>
+      <Component Id="Responsive_HTML5_whxdata_window.js" Guid="5d1941c7-96e1-4733-9e79-a66237668c9a">
+        <File Id="Responsive_HTML5_whxdata_window.js" Name="window.js" Source="$(var.Victoria.DesktopApp_TargetDir)Responsive_HTML5\whxdata\window.js" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="templates_files" Directory="templates">
+      <Component Id="templates_diagramadT.xml" Guid="f57dc774-da9b-49da-b89d-f72d3bf3a969">
+        <File Id="templates_diagramadT.xml" Name="diagramadT.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramadT.xml" />
+      </Component>
+      <Component Id="templates_diagramadTSinLlegada.xml" Guid="f9ba75be-0fef-4f9e-9269-11cdf4ea7269">
+        <File Id="templates_diagramadTSinLlegada.xml" Name="diagramadTSinLlegada.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramadTSinLlegada.xml" />
+      </Component>
+      <Component Id="templates_diagramadTSinLlegadaSinTPLL.xml" Guid="07d1a300-07b0-4002-854b-b72aa66326e9">
+        <File Id="templates_diagramadTSinLlegadaSinTPLL.xml" Name="diagramadTSinLlegadaSinTPLL.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramadTSinLlegadaSinTPLL.xml" />
+      </Component>
+      <Component Id="templates_diagramadTSinTPLL.xml" Guid="b6ef65ff-6d75-4011-a5f0-6293e80bbf3c">
+        <File Id="templates_diagramadTSinTPLL.xml" Name="diagramadTSinTPLL.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramadTSinTPLL.xml" />
+      </Component>
+      <Component Id="templates_diagramaEaE.xml" Guid="ed960e00-3b45-45bf-972e-1990b01bb212">
+        <File Id="templates_diagramaEaE.xml" Name="diagramaEaE.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramaEaE.xml" />
+      </Component>
+      <Component Id="templates_diagramaEaEantesdedarVueltalasCondiciones.xml" Guid="9799c3ef-2571-41ba-b494-a3ea9c840c83">
+        <File Id="templates_diagramaEaEantesdedarVueltalasCondiciones.xml" Name="diagramaEaEantesdedarVueltalasCondiciones.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramaEaEantesdedarVueltalasCondiciones.xml" />
+      </Component>
+      <Component Id="templates_diagramaEaEArrepentimientoLlegada.xml" Guid="023d8675-99c6-4d29-b28d-0d28c183289f">
+        <File Id="templates_diagramaEaEArrepentimientoLlegada.xml" Name="diagramaEaEArrepentimientoLlegada.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramaEaEArrepentimientoLlegada.xml" />
+      </Component>
+      <Component Id="templates_diagramaEaEArrepentimientoLlegadaSalida.xml" Guid="aa6a9f78-62e3-4f06-8225-969869ae6f3c">
+        <File Id="templates_diagramaEaEArrepentimientoLlegadaSalida.xml" Name="diagramaEaEArrepentimientoLlegadaSalida.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramaEaEArrepentimientoLlegadaSalida.xml" />
+      </Component>
+      <Component Id="templates_diagramaEaEArrepentimientoSalida.xml" Guid="48949d4a-bc5a-4cea-9d31-c94f27c13ddf">
+        <File Id="templates_diagramaEaEArrepentimientoSalida.xml" Name="diagramaEaEArrepentimientoSalida.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramaEaEArrepentimientoSalida.xml" />
+      </Component>
+      <Component Id="templates_diagramaEaEVectores.xml" Guid="a3f6e732-d391-4fc8-b3c9-1c22a04cde70">
+        <File Id="templates_diagramaEaEVectores.xml" Name="diagramaEaEVectores.xml" Source="$(var.Victoria.DesktopApp_TargetDir)templates\diagramaEaEVectores.xml" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Manual_de_usuario_files" Directory="Manual_de_usuario">
+      <Component Id="Manual_de_usuario_Manual_de_usuario_Victoria.pdf" Guid="d94695d7-2363-4565-926d-2e1fe2e45062">
+        <File Id="Manual_de_usuario_Manual_de_usuario_Victoria.pdf" Name="Manual de usuario Victoria.pdf" Source="$(var.Victoria.DesktopApp_TargetDir)Manual de usuario\Manual de usuario Victoria.pdf" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="dlls_files" Directory="dlls">
+      <Component Id="dlls_dllCola.dll" Guid="5e3aadc9-8f4b-4c4f-850c-3efce2357b4d">
+        <File Id="dlls_dllCola.dll" Name="dllCola.dll" Source="$(var.Victoria.DesktopApp_TargetDir)dlls\dllCola.dll" />
+      </Component>
+      <Component Id="dlls_dllPuesto.dll" Guid="1c9bda2b-b31e-4045-9f85-54176cca680f">
+        <File Id="dlls_dllPuesto.dll" Name="dllPuesto.dll" Source="$(var.Victoria.DesktopApp_TargetDir)dlls\dllPuesto.dll" />
+      </Component>
+      <Component Id="dlls_dllReservorio.dll" Guid="c0d57f7c-41cc-4993-850a-e919d3c85797">
+        <File Id="dlls_dllReservorio.dll" Name="dllReservorio.dll" Source="$(var.Victoria.DesktopApp_TargetDir)dlls\dllReservorio.dll" />
+      </Component>
+      <Component Id="dlls_dllSemaforo.dll" Guid="968e31ea-0df2-4506-aec7-14af7b2b99ad">
+        <File Id="dlls_dllSemaforo.dll" Name="dllSemaforo.dll" Source="$(var.Victoria.DesktopApp_TargetDir)dlls\dllSemaforo.dll" />
+      </Component>
+      <Component Id="dlls_dllHallEspera.dll" Guid="2ad28729-5548-4b16-ba08-fd134a48d97a">
+        <File Id="dlls_dllHallEspera.dll" Name="dllHallEspera.dll" Source="$(var.Victoria.DesktopApp_TargetDir)dlls\dllHallEspera.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <Fragment>
+    <ComponentGroup Id="Resources_files" Directory="Resources">
+      <Component Id="Resources_simulacion.png" Guid="8ea8282f-ef69-477d-9497-cf6c19cbc67e">
+        <File Id="Resources_simulacion.png" Name="simulacion.png" Source="$(var.Victoria.DesktopApp_TargetDir)Resources\simulacion.png" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

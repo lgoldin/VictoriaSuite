@@ -1,0 +1,85 @@
+﻿<Window x:Class="Victoria.DesktopApp.View.AnalisisSensibilidadPopUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Victoria.DesktopApp.View"
+        mc:Ignorable="d"
+        Title="Análisis Sensibilidad" 
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True"       
+        ResizeMode="CanResizeWithGrip"
+        Focusable="True" Height="764.275" Width="1028">
+    <Grid Margin="-250,-53,-187,-28" HorizontalAlignment="Right" Width="1465" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border MouseLeftButtonDown="WindowMouseLeftButtonDown" CornerRadius="30" Background="{StaticResource SecondaryColor}"  Padding="0,0,0,0" HorizontalAlignment="Left" Margin="405,120,0,0" Width="755" Grid.Column="1" Height="665" VerticalAlignment="Top">
+            <StackPanel Margin="0,0,0,-17">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" Name="btnMinimize"  Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" Click="BtnMinimize_OnClick">
+                        <Button.Content>
+                            <StackPanel>
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/minus.png" Height="18" Width="23" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="2" Name="btnClose" Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" Click="BtnClose_OnClick" Margin="0,0,10,0">
+                        <Button.Content>
+                            <StackPanel>
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/close.png" Height="18" Width="23" RenderTransformOrigin="0.513,-0.022" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Image Source="/Victoria.UI.SharedWPF;Component/resources/corona.png" Width="34" HorizontalAlignment="Center" Margin="16,0,645,0" RenderTransformOrigin="3.821,0.438" />
+                    <Label  Content="Análisis Sensibilidad"  Foreground="White" FontSize="18" HorizontalAlignment="Center"  Width="171" Margin="300,0,224,1"/>
+                </Grid>
+                <DockPanel>
+                    <Menu DockPanel.Dock="Top"/>
+                </DockPanel>
+
+                <Border  Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="550" MinHeight="350" Height="582" Width="755">
+                    <ScrollViewer x:Name="ScrollBar" Margin="0,0,2,0">
+
+                        <Grid Margin="0,0,-50,-80">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid x:Name="eventosDeltaT" Visibility="Visible" Grid.ColumnSpan="2">
+                                <GroupBox x:Name="GbEscenario1" Header="Escenario Principal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="68,38,115,0" Width="602">
+                                    <WrapPanel x:Name="Wpanel_Escenario1" VerticalAlignment="Top"/>
+                                </GroupBox>
+                                <GroupBox x:Name="GbEscenario2" Header="Escenario Alternativo" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="68,165,115,0" Width="602">
+                                    <WrapPanel x:Name="Wpanel_Escenario2" VerticalAlignment="Top"/>
+                                </GroupBox>
+                                <Button x:Name="BtnSimular" Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="399,497,0,0" Width="153" Click="ButtonSimular_Click">
+                                    <WrapPanel VerticalAlignment="Top">
+                                        <TextBlock Text="Simular" Height="25" Width="55" FontSize="15" Margin="20,3,0,0"/>
+                                        <Image Source="/Victoria.UI.SharedWPF;Component/resources/playG.png" Height="27" Width="23" Margin="2,0,0,0"/>
+
+                                    </WrapPanel>
+                                </Button>
+                                <Button x:Name="BtnNuevoEscenario" Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="153" Margin="213,497,0,0" Height="31" Click="ButtonNuevoEscenario_Click">
+                                    <WrapPanel VerticalAlignment="Top">
+                                        <TextBlock Text="Nuevo Escenario" Height="25" Width="113" FontSize="15" Margin="0,2,0,0"/>
+                                        <Image Source="/Victoria.UI.SharedWPF;Component/resources/addG.png" Height="29" Width="27" Margin="2,0,0,1"/>
+                                    </WrapPanel>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
