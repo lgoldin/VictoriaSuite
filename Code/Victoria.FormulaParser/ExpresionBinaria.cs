@@ -29,16 +29,24 @@
             return false;
         }
 
-        public override string ToJavaScriptString()
+        public override bool EsFuncion()
         {
-            if (this.Operador.EsPotencia())
-            {
-                return "Math.pow(" + this.TerminoIzquierdo.ToJavaScriptString() + ", " + this.TerminoDerecho.ToJavaScriptString() + ")";
-            }
-            else
-            {
-                return "(" + this.TerminoIzquierdo.ToJavaScriptString() + this.Operador.Valor() + this.TerminoDerecho.ToJavaScriptString() + ")";
-            }
+            return false;
+        }
+
+        public override double GetValor()
+        {
+            double terminoIzquierdo = this.TerminoIzquierdo.GetValor();
+            double terminoDerecho = this.TerminoDerecho.GetValor();
+
+            double valor = this.Operador.Operar(terminoIzquierdo, terminoDerecho);
+
+            return valor;
+        }
+
+        public override string ToString()
+        {
+            return "(" + this.TerminoIzquierdo.ToString() + this.Operador.Valor() + this.TerminoDerecho.ToString() + ")";
         }
     }
 }

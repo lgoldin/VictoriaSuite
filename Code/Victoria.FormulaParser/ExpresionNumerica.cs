@@ -1,4 +1,7 @@
-﻿namespace Victoria.FormulaParser
+﻿using System;
+using System.Globalization;
+
+namespace Victoria.FormulaParser
 {
     public class ExpresionNumerica : Expresion
     {
@@ -21,9 +24,27 @@
             return false;
         }
 
-        public override string ToJavaScriptString()
+        public override bool EsFuncion()
+        {
+            return false;
+        }
+
+        public override string ToString()
         {
             return this.numero;
+        }
+
+        public override double GetValor()
+        {
+            double valor;
+            if (double.TryParse(this.numero, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out valor))
+            {
+                return valor;
+            }
+            else
+            {
+                throw new InvalidOperationException("No se pudo convertir a Double el string '" + this.numero + "'");
+            }
         }
     }
 }

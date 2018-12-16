@@ -2,13 +2,13 @@
 
 namespace Victoria.FormulaParser
 {
-    public class ElementoAgrupador : Elemento
+    public class ElementoSeparador : Elemento
     {
-        private readonly string agrupador;
+        private readonly string separador;
 
-        public ElementoAgrupador(string agrupador)
+        public ElementoSeparador(string separador)
         {
-            this.agrupador = agrupador;
+            this.separador = separador;
         }
 
         public override bool EsNumerico()
@@ -23,21 +23,11 @@ namespace Victoria.FormulaParser
 
         public override bool EsInicioDeAgrupacion()
         {
-            if (this.agrupador == "(")
-            {
-                return true;
-            }
-
             return false;
         }
 
         public override bool EsFinDeAgrupacion()
         {
-            if (this.agrupador == ")")
-            {
-                return true;
-            }
-
             return false;
         }
 
@@ -45,20 +35,20 @@ namespace Victoria.FormulaParser
         {
             return false;
         }
-
-        public override bool EsSeparador()
-        {
-            return false;
-        }
-
+        
         public override string Valor()
         {
-            return this.agrupador;
+            return this.separador;
         }
 
         public override bool EsFuncion()
         {
             return false;
+        }
+
+        public override bool EsSeparador()
+        {
+            return true;
         }
     }
 }

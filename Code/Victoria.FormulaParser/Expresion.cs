@@ -10,11 +10,13 @@
 
         public Expresion ExpresionMadre { get; set; }
 
-        public abstract string ToJavaScriptString();
-
         public abstract bool EsBinaria();
 
         public abstract bool EsUnaria();
+
+        public abstract bool EsFuncion();
+
+        public abstract double GetValor();
 
         public bool Agrupada { get; set; }
 

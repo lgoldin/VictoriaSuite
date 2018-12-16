@@ -9,9 +9,13 @@
         public abstract bool EsInicioDeAgrupacion();
         
         public abstract bool EsFinDeAgrupacion();
-        
+
+        public abstract bool EsFuncion();
+
+        public abstract bool EsSeparador();
+
         public abstract bool DeterminaSigno();
-        
+
         public abstract string Valor();
     }
 }

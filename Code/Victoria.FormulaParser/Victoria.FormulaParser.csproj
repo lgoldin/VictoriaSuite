@@ -41,13 +41,26 @@
   <ItemGroup>
     <Compile Include="Elemento.cs" />
     <Compile Include="ElementoAgrupador.cs" />
+    <Compile Include="ElementoFuncion.cs" />
     <Compile Include="ElementoNumerico.cs" />
     <Compile Include="ElementoOperador.cs" />
+    <Compile Include="ElementoSeparador.cs" />
     <Compile Include="Expresion.cs" />
     <Compile Include="ExpresionBinaria.cs" />
+    <Compile Include="ExpresionFuncion.cs" />
     <Compile Include="ExpresionNumerica.cs" />
     <Compile Include="ExpresionUnaria.cs" />
     <Compile Include="FormulaParser.cs" />
+    <Compile Include="FuncionInt.cs" />
+    <Compile Include="FuncionLog.cs" />
+    <Compile Include="FuncionRandom.cs" />
+    <Compile Include="FuncionSumatoria.cs" />
+    <Compile Include="OperadorDivision.cs" />
+    <Compile Include="OperadorModulo.cs" />
+    <Compile Include="OperadorMultiplicacion.cs" />
+    <Compile Include="OperadorPotencia.cs" />
+    <Compile Include="OperadorResta.cs" />
+    <Compile Include="OperadorSuma.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

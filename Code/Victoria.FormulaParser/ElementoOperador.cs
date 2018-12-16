@@ -1,55 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Victoria.FormulaParser
 {
-    public class ElementoOperador : Elemento
+    public abstract class ElementoOperador : Elemento
     {
-        private static readonly Dictionary<string, bool> matrizDePrecedencia = 
-            new Dictionary<string, bool>
+        private static Dictionary<string, ElementoOperador> matrizDeInstancias =
+            new Dictionary<string, ElementoOperador>
             {
-                { "++", true},
-                { "+-", true},
-                { "+*", false},
-                { "+/", false},
-                { "+^", false},
-
-                { "-+", true},
-                { "--", true},
-                { "-*", false},
-                { "-/", false},
-                { "-^", false},
-
-                { "*+", true},
-                { "*-", true},
-                { "**", true},
-                { "*/", true},
-                { "*^", false},
-
-                { "/+", true},
-                { "/-", true},
-                { "/*", true},
-                { "//", true},
-                { "/^", false},
-
-                { "^+", true},
-                { "^-", true},
-                { "^*", true},
-                { "^/", true},
-                { "^^", true},
+                { "+", new OperadorSuma() },
+                { "-", new OperadorResta() },
+                { "*", new OperadorMultiplicacion() },
+                { "/", new OperadorDivision() },
+                { "^", new OperadorPotencia() },
+                { "%", new OperadorModulo() },
             };
 
-        private readonly string operador;
-
-        public ElementoOperador(string operador)
+        public static ElementoOperador GetOperador(string operador)
         {
-            this.operador = operador;
+            if (!matrizDeInstancias.ContainsKey(operador))
+            {
+                throw new InvalidOperationException("No se encontró el operador '" + operador + "'.");
+            }
+
+            return matrizDeInstancias[operador];
         }
+
+        public abstract double Operar(double terminoIzquierdo, double terminoDerecho);
+
+        public abstract double Operar(double termino);
+
+        public abstract double Operar(double[] terminos);
 
         public bool TienePrecedencia(ElementoOperador operador)
         {
-            string entrada = this.Valor() + operador.Valor();
-
-            return matrizDePrecedencia[entrada];
+            return this.GetValorDePrecedencia() <= operador.GetValorDePrecedencia();
         }
 
         public override bool EsNumerico()
@@ -72,19 +57,6 @@ namespace Victoria.FormulaParser
             return false;
         }
 
-        public override bool DeterminaSigno()
-        {
-            return (this.operador == "-");
-        }
-
-        public override string Valor()
-        {
-            return this.operador;
-        }
-
-        public bool EsPotencia()
-        {
-            return (this.operador == "^");
-        }
+        protected abstract int GetValorDePrecedencia();
     }
 }

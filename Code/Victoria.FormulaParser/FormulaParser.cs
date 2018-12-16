@@ -18,19 +18,26 @@ namespace Victoria.FormulaParser
         private readonly Expresion expresionRaiz;
 
         private int indice;
+        private int indiceAnterior;
 
         public FormulaParser(string formula)
         {
-            this.formula = Regex.Replace(formula, @"\s+", "");
+            this.formula = Regex.Replace(formula, @"\s+", "").ToLower();
 
             this.indice = 0;
+            this.indiceAnterior = 0;
 
             this.expresionRaiz = this.ConstruirExpresion();
         }
 
-        public string ToJavaScriptString()
+        public override string ToString()
         {
-            return this.expresionRaiz.ToJavaScriptString();
+            return this.expresionRaiz.ToString();
+        }
+
+        public double GetValor()
+        {
+            return this.expresionRaiz.GetValor();
         }
 
         public Elemento ProximoElemento()
@@ -41,8 +48,10 @@ namespace Victoria.FormulaParser
             char caracter;
 
             string numeros = "0123456789.";
-            string operadores = "+-*/^";
+            string operadores = "+-*/^%";
             string agrupadores = "()";
+            string caracteres = "abcdefghijklmnopqrstuvwxyz";
+            string separadores = ",";
 
             if (this.indice == this.formula.Length)
             {
@@ -52,11 +61,14 @@ namespace Victoria.FormulaParser
             caracter = this.formula[this.indice];
 
             token += caracter;
+
+            this.indiceAnterior = this.indice;
+
             this.indice++;
 
             if (numeros.Contains(caracter))
             {
-                if(this.indice < this.formula.Length)
+                if (this.indice < this.formula.Length)
                 {
                     caracter = this.formula[indice];
                     while (numeros.Contains(caracter) && this.indice < this.formula.Length)
@@ -72,17 +84,39 @@ namespace Victoria.FormulaParser
 
                 elemento = new ElementoNumerico(token);
             }
+            else if (caracteres.Contains(caracter))
+            {
+                if (this.indice < this.formula.Length)
+                {
+                    caracter = this.formula[indice];
+                    while (caracteres.Contains(caracter) && this.indice < this.formula.Length)
+                    {
+                        token += caracter;
+                        this.indice++;
+                        if (this.indice < this.formula.Length)
+                        {
+                            caracter = this.formula[indice];
+                        }
+                    }
+                }
+
+                elemento = ElementoFuncion.GetFuncion(token);
+            }
             else if (operadores.Contains(caracter))
             {
-                elemento = new ElementoOperador(token);
+                elemento = ElementoOperador.GetOperador(token);
             }
             else if (agrupadores.Contains(caracter))
             {
                 elemento = new ElementoAgrupador(token);
             }
+            else if (separadores.Contains(caracter))
+            {
+                elemento = new ElementoSeparador(token);
+            }
             else
             {
-                throw new InvalidOperationException("Caracter no esperado.");
+                throw new InvalidOperationException("Caracter no esperado: '" + caracter + "'");
             }
 
             return elemento;
@@ -99,12 +133,22 @@ namespace Victoria.FormulaParser
             return elemento;
         }
 
+        public void RetrocedecerElemento()
+        {
+            this.indice = this.indiceAnterior;
+        }
+
         private Expresion ConstruirExpresion()
         {
             return this.ConstruirExpresion(false);
         }
 
         private Expresion ConstruirExpresion(bool unaria)
+        {
+            return this.ConstruirExpresion(unaria, false);
+        }
+
+        private Expresion ConstruirExpresion(bool unaria, bool argumento)
         {
             Elemento elemento;
 
@@ -136,6 +180,60 @@ namespace Victoria.FormulaParser
                         expresionActual = new ExpresionNumerica(
                             expresionMadre,
                             elemento.Valor());
+                    }
+                    else if (elemento.EsFuncion())
+                    {
+                        ExpresionFuncion expresionFuncion = new ExpresionFuncion(
+                            expresionMadre,
+                            (ElementoFuncion)elemento);
+
+                        elemento = this.ProximoElemento();
+                        if (!elemento.EsInicioDeAgrupacion())
+                        {
+                            throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
+                        }
+
+                        Expresion expresionArgumento = this.ConstruirExpresion(
+                            unaria: false, 
+                            argumento: true);
+
+                        while (expresionArgumento != null)
+                        {
+                            expresionArgumento.ExpresionMadre = expresionFuncion;
+                            expresionFuncion.AgregarArgumento(expresionArgumento);
+
+                                this.RetrocedecerElemento();
+
+                            elemento = this.ProximoElemento();
+
+                            if (elemento == null)
+                            {
+                                expresionArgumento = null;
+                            }
+                            else
+                            {
+                                if (elemento.EsFinDeAgrupacion())
+                                {
+                                    expresionArgumento = null;
+                                }
+                                else if (elemento.EsSeparador())
+                                {
+                                    expresionArgumento = this.ConstruirExpresion(
+                                        unaria: false,
+                                        argumento: true);
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+                                }
+                            }
+                        }
+
+                        expresionActual = expresionFuncion;
+                    }
+                    else if (elemento.EsFinDeAgrupacion() && argumento)
+                    {
+                        break;
                     }
                     else
                     {
@@ -213,6 +311,10 @@ namespace Victoria.FormulaParser
 
                         estado = Estado.EsperandoTerminoDerecho;
                     }
+                    else if (elemento.EsSeparador() && argumento)
+                    {
+                        break;
+                    }
                     else
                     {
                         throw new InvalidOperationException("Estado EsperandoOperador => Se esperaba un elemento fin de agrupacion u operador.");
@@ -230,6 +332,56 @@ namespace Victoria.FormulaParser
                             expresionActual,
                             elemento.Valor());
                     }
+                    else if (elemento.EsFuncion())
+                    {
+                        ExpresionFuncion expresionFuncion = new ExpresionFuncion(
+                            expresionActual,
+                            (ElementoFuncion)elemento);
+
+                        elemento = this.ProximoElemento();
+                        if (!elemento.EsInicioDeAgrupacion())
+                        {
+                            throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
+                        }
+
+                        Expresion expresionArgumento = this.ConstruirExpresion(
+                            unaria: false,
+                            argumento: true);
+
+                        while (expresionArgumento != null)
+                        {
+                            expresionArgumento.ExpresionMadre = expresionFuncion;
+                            expresionFuncion.AgregarArgumento(expresionArgumento);
+
+                            this.RetrocedecerElemento();
+
+                            elemento = this.ProximoElemento();
+
+                            if (elemento == null)
+                            {
+                                expresionArgumento = null;
+                            }
+                            else
+                            {
+                                if (elemento.EsFinDeAgrupacion())
+                                {
+                                    expresionArgumento = null;
+                                }
+                                else if (elemento.EsSeparador())
+                                {
+                                    expresionArgumento = this.ConstruirExpresion(
+                                        unaria: false,
+                                        argumento: true);
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+                                }
+                            }
+                        }
+
+                        ((ExpresionBinaria)expresionActual).TerminoDerecho = expresionFuncion;
+                    }
                     else
                     {
                         throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Se esperaba inicio de agrupación o valor numérico.");
@@ -239,6 +391,11 @@ namespace Victoria.FormulaParser
                 }
 
                 elemento = this.ProximoElemento();
+            }
+
+            if (expresionActual == null && argumento)
+            {
+                return null;
             }
 
             return expresionActual.PrimeraExpresion();

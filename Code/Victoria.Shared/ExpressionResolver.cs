@@ -11,9 +11,7 @@ namespace Victoria.Shared
 
             var formulaParser = new FormulaParser.FormulaParser(expression);
 
-            string formulaJavaScript = formulaParser.ToJavaScriptString();
-
-            variable.ActualValue = engine.Execute(formulaJavaScript).GetCompletionValue().AsNumber();
+            variable.ActualValue = formulaParser.GetValor();
         }
 
         public static bool ResolveBoolen(string expression)

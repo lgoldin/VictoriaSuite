@@ -1,4 +1,6 @@
-﻿namespace Victoria.FormulaParser
+﻿using System;
+
+namespace Victoria.FormulaParser
 {
     public class ElementoNumerico : Elemento
     {
@@ -34,9 +36,19 @@
             return false;
         }
 
+        public override bool EsSeparador()
+        {
+            return false;
+        }
+
         public override string Valor()
         {
             return this.numero;
+        }
+
+        public override bool EsFuncion()
+        {
+            return false;
         }
     }
 }

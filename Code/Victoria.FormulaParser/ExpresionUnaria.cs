@@ -1,4 +1,6 @@
-﻿namespace Victoria.FormulaParser
+﻿using System;
+
+namespace Victoria.FormulaParser
 {
     public class ExpresionUnaria : Expresion
     {
@@ -25,9 +27,23 @@
             return true;
         }
 
-        public override string ToJavaScriptString()
+        public override double GetValor()
         {
-            return "(" + this.Operador.Valor() + this.Termino.ToJavaScriptString() + ")";
+            double termino = this.Termino.GetValor();
+
+            double valor = this.Operador.Operar(termino);
+
+            return valor;
+        }
+
+        public override bool EsFuncion()
+        {
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return "(" + this.Operador.Valor() + this.Termino.ToString() + ")";
         }
     }
 }
