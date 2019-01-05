@@ -48,7 +48,17 @@ namespace Victoria.FormulaParser
             char caracter;
 
             string numeros = "0123456789.";
-            string operadores = "+-*/^%";
+
+            string operadoresNumericos = "+-*/^%";
+            string operadoresLogicosDeDosCaracteres = "|&=!";
+            string operadoresLogicosDeUnoODosCaracteres = "<>";
+            string operadoresLogicos = 
+                operadoresLogicosDeDosCaracteres +
+                operadoresLogicosDeUnoODosCaracteres;
+            string operadores = 
+                operadoresNumericos + 
+                operadoresLogicos;
+
             string agrupadores = "()";
             string caracteres = "abcdefghijklmnopqrstuvwxyz";
             string separadores = ",";
@@ -102,8 +112,31 @@ namespace Victoria.FormulaParser
 
                 elemento = ElementoFuncion.GetFuncion(token);
             }
-            else if (operadores.Contains(caracter))
+            else if (operadoresNumericos.Contains(caracter))
             {
+                elemento = ElementoOperador.GetOperador(token);
+            }
+            else if (operadoresLogicos.Contains(caracter))
+            {
+                if (this.indice < this.formula.Length)
+                {
+                    if (operadoresLogicosDeDosCaracteres.Contains(caracter))
+                    {
+                        caracter = this.formula[indice];
+                        token += caracter;
+                        this.indice++;
+                    }
+                    else if (operadoresLogicosDeUnoODosCaracteres.Contains(caracter))
+                    {
+                        caracter = this.formula[indice];
+                        if (caracter == '=')
+                        {
+                            token += caracter;
+                            this.indice++;
+                        }
+                    }
+                }
+
                 elemento = ElementoOperador.GetOperador(token);
             }
             else if (agrupadores.Contains(caracter))

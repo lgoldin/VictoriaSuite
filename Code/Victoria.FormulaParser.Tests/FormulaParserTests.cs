@@ -401,5 +401,481 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.AreEqual(19, valor);
         }
+
+        [TestMethod]
+        public void Or1()
+        {
+            string formulaOriginal = "0||0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0||0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void Or2()
+        {
+            string formulaOriginal = "1||0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1||0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Or3()
+        {
+            string formulaOriginal = "0||1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0||1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Or4()
+        {
+            string formulaOriginal = "1||1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1||1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void And1()
+        {
+            string formulaOriginal = "0&&0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0&&0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void And2()
+        {
+            string formulaOriginal = "1&&0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1&&0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void And3()
+        {
+            string formulaOriginal = "0&&1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0&&1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void And4()
+        {
+            string formulaOriginal = "1&&1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1&&1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Equal1()
+        {
+            string formulaOriginal = "0==0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0==0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Equal2()
+        {
+            string formulaOriginal = "1==0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1==0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void Equal3()
+        {
+            string formulaOriginal = "0==1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0==1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void Equal4()
+        {
+            string formulaOriginal = "1==1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1==1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void NotEqual1()
+        {
+            string formulaOriginal = "0!=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0!=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void NotEqual2()
+        {
+            string formulaOriginal = "1!=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1!=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void NotEqual3()
+        {
+            string formulaOriginal = "0!=1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0!=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void NotEqual4()
+        {
+            string formulaOriginal = "1!=1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1!=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void LessThan1()
+        {
+            string formulaOriginal = "0<0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0<0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void LessThan2()
+        {
+            string formulaOriginal = "1<0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1<0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void LessThan3()
+        {
+            string formulaOriginal = "0<1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0<1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void LessThan4()
+        {
+            string formulaOriginal = "1<1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1<1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThan1()
+        {
+            string formulaOriginal = "0>0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0>0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThan2()
+        {
+            string formulaOriginal = "1>0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1>0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThan3()
+        {
+            string formulaOriginal = "0>1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0>1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThan4()
+        {
+            string formulaOriginal = "1>1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1>1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsTo1()
+        {
+            string formulaOriginal = "0<=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0<=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsTo2()
+        {
+            string formulaOriginal = "1<=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1<=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsTo3()
+        {
+            string formulaOriginal = "0<=1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0<=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsTo4()
+        {
+            string formulaOriginal = "1<=1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1<=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsTo1()
+        {
+            string formulaOriginal = "0>=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0>=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsTo2()
+        {
+            string formulaOriginal = "1>=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1>=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsTo3()
+        {
+            string formulaOriginal = "0>=1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0>=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsTo4()
+        {
+            string formulaOriginal = "1>=1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1>=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Precedencia1()
+        {
+            string formulaOriginal = "1*2/3%4+5-6<7<=8>9>=10==11!=12&&13||14";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((((((((((((1*2)/(3%4))+5)-6)<7)<=8)>9)>=10)==11)!=12)&&13)||14)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Precedencia2()
+        {
+            string formulaOriginal = "1||2&&3!=4==5>=6>7<=8<9-10+11%12/13*14";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1||(2&&((3!=4)==((((5>=6)>7)<=8)<((9-10)+(((11%12)/13)*14))))))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
     }
 }
