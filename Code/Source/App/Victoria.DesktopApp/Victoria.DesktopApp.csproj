@@ -594,9 +594,6 @@
     <Resource Include="corona1.png" />
     <Resource Include="DiagramDesigner\Resources\Images\printer.png" />
     <Resource Include="DiagramDesigner\Resources\Images\help.png" />
-    <Content Include="DiagramDesigner.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="dlls\dllCola.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1221,9 +1218,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="templates\diagramaEaEVectores.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Victoria 2.0.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Victoria.ico">
