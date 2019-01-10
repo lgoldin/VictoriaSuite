@@ -14,6 +14,14 @@ namespace Victoria.FormulaParser
                 { "/", new OperadorDivision() },
                 { "^", new OperadorPotencia() },
                 { "%", new OperadorModulo() },
+                { "||", new OperadorOr() },
+                { "&&", new OperadorAnd() },
+                { "==", new OperadorEqual() },
+                { "<", new OperadorLessThan() },
+                { ">", new OperadorGreaterThan() },
+                { "<=", new OperadorLessThanOrEqualsTo() },
+                { ">=", new OperadorGreaterThanOrEqualsTo() },
+                { "!=", new OperadorNotEqual() },
             };
 
         public static ElementoOperador GetOperador(string operador)
