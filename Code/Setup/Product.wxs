@@ -84,15 +84,15 @@
       <!-- <Component Id="ProductComponent"> -->
       <!-- TODO: Insert files, registry keys, and other resources here. -->
       <!-- </Component> -->
-      <Component Id="DiagramDesigner.exe" Guid="852b3f52-5ea2-40ad-bf09-913aa19bb339">
+      <!--<Component Id="DiagramDesigner.exe" Guid="852b3f52-5ea2-40ad-bf09-913aa19bb339">
         <File Id="DiagramDesigner.exe" Name="DiagramDesigner.exe" Source="$(var.Victoria.DesktopApp_TargetDir)DiagramDesigner.exe" />
-      </Component>
+      </Component>-->
       <Component Id="System.Windows.dll" Guid="9940872e-718f-4fab-a410-8564e87085e4">
         <File Id="System.Windows.dll" Name="System.Windows.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.dll" />
       </Component>
-      <Component Id="Victoria_2.0.exe" Guid="dceb381a-0958-4413-b03c-09c0fda037d8">
+      <!--<Component Id="Victoria_2.0.exe" Guid="dceb381a-0958-4413-b03c-09c0fda037d8">
         <File Id="Victoria_2.0.exe" Name="Victoria 2.0.exe" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria 2.0.exe" />
-      </Component>
+      </Component>-->
       <Component Id="Victoria.exe" Guid="bc69412a-5f35-4304-8c29-4800b5d7261a">
         <File Id="Victoria.exe" Name="Victoria.exe" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.exe" />
       </Component>
