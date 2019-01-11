@@ -93,7 +93,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LaPruebaDeVilma()
+        public void ProductoRestaDivisionSuma()
         {
             string formulaOriginal = "2*3-4/2+20";
 
@@ -107,21 +107,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void PruebaDelExcell1()
-        {
-            string formulaOriginal = "2*3-4/2+20";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("(((2*3)-(4/2))+20)", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(24, valor);
-        }
-
-        [TestMethod]
-        public void PruebaDelExcell2()
+        public void ProductoSuma()
         {
             string formulaOriginal = "2*3+4";
 
@@ -135,7 +121,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void PruebaDelExcell3()
+        public void SumaParentesisProducto()
         {
             string formulaOriginal = "(2+3)*4";
 
@@ -149,7 +135,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void PruebaDelExcell4()
+        public void SumaNegativaParentesisProducto()
         {
             string formulaOriginal = "(-(2+3)*4)";
 
@@ -162,22 +148,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(-20, valor);
         }
 
+        
         [TestMethod]
-        public void PruebaDelExcell5()
-        {
-            string formulaOriginal = "2*3-4/2+20";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("(((2*3)-(4/2))+20)", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(24, valor);
-        }
-
-        [TestMethod]
-        public void PruebaDelExcell6()
+        public void ProductoRestaDivisionResta()
         {
             string formulaOriginal = "2*3-4/2-20";
 
@@ -191,7 +164,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void PruebaDelExcell7()
+        public void ProductoSumaDivisionSumaDivision()
         {
             string formulaOriginal = "2 *3+6/5+7/5";
 
@@ -205,7 +178,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void PruebaDelExcell8()
+        public void ProductoNegativo()
         {
             string formulaOriginal = "(-2)*1";
 
@@ -219,7 +192,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void PruebaDelExcell9()
+        public void MultipleProducto()
         {
             string formulaOriginal = "2*(-1)*4";
 
@@ -233,7 +206,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void PruebaDelExcell10()
+        public void ProductoNegativo1()
         {
             string formulaOriginal = "2*(-1)";
 
@@ -248,7 +221,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LaUltimaPrueba()
+        public void DivisionSumaProducto()
         {
             string formulaOriginal = "1/10+2/10*5";
 
