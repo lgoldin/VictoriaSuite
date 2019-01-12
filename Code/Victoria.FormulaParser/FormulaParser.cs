@@ -40,6 +40,11 @@ namespace Victoria.FormulaParser
             return this.expresionRaiz.GetValor();
         }
 
+        public bool GetValorAsBool()
+        {
+            return this.expresionRaiz.GetValor() != 0;
+        }
+
         public Elemento ProximoElemento()
         {
             Elemento elemento = null;

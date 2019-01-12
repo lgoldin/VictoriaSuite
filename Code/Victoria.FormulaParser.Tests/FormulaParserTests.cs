@@ -386,7 +386,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0||0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -400,7 +402,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1||0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -414,7 +418,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0||1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -428,7 +434,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1||1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -442,7 +450,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0&&0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -456,7 +466,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1&&0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -470,7 +482,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0&&1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -484,7 +498,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1&&1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -498,7 +514,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0==0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -512,7 +530,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1==0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -526,7 +546,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0==1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -540,7 +562,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1==1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -554,7 +578,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0!=0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -568,7 +594,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1!=0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -582,7 +610,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0!=1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -596,7 +626,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1!=1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -610,7 +642,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0<0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -624,7 +658,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1<0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -638,7 +674,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0<1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -652,7 +690,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1<1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -666,7 +706,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0>0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -680,7 +722,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1>0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -694,7 +738,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0>1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -708,7 +754,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1>1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -722,7 +770,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0<=0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -736,7 +786,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1<=0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -750,7 +802,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0<=1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -764,7 +818,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1<=1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -778,7 +834,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0>=0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -792,7 +850,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1>=0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -806,7 +866,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(0>=1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -820,7 +882,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(1>=1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -862,7 +926,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("not(1)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
@@ -876,7 +942,9 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("not(0)", expression);
 
             double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
     }
 }
