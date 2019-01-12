@@ -831,7 +831,7 @@ namespace Victoria.FormulaParser.Tests
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("((((((((((((1*2)/(3%4))+5)-6)<7)<=8)>9)>=10)==11)!=12)&&13)||14)", expression);
+            Assert.AreEqual("(((((((((((((1*2)/3)%4)+5)-6)<7)<=8)>9)>=10)==11)!=12)&&13)||14)", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);
@@ -846,6 +846,34 @@ namespace Victoria.FormulaParser.Tests
 
             string expression = formulaParser.ToString();
             Assert.AreEqual("(1||(2&&((3!=4)==((((5>=6)>7)<=8)<((9-10)+(((11%12)/13)*14))))))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Not1()
+        {
+            string formulaOriginal = "not(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("not(1)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void Not2()
+        {
+            string formulaOriginal = "not(0)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("not(0)", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);

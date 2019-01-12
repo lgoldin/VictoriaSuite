@@ -43,6 +43,7 @@
     <Compile Include="ElementoAgrupador.cs" />
     <Compile Include="ElementoFuncion.cs" />
     <Compile Include="ElementoNumerico.cs" />
+    <Compile Include="FuncionNot.cs" />
     <Compile Include="OperadorNotEqual.cs" />
     <Compile Include="OperadorGreaterThan.cs" />
     <Compile Include="OperadorGreaterThanOrEqualsTo.cs" />

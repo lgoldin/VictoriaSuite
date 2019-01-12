@@ -6,7 +6,7 @@ namespace Victoria.FormulaParser
     public class OperadorModulo : ElementoOperador
     {
         private static string simboloOperador = "%";
-        private static int valorDePrecedencia = 2;
+        private static int valorDePrecedencia = 3;
 
         public OperadorModulo() { }
 
