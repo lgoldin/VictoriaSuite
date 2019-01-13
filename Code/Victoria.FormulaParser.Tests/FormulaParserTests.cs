@@ -249,6 +249,62 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void IntResta()
+        {
+            string formulaOriginal = "int(4.2)-3";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)-3)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void IntProducto()
+        {
+            string formulaOriginal = "int(4.2)*3";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)*3)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(12, valor);
+        }
+
+        [TestMethod]
+        public void IntDivision()
+        {
+            string formulaOriginal = "int(4.2)/2";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)/2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
+        public void IntPotencia()
+        {
+            string formulaOriginal = "2^int(4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("Math.pow(2,int(4.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(4, valor);
+        }
+
+        [TestMethod]
         public void Int2()
         {
             string formulaOriginal = "int(1.2)+3";
@@ -914,6 +970,8 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);
         }
+
+        
 
         [TestMethod]
         public void Not1()
