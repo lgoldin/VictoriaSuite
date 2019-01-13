@@ -298,10 +298,80 @@ namespace Victoria.FormulaParser.Tests
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("Math.pow(2,int(4.2))", expression);
+            Assert.AreEqual("Math.pow(2, int(4.2))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(4, valor);
+            Assert.AreEqual(16, valor);
+        }
+
+        [TestMethod]
+        public void SumaInt()
+        {
+            string formulaOriginal = "int(4.2)+int(5.3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)+int(5.3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(9, valor);
+        }
+
+        [TestMethod]
+        public void RestaInt()
+        {
+            string formulaOriginal = "int(5.3)-int(4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(5.3)-int(4.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void ProductoInt()
+        {
+            string formulaOriginal = "int(5.3)*int(4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(5.3)*int(4.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(20, valor);
+        }
+
+        [TestMethod]
+        public void DivisionInt()
+        {
+            string formulaOriginal = "int(4.2)/int(2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)/int(2.1))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
+        public void SumaIntNegativos()
+        {
+            string formulaOriginal = "int(-4.2) + int(-5.3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(-4.2) + int(-5.3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-9, valor);
         }
 
         [TestMethod]
