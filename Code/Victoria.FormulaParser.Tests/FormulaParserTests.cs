@@ -514,7 +514,19 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(2, valor);
         }
 
-        
+        [TestMethod]
+        public void LogNegativo()
+        {
+            string formulaOriginal = "log(-8, -2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((-8),(-2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(3, valor);
+        }
 
         [TestMethod]
         public void Random1()
