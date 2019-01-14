@@ -368,7 +368,7 @@ namespace Victoria.FormulaParser.Tests
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("(int(-4.2) + int(-5.3))", expression);
+            Assert.AreEqual("(int(-4.2) + (int(-5.3)))", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(-9, valor);
@@ -456,6 +456,20 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(3, valor);
+        }
+
+        [TestMethod]
+        public void SumaLog()
+        {
+            string formulaOriginal = "log(8, 2) + log(9, 3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2) + log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(5, valor);
         }
 
         [TestMethod]
