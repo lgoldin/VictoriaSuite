@@ -298,7 +298,7 @@ namespace Victoria.FormulaParser.Tests
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("Math.pow(2, int(4.2))", expression);
+            Assert.AreEqual("(2^int(4.2))", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(16, valor);
@@ -363,12 +363,12 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void SumaIntNegativos()
         {
-            string formulaOriginal = "int(-4.2) + int(-5.3)";
+            string formulaOriginal = "int(-4.2)+int(-5.3)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("(int(-4.2) + (int(-5.3)))", expression);
+            Assert.AreEqual("(int((-4.2))+int((-5.3)))", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(-9, valor);
@@ -466,10 +466,66 @@ namespace Victoria.FormulaParser.Tests
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("(log(8,2) + log(9,3))", expression);
+            Assert.AreEqual("(log(8,2)+log(9,3))", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(5, valor);
+        }
+
+        [TestMethod]
+        public void RestaLog()
+        {
+            string formulaOriginal = "log(8, 2) - log(9, 3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)-log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void ProductoLog()
+        {
+            string formulaOriginal = "log(8, 2) * log(9, 3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)*log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(6, valor);
+        }
+
+        [TestMethod]
+        public void DivisionLog()
+        {
+            string formulaOriginal = "log(16, 2)/log(9, 3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(16,2)/log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
+        public void LogNegativo()
+        {
+            string formulaOriginal = "log(-8,-2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(-8,-2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(3, valor);
         }
 
         [TestMethod]
