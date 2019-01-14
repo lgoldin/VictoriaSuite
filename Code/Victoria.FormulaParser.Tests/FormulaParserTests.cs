@@ -375,6 +375,48 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void RestaIntNegativos()
+        {
+            string formulaOriginal = "int(-5.3)-int(-4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-5.3))-int((-4.2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-1, valor);
+        }
+
+        [TestMethod]
+        public void ProductoIntNegativos()
+        {
+            string formulaOriginal = "int(-5.3)*int(-4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-5.3))*int((-4.2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(20, valor);
+        }
+
+        [TestMethod]
+        public void DivisionIntNegativos()
+        {
+            string formulaOriginal = "int(-8.3)/int(-4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-8.3))/int((-4.2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
         public void Int2()
         {
             string formulaOriginal = "int(1.2)+3";
@@ -515,17 +557,59 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LogNegativo()
+        public void LogSuma()
         {
-            string formulaOriginal = "log(-8, -2)";
+            string formulaOriginal = "log(12+4, 2)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("log((-8),(-2))", expression);
+            Assert.AreEqual("log((12+4),2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(4, valor);
+        }
+
+        [TestMethod]
+        public void LogResta()
+        {
+            string formulaOriginal = "log(12-4, 2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((12-4),2)", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(3, valor);
+        }
+
+        [TestMethod]
+        public void LogProducto()
+        {
+            string formulaOriginal = "log(8*2,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((8*2),2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(4, valor);
+        }
+
+        [TestMethod]
+        public void LogDivision()
+        {
+            string formulaOriginal = "log(8/2,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((8/2),2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
         }
 
         [TestMethod]
@@ -543,6 +627,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(valor < 1);
         }
 
+        
         [TestMethod]
         public void Sumatoria1()
         {
@@ -569,6 +654,34 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(19, valor);
+        }
+
+        [TestMethod]
+        public void SumatoriaDecimales()
+        {
+            string formulaOriginal = "sumatoria(0.1, 2.3, 4.4, 6.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("sumatoria(0.1,2.3,4.4,6.2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(13, valor);
+        }
+
+        [TestMethod]
+        public void SumatoriaDecimalesNegativos()
+        {
+            string formulaOriginal = "sumatoria(-0.1, -2.3, -4.4, -6.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("sumatoria((-0.1),(-2.3),(-4.4),(-6.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-13, valor);
         }
 
         [TestMethod]
