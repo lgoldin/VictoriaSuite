@@ -417,6 +417,63 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void PotenciaInt()
+        {
+            string formulaOriginal = "int(4.2)^int(2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)^int(2.1))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(16, valor);
+        }
+
+        [TestMethod]
+        public void PotenciaIntBegativos()
+        {
+            string formulaOriginal = "int(-4.2)^int(-2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-4.2))^int((-2.1)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0.0625, valor);
+        }
+
+        [TestMethod]
+        public void PotenciaIntFraccion()
+        {
+            string formulaOriginal = "int(4.2)^(1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)^(1/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+
+        [TestMethod]
+        public void PotenciaIntFraccionNegativa()
+        {
+            string formulaOriginal = "int(4.2)^(-1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)^((-1)/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0.5, valor);
+        }
+
+        [TestMethod]
         public void Int2()
         {
             string formulaOriginal = "int(1.2)+3";
