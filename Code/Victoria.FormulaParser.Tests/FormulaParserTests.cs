@@ -249,6 +249,76 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void Int2()
+        {
+            string formulaOriginal = "int(1.2)+3";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(1.2)+3)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(4, valor);
+        }
+
+        [TestMethod]
+        public void Int3()
+        {
+            string formulaOriginal = "int(1.2+3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((1.2+3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(4, valor);
+        }
+
+        [TestMethod]
+        public void Int4()
+        {
+            string formulaOriginal = "int(int(1.2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int(int(1.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void Int5()
+        {
+            string formulaOriginal = "int(-int(1.2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((-int(1.2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-1, valor);
+        }
+
+        [TestMethod]
+        public void Int6()
+        {
+            string formulaOriginal = "3+int(1.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(3+int(1.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(4, valor);
+        }
+
+        [TestMethod]
         public void IntResta()
         {
             string formulaOriginal = "int(4.2)-3";
@@ -473,75 +543,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(0.5, valor);
         }
 
-        [TestMethod]
-        public void Int2()
-        {
-            string formulaOriginal = "int(1.2)+3";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("(int(1.2)+3)", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(4, valor);
-        }
-
-        [TestMethod]
-        public void Int3()
-        {
-            string formulaOriginal = "int(1.2+3)";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("int((1.2+3))", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(4, valor);
-        }
-
-        [TestMethod]
-        public void Int4()
-        {
-            string formulaOriginal = "int(int(1.2))";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("int(int(1.2))", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(1, valor);
-        }
-
-        [TestMethod]
-        public void Int5()
-        {
-            string formulaOriginal = "int(-int(1.2))";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("int((-int(1.2)))", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(-1, valor);
-        }
-
-        [TestMethod]
-        public void Int6()
-        {
-            string formulaOriginal = "3+int(1.2)";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("(3+int(1.2))", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(4, valor);
-        }
+        
 
         [TestMethod]
         public void Log1()
@@ -803,6 +805,70 @@ namespace Victoria.FormulaParser.Tests
             bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
             Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrVerdad()
+        {
+            string formulaOriginal = "(2<5)||0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((2<5)||0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrFalso()
+        {
+            string formulaOriginal = "(3<2)||0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3<2)||0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void OrVerdaderos()
+        {
+            string formulaOriginal = "(3>0)||(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)||(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrFalsos()
+        {
+            string formulaOriginal = "(4<2)||(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)||(0>1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
         }
 
         [TestMethod]
