@@ -808,7 +808,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void OrVerdad()
+        public void OrTrue()
         {
             string formulaOriginal = "(2<5)||0";
 
@@ -824,7 +824,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void OrFalso()
+        public void OrFalse()
         {
             string formulaOriginal = "(3<2)||0";
 
@@ -840,7 +840,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void OrVerdaderos()
+        public void OrTrues()
         {
             string formulaOriginal = "(3>0)||(2>=1)";
 
@@ -856,7 +856,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void OrFalsos()
+        public void OrFalses()
         {
             string formulaOriginal = "(4<2)||(0>1)";
 
@@ -936,6 +936,70 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void AndTrue()
+        {
+            string formulaOriginal = "(2<5)&&1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((2<5)&&1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void AndFalse()
+        {
+            string formulaOriginal = "(3<2)&&1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3<2)&&1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void AndTrues()
+        {
+            string formulaOriginal = "(3>0)&&(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)&&(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void AndFalses()
+        {
+            string formulaOriginal = "(4<2)&&(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)&&(0>1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void Equal1()
         {
             string formulaOriginal = "0==0";
@@ -999,6 +1063,69 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(boolean);
         }
 
+        [TestMethod]
+        public void EqualTrue()
+        {
+            string formulaOriginal = "(2<5)==1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((2<5)==1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void EqualFalse()
+        {
+            string formulaOriginal = "(3<2)==1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3<2)==1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void EqualTrues()
+        {
+            string formulaOriginal = "(3>0)==(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)==(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void EqualFalses()
+        {
+            string formulaOriginal = "(4<2)==(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)==(0>1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
         [TestMethod]
         public void NotEqual1()
         {
@@ -1064,6 +1191,69 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void NotEqualTrue()
+        {
+            string formulaOriginal = "(2<5)!=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((2<5)!=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualFalse()
+        {
+            string formulaOriginal = "(3<2)!=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3<2)!=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualTrues()
+        {
+            string formulaOriginal = "(3>0)!=(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)!=(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualFalses()
+        {
+            string formulaOriginal = "(4<2)!=(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)!=(0>1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+        [TestMethod]
         public void LessThan1()
         {
             string formulaOriginal = "0<0";
@@ -1120,6 +1310,70 @@ namespace Victoria.FormulaParser.Tests
 
             string expression = formulaParser.ToString();
             Assert.AreEqual("(1<1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanTrue()
+        {
+            string formulaOriginal = "0<(2<5)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0<(2<5))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanFalse()
+        {
+            string formulaOriginal = "0<(3<2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0<(3<2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanTrues()
+        {
+            string formulaOriginal = "(3>0)<(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)<(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanFalses()
+        {
+            string formulaOriginal = "(4<2)<(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)<(0>1))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
@@ -1192,6 +1446,70 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void GreaterThanTrue()
+        {
+            string formulaOriginal = "(2<5)>0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((2<5)>0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanFalse()
+        {
+            string formulaOriginal = "0>(3<2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0>(3<2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanTrues()
+        {
+            string formulaOriginal = "(3>0)>(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)>(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanFalses()
+        {
+            string formulaOriginal = "(4<2)>(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)>(0>1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void LessThanOrEqualsTo1()
         {
             string formulaOriginal = "0<=0";
@@ -1256,6 +1574,71 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void LessThanOrEqualsToTrue()
+        {
+            string formulaOriginal = "0<=(2<5)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(0<=(2<5))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsToFalse()
+        {
+            string formulaOriginal = "1<=(3<2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(1<=(3<2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsToTrues()
+        {
+            string formulaOriginal = "(3>0)<=(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)<=(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+
+        [TestMethod]
+        public void LessThanOrEqualsToFalses()
+        {
+            string formulaOriginal = "(4<2)<=(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)<=(0>1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
         public void GreaterThanOrEqualsTo1()
         {
             string formulaOriginal = "0>=0";
@@ -1312,6 +1695,70 @@ namespace Victoria.FormulaParser.Tests
 
             string expression = formulaParser.ToString();
             Assert.AreEqual("(1>=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToTrue()
+        {
+            string formulaOriginal = "(2<5)>=0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((2<5)>=0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToFalse()
+        {
+            string formulaOriginal = "(3<2)>=1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3<2)>=1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToTrues()
+        {
+            string formulaOriginal = "(3>0)>=(2>=1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3>0)>=(2>=1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToFalses()
+        {
+            string formulaOriginal = "(4<2)>=(0>1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((4<2)>=(0>1))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
