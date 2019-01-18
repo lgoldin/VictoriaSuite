@@ -872,6 +872,38 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void OrTrueNegative()
+        {
+            string formulaOriginal = "((-2)>(-5)||0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((-2)>(-5))||0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrFalseDecimal()
+        {
+            string formulaOriginal = "(3.1<2.1)||0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3.1<2.1)||0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void And1()
         {
             string formulaOriginal = "0&&0";
@@ -1000,6 +1032,38 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void AndTrueNegative()
+        {
+            string formulaOriginal = "((-2)>(-5))&&1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((-2)>(-5))&&1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void AndFalseDecimal()
+        {
+            string formulaOriginal = "(3.4<2.4)&&1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3.4<2.4)&&1)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void Equal1()
         {
             string formulaOriginal = "0==0";
@@ -1120,6 +1184,22 @@ namespace Victoria.FormulaParser.Tests
 
             string expression = formulaParser.ToString();
             Assert.AreEqual("((4<2)==(0>1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void EqualTrueNegative()
+        {
+            string formulaOriginal = "((-2)>(-5))==1";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((-2)>(-5))==1)", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
