@@ -205,7 +205,23 @@
                 </Button.Content>
             </Button>
         </Grid>
-
+        <Grid Margin="3">
+            <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="{x:Static ApplicationCommands.Find}"
+                            CommandTarget="{Binding ElementName=MyDesigner}">
+                <Button.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="Images/saveV2.png" Width="38"/>
+                        <TextBlock Margin="3,0,3,0" Text="Debbug" VerticalAlignment="Center" Grid.Column="1"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+         </Grid>
 
 
     </ToolBar>

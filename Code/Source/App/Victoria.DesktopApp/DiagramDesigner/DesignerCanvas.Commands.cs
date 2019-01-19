@@ -77,11 +77,21 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.SelectAll, SelectAll_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
 
             this.AllowDrop = true;
             Clipboard.Clear();
         }
+
+        #region Find Command
+
+        private void Debugger_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Console.WriteLine("Comienza logica debbuger");
+        }
+
+        #endregion
 
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)
         {
