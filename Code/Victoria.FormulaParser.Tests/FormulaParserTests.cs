@@ -672,6 +672,48 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void LogPotencia()
+        {
+            string formulaOriginal = "log(16,2)^2";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(16,2)^2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(16, valor);
+        }
+
+        [TestMethod]
+        public void LogPotenciaFraccion()
+        {
+            string formulaOriginal = "log(16, 2)^(1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(16,2)^(1/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
+        public void LogPotenciaFraccionNegativa()
+        {
+            string formulaOriginal = "log(16, 2)^(-1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(16,2)^((-1)/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0.5, valor);
+        }
+
+        [TestMethod]
         public void Random1()
         {
             string formulaOriginal = "random()";
@@ -2052,6 +2094,34 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(0, valor);
+        }
+
+        [TestMethod]
+        public void ModuloPositivoNegativo()
+        {
+            string formulaOriginal = "5%(-2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(5%(-2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void ModuloNegativoPositivo()
+        {
+            string formulaOriginal = "(-5)%2";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((-5)%2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-1, valor);
         }
 
         [TestMethod]
