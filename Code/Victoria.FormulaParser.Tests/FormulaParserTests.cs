@@ -2079,8 +2079,38 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(int((-5.3))%int((-2.1)))", expression);
 
             double valor = formulaParser.GetValor();
+            Assert.AreEqual(-1, valor);
+        }
+
+        [TestMethod]
+        public void ModuloIntPositivoNegativo()
+        {
+            string formulaOriginal = "int(5.3)%int(-2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(5.3)%int((-2.1)))", expression);
+
+            double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);
         }
+
+        [TestMethod]
+        public void ModuloIntNegativoPositivo()
+        {
+            string formulaOriginal = "int(-5.3)%int(2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-5.3))%int(2.1))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-1, valor);
+        }
+
+
 
         [TestMethod]
         public void Precedencia1()
