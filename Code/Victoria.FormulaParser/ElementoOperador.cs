@@ -34,11 +34,28 @@ namespace Victoria.FormulaParser
             return matrizDeInstancias[operador];
         }
 
-        public abstract double Operar(double terminoIzquierdo, double terminoDerecho);
+        public double Operar(double terminoIzquierdo, double terminoDerecho)
+        {
+            double resultado = this.OperarInterno(terminoIzquierdo, terminoDerecho);
 
-        public abstract double Operar(double termino);
+            return this.EvaluacionNaN(resultado);
+        }
 
-        public abstract double Operar(double[] terminos);
+        public double Operar(double termino)
+        {
+            return this.OperarInterno(termino);
+        }
+
+        public double Operar(double[] terminos)
+        {
+            return this.OperarInterno(terminos);
+        }
+
+        protected abstract double OperarInterno(double terminoIzquierdo, double terminoDerecho);
+
+        protected abstract double OperarInterno(double termino);
+
+        protected abstract double OperarInterno(double[] terminos);
 
         public bool TienePrecedencia(ElementoOperador operador)
         {

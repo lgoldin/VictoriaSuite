@@ -17,5 +17,18 @@
         public abstract bool DeterminaSigno();
 
         public abstract string Valor();
+
+        protected double EvaluacionNaN(double resultado)
+        {
+            if (double.IsNaN(resultado) ||
+                double.IsInfinity(resultado) ||
+                double.IsNegativeInfinity(resultado) ||
+                double.IsPositiveInfinity(resultado))
+            {
+                throw new IndefinicionMatematicaException(this.Valor(), resultado);
+            }
+
+            return resultado;
+        }
     }
 }

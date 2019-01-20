@@ -2243,5 +2243,71 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(1, valor);
             Assert.IsTrue(boolean);
         }
+
+        [TestMethod]
+        public void IndefinicionNSobreCero()
+        {
+            string formulaOriginal = "4/0";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(4/0)", expression);
+
+            try
+            {
+                double valor = formulaParser.GetValor();
+            }
+            catch (IndefinicionMatematicaException ime)
+            {
+                Assert.AreEqual("El resultado es indefinido.", ime.Message);
+                Assert.AreEqual("/", ime.Operador);
+                Assert.AreEqual(double.PositiveInfinity, ime.ValorNoNumerico);
+            }
+        }
+
+        [TestMethod]
+        public void IndefinicionLogDeNegativo()
+        {
+            string formulaOriginal = "log(-8,10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((-8),10)", expression);
+
+            try
+            {
+                double valor = formulaParser.GetValor();
+            }
+            catch (IndefinicionMatematicaException ime)
+            {
+                Assert.AreEqual("El resultado es indefinido.", ime.Message);
+                Assert.AreEqual("log", ime.Operador);
+                Assert.AreEqual(double.NaN, ime.ValorNoNumerico);
+            }
+        }
+
+        [TestMethod]
+        public void IndefinicionLogDeCero()
+        {
+            string formulaOriginal = "log(0,10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log(0,10)", expression);
+
+            try
+            {
+                double valor = formulaParser.GetValor();
+            }
+            catch (IndefinicionMatematicaException ime)
+            {
+                Assert.AreEqual("El resultado es indefinido.", ime.Message);
+                Assert.AreEqual("log", ime.Operador);
+                Assert.AreEqual(double.NegativeInfinity, ime.ValorNoNumerico);
+            }
+        }
     }
 }

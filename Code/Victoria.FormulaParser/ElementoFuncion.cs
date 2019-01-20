@@ -25,7 +25,14 @@ namespace Victoria.FormulaParser
             return matrizDeInstancias[funcion];
         }
 
-        public abstract double Operar(List<double> argumentos);
+        public double Operar(List<double> argumentos)
+        {
+            double resultado = this.OperarInterno(argumentos);
+
+            return this.EvaluacionNaN(resultado);
+        }
+
+        protected abstract double OperarInterno(List<double> argumentos);
 
         public override bool EsNumerico()
         {

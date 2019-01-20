@@ -14,7 +14,7 @@ namespace Victoria.FormulaParser
             return simboloOperador;
         }
 
-        public override double Operar(List<double> argumentos)
+        protected override double OperarInterno(List<double> argumentos)
         {
             if (argumentos.Count != 2)
             {
