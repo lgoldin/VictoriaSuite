@@ -714,6 +714,20 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void LogInt()
+        {
+            string formulaOriginal = "log(int(16.2),2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log(int(16.2),2)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(4, valor);
+        }
+
+        [TestMethod]
         public void Random1()
         {
             string formulaOriginal = "random()";
@@ -729,6 +743,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         
+
         [TestMethod]
         public void Sumatoria1()
         {
@@ -783,6 +798,48 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(-13, valor);
+        }
+
+        [TestMethod]
+        public void SumatoriaInt()
+        {
+            string formulaOriginal = "sumatoria(int(0.1), int(2.3), int(4.3), int(6.2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("sumatoria(int(0.1),int(2.3),int(4.3),int(6.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(12, valor);
+        }
+
+        [TestMethod]
+        public void SumatoriaIntNegativos()
+        {
+            string formulaOriginal = "sumatoria(int(-0.1),int( -2.3),int(-4.4),int(-6.2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("sumatoria(int((-0.1)),int((-2.3)),int((-4.4)),int((-6.2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-12, valor);
+        }
+
+        [TestMethod]
+        public void SumatoriaLog()
+        {
+            string formulaOriginal = "sumatoria(log(8,2)+ log(9,3) + log(1,2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("sumatoria(((log(8,2)+log(9,3))+log(1,2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(5, valor);
         }
 
         [TestMethod]
