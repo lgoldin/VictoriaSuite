@@ -1450,6 +1450,70 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsFalse(boolean);
         }
 
+        [TestMethod]
+        public void EqualInt()
+        {
+            string formulaOriginal = "int(4.2)==int(4.5)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)==int(4.5))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void EqualIntNegative()
+        {
+            string formulaOriginal = "int(-4.2)==int(-4.5)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-4.2))==int((-4.5)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void EqualLog()
+        {
+            string formulaOriginal = "log(16,2)==log(9,3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(16,2)==log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void EqualLogNot()
+        {
+            string formulaOriginal = "log(16,2)== not(log(2,2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(16,2)==not(log(2,2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
 
         [TestMethod]
         public void NotEqual1()
@@ -1609,6 +1673,71 @@ namespace Victoria.FormulaParser.Tests
             bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
             Assert.IsFalse(boolean);
+        }
+
+
+        [TestMethod]
+        public void NotEqualInt()
+        {
+            string formulaOriginal = "int(4.3)!= int(5.3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.3)!=int(5.3))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualIntNegative()
+        {
+            string formulaOriginal = "int(-4.3)!= int(-5.3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-4.3))!=int((-5.3)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualLog()
+        {
+            string formulaOriginal = "log(4,2)!=log(9,3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(4,2)!=log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualLogNot()
+        {
+            string formulaOriginal = "log(4,2)!= not(log(2,2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(4,2)!=not(log(2,2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -1772,6 +1901,72 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void LessThanInt()
+        {
+            string formulaOriginal = "int(4.2)<int(2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)<int(2.1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanIntNegative()
+        {
+            string formulaOriginal = "int(-4.2)<int(-2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-4.2))<int((-2.1)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanLog()
+        {
+            string formulaOriginal = "log(8,2)<log(9,3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)<log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanNotLog()
+        {
+            string formulaOriginal = "not(log(2,2))<log(9,3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(not(log(2,2))<log(9,3))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+
+
+        [TestMethod]
         public void GreaterThan1()
         {
             string formulaOriginal = "0>0";
@@ -1929,6 +2124,54 @@ namespace Victoria.FormulaParser.Tests
             bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
             Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanInt()
+        {
+            string formulaOriginal = "int(4.2)>int(2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(4.2)>int(2.1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanIntNegative()
+        {
+            string formulaOriginal = "int(-4.2)>int(-2.1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-4.2))>int((-2.1)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanLogNot()
+        {
+            string formulaOriginal = "log(8,2)> not(log(2,2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)> not(log(2,2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -2093,6 +2336,70 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void LessThanOrEqualsToInt()
+        {
+            string formulaOriginal = "int(3.2)<=int(4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(3.2)<=int(4.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsToIntNegative()
+        {
+            string formulaOriginal = "int(-3.2)<=int(-4.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-3.2))<=int((-4.2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsToLog()
+        {
+            string formulaOriginal = "log(8,2)<=log(2,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)<=log(2,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsToLogNot()
+        {
+            string formulaOriginal = "log(8,2)<= not(log(2,2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)<=not(log(2,2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void GreaterThanOrEqualsTo1()
         {
             string formulaOriginal = "0>=0";
@@ -2247,10 +2554,74 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("((3.4<2.2)>=1)", expression);
 
             double valor = formulaParser.GetValor();
-
             bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(0, valor);
             Assert.IsFalse(boolean);
+        }
+
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToInt()
+        {
+            string formulaOriginal = "int(5.2)>=int(3.5)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(5.2)>=int(3.5))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToIntNegative()
+        {
+            string formulaOriginal = "int(-5.2)>=int(-3.5)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int((-5.2))>=int((-3.5)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToLog()
+        {
+            string formulaOriginal = "log(8,2)>=log(2,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)>=log(2,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToLogNot()
+        {
+            string formulaOriginal = "log(8,2)>= not(log(2,2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)>=not(log(2,2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
 
         [TestMethod]
@@ -2365,6 +2736,20 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(-1, valor);
         }
 
+        [TestMethod]
+        public void ModuloLog()
+        {
+            string formulaOriginal = "log(8,2)%log(4,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(8,2)%log(4,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
 
 
         [TestMethod]
@@ -2422,6 +2807,38 @@ namespace Victoria.FormulaParser.Tests
 
             string expression = formulaParser.ToString();
             Assert.AreEqual("not(0)", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void NotTrue()
+        {
+            string formulaOriginal = "not(5>2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("not((5>2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void NotFalse()
+        {
+            string formulaOriginal = "not(5<=2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("not((5<=2))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
