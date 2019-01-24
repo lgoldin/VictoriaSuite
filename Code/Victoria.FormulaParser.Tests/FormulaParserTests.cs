@@ -831,12 +831,12 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void SumatoriaLog()
         {
-            string formulaOriginal = "sumatoria(log(8,2)+ log(9,3) + log(1,2))";
+            string formulaOriginal = "sumatoria(log(8,2), log(9,3), log(1,2))";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("sumatoria(((log(8,2)+log(9,3))+log(1,2)))", expression);
+            Assert.AreEqual("sumatoria(log(8,2),log(9,3),log(1,2))", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(5, valor);
@@ -2910,6 +2910,22 @@ namespace Victoria.FormulaParser.Tests
                 Assert.AreEqual("log", ime.Operador);
                 Assert.AreEqual(double.NegativeInfinity, ime.ValorNoNumerico);
             }
+        }
+
+        [TestMethod]
+        public void IntSumatoriaRandom()
+        {
+            string formulaOriginal = "int(sumatoria(2*random()+3*random()))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int(sumatoria((2*random())+(3*random())))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
         }
     }
 }
