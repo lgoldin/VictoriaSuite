@@ -543,7 +543,63 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(0.5, valor);
         }
 
-        
+        [TestMethod]
+        public void IntSuma()
+        {
+            string formulaOriginal = "int(4.2 + 3.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((4.2+3.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(7, valor);
+        }
+
+        [TestMethod]
+        public void IntRestaDecimal()
+        {
+            string formulaOriginal = "int(4.2-3.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((4.2-3.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void IntProductoDecimal()
+        {
+            string formulaOriginal = "int(4.2*3.3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((4.2*3.3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(13, valor);
+        }
+
+        [TestMethod]
+        public void IntDivisionDecimal()
+        {
+            string formulaOriginal = "int(4.2/2.2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((4.2/2.2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+
 
         [TestMethod]
         public void Log1()
@@ -742,7 +798,23 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(valor < 1);
         }
 
-        
+        [TestMethod]
+        public void NotRandom()
+        {
+            string formulaOriginal = "not(random())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("not(random())", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+
 
         [TestMethod]
         public void Sumatoria1()
@@ -1067,6 +1139,70 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void OrSumaLog()
+        {
+            string formulaOriginal = "((3+ int(2.3))>log(8,2))||log(1,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+int(2.3))>log(8,2))||log(1,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrRestaLog()
+        {
+            string formulaOriginal = "((3- int(2.3))>log(8,2))||log(1,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-int(2.3))>log(8,2))||log(1,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void OrProductoLog()
+        {
+            string formulaOriginal = "((3*int(2.3))>log(8,2))||log(1,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*int(2.3))>log(8,2))||log(1,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrDivisionLog()
+        {
+            string formulaOriginal = "((4/int(2.3))>log(8,2))||log(1,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((4/int(2.3))>log(8,2))||log(1,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void And1()
         {
             string formulaOriginal = "0&&0";
@@ -1291,7 +1427,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void Equal1()
+        public void Equal()
         {
             string formulaOriginal = "0==0";
 
@@ -2847,6 +2983,22 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void NotIntSumatoriaRandom()
+        {
+            string formulaOriginal = "not(int(sumatoria(2*random(),3*random())))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("not(int(sumatoria((2*random()),(3*random()))))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void IndefinicionNSobreCero()
         {
             string formulaOriginal = "4/0";
@@ -2912,20 +3064,6 @@ namespace Victoria.FormulaParser.Tests
             }
         }
 
-        [TestMethod]
-        public void IntSumatoriaRandom()
-        {
-            string formulaOriginal = "int(sumatoria(2*random()+3*random()))";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("int(sumatoria((2*random())+(3*random())))", expression);
-
-            double valor = formulaParser.GetValor();
-            bool boolean = formulaParser.GetValorAsBool();
-            Assert.AreEqual(1, valor);
-            Assert.IsTrue(boolean);
-        }
+        
     }
 }
