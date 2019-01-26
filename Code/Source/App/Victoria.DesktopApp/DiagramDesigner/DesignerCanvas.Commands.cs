@@ -47,7 +47,9 @@ namespace DiagramDesigner
         public static RoutedCommand SelectAll = new RoutedCommand();
 
         public DataGrid dataGridVariables { get; internal set; }
+        public DataGrid dataGridVariablesSimulation { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
+        public GroupBox groupBoxVariablesSimulation { get; internal set; }
 
 
         public DesignerCanvas()
@@ -88,7 +90,8 @@ namespace DiagramDesigner
 
         private void Debugger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Console.WriteLine("Comienza logica debbuger");
+            groupBoxVariablesSimulation.Visibility = Visibility.Visible;
+            dataGridVariablesSimulation.Visibility = Visibility.Visible;
         }
 
         #endregion

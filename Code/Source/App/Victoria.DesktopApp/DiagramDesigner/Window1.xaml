@@ -88,9 +88,9 @@
                             </DataGrid>
 
                         </GroupBox>
-                        <GroupBox Header="Debbug de Variables" Margin="8" Padding="3" Height="Auto">
+                        <GroupBox x:Name="groupBoxVariablesSimulation" Header="Debbug de Variables" Margin="8" Padding="3" Height="Auto" Visibility="Hidden">
                             <!--<ScrollViewer VerticalScrollBarVisibility="Visible"></ScrollViewer> -->
-                                <DataGrid Height="163" Canvas.Left="-277" Canvas.Top="455" Width="255" Visibility="Visible">
+                                <DataGrid x:Name="dataGridVariablesSimulation" Height="163" Canvas.Left="-277" Canvas.Top="455" Width="255" Visibility="Hidden">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Variable" Width="60" Binding="{Binding Path=Name}"/>
                                         <DataGridTextColumn Header="Valor Inicial" Width="80" Binding="{Binding Path=InitialValue}"/>
