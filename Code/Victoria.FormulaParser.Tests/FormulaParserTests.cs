@@ -616,6 +616,20 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void Log2()
+        {
+            string formulaOriginal = "log(8)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log(8)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(8, 10), valor);
+        }
+
+        [TestMethod]
         public void SumaLog()
         {
             string formulaOriginal = "log(8, 2) + log(9, 3)";
@@ -796,6 +810,21 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.IsTrue(valor > 0);
             Assert.IsTrue(valor < 1);
+        }
+
+        [TestMethod]
+        public void Random2()
+        {
+            string formulaOriginal = "random(10, 20)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("random(10,20)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor > 10);
+            Assert.IsTrue(valor < 20);
         }
 
         [TestMethod]
@@ -2559,7 +2588,7 @@ namespace Victoria.FormulaParser.Tests
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("(log(8,2)> not(log(2,2)))", expression);
+            Assert.AreEqual("(log(8,2)>not(log(2,2)))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
@@ -3586,6 +3615,74 @@ namespace Victoria.FormulaParser.Tests
             }
         }
 
-        
+        [TestMethod]
+        public void Ln1()
+        {
+            string formulaOriginal = "ln(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(10)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(10), valor);
+        }
+
+        [TestMethod]
+        public void E1()
+        {
+            string formulaOriginal = "e()";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("e()", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.E, valor);
+        }
+
+        [TestMethod]
+        public void E2()
+        {
+            string formulaOriginal = "e(3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("e(3)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Pow(Math.E, 3), valor);
+        }
+
+        [TestMethod]
+        public void Factorial()
+        {
+            string formulaOriginal = "factorial(5)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("factorial(5)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(120, valor);
+        }
+
+        [TestMethod]
+        public void Pi()
+        {
+            string formulaOriginal = "pi()";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("pi()", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.PI, valor);
+        }
     }
 }

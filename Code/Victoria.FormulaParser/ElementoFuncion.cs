@@ -13,6 +13,10 @@ namespace Victoria.FormulaParser
                 { "random", new FuncionRandom() },
                 { "sumatoria", new FuncionSumatoria() },
                 { "not", new FuncionNot() },
+                { "ln", new FuncionLn() },
+                { "e", new FuncionE() },
+                { "factorial", new FuncionFactorial() },
+                { "pi", new FuncionPi() },
             };
 
         public static ElementoFuncion GetFuncion(string funcion)
