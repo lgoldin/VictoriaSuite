@@ -928,6 +928,101 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsFalse(boolean);
         }
 
+        [TestMethod]
+        public void IntRandom()
+        {
+            string formulaOriginal = "int(random())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int(random())", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void IntRandomProducto()
+        {
+            string formulaOriginal = "int(3*random())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((3*random()))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor > 0);
+            Assert.IsTrue(valor < 3);
+        }
+
+        [TestMethod]
+        public void RandomProducto()
+        {
+            string formulaOriginal = "3*random()";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(3*random())", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor > 0);
+            Assert.IsTrue(valor < 3);
+        }
+
+        [TestMethod]
+        public void IntRandomRango()
+        {
+            string formulaOriginal = "int(random(10, 20))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int(random(10,20))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor > 10);
+            Assert.IsTrue(valor < 20);
+
+        }
+
+        [TestMethod]
+        public void IntRandomRangoProducto()
+        {
+            string formulaOriginal = "int(3*random(10, 20))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((3*random(10,20)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor > 30);
+            Assert.IsTrue(valor < 60);
+
+        }
+
+        [TestMethod]
+        public void RandomRangoProducto()
+        {
+            string formulaOriginal = "3*random(10, 20)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(3*random(10,20))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor > 30);
+            Assert.IsTrue(valor < 60);
+
+        }
+
+
 
 
         [TestMethod]
