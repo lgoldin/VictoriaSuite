@@ -615,20 +615,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(3, valor);
         }
 
-        [TestMethod]
-        public void Log2()
-        {
-            string formulaOriginal = "log(8)";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("log(8)", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(8, 10), valor);
-        }
-
+        
         [TestMethod]
         public void SumaLog()
         {
@@ -797,9 +784,23 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(4, valor);
         }
 
+        [TestMethod]
+        public void Log10()
+        {
+            string formulaOriginal = "log(8)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log(8)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(8, 10), valor);
+        }
+
 
         [TestMethod]
-        public void SumaLogd()
+        public void SumaLog10()
         {
             string formulaOriginal = "log(100) + log(1000)";
 
@@ -813,7 +814,92 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LogdDivision()
+        public void RestaLog10()
+        {
+            string formulaOriginal = "log(100) - log(1000)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(100)-log(1000))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-1, valor);
+        }
+
+        [TestMethod]
+        public void ProductoLog10()
+        {
+            string formulaOriginal = "log(100) * log(1000)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(100)*log(1000))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(6, valor);
+        }
+
+        [TestMethod]
+        public void DivisionLog10()
+        {
+            string formulaOriginal = "log(1000) / log(100)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(log(1000)/log(100))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1.5, valor);
+        }
+
+        [TestMethod]
+        public void Log10Suma()
+        {
+            string formulaOriginal = "log(900 + 100)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((900+100))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(3, valor);
+        }
+
+        [TestMethod]
+        public void Log10Resta()
+        {
+            string formulaOriginal = "log(1100 - 100)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((1100-100))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(3, valor);
+        }
+
+        [TestMethod]
+        public void Log10Producto()
+        {
+            string formulaOriginal = "log(1000 * 100)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log((1000*100))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(5, valor);
+        }
+
+
+        [TestMethod]
+        public void Log10Division()
         {
             string formulaOriginal = "log(10000/100)";
 
@@ -826,8 +912,10 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(2, valor);
         }
 
+
+
         [TestMethod]
-        public void LogdPotencia()
+        public void Log10Potencia()
         {
             string formulaOriginal = "log(100)^2";
 
@@ -841,7 +929,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LogdPotenciaFraccion()
+        public void Log10PotenciaFraccion()
         {
             string formulaOriginal = "log(10000)^(1/2)";
 
@@ -855,7 +943,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LogdPotenciaFraccionNegativa()
+        public void Log10PotenciaFraccionNegativa()
         {
             string formulaOriginal = "log(10000)^(-1/2)";
 
@@ -869,7 +957,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LogdIntn()
+        public void Log10Intn()
         {
             string formulaOriginal = "log(int(100.2))";
 
@@ -897,21 +985,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(valor < 1);
         }
 
-        [TestMethod]
-        public void Random2()
-        {
-            string formulaOriginal = "random(10, 20)";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("random(10,20)", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.IsTrue(valor > 10);
-            Assert.IsTrue(valor < 20);
-        }
-
+        
         [TestMethod]
         public void NotRandom()
         {
@@ -972,6 +1046,21 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.IsTrue(valor > 0);
             Assert.IsTrue(valor < 3);
+        }
+
+        [TestMethod]
+        public void RandomRango()
+        {
+            string formulaOriginal = "random(10, 20)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("random(10,20)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor > 10);
+            Assert.IsTrue(valor < 20);
         }
 
         [TestMethod]
@@ -1121,6 +1210,34 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(5, valor);
+        }
+
+        [TestMethod]
+        public void SumatoriaLog10()
+        {
+            string formulaOriginal = "sumatoria(log(100), log(1000), log(10000))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("sumatoria(log(100),log(1000),log(10000))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(9, valor);
+        }
+
+        [TestMethod]
+        public void SumatoriaFactorial()
+        {
+            string formulaOriginal = "sumatoria(factorial(5), factorial(4), factorial(3))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("sumatoria(factorial(5),factorial(4),factorial(3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(150, valor);
         }
 
         [TestMethod]
