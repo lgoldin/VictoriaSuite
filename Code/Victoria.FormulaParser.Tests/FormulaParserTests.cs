@@ -3969,6 +3969,62 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void FactorialSuma()
+        {
+            string formulaOriginal = "factorial(5) + factorial(3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(factorial(5)+factorial(3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(126, valor);
+        }
+
+        [TestMethod]
+        public void FactorialResta()
+        {
+            string formulaOriginal = "factorial(5) - factorial(3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(factorial(5)-factorial(3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(114, valor);
+        }
+
+        [TestMethod]
+        public void FactorialProducto()
+        {
+            string formulaOriginal = "factorial(5) * factorial(3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(factorial(5)*factorial(3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(720, valor);
+        }
+
+        [TestMethod]
+        public void FactorialDivision()
+        {
+            string formulaOriginal = "factorial(5) / factorial(3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(factorial(5)/factorial(3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(20, valor);
+        }
+
+        [TestMethod]
         public void Pi()
         {
             string formulaOriginal = "pi()";
@@ -3981,5 +4037,77 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.AreEqual(Math.PI, valor);
         }
+
+        [TestMethod]
+        public void IntPi()
+        {
+            string formulaOriginal = "int(pi())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int(pi())", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(3, valor);
+        }
+
+        [TestMethod]
+        public void IntSumaPi()
+        {
+            string formulaOriginal = "int(3 + pi())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((3+pi()))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(6, valor);
+        }
+
+        [TestMethod]
+        public void IntRestaPi()
+        {
+            string formulaOriginal = "int(6 - pi())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((6-pi()))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
+        public void IntProductoPi()
+        {
+            string formulaOriginal = "int(3 * pi())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((3*pi()))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(9, valor);
+        }
+
+        [TestMethod]
+        public void IntDivisionPi()
+        {
+            string formulaOriginal = "int(pi()/3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int((pi()/3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+
     }
 }
