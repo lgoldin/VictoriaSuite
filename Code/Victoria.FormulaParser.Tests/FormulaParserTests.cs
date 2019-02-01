@@ -599,6 +599,34 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(1, valor);
         }
 
+        [TestMethod]
+        public void IntLn()
+        {
+            string formulaOriginal = "int(ln(16))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int(ln(16))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
+        public void IntExponencial()
+        {
+            string formulaOriginal = "int(e(5)))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("int(e(5))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(148, valor);
+        }
+
 
 
         [TestMethod]
@@ -957,7 +985,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void Log10Intn()
+        public void Log10Int()
         {
             string formulaOriginal = "log(int(100.2))";
 
@@ -1529,6 +1557,54 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void OrSumaLog10()
+        {
+            string formulaOriginal = "((3+ factorial(2))>log(1000))||log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+factorial(2))>log(1000))||log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrProductoLog10()
+        {
+            string formulaOriginal = "((3* factorial(2))>log(1000))||log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*factorial(2))>log(1000))||log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void OrDivisionLog10()
+        {
+            string formulaOriginal = "((4/factorial(2))>log(1000))||log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((4/factorial(2))>log(1000))||log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
         public void And1()
         {
             string formulaOriginal = "0&&0";
@@ -1815,6 +1891,73 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(0, valor);
             Assert.IsFalse(boolean);
         }
+
+
+        [TestMethod]
+        public void AndSumaLog10()
+        {
+            string formulaOriginal = "((3+ factorial(2))>log(1000))&&log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+factorial(2))>log(1000))&&log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void AndRestaLog10()
+        {
+            string formulaOriginal = "((3- factorial(2))>log(1000))&&log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-factorial(2))>log(1000))&&log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void AndProductoLog10()
+        {
+            string formulaOriginal = "((3*factorial(2))>log(1000))&&log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*factorial(2))>log(1000))&&log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void AndDivisionLog10()
+        {
+            string formulaOriginal = "((4/factorial(2))>log(10))&&log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((4/factorial(2))>log(10))&&log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+
 
         [TestMethod]
         public void Equal()
@@ -2104,6 +2247,69 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsFalse(boolean);
         }
 
+        [TestMethod]
+        public void EqualSumaLog10()
+        {
+            string formulaOriginal = "((3+ factorial(2))>log(1000))==log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+factorial(2))>log(1000))==log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void EqualRestaLog10()
+        {
+            string formulaOriginal = "((3- factorial(2))>log(1000))==log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-factorial(2))>log(1000))==log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void EqualProductoLog10()
+        {
+            string formulaOriginal = "((3*factorial(2))>log(1000))==log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*factorial(2))>log(1000))==log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void EqualDivisionLog10()
+        {
+            string formulaOriginal = "((4/factorial(2))>log(1000))==log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((4/factorial(2))>log(1000))==log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
 
         [TestMethod]
         public void NotEqual1()
@@ -2396,6 +2602,70 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void NotEqualSumaLog10()
+        {
+            string formulaOriginal = "((3+ int(pi()))>log(1000))!=log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+int(pi()))>log(1000))!=log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualRestaLog10()
+        {
+            string formulaOriginal = "((3- int(pi()))>log(1000))!=log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-int(pi()))>log(1000))!=log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualProductoLog10()
+        {
+            string formulaOriginal = "((3*int(pi()))>log(1000))!=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*int(pi()))>log(1000))!=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void NotEqualDivisionLog10()
+        {
+            string formulaOriginal = "((6/int(pi()))>log(1000))!=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((6/int(pi()))>log(1000))!=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
         public void LessThan1()
         {
             string formulaOriginal = "0<0";
@@ -2604,7 +2874,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LessThanNotLog()
+        public void LessThanLogNot()
         {
             string formulaOriginal = "not(log(2,2))<log(9,3)";
 
@@ -2677,6 +2947,70 @@ namespace Victoria.FormulaParser.Tests
 
             string expression = formulaParser.ToString();
             Assert.AreEqual("(((4/int(2.3))>log(8,2))<log(2,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanSumaLog10()
+        {
+            string formulaOriginal = "((3+ factorial(2))>log(1000))<log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+factorial(2))>log(1000))<log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanRestaLog10()
+        {
+            string formulaOriginal = "((3- factorial(2))>log(1000))<log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-factorial(2))>log(1000))<log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanProductoLog10()
+        {
+            string formulaOriginal = "((3*factorial(2))>log(1000))<log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*factorial(2))>log(1000))<log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanDivisionLog10()
+        {
+            string formulaOriginal = "((4/factorial(2))>log(1000))<log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((4/factorial(2))>log(1000))<log(10))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
@@ -2928,12 +3262,12 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void GreaterThanProductoLog()
         {
-            string formulaOriginal = "((3*int(2.3))>log(8,2))<log(2,2)";
+            string formulaOriginal = "((3*int(2.3))>log(8,2))>log(2,2)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("(((3*int(2.3))>log(8,2))<log(2,2))", expression);
+            Assert.AreEqual("(((3*int(2.3))>log(8,2))>log(2,2))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
@@ -2944,18 +3278,84 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void GreaterThanDivisionLog()
         {
-            string formulaOriginal = "((4/int(2.3))>log(8,2))<log(2,2)";
+            string formulaOriginal = "((4/int(2.3))>log(8,2))>log(2,2)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("(((4/int(2.3))>log(8,2))<log(2,2))", expression);
+            Assert.AreEqual("(((4/int(2.3))>log(8,2))>log(2,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanSumaLog10()
+        {
+            string formulaOriginal = "((3+ int(pi()))>log(1000))>log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+int(pi()))>log(1000))>log(1))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
             Assert.AreEqual(1, valor);
             Assert.IsTrue(boolean);
         }
+
+        [TestMethod]
+        public void GreaterThanRestaLog10()
+        {
+            string formulaOriginal = "((3- int(pi()))>log(1000))>log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-int(pi()))>log(1000))>log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanProductoLog10()
+        {
+            string formulaOriginal = "((3*int(pi()))>log(1000))>log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*int(pi()))>log(1000))>log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanDivisionLog10()
+        {
+            string formulaOriginal = "((6/int(pi()))>log(1000))>log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((6/int(pi()))>log(1000))>log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+
 
         [TestMethod]
         public void LessThanOrEqualsTo1()
@@ -3247,6 +3647,58 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void LessThanOrEqualsToSumaLog10()
+        {
+            string formulaOriginal = "((3+ factorial(3))>log(1000))<=log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+factorial(3))>log(1000))<=log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsToRestaLog10()
+        {
+            string formulaOriginal = "((3- factorial(3))>log(1000))<=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-factorial(3))>log(1000))<=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualsToProductoLog10()
+        {
+            string formulaOriginal = "((3* factorial(3))>log(1000))<=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*factorial(3))>log(1000))<=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        
+
+
+
+        [TestMethod]
         public void GreaterThanOrEqualsTo1()
         {
             string formulaOriginal = "0>=0";
@@ -3536,6 +3988,56 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void GreaterThanOrEqualsToSumaLog10()
+        {
+            string formulaOriginal = "((3+ factorial(3))>log(1000))>=log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3+factorial(3))>log(1000))>=log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToRestaLog10()
+        {
+            string formulaOriginal = "((3- factorial(3))>log(1000))>=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-factorial(3))>log(1000))>=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualsToProductoLog10()
+        {
+            string formulaOriginal = "((3* factorial(3))>log(1000))>=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3*factorial(3))>log(1000))>=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        
+
+        [TestMethod]
         public void Modulo()
         {
             string formulaOriginal = "4%2";
@@ -3716,6 +4218,22 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.AreEqual(0, valor);
         }
+
+        [TestMethod]
+        public void ModuloRestaLog10()
+        {
+            string formulaOriginal = "(3- int(2.3))%log(1000)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3-int(2.3))%log(1000))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+       
 
 
         [TestMethod]
@@ -3927,6 +4445,20 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void Ln()
+        {
+            string formulaOriginal = "ln(2.718281828459045235360)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(2.718281828459045235360)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
         public void E1()
         {
             string formulaOriginal = "e()";
@@ -3952,6 +4484,20 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(Math.Pow(Math.E, 3), valor);
+        }
+
+        [TestMethod]
+        public void ExponencialLn()
+        {
+            string formulaOriginal = "e(ln( 2.718281828459045235360))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("e(ln(2.718281828459045235360))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.E, valor);
         }
 
         [TestMethod]
