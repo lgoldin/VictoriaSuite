@@ -3694,8 +3694,22 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(boolean);
         }
 
-        
 
+        [TestMethod]
+        public void LessThanOrEqualsToDivisionLog10()
+        {
+            string formulaOriginal = "((factorial(3)/3))>log(1000))<=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((factorial(3)/3))>log(1000))<=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
 
 
         [TestMethod]
