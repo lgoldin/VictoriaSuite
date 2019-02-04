@@ -369,11 +369,12 @@ namespace Victoria.DesktopApp
             btnAnalisisSensibilidad.IsEnabled = ((MainViewModel)this.DataContext).Stages.Count(x => x.Simulation.GetVariables().Count(y => y.Type == VariableType.Control) > 0) > 0;                
         }
 
-        public List<Victoria.Shared.Variable> getSimulationVariables() {
+        public ObservableCollection<Victoria.ModelWPF.Variable> getSimulationVariables() {
 
-            List<Victoria.Shared.Variable> variablesList = new List<Victoria.Shared.Variable>();
-            foreach (var stageViewModel in ((MainViewModel)this.DataContext).Stages){
-                variablesList =  stageViewModel.Simulation.GetVariables();
+            ObservableCollection<Victoria.ModelWPF.Variable> variablesList = new ObservableCollection<Victoria.ModelWPF.Variable>();
+            foreach (StageViewModel stageViewModel in ((MainViewModel)this.DataContext).Stages){
+                variablesList = stageViewModel.getVariables;
+               // variablesList =  stageViewModel.Simulation.GetVariables();
             }
 
             return variablesList;

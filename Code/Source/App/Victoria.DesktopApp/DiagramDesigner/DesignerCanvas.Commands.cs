@@ -26,6 +26,7 @@ using System.Reflection;
 using Victoria.DesktopApp.DiagramDesigner;
 using Victoria.DesktopApp.Helpers;
 using System.Data;
+using System.Collections.ObjectModel;
 
 namespace DiagramDesigner
 {
@@ -95,12 +96,12 @@ namespace DiagramDesigner
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
             this.ValidarYLanzarSimulador(false); // Evito mostrar la ventan de simulacion
             MainWindow mainWindow = this.getSimulationWindow();
-            List<Victoria.Shared.Variable> simulationVariables = mainWindow.getSimulationVariables();
-            foreach (Victoria.Shared.Variable variable in simulationVariables) {
+            ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = mainWindow.getSimulationVariables();
+            foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
                 dataGridVariablesSimulation.Items.Add(variable);
             }
             
-            //mainWindow.executeSimulation();
+            mainWindow.executeSimulation();
         }
 
         #endregion

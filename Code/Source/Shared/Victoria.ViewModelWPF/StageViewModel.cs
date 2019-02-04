@@ -88,6 +88,9 @@ namespace Victoria.ViewModelWPF
             }
         }
 
+        // Asi puedo acceder de mainWindows a las variables sin crear una lista nueva
+        public ObservableCollection<Variable> getVariables { get { return variables; } } 
+
         public new List<Variable> FilteredVariables
         {
             get
