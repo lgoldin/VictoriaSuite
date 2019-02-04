@@ -852,7 +852,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(log(100)-log(1000))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(-1, valor);
+            Assert.AreEqual(Math.Log(100,10) - Math.Log(1000, 10), valor);
         }
 
         [TestMethod]
@@ -866,7 +866,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(log(100)*log(1000))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(6, valor);
+            Assert.AreEqual(Math.Log(100, 10) * Math.Log(1000,10), valor);
         }
 
         [TestMethod]
@@ -880,7 +880,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(log(1000)/log(100))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(1.5, valor);
+            Assert.AreEqual(Math.Log(1000, 10)/Math.Log(100, 10), valor);
         }
 
         [TestMethod]
@@ -894,7 +894,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("log((900+100))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(3, valor);
+            Assert.AreEqual(Math.Log(900+100, 10), valor);
         }
 
         [TestMethod]
@@ -908,7 +908,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("log((1100-100))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(3, valor);
+            Assert.AreEqual(Math.Log(1100 - 100, 10), valor);
         }
 
         [TestMethod]
@@ -1057,7 +1057,8 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("int((3*random()))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.IsTrue(valor > 0);
+
+            Assert.IsTrue(valor >= 0);
             Assert.IsTrue(valor < 3);
         }
 
@@ -1102,7 +1103,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("int(random(10,20))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.IsTrue(valor > 10);
+            Assert.IsTrue(valor >= 10);
             Assert.IsTrue(valor < 20);
 
         }
@@ -1118,9 +1119,8 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("int((3*random(10,20)))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.IsTrue(valor > 30);
+            Assert.IsTrue(valor >= 30);
             Assert.IsTrue(valor < 60);
-
         }
 
         [TestMethod]
@@ -1134,14 +1134,10 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(3*random(10,20))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.IsTrue(valor > 30);
+            Assert.IsTrue(valor >= 30);
             Assert.IsTrue(valor < 60);
-
         }
-
-
-
-
+        
         [TestMethod]
         public void Sumatoria1()
         {
@@ -3698,12 +3694,12 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void LessThanOrEqualsToDivisionLog10()
         {
-            string formulaOriginal = "((factorial(3)/3))>log(1000))<=log(10)";
+            string formulaOriginal = "((factorial(3)/3))>log(1000)<=log(10)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("(((factorial(3)/3))>log(1000))<=log(10))", expression);
+            Assert.AreEqual("(((factorial(3)/3)>log(1000))<=log(10))", expression);
 
             double valor = formulaParser.GetValor();
             bool boolean = formulaParser.GetValorAsBool();
