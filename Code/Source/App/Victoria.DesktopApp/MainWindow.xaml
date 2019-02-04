@@ -202,7 +202,7 @@
                 </TabControl.ItemTemplate>
                 <behavior:TabContent.Template>
                     <DataTemplate>
-                        <control:StageControl></control:StageControl>
+                        <control:StageControl></control:StageControl> <!--Se agrega la vista de los elementos de mainWindow-->
                     </DataTemplate>
                 </behavior:TabContent.Template>
             </TabControl>

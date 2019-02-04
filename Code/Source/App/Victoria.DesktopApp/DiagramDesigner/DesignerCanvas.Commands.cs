@@ -25,6 +25,7 @@ using System.Printing;
 using System.Reflection;
 using Victoria.DesktopApp.DiagramDesigner;
 using Victoria.DesktopApp.Helpers;
+using System.Data;
 
 namespace DiagramDesigner
 {
@@ -92,6 +93,14 @@ namespace DiagramDesigner
         {
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
+            this.ValidarYLanzarSimulador(false); // Evito mostrar la ventan de simulacion
+            MainWindow mainWindow = this.getSimulationWindow();
+            List<Victoria.Shared.Variable> simulationVariables = mainWindow.getSimulationVariables();
+            foreach (Victoria.Shared.Variable variable in simulationVariables) {
+                dataGridVariablesSimulation.Items.Add(variable);
+            }
+            
+            //mainWindow.executeSimulation();
         }
 
         #endregion
@@ -139,7 +148,7 @@ namespace DiagramDesigner
 
         private void Simulate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ValidarYLanzarSimulador();
+            ValidarYLanzarSimulador(true);
         }
 
         #endregion
@@ -919,14 +928,22 @@ namespace DiagramDesigner
             return null;
         }
 
-        private void ValidarYLanzarSimulador()
+        private void ValidarYLanzarSimulador(Boolean showWindow)
         {
+            MainWindow mainWindow = this.getSimulationWindow();
+            if(showWindow)
+                mainWindow.Show();
+        }
+
+        private MainWindow getSimulationWindow(){
+
+            MainWindow mainWindow = null;
+
             try
             {
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
-                var mainWindow = new MainWindow(root.ToString(), true);
-                mainWindow.Show();
+                mainWindow = new MainWindow(root.ToString(), true);
             }
             catch (DiagramValidationException ex)
             {
@@ -938,6 +955,8 @@ namespace DiagramDesigner
                 var viewException = new AlertPopUp("Error de parseo. Revisa tu diagrama.");
                 viewException.ShowDialog();
             }
+
+            return mainWindow;
         }
 
         private void ValidarDiagrama()

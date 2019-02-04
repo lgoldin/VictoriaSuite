@@ -29,7 +29,7 @@ using Victoria.Shared.AnalisisPrevio;
 namespace Victoria.DesktopApp
 {
 
-
+    
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -270,6 +270,11 @@ namespace Victoria.DesktopApp
 
         private void BtnExecuteSimulationCommand_OnClick(object sender, RoutedEventArgs e)
         {
+            this.executeSimulation();
+        }
+
+        public void executeSimulation()
+        {
             try
             {
                 ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);
@@ -351,14 +356,28 @@ namespace Victoria.DesktopApp
 
         private void BtnAnalisisSensibilidad_OnClick(object sender, RoutedEventArgs e)
         {
-            var sensibilidadWindow = new AnalisisSensibilidadPopUp(((MainViewModel)this.DataContext).SimulationFile);
+
+            AnalisisSensibilidadPopUp sensibilidadWindow = new AnalisisSensibilidadPopUp(((MainViewModel)this.DataContext).SimulationFile);
             sensibilidadWindow.ShowDialog();
+           
             btnAnalisisSensibilidad.Focusable = false;
         }
 
+
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            btnAnalisisSensibilidad.IsEnabled = ((MainViewModel)this.DataContext).Stages.Count(x => x.Simulation.GetVariables().Count(y => y.Type == VariableType.Control) > 0) > 0;
+            btnAnalisisSensibilidad.IsEnabled = ((MainViewModel)this.DataContext).Stages.Count(x => x.Simulation.GetVariables().Count(y => y.Type == VariableType.Control) > 0) > 0;                
         }
+
+        public List<Victoria.Shared.Variable> getSimulationVariables() {
+
+            List<Victoria.Shared.Variable> variablesList = new List<Victoria.Shared.Variable>();
+            foreach (var stageViewModel in ((MainViewModel)this.DataContext).Stages){
+                variablesList =  stageViewModel.Simulation.GetVariables();
+            }
+
+            return variablesList;
+        }
+
     }
 }
