@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 {
@@ -22,7 +23,10 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
             this.designerItem = new DesignerItem(this.guid);
             this.designerItem.ParentID = new Guid("00000000-0000-0000-0000-000000000000");
             this.designerItem.IsGroup = false;
+
+            
         }
+
 
         public void setItemText(string text)
         {

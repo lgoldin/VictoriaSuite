@@ -374,7 +374,6 @@ namespace Victoria.DesktopApp
             ObservableCollection<Victoria.ModelWPF.Variable> variablesList = new ObservableCollection<Victoria.ModelWPF.Variable>();
             foreach (StageViewModel stageViewModel in ((MainViewModel)this.DataContext).Stages){
                 variablesList = stageViewModel.getVariables;
-               // variablesList =  stageViewModel.Simulation.GetVariables();
             }
 
             return variablesList;

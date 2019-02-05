@@ -53,6 +53,8 @@ namespace DiagramDesigner
         public DataGridComboBoxColumn dimensiones { get; internal set; }
         public GroupBox groupBoxVariablesSimulation { get; internal set; }
 
+        private MainWindow mainWindow;
+
 
         public DesignerCanvas()
         {
@@ -83,7 +85,7 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
-
+            
             this.AllowDrop = true;
             Clipboard.Clear();
         }
@@ -92,16 +94,20 @@ namespace DiagramDesigner
 
         private void Debugger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            //Muestro Datagrid
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
-            this.ValidarYLanzarSimulador(false); // Evito mostrar la ventan de simulacion
-            MainWindow mainWindow = this.getSimulationWindow();
-            ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = mainWindow.getSimulationVariables();
+
+            // Creo la  ventan de simulacion y NO la muestro
+            this.ValidarYLanzarSimulador(false); 
+
+            // Cargo el dataGrid de debbug con el datagrid de la ventana de simulacion
+            ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
             foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
                 dataGridVariablesSimulation.Items.Add(variable);
             }
             
-            mainWindow.executeSimulation();
+            //mainWindow.executeSimulation();
         }
 
         #endregion
@@ -931,20 +937,19 @@ namespace DiagramDesigner
 
         private void ValidarYLanzarSimulador(Boolean showWindow)
         {
-            MainWindow mainWindow = this.getSimulationWindow();
+            this.createSimulationWindow();
             if(showWindow)
-                mainWindow.Show();
+                this.mainWindow.Show();
         }
 
-        private MainWindow getSimulationWindow(){
+        private void createSimulationWindow(){
 
-            MainWindow mainWindow = null;
-
+            
             try
             {
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
-                mainWindow = new MainWindow(root.ToString(), true);
+                this.mainWindow = this.mainWindow == null ?  new MainWindow(root.ToString(), true) : this.mainWindow;
             }
             catch (DiagramValidationException ex)
             {
@@ -957,7 +962,6 @@ namespace DiagramDesigner
                 viewException.ShowDialog();
             }
 
-            return mainWindow;
         }
 
         private void ValidarDiagrama()
