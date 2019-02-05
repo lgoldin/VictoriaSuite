@@ -1571,6 +1571,21 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void OrRestaLog10()
+        {
+            string formulaOriginal = "((3- factorial(2))>log(1000))||log(1)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((3-factorial(2))>log(1000))||log(1))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+        [TestMethod]
         public void OrProductoLog10()
         {
             string formulaOriginal = "((3* factorial(2))>log(1000))||log(1)";
@@ -4048,7 +4063,23 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(boolean);
         }
 
-        
+        [TestMethod]
+        public void GreaterThanOrEqualsToDivisionLog10()
+        {
+            string formulaOriginal = "((factorial(3)/3)>log(1000))>=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(((factorial(3)/3)>log(1000))>=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+
 
         [TestMethod]
         public void Modulo()
@@ -4232,6 +4263,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(0, valor);
         }
 
+        
         [TestMethod]
         public void ModuloRestaLog10()
         {
@@ -4246,7 +4278,21 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(1, valor);
         }
 
-       
+        [TestMethod]
+        public void ModuloProductoLog10()
+        {
+            string formulaOriginal = "(3* int(2.3))%log(1000)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((3*int(2.3))%log(1000))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(0, valor);
+        }
+
+
 
 
         [TestMethod]
@@ -4460,12 +4506,12 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void Ln()
         {
-            string formulaOriginal = "Math.Log(Math.E)";
+            string formulaOriginal = "ln( 2.718281828459045235360)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("Math.Log(Math.E))", expression);
+            Assert.AreEqual("ln(2.718281828459045235360)", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);
