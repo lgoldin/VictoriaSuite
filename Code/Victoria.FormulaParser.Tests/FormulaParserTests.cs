@@ -599,6 +599,8 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(1, valor);
         }
 
+        
+
         [TestMethod]
         public void IntLn()
         {
@@ -3694,7 +3696,7 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void LessThanOrEqualsToDivisionLog10()
         {
-            string formulaOriginal = "((factorial(3)/3))>log(1000)<=log(10)";
+            string formulaOriginal = "((factorial(3)/3)>log(1000))<=log(10)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
@@ -3707,6 +3709,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(boolean);
         }
 
+       
 
         [TestMethod]
         public void GreaterThanOrEqualsTo1()
@@ -4451,18 +4454,18 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("ln(10)", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(10), valor);
+            Assert.AreEqual(Math.Log(10,Math.E), valor);
         }
 
         [TestMethod]
         public void Ln()
         {
-            string formulaOriginal = "ln(2.718281828459045235360)";
+            string formulaOriginal = "Math.Log(Math.E)";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("ln(2.718281828459045235360)", expression);
+            Assert.AreEqual("Math.Log(Math.E))", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);
