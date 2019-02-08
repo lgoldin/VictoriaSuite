@@ -1,10 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Linq;
 using DiagramDesigner.Controls;
+using Victoria.DesktopApp.DiagramDesigner.Nodes;
 
 namespace DiagramDesigner
 {
@@ -13,6 +18,7 @@ namespace DiagramDesigner
     [TemplatePart(Name = "PART_ResizeDecorator", Type = typeof(Control))]
     [TemplatePart(Name = "PART_ConnectorDecorator", Type = typeof(Control))]
     [TemplatePart(Name = "PART_ContentPresenter", Type = typeof(ContentPresenter))]
+    
     public class DesignerItem : ContentControl, ISelectable, IGroupable
     {
         #region ID
@@ -121,11 +127,13 @@ namespace DiagramDesigner
         {
             this.id = id;
             this.Loaded += new RoutedEventHandler(DesignerItem_Loaded);
+            this.MouseDoubleClick += new MouseButtonEventHandler(DesignerItem_MouseDoubleClick);
         }
 
         public DesignerItem()
             : this(Guid.NewGuid())
         {
+            this.MouseDoubleClick += new MouseButtonEventHandler(DesignerItem_MouseDoubleClick);
         }
 
         public DesignerItem(Guid id, string tag, string uid)
@@ -133,6 +141,7 @@ namespace DiagramDesigner
             this.id = id;
             this.Tag = tag;
             this.Uid = uid;
+            this.MouseDoubleClick += new MouseButtonEventHandler(DesignerItem_MouseDoubleClick);
         }
 
 
@@ -162,7 +171,18 @@ namespace DiagramDesigner
 
             e.Handled = false;
         }
-        
+
+        void DesignerItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine("Logica cambiar color + logica agregar boton de breakpoint");
+
+            //Ver como carajo le podes cambiar el color 
+            //Object content = XamlReader.Load(XmlReader.Create(new StringReader(Conditional.content())));
+            //this.Content = content; //.Replace("FFD69436", "ACADCD"));
+            //XElement root = XElement.Load(this.contet);
+            
+            
+        }
 
         void DesignerItem_Loaded(object sender, RoutedEventArgs e)
         {
@@ -170,9 +190,11 @@ namespace DiagramDesigner
             {
                 ContentPresenter contentPresenter =
                     this.Template.FindName("PART_ContentPresenter", this) as ContentPresenter;
+                
                 if (contentPresenter != null)
                 {
                     UIElement contentVisual = VisualTreeHelper.GetChild(contentPresenter, 0) as UIElement;
+                    
                     if (contentVisual != null)
                     {
                         DragThumb thumb = this.Template.FindName("PART_DragThumb", this) as DragThumb;
@@ -182,7 +204,7 @@ namespace DiagramDesigner
                                 DesignerItem.GetDragThumbTemplate(contentVisual) as ControlTemplate;
                             if (template != null)
                                 thumb.Template = template;
-
+                            
                             //Para que sea responsive
                             this.Height = (double)contentVisual.GetAnimationBaseValue(HeightProperty);
                             this.Width = (double)contentVisual.GetAnimationBaseValue(WidthProperty);
@@ -207,6 +229,8 @@ namespace DiagramDesigner
                                     {
                                      this.Uid = "Principal"; //Le pongo la uid al item del diagram designer
                                     }
+
+
                         }
                     }
                 }
