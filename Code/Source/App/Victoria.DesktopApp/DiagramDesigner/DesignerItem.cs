@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using DiagramDesigner.Controls;
 using Victoria.DesktopApp.DiagramDesigner.Nodes;
+using Victoria.Shared;
 
 namespace DiagramDesigner
 {
@@ -116,6 +117,13 @@ namespace DiagramDesigner
                                          new FrameworkPropertyMetadata(false));
         #endregion
 
+        #region hasBreakpoint Property
+
+            private bool hasBreakpoint = false;
+        
+        #endregion
+
+
         static DesignerItem()
         {
             // set the key to reference the style for this control
@@ -176,12 +184,25 @@ namespace DiagramDesigner
         {
             Console.WriteLine("Logica cambiar color + logica agregar boton de breakpoint");
 
-            //Ver como carajo le podes cambiar el color 
-            //Object content = XamlReader.Load(XmlReader.Create(new StringReader(Conditional.content())));
-            //this.Content = content; //.Replace("FFD69436", "ACADCD"));
-            //XElement root = XElement.Load(this.contet);
-            
-            
+            if (!this.hasBreakpoint)
+            {
+                //Creo circulo de breakpoint 
+                Ellipse breakPointCircle = new Ellipse();
+                breakPointCircle.Width = 20;
+                breakPointCircle.Height = 20;
+                breakPointCircle.Fill = Brushes.Red;
+                
+
+                //Cambio color del background
+                Grid grid = (Grid)this.Content;
+                Grid.SetRow(grid, 1);
+                Grid.SetColumn(grid, 1);
+                //grid.Background = Brushes.Red;
+                grid.Children.Add(breakPointCircle);
+
+                this.Content = grid;
+            }
+
         }
 
         void DesignerItem_Loaded(object sender, RoutedEventArgs e)
