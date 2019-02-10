@@ -143,13 +143,13 @@ namespace DiagramDesigner
         {
             this.id = id;
             this.Loaded += new RoutedEventHandler(DesignerItem_Loaded);
-            this.MouseDoubleClick += new MouseButtonEventHandler(DesignerItem_MouseDoubleClick);
+            this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
         }
 
         public DesignerItem()
             : this(Guid.NewGuid())
         {
-            this.MouseDoubleClick += new MouseButtonEventHandler(DesignerItem_MouseDoubleClick);
+            this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
         }
 
         public DesignerItem(Guid id, string tag, string uid)
@@ -157,7 +157,7 @@ namespace DiagramDesigner
             this.id = id;
             this.Tag = tag;
             this.Uid = uid;
-            this.MouseDoubleClick += new MouseButtonEventHandler(DesignerItem_MouseDoubleClick);
+            this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
         }
 
 
@@ -191,30 +191,36 @@ namespace DiagramDesigner
         void DesignerItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
-            try{
-                Grid grid = (Grid)this.Content;
-                Path shape = (Path)grid.Children[0];
+            if ( (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None )
+            {
 
-                //Si tiene color naranja entonces puedo agregar breakpoint
-                if (shape.Stroke.ToString() == "#FFD69436") { 
+                try
+                {
+                    Grid grid = (Grid)this.Content;
+                    Path shape = (Path)grid.Children[0];
+
+                    //Si tiene color naranja entonces puedo agregar breakpoint
+                    if (shape.Stroke.ToString() == "#FFD69436") { 
                     
-                    //Cambio color del borde a rojo para indicar breakpoint
-                    if (!this.hasBreakpoint)
-                    {
-                        this.originalColor = shape.Stroke;
-                        shape.Stroke = Brushes.Red;
-                    }
-                    else
-                    {
-                        shape.Stroke = this.originalColor;
-                    }
+                        //Cambio color del borde a rojo para indicar breakpoint
+                        if (!this.hasBreakpoint)
+                        {
+                            this.originalColor = shape.Stroke;
+                            shape.Stroke = Brushes.Red;
+                        }
+                        else
+                        {
+                            shape.Stroke = this.originalColor;
+                        }
 
-                    this.hasBreakpoint = !this.hasBreakpoint;
-                    this.Content = grid;
+                        this.hasBreakpoint = !this.hasBreakpoint;
+                        this.Content = grid;
+                    }
                 }
-            }
-            catch (Exception ex) {
-                Console.WriteLine("No puede agregarse un breakpoint a este nodo");
+                catch (Exception ex) {
+                    Console.WriteLine("No puede agregarse un breakpoint a este nodo");
+                }
+
             }
 
         }
