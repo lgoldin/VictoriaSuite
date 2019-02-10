@@ -24,6 +24,11 @@
         <GradientStop Color="Silver" Offset="0.9"/>
     </RadialGradientBrush>
 
+    <RadialGradientBrush x:Key="RadialBrushRed" Center="0.2, 0.2" GradientOrigin="0.2, 0.2" RadiusX="0.2" RadiusY="0.2">
+        <GradientStop Color="White" Offset="0"/>
+        <GradientStop Color="Red" Offset="0.9"/>
+    </RadialGradientBrush>
+
     <LinearGradientBrush x:Key="BrushStar" StartPoint="0,0" EndPoint="0,1" Opacity="1">
     <LinearGradientBrush.GradientStops>
       <GradientStop Color="#FAFBE9" Offset="0.1" />

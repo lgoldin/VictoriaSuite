@@ -28,7 +28,8 @@ namespace Victoria.DesktopApp.DiagramDesigner
         private double startLeft = 120;
 
         private DesignerCanvas canvas;
-        private AnalisisPrevio analisisPrevio;
+        //private AnalisisPrevio analisisPrevio;
+        public AnalisisPrevio analisisPrevio { get; set; }
 
         private double eventsCount;
         private double branchCount;
@@ -39,13 +40,28 @@ namespace Victoria.DesktopApp.DiagramDesigner
         private Node lastCenterNode;
         private Node firstNode;
         private Dictionary<string, string> vectorEventsIndexes = new Dictionary<string, string>();
+        private static AutomaticDiagramGenerator _instance = null;
 
+        //Evito crear mas de una instancia de AutomaticDiagramGenerator
+        public static AutomaticDiagramGenerator sharedInstance(){
+     
+            if ( _instance == null) {
+                _instance = new AutomaticDiagramGenerator();
+            }
+
+            return _instance;
+        }
+
+        public AutomaticDiagramGenerator(){
+            if (_instance != null) {
+                throw new System.ArgumentException("Usar metodo sharedInstance para acceder a un bojeto AutomaticDiagramGenerator");
+            }
+        }
 
         public AutomaticDiagramGenerator(AnalisisPrevio analisisPrevio)
         {
             this.analisisPrevio = analisisPrevio;
         }
-
 
         public void generateDiagram(Window1 diagramWindow)
         {

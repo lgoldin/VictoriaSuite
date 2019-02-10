@@ -11,6 +11,8 @@ using System.Xml.Linq;
 using DiagramDesigner.Controls;
 using Victoria.DesktopApp.DiagramDesigner.Nodes;
 using Victoria.Shared;
+using Node = Victoria.DesktopApp.DiagramDesigner.Nodes.Node;
+using Path = System.Windows.Shapes.Path;
 
 namespace DiagramDesigner
 {
@@ -120,7 +122,13 @@ namespace DiagramDesigner
         #region hasBreakpoint Property
 
             private bool hasBreakpoint = false;
-        
+
+        #endregion
+
+        #region hasBreakpoint Property
+
+        private Brush originalColor;
+
         #endregion
 
 
@@ -157,7 +165,7 @@ namespace DiagramDesigner
         {
             base.OnPreviewMouseDown(e);
             DesignerCanvas designer = VisualTreeHelper.GetParent(this) as DesignerCanvas;
-
+            
             // update selection
             if (designer != null)
             {
@@ -182,26 +190,22 @@ namespace DiagramDesigner
 
         void DesignerItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine("Logica cambiar color + logica agregar boton de breakpoint");
+            Grid grid = (Grid)this.Content;
+            Path shape = (Path)grid.Children[0];
 
+            //Cambio color del borde para indicar breakpoint
             if (!this.hasBreakpoint)
             {
-                //Creo circulo de breakpoint 
-                Ellipse breakPointCircle = new Ellipse();
-                breakPointCircle.Width = 20;
-                breakPointCircle.Height = 20;
-                breakPointCircle.Fill = Brushes.Red;
-                
-
-                //Cambio color del background
-                Grid grid = (Grid)this.Content;
-                Grid.SetRow(grid, 1);
-                Grid.SetColumn(grid, 1);
-                //grid.Background = Brushes.Red;
-                grid.Children.Add(breakPointCircle);
-
-                this.Content = grid;
+                this.originalColor = shape.Stroke;
+                shape.Stroke = Brushes.Red;
             }
+            else
+            {
+                shape.Stroke = this.originalColor;
+            }
+
+            this.hasBreakpoint = !this.hasBreakpoint;
+            this.Content = grid;
 
         }
 
