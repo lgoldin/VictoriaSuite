@@ -190,22 +190,32 @@ namespace DiagramDesigner
 
         void DesignerItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Grid grid = (Grid)this.Content;
-            Path shape = (Path)grid.Children[0];
 
-            //Cambio color del borde para indicar breakpoint
-            if (!this.hasBreakpoint)
-            {
-                this.originalColor = shape.Stroke;
-                shape.Stroke = Brushes.Red;
-            }
-            else
-            {
-                shape.Stroke = this.originalColor;
-            }
+            try{
+                Grid grid = (Grid)this.Content;
+                Path shape = (Path)grid.Children[0];
 
-            this.hasBreakpoint = !this.hasBreakpoint;
-            this.Content = grid;
+                //Si tiene color naranja entonces puedo agregar breakpoint
+                if (shape.Stroke.ToString() == "#FFD69436") { 
+                    
+                    //Cambio color del borde a rojo para indicar breakpoint
+                    if (!this.hasBreakpoint)
+                    {
+                        this.originalColor = shape.Stroke;
+                        shape.Stroke = Brushes.Red;
+                    }
+                    else
+                    {
+                        shape.Stroke = this.originalColor;
+                    }
+
+                    this.hasBreakpoint = !this.hasBreakpoint;
+                    this.Content = grid;
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine("No puede agregarse un breakpoint a este nodo");
+            }
 
         }
 

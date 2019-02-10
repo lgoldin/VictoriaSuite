@@ -84,6 +84,7 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
+
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
             
             this.AllowDrop = true;
