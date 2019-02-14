@@ -842,6 +842,20 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(Math.Log(8, 10), valor);
         }
 
+        [TestMethod]
+        public void Prueba()
+        {
+            string formulaOriginal = "log(1000000000)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("log(1000000000)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(1000000000, 10), valor);
+        }
+
 
         [TestMethod]
         public void SumaLog10()
@@ -4411,6 +4425,98 @@ namespace Victoria.FormulaParser.Tests
             Assert.IsTrue(boolean);
         }
 
+        [TestMethod]
+        public void Precedencia6()
+        {
+            string formulaOriginal = "e(2) > e() >= ln(2.718281828459045235360)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((e(2)>e())>=ln(2.718281828459045235360))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
+        public void Precedencia7()
+        {
+            string formulaOriginal = "factorial(5) > factorial(6)>=log(10)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((factorial(5)>factorial(6))>=log(10))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void Precedencia8()
+        {
+            string formulaOriginal = "int(pi())*sumatoria(log(8,2),log(100),log(10000))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(int(pi())*sumatoria(log(8,2),log(100),log(10000)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(27, valor);
+         }
+
+        [TestMethod]
+        public void Precedencia9()
+        {
+            string formulaOriginal = "e(-2)>e(-1)>=log(16,2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((e((-2))>e((-1)))>=log(16,2))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(0, valor);
+            Assert.IsFalse(boolean);
+        }
+
+        [TestMethod]
+        public void Precedencia10()
+        {
+            string formulaOriginal = "sumatoria(log(8,2),log(100),log(10000))/int(pi())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(sumatoria(log(8,2),log(100),log(10000))/int(pi()))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(3, valor);
+            
+        }
+
+        [TestMethod]
+        public void Precedencia11()
+        {
+            string formulaOriginal = "int(-3.2)*int(pi())/sumatoria(log(10), ln(2.718281828459045235360), log(2,2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((int((-3.2))*int(pi()))/sumatoria(log(10),ln(2.718281828459045235360),log(2,2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(-3, valor);
+
+        }
+
 
 
         [TestMethod]
@@ -4604,6 +4710,8 @@ namespace Victoria.FormulaParser.Tests
             double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);
         }
+
+        
 
         [TestMethod]
         public void E1()
