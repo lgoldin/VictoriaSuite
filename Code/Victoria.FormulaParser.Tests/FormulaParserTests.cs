@@ -842,21 +842,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(Math.Log(8, 10), valor);
         }
 
-        [TestMethod]
-        public void Prueba()
-        {
-            string formulaOriginal = "log(1000000000)";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("log(1000000000)", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(1000000000, 10), valor);
-        }
-
-
+       
         [TestMethod]
         public void SumaLog10()
         {
@@ -4711,7 +4697,119 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual(1, valor);
         }
 
-        
+        [TestMethod]
+        public void LnExp()
+        {
+            string formulaOriginal = "ln(e())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(e())", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void LnExp1()
+        {
+            string formulaOriginal = "ln(e(2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(e(2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(2, valor);
+        }
+
+        [TestMethod]
+        public void LnExpPotencia()
+        {
+            string formulaOriginal = "ln(e(1/2)^2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln((e((1/2))^2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+
+        [TestMethod]
+        public void LnExpPotenciaNegativo()
+        {
+            string formulaOriginal = "ln(e(-1/2)^(-2))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln((e(((-1)/2))^(-2)))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void LnSumatoria()
+        {
+            string formulaOriginal = "ln(sumatoria(int(4.3)+int(2.3)+int(1.5))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(sumatoria(((int(4.3)+int(2.3))+int(1.5))))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(7, Math.E), valor);
+        }
+
+        [TestMethod]
+        public void LnFactorial()
+        {
+            string formulaOriginal = "ln(factorial(5))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(factorial(5))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(120, Math.E), valor);
+        }
+
+        [TestMethod]
+        public void LnPi()
+        {
+            string formulaOriginal = "ln(pi())";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(pi())", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(Math.PI, Math.E), valor);
+        }
+
+        [TestMethod]
+        public void LnLog()
+        {
+            string formulaOriginal = "ln(log(16,4))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(log(16,4))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Log(Math.Log(16,4), Math.E), valor);
+        }
+
 
         [TestMethod]
         public void E1()
