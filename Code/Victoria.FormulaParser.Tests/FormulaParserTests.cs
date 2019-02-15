@@ -4757,12 +4757,12 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void LnSumatoria()
         {
-            string formulaOriginal = "ln(sumatoria(int(4.3)+int(2.3)+int(1.5))";
+            string formulaOriginal = "ln(sumatoria(int(4.3),int(2.3),int(1.5))";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("ln(sumatoria(((int(4.3)+int(2.3))+int(1.5))))", expression);
+            Assert.AreEqual("ln(sumatoria(int(4.3),int(2.3),int(1.5)))", expression);
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(Math.Log(7, Math.E), valor);
