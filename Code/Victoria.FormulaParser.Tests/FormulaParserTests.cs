@@ -4854,6 +4854,34 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void ExponencialNegativo()
+        {
+            string formulaOriginal = "e(-2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("e((-2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Pow(Math.E,-2), valor);
+        }
+
+        [TestMethod]
+        public void DivisionExponencial()
+        {
+            string formulaOriginal = "e(5)/e(3)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(e(5)/e(3))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Pow(Math.E,2), valor);
+        }
+
+        [TestMethod]
         public void Factorial()
         {
             string formulaOriginal = "factorial(5)";
