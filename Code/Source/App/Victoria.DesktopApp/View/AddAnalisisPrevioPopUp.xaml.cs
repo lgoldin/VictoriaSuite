@@ -34,6 +34,8 @@ namespace Victoria.DesktopApp.View
 
         private Window1 VentanaDiagramador { get; set; }
 
+        private AddFDPPopUp VentanaFDP { get; set; }
+
         public AnalisisPrevio AnalisisPrevio { get; set; }
 
         public ObservableCollection<string> Conditions { get; set; }
@@ -320,6 +322,11 @@ namespace Victoria.DesktopApp.View
             GenerarDiagrama();
         }
 
+        private void btnGenerarFDP_OnClick(object sender, RoutedEventArgs e)
+        {
+            GenerarFDP();
+        }
+
         private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
@@ -526,6 +533,15 @@ namespace Victoria.DesktopApp.View
         {
             AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
             diagramGenerator.generateDiagram(VentanaDiagramador);
+        }
+
+        private void GenerarFDP()
+        {
+            AddFDPPopUp FDPGenerator = new AddFDPPopUp();
+            FDPGenerator.FDPGenerator(AnalisisPrevio);
+    
+            FDPGenerator.Show();
+        
         }
 
         private void DarPDFAlUsuario()

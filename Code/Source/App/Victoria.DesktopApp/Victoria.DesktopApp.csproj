@@ -322,6 +322,9 @@
     <Compile Include="View\DeleteSimpleVariablePopUp.xaml.cs">
       <DependentUpon>DeleteSimpleVariablePopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AddFDPPopUp.xaml.cs">
+      <DependentUpon>AddFDPPopUp.xaml</DependentUpon>
+    </Compile>
     <Page Include="Control\AnimationExecutionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -515,6 +518,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DeleteSimpleVariablePopUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddFDPPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
