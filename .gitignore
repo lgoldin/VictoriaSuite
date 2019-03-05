@@ -15,3 +15,5 @@ Code/Victoria.Shared/Victoria.Shared.csproj.user
 Code/.vs/Victoria/
 Code/UpgradeLog*
 .vs
+/Code/packages
+/Plan de Pruebas
