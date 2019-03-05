@@ -24,6 +24,7 @@ using Victoria.Shared;
 using Victoria.Shared.AnalisisPrevio;
 using System.Collections.ObjectModel;
 using Victoria.DesktopApp.Helpers;
+using excel = Microsoft.Office.Interop.Excel;
 
 namespace Victoria.DesktopApp.View
 {
@@ -156,10 +157,86 @@ namespace Victoria.DesktopApp.View
             }
         }
 
+        private void PrintResultsExcel(List<DataTable> resultsTable, String fileName)
+        {
+            /*
+             * REQUERIMIENTO:
+             Lo que tiene que contener el archivo es una tabla donde las primeras columnas 
+             deben contener cada una de las variables de control y luego las variables de resultado. 
+             Cada una de las filas de esa tabla debe contener los valores para cada una de las 
+             corridas del análisis de sensibilidad. 
+             La primera fila (fila de títulos) debe contener el nombre de cada variable.
+            */
+            Microsoft.Office.Interop.Excel.Application oXL;
+            Microsoft.Office.Interop.Excel._Workbook oWB;
+            Microsoft.Office.Interop.Excel._Worksheet oSheet;
+            Microsoft.Office.Interop.Excel.Range oRng;
+            object misvalue = System.Reflection.Missing.Value;
+
+            //Start Excel and get Application object.
+            oXL = new Microsoft.Office.Interop.Excel.Application();
+            
+            //Si se quiere visualizar el excel on-line para depurar se debe descomentar la linea siguiente:
+            //oXL.Visible = true;
+
+            //Get a new workbook.
+            oWB = (Microsoft.Office.Interop.Excel._Workbook)(oXL.Workbooks.Add(""));
+            oSheet = (Microsoft.Office.Interop.Excel._Worksheet)oWB.ActiveSheet;
+            int index_col = 1;
+            int index_row = 1;
+            int index_row_header = 2;            
+            int cant_escenarios = 0;
+            bool variable_resultado = false;
+
+            //Titulo
+            oSheet.Cells[index_row, index_col] = "Analisis de Sensibilidad";
+            index_row++;
+                                    
+            /*
+             * La variable "resultsTable" contiene 2 tablas por cada escenario simulado, cada par de tablas
+             * contienen la siguiente SubTabla (en adelante tabla):
+             *      - La primer tabla contiene un TableName que representa el nombre del escenario y al 
+             *      recorrer las columnas y las filas podemos obtener información de las variables de control.
+             *      - La segunda tabla NO contiene un TableName, pero contiene datos de las variables de Resultado 
+             *      (que se pueden visualizar recorriendo las filas y columnas).
+             */
+            foreach (var tbl in resultsTable)
+            {                
+                if (tbl.TableName != "")
+                {
+                    //Obtengo información del escenario.
+                    cant_escenarios++;
+                    index_col = 1;
+                    oSheet.Cells[index_row_header + cant_escenarios, index_col] = tbl.TableName;                    
+                }
+                                                                
+                //DATOS
+                for (int i = 0; i < tbl.Rows.Count; i++)
+                {
+                    index_col++;
+                    //Setea el nombre de las variables
+                    oSheet.Cells[index_row_header, index_col] = tbl.Rows[i][0].ToString();
+                    //Setea el valor que tomaron las variables y lo coloca en filas diferentes en funcion del escenario.
+                    oSheet.Cells[index_row_header + cant_escenarios, index_col] = tbl.Rows[i][1].ToString();
+                    //Intenta setear el formato de la celda.
+                    oRng = oSheet.Cells[index_row_header + cant_escenarios, index_col];
+                    oRng.NumberFormatLocal = "00.0000";                                              
+                }                                
+            }
+                                    
+            oWB.SaveAs(fileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+                false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            oWB.Close();
+        }
+
         private void PrintResultsPDF(IList<StageViewModelBase> stages)
         {
             List<DataTable> resultsTable = createResultsTables(stages);
+            
             var filePath = simulationPath + "\\resultados.pdf";
+            PrintResultsExcel(resultsTable,simulationPath + "\\resultados.xlsx");
             System.IO.FileStream fs = new System.IO.FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
             Document document = new Document();
             document.SetPageSize(iTextSharp.text.PageSize.A4);

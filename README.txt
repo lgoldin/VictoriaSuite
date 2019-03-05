@@ -6,4 +6,6 @@ Pasos para correr Victoria Suite:
 
 3) Una vez instalado el VS2017 hacer lo siguiente : Tools-> Extensions and Updated -> Online (buscar "Wix") -> Instalar Wix Toolset Visual Studio 2017 Extension
 
-4) Compliar y Correr proyecto
+4) Boton derecho en el proyecto "Victoria.DesktopApp" -> Add.. -> Reference -> COM -> Microsfot Excel Library -> Aceptar
+
+5) Compliar y Correr proyecto
