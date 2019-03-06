@@ -221,7 +221,10 @@
     <Compile Include="DiagramDesigner\DesignerCanvas.cs" />
     <Compile Include="DiagramDesigner\DesignerItem.cs" />
     <Compile Include="DiagramDesigner\DiagramValidationException.cs" />
+    <Compile Include="Helpers\Results.cs" />
+    <Compile Include="Helpers\ExcelResults.cs" />
     <Compile Include="DiagramDesigner\IGroupable.cs" />
+    <Compile Include="Helpers\IResults.cs" />
     <Compile Include="DiagramDesigner\ISelectable.cs" />
     <Compile Include="DiagramDesigner\LoopException.cs" />
     <Compile Include="DiagramDesigner\Nodes\CloseDiagram.cs" />
@@ -237,6 +240,7 @@
     <Compile Include="DiagramDesigner\Nodes\SubdiagramInit.cs" />
     <Compile Include="DiagramDesigner\Nodes\SubdiagramCall.cs" />
     <Compile Include="DiagramDesigner\PathFinder.cs" />
+    <Compile Include="Helpers\PDFResults.cs" />
     <Compile Include="DiagramDesigner\RubberbandAdorner.cs" />
     <Compile Include="DiagramDesigner\SelectionService.cs" />
     <Compile Include="DiagramDesigner\Toolbox.cs" />
