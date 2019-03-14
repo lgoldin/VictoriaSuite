@@ -4698,6 +4698,20 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void LnPrueba()
+        {
+            string formulaOriginal = "ln( 2.71828182846)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("ln(2.71828182846)", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
         public void LnExp()
         {
             string formulaOriginal = "ln(e())";
@@ -4865,6 +4879,34 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(Math.Pow(Math.E,-2), valor);
+        }
+
+        [TestMethod]
+        public void ExponencialFraccion()
+        {
+            string formulaOriginal = "e(1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("e((1/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Pow(Math.E, 0.5), valor);
+        }
+
+        [TestMethod]
+        public void ExponencialFraccionNegativa()
+        {
+            string formulaOriginal = "e(-1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("e(((-1)/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Pow(Math.E, -0.5), valor);
         }
 
         [TestMethod]
