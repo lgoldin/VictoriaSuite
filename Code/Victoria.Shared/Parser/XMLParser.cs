@@ -19,6 +19,8 @@ namespace Victoria.Shared
             {
                 var doc = XElement.Parse(xmlString);
 
+                Dictionary<string,bool> nodosBreakPoint = NodosBreakPoint(doc.Descendants("DesignerItem"));                
+
                 var diagramasPreProcesados = doc.Descendants("Diagrama").Where(diag => diag.Attribute("Name").Value != "ModeloAnalisisSensibilidad").Select(diag => new PreParsedDiagram
                 {
                     name = diag.Attribute("Name").Value,
@@ -26,7 +28,7 @@ namespace Victoria.Shared
                     {
                         Name = diag.Attribute("Name").Value
                     },
-                    nodos = parseNodes(diag.Descendants("flowchart").Descendants("block"))
+                    nodos = parseNodes(diag.Descendants("flowchart").Descendants("block"), nodosBreakPoint)
                 });
 
                 var variables = parseVariables(doc.Descendants("variables").First());
@@ -68,25 +70,44 @@ namespace Victoria.Shared
             }
         }
 
-        static Dictionary<string, PreParsedNode> parseNodes(IEnumerable<XElement> XmlNodes)
+        static Dictionary<string,bool> NodosBreakPoint(IEnumerable<XElement> designerItems)
         {
-            return XmlNodes.Select(node => parseBlock(node)).ToDictionary(node => node.name);
+            Dictionary<string, bool> dict = new Dictionary<string, bool>();
+
+            foreach (XElement e in designerItems)
+            {
+                var nodo_id = e.Elements().Where(n => n.Name.LocalName.Equals("ID")).Select(n => n.Value).First();
+                var nodo_has_bp = e.Elements().Where(n => n.Name.LocalName.Equals("Content")).Select(n => n.Value.Contains("BreakPoint")).First();
+
+                dict.Add(nodo_id, nodo_has_bp);
+            }
+
+            return dict;
         }
 
-        static PreParsedNode parseBlock(XElement node)
+        static Dictionary<string, PreParsedNode> parseNodes(IEnumerable<XElement> XmlNodes,Dictionary<string,bool> nodosBreakPoint)
         {
+            return XmlNodes.Select(node => parseBlock(node, nodosBreakPoint)).ToDictionary(node => node.name);
+        }
+
+        static PreParsedNode parseBlock(XElement node, Dictionary<string, bool> nodosBreakPoint)
+        {
+            bool hasBreakPoint;
+
+            nodosBreakPoint.TryGetValue(node.Attribute("id").Value.ToString(),out hasBreakPoint);
+
             switch (node.Attribute("type").Value)
             {
                 case "nodo_titulo_inicializador":
                     return parseNodoInicializador(node);
                 case "nodo_sentencia":
-                    return parseNodoSentencia(node);
+                    return parseNodoSentencia(node,hasBreakPoint);
                 case "nodo_iterador":
                     return parseNodoIterador(node);
                 case "nodo_fin":
                     return parseNodoFin(node);
                 case "nodo_condicion":
-                    return parseNodoCondicion(node);
+                    return parseNodoCondicion(node,hasBreakPoint);
                 case "nodo_inicializador":
                     return parseNodoDiagrama(node, true);
                 case "nodo_diagrama":
@@ -185,11 +206,12 @@ namespace Victoria.Shared
             };
         }
 
-        static PreParsedNode parseNodoSentencia(XElement node)
+        static PreParsedNode parseNodoSentencia(XElement node, bool hasBreakPoint)
         {
             var ns = new NodeSentence();
             ns.Code = node.Attribute("caption").Value;
             ns.Name = node.Attribute("id").Value;
+            ns.HasBreakPoint = hasBreakPoint;
             return new PreParsedNode
             {
                 name = ns.Name,
@@ -244,12 +266,13 @@ namespace Victoria.Shared
             };
         }
 
-        static PreParsedNode parseNodoCondicion(XElement node)
+        static PreParsedNode parseNodoCondicion(XElement node, bool hasBreakPoint)
         {
             var ns = new NodeCondition
             {
                 Name = node.Attribute("id").Value,
-                Code = node.Attribute("caption").Value
+                Code = node.Attribute("caption").Value,
+                HasBreakPoint = hasBreakPoint
             };
             return new PreParsedNodeCondition
             {

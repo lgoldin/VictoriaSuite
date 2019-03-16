@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -119,18 +120,28 @@ namespace DiagramDesigner
                                          new FrameworkPropertyMetadata(false));
         #endregion
 
-        #region hasBreakpoint Property
+        #region hasBreakpoint
 
-            private bool hasBreakpoint = false;
+        public bool hasBreakpoint
+        {
+            get { return (bool)GetValue(hasBreakpointProperty); }
+            set { SetValue(hasBreakpointProperty, value); }
+        }
+        public static readonly DependencyProperty hasBreakpointProperty =
+            DependencyProperty.Register("hasBreakpoint",
+                                         typeof(bool),
+                                         typeof(DesignerItem),
+                                         new FrameworkPropertyMetadata(false));
 
         #endregion
 
-        #region hasBreakpoint Property
+        #region originalColor Property
 
         private Brush originalColor;
 
         #endregion
 
+        private List<String> lstNodosHabilitadosBreakPoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
 
         static DesignerItem()
         {
@@ -198,10 +209,13 @@ namespace DiagramDesigner
                 {
                     Grid grid = (Grid)this.Content;
                     Path shape = (Path)grid.Children[0];
+                    //shape.ToolTip
+                    //Si tiene color naranja entonces puedo agregar breakpoint                    
 
-                    //Si tiene color naranja entonces puedo agregar breakpoint
-                    if (shape.Stroke.ToString() == "#FFD69436") { 
-                    
+                    //if (shape.Stroke.ToString() == "#FFD69436") { 
+                    if (lstNodosHabilitadosBreakPoint.Contains(shape.ToolTip.ToString()))
+                    {
+
                         //Cambio color del borde a rojo para indicar breakpoint
                         if (!this.hasBreakpoint)
                         {
@@ -213,8 +227,8 @@ namespace DiagramDesigner
                             shape.Stroke = this.originalColor;
                         }
 
-                        this.hasBreakpoint = !this.hasBreakpoint;
-                        this.Content = grid;
+                        grid.Tag = ToogleBreakPoint();
+                        //this.Content = grid;
                     }
                 }
                 catch (Exception ex) {
@@ -223,6 +237,12 @@ namespace DiagramDesigner
 
             }
 
+        }
+
+        String ToogleBreakPoint()
+        {
+            this.hasBreakpoint = !this.hasBreakpoint;            
+            return this.hasBreakpoint ? "BreakPoint" : String.Empty;
         }
 
         void DesignerItem_Loaded(object sender, RoutedEventArgs e)
