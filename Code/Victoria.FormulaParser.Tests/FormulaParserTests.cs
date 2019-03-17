@@ -602,18 +602,16 @@ namespace Victoria.FormulaParser.Tests
         [TestMethod]
         public void IntLog10()
         {
-            string formulaOriginal = "int(log(10000))";
+            string formulaOriginal = "int(log(1000))";
 
             var formulaParser = new FormulaParser(formulaOriginal);
 
             string expression = formulaParser.ToString();
-            Assert.AreEqual("int(log(10000))", expression);
+            Assert.AreEqual("int(log(1000))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(4, valor);
+            Assert.AreEqual(3, valor);
         }
-
-
 
         [TestMethod]
         public void IntLn()
@@ -839,7 +837,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("log(8)", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(8, 10), valor);
+            Assert.AreEqual(Math.Log10(8), valor);
         }
 
        
@@ -868,7 +866,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(log(100)-log(1000))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(100,10) - Math.Log(1000, 10), valor);
+            Assert.AreEqual(Math.Log10(100) - Math.Log10(1000), valor);
         }
 
         [TestMethod]
@@ -882,7 +880,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(log(100)*log(1000))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(100, 10) * Math.Log(1000,10), valor);
+            Assert.AreEqual(Math.Log10(100) * Math.Log10(1000), valor);
         }
 
         [TestMethod]
@@ -896,7 +894,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("(log(1000)/log(100))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(1000, 10)/Math.Log(100, 10), valor);
+            Assert.AreEqual(Math.Log10(1000)/Math.Log10(100), valor);
         }
 
         [TestMethod]
@@ -910,7 +908,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("log((900+100))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(900+100, 10), valor);
+            Assert.AreEqual(Math.Log10(900+100), valor);
         }
 
         [TestMethod]
@@ -924,7 +922,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("log((1100-100))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Log(1100 - 100, 10), valor);
+            Assert.AreEqual(Math.Log10(1100 - 100), valor);
         }
 
         [TestMethod]
@@ -4742,20 +4740,6 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void LnPrueba()
-        {
-            string formulaOriginal = "ln( 2.71828182846)";
-
-            var formulaParser = new FormulaParser(formulaOriginal);
-
-            string expression = formulaParser.ToString();
-            Assert.AreEqual("ln(2.71828182846)", expression);
-
-            double valor = formulaParser.GetValor();
-            Assert.AreEqual(1, valor);
-        }
-
-        [TestMethod]
         public void LnExp()
         {
             string formulaOriginal = "ln(e())";
@@ -4926,7 +4910,7 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
-        public void ExponencialFraccion() // si el resultado esperado es Math.Pow(Math.E, 0.5) el parser no da error
+        public void ExponencialFraccion()
         {
             string formulaOriginal = "e(1/2)";
 
@@ -4936,11 +4920,11 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("e((1/2))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Pow(Math.E, 1/2), valor);
+            Assert.AreEqual(Math.Pow(Math.E, 1d / 2d), valor);
         }
 
         [TestMethod]
-        public void ExponencialFraccionNegativa() //si el resultado esperado es Math.Pow(Math.E, -0.5) el parser no da error
+        public void ExponencialFraccionNegativa()
         {
             string formulaOriginal = "e(-1/2)";
 
@@ -4950,7 +4934,7 @@ namespace Victoria.FormulaParser.Tests
             Assert.AreEqual("e(((-1)/2))", expression);
 
             double valor = formulaParser.GetValor();
-            Assert.AreEqual(Math.Pow(Math.E, -1/2), valor);
+            Assert.AreEqual(Math.Pow(Math.E, -1d / 2d), valor);
         }
 
         [TestMethod]

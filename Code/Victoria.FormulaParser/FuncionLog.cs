@@ -16,6 +16,7 @@ namespace Victoria.FormulaParser
 
         protected override double OperarInterno(List<double> argumentos)
         {
+            double resultado = 0;
             double argumento;
             double logBase;
 
@@ -33,7 +34,16 @@ namespace Victoria.FormulaParser
 
             argumento = argumentos[0];
 
-            return Math.Log(argumento, logBase);
+            if (logBase == 10)
+            {
+                resultado = Math.Log10(argumento);
+            }
+            else
+            {
+                resultado = Math.Log(argumento, logBase);
+            }
+
+            return resultado;
         }
     }
 }
