@@ -79,7 +79,7 @@ namespace Victoria.DesktopApp.Helpers
                         tieneTituloVariables = true;
                     }
                     //Setea el valor que tomaron las variables y lo coloca en filas diferentes en funcion del escenario.
-                    ws.Cell(index_row_header + cant_escenarios, index_col).Value = tbl.Rows[i][1].ToString();
+                    ws.Cell(index_row_header + cant_escenarios, index_col).Value = decimal.Parse(tbl.Rows[i][1].ToString());
                 }
                 tieneTituloVariables = false;
             }
