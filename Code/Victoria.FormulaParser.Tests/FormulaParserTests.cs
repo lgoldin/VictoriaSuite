@@ -4548,6 +4548,51 @@ namespace Victoria.FormulaParser.Tests
         }
 
         [TestMethod]
+        public void Precedencia15()
+        {
+            string formulaOriginal = "sumatoria(ln(e())+int(pi())+int(random()))^(1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(sumatoria(((ln(e())+int(pi()))+int(random())))^(1/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.Pow(4, 1d/2d), valor);
+        }
+
+        [TestMethod]
+        public void Precedencia16()
+        {
+            string formulaOriginal = "(sumatoria(log(10)+ int(e()) + int(random(10,20)))^(1/2)";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(sumatoria(((log(10)+int(e()))+int(random(10,20))))^(1/2))", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.IsTrue(valor >= Math.Pow(13, 1d / 2d));
+            Assert.IsTrue(valor < Math.Pow(23, 1d / 2d));
+        }
+
+        [TestMethod]
+        public void Precedencia17()
+        {
+            string formulaOriginal = "factorial(5)/factorial(3)||not(int(random()))";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("((factorial(5)/factorial(3))||not(int(random())))", expression);
+
+            double valor = formulaParser.GetValor();
+            bool boolean = formulaParser.GetValorAsBool();
+            Assert.AreEqual(1, valor);
+            Assert.IsTrue(boolean);
+        }
+
+        [TestMethod]
         public void Not1()
         {
             string formulaOriginal = "not(1)";
@@ -5103,6 +5148,34 @@ namespace Victoria.FormulaParser.Tests
 
             double valor = formulaParser.GetValor();
             Assert.AreEqual(1, valor);
+        }
+
+        [TestMethod]
+        public void ProductoPiE()
+        {
+            string formulaOriginal = "pi()*e()";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(pi()*e())", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.PI*Math.E, valor);
+        }
+
+        [TestMethod]
+        public void DivisionPiE()
+        {
+            string formulaOriginal = "pi()/e()";
+
+            var formulaParser = new FormulaParser(formulaOriginal);
+
+            string expression = formulaParser.ToString();
+            Assert.AreEqual("(pi()/e())", expression);
+
+            double valor = formulaParser.GetValor();
+            Assert.AreEqual(Math.PI / Math.E, valor);
         }
 
 
