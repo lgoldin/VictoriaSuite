@@ -15,7 +15,7 @@ using Victoria.ViewModelWPF;
 
 namespace Victoria.DesktopApp.Helpers
 {
-    class PDFResults : Results, IResults
+    public class PDFResults : Results, IResults
     {
 
         public PDFResults(String _simulationPath,String _fileName, IList<StageViewModelBase> _stages, TimeSpan _simulationTotalTime) 

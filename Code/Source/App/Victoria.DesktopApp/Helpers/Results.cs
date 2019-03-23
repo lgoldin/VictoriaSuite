@@ -10,7 +10,7 @@ using Victoria.ViewModelWPF;
 
 namespace Victoria.DesktopApp.Helpers
 {
-    class Results
+    public class Results
     {
 
         public String simulationPath { get;  }
