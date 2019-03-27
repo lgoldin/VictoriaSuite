@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <?define Victoria.DesktopApp_TargetDir=$(var.Victoria.DesktopApp.TargetDir)?>
+  <?define Victoria.DesktopApp_TargetDir=$(var.Victoria.DesktopApp.TargetDir)?><?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
   <Product Id="*" Name="Victoria IV" Language="1033" Version="4.0.0.9" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
@@ -194,6 +194,174 @@
       </Component>
       <Component Id="Victoria.FormulaParser.dll" Guid="615bbbdf-ec3c-4372-8c2f-8420d751b96a">
         <File Id="Victoria.FormulaParser.dll" Name="Victoria.FormulaParser.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.FormulaParser.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.dll" Guid="2709e736-f7a4-4115-bb02-344f22ec066b">
+        <File Id="Microsoft.EntityFrameworkCore.dll" Name="Microsoft.EntityFrameworkCore.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.dll" />
+      </Component>
+      <Component Id="ClosedXML.dll" Guid="abfbddb3-efb0-47a4-8065-ea6271da8655">
+        <File Id="ClosedXML.dll" Name="ClosedXML.dll" Source="$(var.Kairos_TargetDir)ClosedXML.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.Relational.dll" Guid="dd935412-6118-4ba5-8b96-6c861e72f7aa">
+        <File Id="Microsoft.EntityFrameworkCore.Relational.dll" Name="Microsoft.EntityFrameworkCore.Relational.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.Relational.dll" />
+      </Component>
+      <Component Id="Accord.Statistics.dll" Guid="9458a8a1-8610-48ca-8d8b-6945d0e43a74">
+        <File Id="Accord.Statistics.dll" Name="Accord.Statistics.dll" Source="$(var.Kairos_TargetDir)Accord.Statistics.dll" />
+      </Component>
+      <Component Id="MathNet.Symbolics.dll" Guid="d22b211e-a4e0-4b86-a06e-2707d4b47863">
+        <File Id="MathNet.Symbolics.dll" Name="MathNet.Symbolics.dll" Source="$(var.Kairos_TargetDir)MathNet.Symbolics.dll" />
+      </Component>
+      <Component Id="Accord.Math.dll" Guid="19727667-83a4-40bd-928a-68c2abd27739">
+        <File Id="Accord.Math.dll" Name="Accord.Math.dll" Source="$(var.Kairos_TargetDir)Accord.Math.dll" />
+      </Component>
+      <Component Id="System.Data.Common.dll" Guid="cd8dedf9-f7bd-4f5c-bf03-3bfcff607a03">
+        <File Id="System.Data.Common.dll" Name="System.Data.Common.dll" Source="$(var.Kairos_TargetDir)System.Data.Common.dll" />
+      </Component>
+      <Component Id="EntityFrameworkCore.SqlServerCompact40.dll" Guid="7ec7f885-f98e-43a6-b728-07546fc6966b">
+        <File Id="EntityFrameworkCore.SqlServerCompact40.dll" Name="EntityFrameworkCore.SqlServerCompact40.dll" Source="$(var.Kairos_TargetDir)EntityFrameworkCore.SqlServerCompact40.dll" />
+      </Component>
+      <Component Id="netstandard.dll" Guid="6244073e-8226-4d45-bb13-631928c77be5">
+        <File Id="netstandard.dll" Name="netstandard.dll" Source="$(var.Kairos_TargetDir)netstandard.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.Tracing.dll" Guid="64e605d4-5de1-4532-b57b-f36cc639c5e0">
+        <File Id="System.Diagnostics.Tracing.dll" Name="System.Diagnostics.Tracing.dll" Source="$(var.Kairos_TargetDir)System.Diagnostics.Tracing.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.StackTrace.dll" Guid="ca767229-1955-4236-82eb-ccce8d5584d9">
+        <File Id="System.Diagnostics.StackTrace.dll" Name="System.Diagnostics.StackTrace.dll" Source="$(var.Kairos_TargetDir)System.Diagnostics.StackTrace.dll" />
+      </Component>
+      <Component Id="System.Globalization.Extensions.dll" Guid="11ef5833-afc8-419e-a8d7-78f1bd81d1ef">
+        <File Id="System.Globalization.Extensions.dll" Name="System.Globalization.Extensions.dll" Source="$(var.Kairos_TargetDir)System.Globalization.Extensions.dll" />
+      </Component>
+      <Component Id="System.IO.Compression.dll" Guid="61b5f21c-73c5-4129-84e9-66439ae014f9">
+        <File Id="System.IO.Compression.dll" Name="System.IO.Compression.dll" Source="$(var.Kairos_TargetDir)System.IO.Compression.dll" />
+      </Component>
+      <Component Id="System.Net.Http.dll" Guid="59afc178-1fca-49a1-ba6a-5a29a8e81841">
+        <File Id="System.Net.Http.dll" Name="System.Net.Http.dll" Source="$(var.Kairos_TargetDir)System.Net.Http.dll" />
+      </Component>
+      <Component Id="System.Net.Sockets.dll" Guid="5428b1b2-86b8-4815-826d-bd17408019bb">
+        <File Id="System.Net.Sockets.dll" Name="System.Net.Sockets.dll" Source="$(var.Kairos_TargetDir)System.Net.Sockets.dll" />
+      </Component>
+      <Component Id="System.Runtime.InteropServices.RuntimeInformation.dll" Guid="9bc430bc-7820-4bdc-9040-737f099bf4e1">
+        <File Id="System.Runtime.InteropServices.RuntimeInformation.dll" Name="System.Runtime.InteropServices.RuntimeInformation.dll" Source="$(var.Kairos_TargetDir)System.Runtime.InteropServices.RuntimeInformation.dll" />
+      </Component>
+      <Component Id="System.ValueTuple.dll" Guid="556a7fbb-d63a-4cfa-848d-087feb30b1a8">
+        <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.Kairos_TargetDir)System.ValueTuple.dll" />
+      </Component>
+      <Component Id="System.Threading.Overlapped.dll" Guid="54cb6ec7-0f34-452f-8def-96edde27543d">
+        <File Id="System.Threading.Overlapped.dll" Name="System.Threading.Overlapped.dll" Source="$(var.Kairos_TargetDir)System.Threading.Overlapped.dll" />
+      </Component>
+      <Component Id="System.Security.SecureString.dll" Guid="f305a9ac-60e5-4c80-b0e5-8cd626db004e">
+        <File Id="System.Security.SecureString.dll" Name="System.Security.SecureString.dll" Source="$(var.Kairos_TargetDir)System.Security.SecureString.dll" />
+      </Component>
+      <Component Id="System.Security.Cryptography.Algorithms.dll" Guid="54e21ca0-b046-4a97-bc70-75412e7cd680">
+        <File Id="System.Security.Cryptography.Algorithms.dll" Name="System.Security.Cryptography.Algorithms.dll" Source="$(var.Kairos_TargetDir)System.Security.Cryptography.Algorithms.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Primitives.dll" Guid="cdc2b8a3-90c1-4c8b-b06a-84915b4bc169">
+        <File Id="System.Runtime.Serialization.Primitives.dll" Name="System.Runtime.Serialization.Primitives.dll" Source="$(var.Kairos_TargetDir)System.Runtime.Serialization.Primitives.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Xml.dll" Guid="9540baab-0e48-467d-8821-9033e84494ac">
+        <File Id="System.Runtime.Serialization.Xml.dll" Name="System.Runtime.Serialization.Xml.dll" Source="$(var.Kairos_TargetDir)System.Runtime.Serialization.Xml.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Caching.Abstractions.dll" Guid="588451c9-3bbe-4727-a8c8-ae20e89433a6">
+        <File Id="Microsoft.Extensions.Caching.Abstractions.dll" Name="Microsoft.Extensions.Caching.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Caching.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Logging.Abstractions.dll" Guid="7c55b3b4-5fe0-4282-bc3e-4a28d5a6d926">
+        <File Id="Microsoft.Extensions.Logging.Abstractions.dll" Name="Microsoft.Extensions.Logging.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />
+      </Component>
+      <Component Id="System.Xml.XPath.XDocument.dll" Guid="2b6c75bf-9d69-4f04-b659-f6f8931543aa">
+        <File Id="System.Xml.XPath.XDocument.dll" Name="System.Xml.XPath.XDocument.dll" Source="$(var.Kairos_TargetDir)System.Xml.XPath.XDocument.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Guid="aa54787d-61c0-45ab-994c-cd16a929eed0">
+        <File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Primitives.dll" Guid="84aa4d3f-b3a7-41b2-8088-39b70a6db8ff">
+        <File Id="Microsoft.Extensions.Primitives.dll" Name="Microsoft.Extensions.Primitives.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Primitives.dll" />
+      </Component>
+      <Component Id="System.Memory.dll" Guid="d21f1b41-6bf6-4a7c-836a-7f96ba0dca05">
+        <File Id="System.Memory.dll" Name="System.Memory.dll" Source="$(var.Kairos_TargetDir)System.Memory.dll" />
+      </Component>
+      <Component Id="System.Runtime.dll" Guid="bfad9aae-9e8b-468d-9890-fb96f452c99d">
+        <File Id="System.Runtime.dll" Name="System.Runtime.dll" Source="$(var.Kairos_TargetDir)System.Runtime.dll" />
+      </Component>
+      <Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="5c054821-b46a-48ed-94fe-26d1d691f51b">
+        <File Id="System.Runtime.CompilerServices.Unsafe.dll" Name="System.Runtime.CompilerServices.Unsafe.dll" Source="$(var.Kairos_TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
+      </Component>
+      <Component Id="System.Numerics.Vectors.dll" Guid="0238ec3f-8e9d-41e6-b9f9-4bf652a47330">
+        <File Id="System.Numerics.Vectors.dll" Name="System.Numerics.Vectors.dll" Source="$(var.Kairos_TargetDir)System.Numerics.Vectors.dll" />
+      </Component>
+      <Component Id="System.Interactive.Async.dll" Guid="4c2e6685-8f4c-422a-bc65-8799c3338ce0">
+        <File Id="System.Interactive.Async.dll" Name="System.Interactive.Async.dll" Source="$(var.Kairos_TargetDir)System.Interactive.Async.dll" />
+      </Component>
+      <Component Id="System.Buffers.dll" Guid="bdc81e40-38f0-4041-ad6f-08ed29c1f7c9">
+        <File Id="System.Buffers.dll" Name="System.Buffers.dll" Source="$(var.Kairos_TargetDir)System.Buffers.dll" />
+      </Component>
+      <Component Id="System.ComponentModel.Annotations.dll" Guid="c518c3fb-8a53-416d-a4d1-320d3f76fb92">
+        <File Id="System.ComponentModel.Annotations.dll" Name="System.ComponentModel.Annotations.dll" Source="$(var.Kairos_TargetDir)System.ComponentModel.Annotations.dll" />
+      </Component>
+      <Component Id="Remotion.Linq.dll" Guid="7391120a-d5ea-4ccb-8277-1bbcef6f4e40">
+        <File Id="Remotion.Linq.dll" Name="Remotion.Linq.dll" Source="$(var.Kairos_TargetDir)Remotion.Linq.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Caching.Memory.dll" Guid="946a0858-826e-43a9-b7f9-9637e793b1e1">
+        <File Id="Microsoft.Extensions.Caching.Memory.dll" Name="Microsoft.Extensions.Caching.Memory.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Caching.Memory.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.DependencyInjection.dll" Guid="66290d3f-8fba-4488-94f0-89da3ea2e6fd">
+        <File Id="Microsoft.Extensions.DependencyInjection.dll" Name="Microsoft.Extensions.DependencyInjection.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.DiagnosticSource.dll" Guid="30e5b449-3071-4b77-b35f-8969f1c5610e">
+        <File Id="System.Diagnostics.DiagnosticSource.dll" Name="System.Diagnostics.DiagnosticSource.dll" Source="$(var.Kairos_TargetDir)System.Diagnostics.DiagnosticSource.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.Abstractions.dll" Guid="00ba5030-5dae-43b3-b644-ce40394ceba1">
+        <File Id="Microsoft.EntityFrameworkCore.Abstractions.dll" Name="Microsoft.EntityFrameworkCore.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.Abstractions.dll" />
+      </Component>
+      <Component Id="ExcelNumberFormat.dll" Guid="5ba8d7ac-8348-4de1-99d3-675e9469d225">
+        <File Id="ExcelNumberFormat.dll" Name="ExcelNumberFormat.dll" Source="$(var.Kairos_TargetDir)ExcelNumberFormat.dll" />
+      </Component>
+      <Component Id="DocumentFormat.OpenXml.dll" Guid="f1f687a2-6dff-4c13-9a1a-208849517ec1">
+        <File Id="DocumentFormat.OpenXml.dll" Name="DocumentFormat.OpenXml.dll" Source="$(var.Kairos_TargetDir)DocumentFormat.OpenXml.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Logging.dll" Guid="9629880f-dfde-4064-84dc-b22a12f1b16a">
+        <File Id="Microsoft.Extensions.Logging.dll" Name="Microsoft.Extensions.Logging.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Logging.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Options.dll" Guid="4be5cd95-4e4c-4afd-8060-e026e5e1b2d6">
+        <File Id="Microsoft.Extensions.Options.dll" Name="Microsoft.Extensions.Options.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Options.dll" />
+      </Component>
+      <Component Id="Accord.dll" Guid="0866fea1-89e7-41a6-8c5c-50dc5e1b4ed3">
+        <File Id="Accord.dll" Name="Accord.dll" Source="$(var.Kairos_TargetDir)Accord.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Configuration.Abstractions.dll" Guid="5a218ae7-bff7-4d5e-97fa-92fc4be788bf">
+        <File Id="Microsoft.Extensions.Configuration.Abstractions.dll" Name="Microsoft.Extensions.Configuration.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
+      </Component>
+      <Component Id="FastMember.Signed.dll" Guid="c18796be-d288-4dbb-b922-dcc10d46ed13">
+        <File Id="FastMember.Signed.dll" Name="FastMember.Signed.dll" Source="$(var.Kairos_TargetDir)FastMember.Signed.dll" />
+      </Component>
+      <Component Id="MathNet.Numerics.FSharp.dll" Guid="593d4f9c-8915-48a1-aa34-9af9c4ce11ab">
+        <File Id="MathNet.Numerics.FSharp.dll" Name="MathNet.Numerics.FSharp.dll" Source="$(var.Kairos_TargetDir)MathNet.Numerics.FSharp.dll" />
+      </Component>
+      <Component Id="FParsec.dll" Guid="b84e486e-56c0-4ea1-b249-552939bd3171">
+        <File Id="FParsec.dll" Name="FParsec.dll" Source="$(var.Kairos_TargetDir)FParsec.dll" />
+      </Component>
+      <Component Id="MathNet.Numerics.dll" Guid="8e00c416-c8e0-4071-b406-b485c0f2ed07">
+        <File Id="MathNet.Numerics.dll" Name="MathNet.Numerics.dll" Source="$(var.Kairos_TargetDir)MathNet.Numerics.dll" />
+      </Component>
+      <Component Id="Accord.Math.Core.dll" Guid="a993da30-b9f4-48f9-85fe-efd6f0d581e0">
+        <File Id="Accord.Math.Core.dll" Name="Accord.Math.Core.dll" Source="$(var.Kairos_TargetDir)Accord.Math.Core.dll" />
+      </Component>
+      <Component Id="FSharp.Core.dll" Guid="2cfdb775-bd8d-4cc3-9122-8f1bd6804fcc">
+        <File Id="FSharp.Core.dll" Name="FSharp.Core.dll" Source="$(var.Kairos_TargetDir)FSharp.Core.dll" />
+      </Component>
+      <Component Id="System.Data.SqlServerCe.dll" Guid="22ebf011-76ed-4e7d-892c-b8e89acfbb80">
+        <File Id="System.Data.SqlServerCe.dll" Name="System.Data.SqlServerCe.dll" Source="$(var.Kairos_TargetDir)System.Data.SqlServerCe.dll" />
+      </Component>
+      <Component Id="FParsecCS.dll" Guid="49316506-3fa9-4e65-94ec-68fdb00e08d7">
+        <File Id="FParsecCS.dll" Name="FParsecCS.dll" Source="$(var.Kairos_TargetDir)FParsecCS.dll" />
+      </Component>
+      <Component Id="Accord.dll.config" Guid="24f03b00-5360-4f21-9bbe-08d87d18a4e2">
+        <File Id="Accord.dll.config" Name="Accord.dll.config" Source="$(var.Kairos_TargetDir)Accord.dll.config" />
+      </Component>
+      <Component Id="Kairos.exe" Guid="83f8cfcd-57f4-4dff-950a-af96093366fe">
+        <File Id="Kairos.exe" Name="Kairos.exe" Source="$(var.Kairos_TargetDir)Kairos.exe" />
+      </Component>
+      <Component Id="Kairos.exe.config" Guid="e13ffc66-aa23-4184-9ccd-563a0770ecba">
+        <File Id="Kairos.exe.config" Name="Kairos.exe.config" Source="$(var.Kairos_TargetDir)Kairos.exe.config" />
       </Component>
     </ComponentGroup>
   </Fragment>

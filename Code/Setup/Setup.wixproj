@@ -34,6 +34,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Proyecto Final\Kairos-desktop\Kairos-desktop\Kairos\Kairos\Kairos.csproj">
+      <Name>Kairos</Name>
+      <Project>{64fda1d1-b3c5-4263-a37a-d7964732943e}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Source\App\Victoria.DesktopApp\Victoria.DesktopApp.csproj">
       <Name>Victoria.DesktopApp</Name>
       <Project>{27ced651-ad69-4090-8e8a-dfde0cb64920}</Project>

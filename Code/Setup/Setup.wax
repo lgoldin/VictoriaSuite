@@ -2,11 +2,13 @@
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <DeployedProjects>
     <string>Source\App\Victoria.DesktopApp\Victoria.DesktopApp.csproj</string>
+    <string>..\..\..\Proyecto Final\Kairos-desktop\Kairos-desktop\Kairos\Kairos\Kairos.csproj</string>
   </DeployedProjects>
   <DirectoryMappings>
     <Item Key="" Value="INSTALLFOLDER" />
   </DirectoryMappings>
   <FileMappings />
   <DeploySymbols>false</DeploySymbols>
+  <DeployLocalizations>true</DeployLocalizations>
   <DeployExternalLocalizations>false</DeployExternalLocalizations>
 </Configuration>
