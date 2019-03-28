@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Victoria.DesktopApp.Helpers
              corridas del análisis de sensibilidad. 
              La primera fila (fila de títulos) debe contener el nombre de cada variable.
             */
-            
+
             List<DataTable> resultsTable = createResultsTables(stages);
             XLWorkbook oWB = new XLWorkbook();
             var ws = oWB.Worksheets.Add("Resultados");
@@ -79,7 +80,7 @@ namespace Victoria.DesktopApp.Helpers
                         tieneTituloVariables = true;
                     }
                     //Setea el valor que tomaron las variables y lo coloca en filas diferentes en funcion del escenario.
-                    ws.Cell(index_row_header + cant_escenarios, index_col).Value = decimal.Parse(tbl.Rows[i][1].ToString());
+                    ws.Cell(index_row_header + cant_escenarios, index_col).Value = decimal.Parse(tbl.Rows[i][1].ToString(), NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.CurrentCulture);
                 }
                 tieneTituloVariables = false;
             }
