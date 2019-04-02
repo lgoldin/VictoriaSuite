@@ -40,7 +40,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Victoria.FormulaParser.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kairos", "Kairos", "{FC2FD7DB-3446-49C0-8F0D-D3E69BA358E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kairos", "..\..\..\Proyecto Final\Kairos-desktop\Kairos-desktop\Kairos\Kairos\Kairos.csproj", "{64FDA1D1-B3C5-4263-A37A-D7964732943E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kairos", "..\Kairos\Kairos\Kairos.csproj", "{64FDA1D1-B3C5-4263-A37A-D7964732943E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

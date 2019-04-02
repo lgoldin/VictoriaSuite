@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>a52b6316-59eb-445d-a946-cbba0aa0aee4</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Victoria-Setup</OutputName>
+    <OutputName>VictoriaSuite-Setup</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\dialog.bmp" />
+    <Content Include="Images\logo_utnba.png" />
     <Content Include="Images\top-banner.bmp" />
     <Content Include="License.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -34,7 +35,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Proyecto Final\Kairos-desktop\Kairos-desktop\Kairos\Kairos\Kairos.csproj">
+    <ProjectReference Include="..\..\Kairos\Kairos\Kairos.csproj">
       <Name>Kairos</Name>
       <Project>{64fda1d1-b3c5-4263-a37a-d7964732943e}</Project>
       <Private>True</Private>
