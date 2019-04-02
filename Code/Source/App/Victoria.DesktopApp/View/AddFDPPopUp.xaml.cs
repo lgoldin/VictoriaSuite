@@ -188,7 +188,7 @@ namespace Victoria.DesktopApp.View
 
                 
                     dgvDatosFdp.Columns[0].Width = 235;
-                    //dgvDatosFdp.Columns[1].DefaultCellStyle.Format = "dd'/'MM'/'yyyy HH:mm:ss";
+                    dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
                     dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
                     dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
                     dgvDatosFdp.Columns[1].Visibility = Visibility.Visible;
@@ -203,7 +203,9 @@ namespace Victoria.DesktopApp.View
                     dgvDatosFdp.Visibility = Visibility.Hidden;
                     createAlertPopUp("El excel importado no tiene el formato correcto y no pudo cargarse, por favor seleccione otro archivo y vuelva a intentarlo");
                     rutaFile.Text = "";
-                    
+                    Posicion_datos.Visibility = Visibility.Hidden;
+
+
                 }
 
             }
