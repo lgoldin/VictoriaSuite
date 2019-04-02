@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       
         xmlns:local="clr-namespace:Victoria.DesktopApp.View"
         mc:Ignorable="d"
         Title="Generar FDP" 
@@ -17,7 +18,7 @@
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border MouseLeftButtonDown="WindowMouseLeftButtonDown" CornerRadius="30" Background="{StaticResource SecondaryColor}"  Padding="0,0,0,0" HorizontalAlignment="Left" Margin="260,118,0,0" Width="1013" Grid.Column="1" Height="666" VerticalAlignment="Top">
+        <Border MouseLeftButtonDown="WindowMouseLeftButtonDown" CornerRadius="30" Background="{StaticResource SecondaryColor}"  Padding="0,0,0,0" HorizontalAlignment="Left" Margin="242,149,0,0" Width="1013" Grid.Column="1" Height="666" VerticalAlignment="Top">
             <StackPanel Margin="0,0,0,-17">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -43,7 +44,7 @@
                     <Label  Content="Generar FDP"  Foreground="White" FontSize="18" HorizontalAlignment="Center"  Width="137" Margin="197,0,155,0.581"/>
                 </Grid>
 
-                <Border  Background="White" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="550" MinHeight="350" Height="582" Width="1012" Margin="0,0,0.333,0" RenderTransformOrigin="0.365,0.513">
+                <Border  Background="White" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="550" MinHeight="350" Height="582" Width="1012" Margin="0,0,0.333,0" RenderTransformOrigin="0.376,0.652">
 
                     <Grid Margin="0,0,2,-80">
                         <Grid.ColumnDefinitions>
@@ -52,7 +53,7 @@
                             <ColumnDefinition Width="751*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label x:Name="label" Content="Origen de datos"  Margin="37,27,486.286,599.714" Grid.ColumnSpan="3"/>
+                        <Label x:Name="label" Content="Origen de datos"  Margin="37,27,121.857,599.714" Grid.ColumnSpan="2"/>
 
 
                         <ComboBox x:Name="comboBox"  RenderTransformOrigin="0.497,0.484" Margin="85,27,286.286,608.714" SelectionChanged="comboBox_SelectionChanged" Grid.Column="1" Grid.ColumnSpan="2">
@@ -60,8 +61,8 @@
                         </ComboBox>
 
                         <Grid x:Name="Archivo" Grid.ColumnSpan="3" Visibility="Hidden" Margin="0,0,0.286,-0.286">
-                            <Label x:Name="label_Copy" Content="Archivo" Margin="37,67,412,561"/>
-                            <TextBox x:Name="rutaFile" Text="Ingrese la ruta del archivo" Margin="160,67,288,567" />
+                            <Label x:Name="label_Copy" Content="Archivo" Margin="37,67,879,561"/>
+                            <TextBox x:Name="rutaFile"  Margin="160,67,288,567" TextChanged="RutaFile_TextChanged" />
 
                             <Button x:Name="btnserch" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="180,67,135,567" Width="135"  Click="Btnserch_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="2">
                                 <Grid Height="30" Width="130">
@@ -70,9 +71,26 @@
                                 </Grid>
                             </Button>
 
-
                         </Grid>
 
+                        <Grid x:Name="Posicion_datos" Grid.ColumnSpan="3" Visibility="Hidden" Margin="0,0,0.286,-0.286">
+                            <Label x:Name="label_posicion_datos" Content="Indique la ubicación de los datos:" Margin="37,109,784.428,517.572"/>
+                            <Label x:Name="label_hoja" Content="Hoja" Margin="260,106,711.428,520.572" RenderTransformOrigin="0.46,-0.776"/>
+                            <Label x:Name="label_columna" Content="Columna" Margin="413,106,535.428,520.572"/>
+                            <Label x:Name="label_fila" Content="Fila Inicial" Margin="584,106,310.428,520.572"/>
+
+                            <TextBox x:Name="txtHoja" PreviewTextInput="NumberValidationTextBox" x:FieldModifier="private" Margin="330,110,629.428,528.572" Width="50" Text="1"/>
+                            <TextBox x:Name="txtCol" PreviewTextInput="NumberValidationTextBox"  x:FieldModifier="private" Margin="495,110,464.428,527.572" Width="50" Text="1"/>
+                            <TextBox x:Name="txtFila" PreviewTextInput="NumberValidationTextBox"   x:FieldModifier="private" Margin="673,110,286.428,526.572" Width="50" Text="1"/>
+                            <DataGrid DockPanel.Dock="Top" AutoGenerateColumns="True" Name="dgvDatosFdp" ColumnWidth="*" Visibility="Hidden" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding Source=dataGridRows}" Margin="37,162,669,132" SelectionChanged="DgvDatosFdp_SelectionChanged">
+                            </DataGrid>
+                            <Button x:Name="btnimport" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="180,97,135,520" Width="135"  Click="Btnimport_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="2">
+                                <Grid Height="30" Width="130">
+                                    <Label Content="Importar Datos" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,1,2,1" />
+                                    <Image Source="/Victoria.UI.SharedWPF;Component/resources/savev2.png" HorizontalAlignment="Right" Width="33" Margin="5,6,13,5" RenderTransformOrigin="1.184,0.618" />
+                                </Grid>
+                            </Button>
+                        </Grid>
 
                         <Button x:Name="btnchart" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,537,43.286,94.714" Width="135"  Click="btnCalcularFDP_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="2">
                             <Grid Height="30" Width="130">
