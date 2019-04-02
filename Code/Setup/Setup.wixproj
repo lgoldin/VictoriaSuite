@@ -35,6 +35,7 @@
     <Content Include="Victoria3.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="victoria_suite.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kairos\Kairos\Kairos.csproj">

@@ -7,7 +7,7 @@
   <Product Id="*" Name="$(var.Title)" Language="1033" Version="4.0.0.9" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Victoria3.ico" />
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)victoria_suite.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
     <WixVariable Id="WixUIBannerBmp" Value="Images\top-banner.png" />
