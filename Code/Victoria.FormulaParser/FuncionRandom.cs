@@ -14,16 +14,30 @@ namespace Victoria.FormulaParser
             return simboloOperador;
         }
 
-        public override double Operar(List<double> argumentos)
+        protected override double OperarInterno(List<double> argumentos)
         {
-            if (argumentos.Count != 0)
-            {
-                throw new InvalidOperationException("La funcion random() recibió '" + argumentos.Count.ToString() + "' argumentos. [random()]");
-            }
+            double retorno;
 
             Random rnd = new Random();
+            double minimo;
+            double maximo;
+            switch (argumentos.Count)
+            {
+                case 0:
+                    minimo = 0;
+                    maximo = 1;
+                    break;
+                case 2:
+                    minimo = argumentos[0];
+                    maximo = argumentos[1];
+                    break;
+                default:
+                    throw new InvalidOperationException("La funcion random() recibió '" + argumentos.Count.ToString() + "' argumentos. [random() / random(mínimo, máximo)]");
+            }
 
-            return rnd.NextDouble();
+            retorno = rnd.NextDouble() * (maximo - minimo) + minimo;
+
+            return retorno;
         }
     }
 }

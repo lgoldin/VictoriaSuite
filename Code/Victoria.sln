@@ -1,7 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+
+VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CF3A5A11-3C7F-4DAF-8983-43B43D7F7A2F}"
 EndProject
@@ -250,8 +251,6 @@ Global
 		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.CD_ROM|x86.Build.0 = Release|x86
 		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.Debug|x64.ActiveCfg = Debug|x86
 		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.Debug|x86.ActiveCfg = Debug|x86
 		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.Debug|x86.Build.0 = Debug|x86
 		{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}.DVD-5|Any CPU.ActiveCfg = Debug|x86
@@ -436,5 +435,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BF62454-B9A5-4F62-9FCD-718D056598EC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {55A9A240-6FA5-4C88-B03F-93D4B5ED0689}
 	EndGlobalSection
 EndGlobal

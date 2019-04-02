@@ -17,3 +17,6 @@ Code/UpgradeLog*
 /Code/Setup/XSLT
 /Plan de Pruebas
 /Kairos/.vs/Kairos/v15/Server/sqlite3
+.vs
+/Code/packages
+

@@ -12,4 +12,7 @@ Pasos para correr Victoria Suite:
 
 	3.3) Instalar WAX (Wix editor) : https://marketplace.visualstudio.com/items?itemName=TomEnglert.Wax
 	
-4) Compliar y correr proyecto
+4) Boton derecho en el proyecto "Victoria.DesktopApp" -> Add.. -> Reference -> COM -> Microsfot Excel Library -> Aceptar
+
+5) Compliar y Correr proyecto
+

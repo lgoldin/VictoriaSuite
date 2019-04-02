@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define Victoria.DesktopApp_TargetDir=$(var.Victoria.DesktopApp.TargetDir)?>
+
   <?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
   <?define Version="Victoria V"?>
   <?define Title="Victoria Suite"?>
@@ -170,9 +171,6 @@
       </Component>
       <Component Id="System.Windows.Interactivity.dll" Guid="aaecc473-3f6e-4f7f-87c2-ea32ec79e409">
         <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.Interactivity.dll" />
-      </Component>
-      <Component Id="jint.dll" Guid="c426c4c2-3e35-4c3f-abbe-53c7558c5d9e">
-        <File Id="jint.dll" Name="jint.dll" Source="$(var.Victoria.DesktopApp_TargetDir)jint.dll" />
       </Component>
       <Component Id="EPPlus.dll" Guid="c015ac62-f53c-4013-9026-05c4bd2e935a">
         <File Id="EPPlus.dll" Name="EPPlus.dll" Source="$(var.Victoria.DesktopApp_TargetDir)EPPlus.dll" />
