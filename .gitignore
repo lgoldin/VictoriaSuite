@@ -9,8 +9,8 @@ Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.UI.SharedWPF.pdb
 Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.ViewModelWPF.pdb
 Code/Source/App/Victoria.DesktopApp/bin/Debug/Victoria.vshost.exe
 *.exe
-.vs
-Code/packages
+.vs/*
+/Code/packages
 Code/TestResults
 Code/Victoria.UI.SharedWPF/Victoria.UI.SharedWPF.csproj.user
 Code/Victoria.Shared/Victoria.Shared.csproj.user
