@@ -10,7 +10,7 @@
     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Victoria3.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
-    <WixVariable Id="WixUIBannerBmp" Value="Images\top-banner.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="Images\top-banner.png" />
     <WixVariable Id="WixUIDialogBmp" Value="Images\dialog_utnba_logo.png" />
     
     <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)License.rtf" />

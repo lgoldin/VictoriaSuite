@@ -23,9 +23,11 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\crown.png" />
     <Content Include="Images\dialog.bmp" />
     <Content Include="Images\logo_utnba.png" />
     <Content Include="Images\top-banner.bmp" />
+    <Content Include="Images\victory-icon-simple-style-vector-20434339.jpg" />
     <Content Include="License.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
