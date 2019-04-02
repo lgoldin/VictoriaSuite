@@ -175,14 +175,18 @@ namespace Victoria.DesktopApp.View
                     var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
                     int numeroFila = Convert.ToInt32(txtFila.Text);
                     int columna = Convert.ToInt32(txtCol.Text);
-                    //Origen nuevoOrigen = new Origen();
+                //Origen nuevoOrigen = new Origen();
+
+                try
+                {
                     while (!hoja.Cell(numeroFila, columna).IsEmpty())
                     {
-                        DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
-                    eventos.Add(new Evento() { fecha = auxFecha });//, origen = nuevoOrigen, activo = true });
-                        numeroFila++;
+                            DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
+                            eventos.Add(new Evento() { fecha = auxFecha });//, origen = nuevoOrigen, activo = true });
+                            numeroFila++;
                     }
-                    
+
+                
                     dgvDatosFdp.Columns[0].Width = 235;
                     //dgvDatosFdp.Columns[1].DefaultCellStyle.Format = "dd'/'MM'/'yyyy HH:mm:ss";
                     dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
@@ -191,10 +195,20 @@ namespace Victoria.DesktopApp.View
                     dgvDatosFdp.Columns[1].Header = "Eventos";
                     dgvDatosFdp.Columns[3].Visibility = Visibility.Hidden;
                     dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
-                   
+                    dgvDatosFdp.Visibility = Visibility.Visible;
+                }
+
+                catch
+                {
+                    dgvDatosFdp.Visibility = Visibility.Hidden;
+                    createAlertPopUp("El excel importado no tiene el formato correcto y no pudo cargarse, por favor seleccione otro archivo y vuelva a intentarlo");
+                    rutaFile.Text = "";
+                    
+                }
+
             }
                
-                dgvDatosFdp.Visibility = Visibility.Visible;
+                
                 
             //}
             /*/catch
