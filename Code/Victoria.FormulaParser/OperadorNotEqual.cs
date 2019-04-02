@@ -3,21 +3,16 @@ using System.Collections.Generic;
 
 namespace Victoria.FormulaParser
 {
-    public class OperadorDivision : ElementoOperador
+    public class OperadorNotEqual : OperadorLogico
     {
-        private static string simboloOperador = "/";
-        private static readonly int valorDePrecedencia = 3;
+        private static string simboloOperador = "!=";
+        private static readonly int valorDePrecedencia = 6;
 
-        public OperadorDivision() { }
-
-        public override bool DeterminaSigno()
-        {
-            return false;
-        }
+        public OperadorNotEqual() { }
 
         protected override double OperarInterno(double terminoIzquierdo, double terminoDerecho)
         {
-            return terminoIzquierdo / terminoDerecho;
+            return this.AsDouble(terminoIzquierdo != terminoDerecho);
         }
 
         protected override double OperarInterno(double termino)
@@ -33,16 +28,6 @@ namespace Victoria.FormulaParser
         public override string Valor()
         {
             return simboloOperador;
-        }
-
-        public override bool EsSeparador()
-        {
-            return false;
-        }
-
-        public override bool EsFuncion()
-        {
-            return false;
         }
 
         protected override int GetValorDePrecedencia()

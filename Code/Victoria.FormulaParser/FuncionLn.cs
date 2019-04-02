@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Victoria.FormulaParser
 {
-    public class FuncionInt : ElementoFuncion
+    public class FuncionLn : ElementoFuncion
     {
-        private static string simboloOperador = "int";
+        private static string simboloOperador = "ln";
 
-        public FuncionInt() { }
+        public FuncionLn() { }
 
         public override string Valor()
         {
@@ -18,10 +18,10 @@ namespace Victoria.FormulaParser
         {
             if (argumentos.Count != 1)
             {
-                throw new InvalidOperationException("La funcion int() recibió '" + argumentos.Count.ToString() + "' argumentos. [int(número)]");
+                throw new InvalidOperationException("La funcion ln() recibió '" + argumentos.Count.ToString() + "' argumentos. [ln(argumento)]");
             }
 
-            return Math.Truncate(argumentos[0]);
+            return Math.Log(argumentos[0]);
         }
     }
 }

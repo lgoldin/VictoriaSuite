@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Victoria.FormulaParser
 {
-    public class FuncionInt : ElementoFuncion
+    public class FuncionNot : ElementoFuncion
     {
-        private static string simboloOperador = "int";
+        private static string simboloOperador = "not";
 
-        public FuncionInt() { }
+        public FuncionNot() { }
 
         public override string Valor()
         {
@@ -18,10 +18,10 @@ namespace Victoria.FormulaParser
         {
             if (argumentos.Count != 1)
             {
-                throw new InvalidOperationException("La funcion int() recibió '" + argumentos.Count.ToString() + "' argumentos. [int(número)]");
+                throw new InvalidOperationException("La funcion not() recibió '" + argumentos.Count.ToString() + "' argumentos. [not(booleano)]");
             }
 
-            return Math.Truncate(argumentos[0]);
+            return argumentos[0] == 0 ? 1 : 0;
         }
     }
 }
