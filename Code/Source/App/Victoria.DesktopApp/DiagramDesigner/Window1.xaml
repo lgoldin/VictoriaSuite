@@ -88,7 +88,7 @@
                             </DataGrid>
 
                         </GroupBox>
-                        <GroupBox x:Name="groupBoxVariablesSimulation" Header="Debbug de Variables" Margin="8" Padding="3" Height="Auto" Visibility="Hidden">
+                        <GroupBox x:Name="groupBoxVariablesSimulation" Header="Debug de Variables" Margin="8" Padding="3" Height="Auto" Visibility="Hidden">
                             <!--<ScrollViewer VerticalScrollBarVisibility="Visible"></ScrollViewer> -->
                                 <DataGrid x:Name="dataGridVariablesSimulation" Height="163" Canvas.Left="-277" Canvas.Top="455" Width="255" Visibility="Hidden">
                                     <DataGrid.Columns>

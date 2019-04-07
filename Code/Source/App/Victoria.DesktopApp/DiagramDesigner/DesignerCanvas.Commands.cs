@@ -27,6 +27,7 @@ using Victoria.DesktopApp.DiagramDesigner;
 using Victoria.DesktopApp.Helpers;
 using System.Data;
 using System.Collections.ObjectModel;
+using Victoria.DesktopApp.DiagramDesigner.Commands;
 
 namespace DiagramDesigner
 {
@@ -66,6 +67,15 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, Copy_Executed, Copy_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, Paste_Executed, Paste_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, Delete_Executed, Delete_Enabled));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
+
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.StepOver, StepOver_Enabled));
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.StepInto, StepInto_Enabled));
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.Continue, Continue_Enabled));
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.ConditionedContinue, ConditionedContinue_Enabled));
+
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.Group, Group_Executed, Group_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.Ungroup, Ungroup_Executed, Ungroup_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.BringForward, BringForward_Executed, Order_Enabled));
@@ -81,15 +91,37 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.DistributeHorizontal, DistributeHorizontal_Executed, Distribute_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.DistributeVertical, DistributeVertical_Executed, Distribute_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.SelectAll, SelectAll_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
+
 
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
             
             this.AllowDrop = true;
             Clipboard.Clear();
         }
+
+        #region DebugCommands
+
+        private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            Console.WriteLine("PROBANDO NUEVO BOTON");  
+        }
+
+        private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            Console.WriteLine("PROBANDO NUEVO BOTON");
+        }
+
+        private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            Console.WriteLine("PROBANDO NUEVO BOTON");
+        }
+
+        private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            Console.WriteLine("PROBANDO NUEVO BOTON");
+        }
+
+        #endregion
 
         #region Find Command
 
@@ -102,7 +134,7 @@ namespace DiagramDesigner
             // Creo la  ventan de simulacion y NO la muestro
             this.ValidarYLanzarSimulador(false); 
 
-            // Cargo el dataGrid de debbug con el datagrid de la ventana de simulacion
+            // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
             ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
             foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
                 dataGridVariablesSimulation.Items.Add(variable);

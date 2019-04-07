@@ -209,6 +209,7 @@
       <DependentUpon>StageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DiagramDesigner\AutomaticDiagramGenerator.cs" />
+    <Compile Include="DiagramDesigner\Commands\DebugCommands.cs" />
     <Compile Include="DiagramDesigner\Connection.cs" />
     <Compile Include="DiagramDesigner\ConnectionAdorner.cs" />
     <Compile Include="DiagramDesigner\Connector.cs" />
