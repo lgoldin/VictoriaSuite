@@ -10,6 +10,8 @@ namespace Victoria.Shared
     {
         private bool stopExecution { get; set; }
 
+        private bool debugginMode = false;
+
         private List<Diagram> diagrams { get; set; }
 
         private List<Variable> variables { get; set; }
@@ -43,6 +45,16 @@ namespace Victoria.Shared
         public void ChangeStatus(SimulationStatus status)
         {
             this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
+        }
+
+        // Activa y desactiva el modo debugs
+        public bool DebugginMode()
+        {
+            return this.debugginMode;
+        }
+
+        public void SetDebugMode(bool value){
+            this.debugginMode = value;
         }
 
         public void StopExecution(bool value)

@@ -7,6 +7,8 @@ namespace Victoria.Shared.Interfaces
     {
         void StopExecution(bool value);
 
+        bool DebugginMode();
+
         bool CanContinue();
 
         List<StageVariable> GetVariables();

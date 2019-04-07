@@ -68,6 +68,12 @@ namespace Victoria.Shared.Actors
         {
             if (node != null && this.stageSimulation.CanContinue())
             {
+                while (this.stageSimulation.DebugginMode())
+                {
+                    //DEBUG LOGIC
+                }
+
+
                 node = node.Execute(this.stageSimulation.GetVariables());
                     
                 if (node != null)

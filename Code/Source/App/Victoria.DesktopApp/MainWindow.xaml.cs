@@ -270,14 +270,24 @@ namespace Victoria.DesktopApp
 
         private void BtnExecuteSimulationCommand_OnClick(object sender, RoutedEventArgs e)
         {
-            this.executeSimulation();
+            this.executeSimulation(false);
         }
 
-        public void executeSimulation()
+        public void executeSimulation(bool debugginMode)
         {
             try
             {
-                ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);
+                if (debugginMode)
+                {
+                    // ((MainViewModel)this.DataContext).debugginMode = debugginMode;
+                    ((MainViewModel)this.DataContext).DebugSimulationCommand.Execute(null);
+                }
+                else
+                {
+                    ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);
+                }
+                
+                                
             }
             catch (Exception ex)
             {

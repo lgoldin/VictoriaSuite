@@ -108,7 +108,7 @@ namespace DiagramDesigner
                 dataGridVariablesSimulation.Items.Add(variable);
             }
             
-            //mainWindow.executeSimulation();
+            mainWindow.executeSimulation(true);
         }
 
         #endregion

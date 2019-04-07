@@ -10,12 +10,17 @@ namespace Victoria.Shared
         private bool stopExecution { get; set; }
         private List<Diagram> diagrams { get; set; }
         private List<StageVariable> stageVariables { get; set; }
-
+        
         public StageSimulation(ISimulation simulation)
         {
             this.simulation = simulation;
             this.diagrams = simulation.GetDiagrams().ToList();
             this.Initilize(simulation.GetVariables());
+        }
+
+        public bool DebugginMode()
+        {
+            return this.simulation.DebugginMode();
         }
 
         public bool GetExecutionStatus()

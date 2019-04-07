@@ -13,6 +13,8 @@ namespace Victoria.Shared.Interfaces
 
         bool CanContinue();
 
+        bool DebugginMode();
+
         void Update(IStageSimulation simulation);
 
         List<Diagram> GetDiagrams();

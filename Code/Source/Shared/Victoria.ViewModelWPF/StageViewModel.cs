@@ -48,6 +48,7 @@ namespace Victoria.ViewModelWPF
 
         #region Properties
 
+
         public List<AnimationConfigurationBase> DllConfigurations 
         {
             get
@@ -290,6 +291,7 @@ namespace Victoria.ViewModelWPF
             this.deleteChartCommand = new DelegateCommand(this.DeleteChart);
             this.exportStageCommand = new DelegateCommand(this.ExportStage);
             this.executeStageCommand = new DelegateCommand(this.ExecuteStage);
+            this.debugStageCommand = new DelegateCommand(this.DebugStage);
             this.stopExecutionStageCommand = new DelegateCommand(this.StopExecution);
             this.addAnimationToCanvasCommand = new DelegateCommand(this.AddAnimationToCanvas);
         }
@@ -321,6 +323,7 @@ namespace Victoria.ViewModelWPF
             this.deleteChartCommand = new DelegateCommand(this.DeleteChart);
             this.exportStageCommand = new DelegateCommand(this.ExportStage);
             this.executeStageCommand = new DelegateCommand(this.ExecuteStage);
+            this.debugStageCommand = new DelegateCommand(this.DebugStage);
             this.stopExecutionStageCommand = new DelegateCommand(this.StopExecution);
             this.addAnimationToCanvasCommand = new DelegateCommand(this.AddAnimationToCanvas);
         }
@@ -400,7 +403,19 @@ namespace Victoria.ViewModelWPF
                 this.Simulation.StopExecution(false);
                 this.Simulation.ChangeStatus(SimulationStatus.Started);
                 this.MainSimulationActor.Tell(this.Simulation);
+
+                
             }
+        }
+
+        private void DebugStage()
+        {
+            this.Simulation.SetDebugMode(true);
+
+            this.Simulation.StopExecution(false);
+            this.Simulation.ChangeStatus(SimulationStatus.Started);
+            this.MainSimulationActor.Tell(this.Simulation);
+            
         }
 
         private void StopExecution()

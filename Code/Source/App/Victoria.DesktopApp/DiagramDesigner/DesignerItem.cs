@@ -141,7 +141,7 @@ namespace DiagramDesigner
 
         #endregion
 
-        private List<String> lstNodosHabilitadosBreakPoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
+        private List<String> lstNodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
 
         static DesignerItem()
         {
@@ -213,7 +213,7 @@ namespace DiagramDesigner
                     //Si tiene color naranja entonces puedo agregar breakpoint                    
 
                     //if (shape.Stroke.ToString() == "#FFD69436") { 
-                    if (lstNodosHabilitadosBreakPoint.Contains(shape.ToolTip.ToString()))
+                    if (lstNodesToBreakpoint.Contains(shape.ToolTip.ToString()))
                     {
 
                         //Cambio color del borde a rojo para indicar breakpoint
