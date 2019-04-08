@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define Victoria.DesktopApp_TargetDir=$(var.Victoria.DesktopApp.TargetDir)?>
-
   <?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
   <?define Version="Victoria V"?>
   <?define Title="Victoria Suite"?>
@@ -202,6 +201,15 @@
       <Component Id="Victoria.FormulaParser.dll" Guid="615bbbdf-ec3c-4372-8c2f-8420d751b96a">
         <File Id="Victoria.FormulaParser.dll" Name="Victoria.FormulaParser.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.FormulaParser.dll" />
       </Component>         
+      <Component Id="ClosedXML.dll" Guid="e7693c3f-911e-46b1-b019-228a0b7821ad">
+        <File Id="ClosedXML.dll" Name="ClosedXML.dll" Source="$(var.Victoria.DesktopApp_TargetDir)ClosedXML.dll" />
+      </Component>
+      <Component Id="DocumentFormat.OpenXml.dll" Guid="9d12b23a-57fb-466c-bbfa-f2b870a79736">
+        <File Id="DocumentFormat.OpenXml.dll" Name="DocumentFormat.OpenXml.dll" Source="$(var.Victoria.DesktopApp_TargetDir)DocumentFormat.OpenXml.dll" />
+      </Component>
+      <Component Id="ExcelNumberFormat.dll" Guid="d698cc77-988f-445f-8fda-1baf09a526eb">
+        <File Id="ExcelNumberFormat.dll" Name="ExcelNumberFormat.dll" Source="$(var.Victoria.DesktopApp_TargetDir)ExcelNumberFormat.dll" />
+      </Component>
     </ComponentGroup>
   </Fragment>
 
