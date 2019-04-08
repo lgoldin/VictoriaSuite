@@ -223,5 +223,30 @@ namespace Victoria.DesktopApp.View
         {
 
         }
+
+        private void BtnSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnFilter_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnDeleteSelection_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnModifyRegister_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnAddRegister_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
