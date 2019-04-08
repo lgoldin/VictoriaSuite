@@ -70,7 +70,10 @@ namespace Victoria.Shared.Actors
             {
                 while (this.stageSimulation.DebugginMode())
                 {
-                    //DEBUG LOGIC
+                    if (node.HasBreakPoint)
+                    {
+                        
+                    }
                 }
 
 

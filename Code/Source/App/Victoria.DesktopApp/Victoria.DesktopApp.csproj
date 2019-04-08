@@ -554,6 +554,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
+    <Resource Include="DiagramDesigner\Resources\Images\stepOver.png" />
     <Content Include="dlls\dllHallEspera.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

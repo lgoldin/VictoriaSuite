@@ -229,8 +229,7 @@
         <Grid Margin="3">
                     <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
-                            Command="debugCommand:DebugCommands.StepOver"
-                   
+                            Command="debugCommand:DebugCommands.StepOver"          
                             CommandTarget="{Binding ElementName=MyDesigner}">
                 <Button.Content>
                     <Grid>
@@ -239,7 +238,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Image Source="Images/stepOver.png" Width="25"/>
-                        <TextBlock Margin="3,0,3,0" Text="Salto de linea" VerticalAlignment="Center" Grid.Column="1"/>
+                        <TextBlock Margin="3,0,3,0" Text="Salto De Linea" VerticalAlignment="Center" Grid.Column="1"/>
                     </Grid>
                 </Button.Content>
             </Button>

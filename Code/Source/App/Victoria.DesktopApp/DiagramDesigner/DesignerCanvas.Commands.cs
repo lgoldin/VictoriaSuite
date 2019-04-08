@@ -103,6 +103,7 @@ namespace DiagramDesigner
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
+
             Console.WriteLine("PROBANDO NUEVO BOTON");  
         }
 
@@ -141,6 +142,7 @@ namespace DiagramDesigner
             }
             
             mainWindow.executeSimulation(true);
+            
         }
 
         #endregion

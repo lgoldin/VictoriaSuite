@@ -201,7 +201,7 @@ namespace DiagramDesigner
 
         void DesignerItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            
             if ( (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None )
             {
 
@@ -209,10 +209,7 @@ namespace DiagramDesigner
                 {
                     Grid grid = (Grid)this.Content;
                     Path shape = (Path)grid.Children[0];
-                    //shape.ToolTip
-                    //Si tiene color naranja entonces puedo agregar breakpoint                    
 
-                    //if (shape.Stroke.ToString() == "#FFD69436") { 
                     if (lstNodesToBreakpoint.Contains(shape.ToolTip.ToString()))
                     {
 

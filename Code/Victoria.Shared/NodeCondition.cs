@@ -15,7 +15,7 @@ namespace Victoria.Shared
         public Node ChilNodeTrue { get; set; }
 
         public override Node Execute(IList<StageVariable> variables)
-        {
+        { 
             try
             {
                 var cultureInfo = new CultureInfo("en-US");
@@ -30,6 +30,11 @@ namespace Victoria.Shared
             {
                 throw new Exception("Nodo condicion", exception);
             }
+        }
+
+        public override void setBreakpointColor(bool value)
+        {
+            
         }
 
         private string GetSentenceToEvaluate(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
