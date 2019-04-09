@@ -30,6 +30,7 @@ namespace Victoria.DesktopApp
             Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
             
              logger.Info("WELCOME VICTORIA V");
+             
 
             if (e.Args.Any() && e.Args[0].IndexOf(".vic", System.StringComparison.Ordinal) > 0)
             {
