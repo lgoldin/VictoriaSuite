@@ -385,9 +385,11 @@ namespace Victoria.DesktopApp
             foreach (StageViewModel stageViewModel in ((MainViewModel)this.DataContext).Stages){
                 variablesList = stageViewModel.getVariables;
             }
-
+            
             return variablesList;
         }
+
+      
 
     }
 }

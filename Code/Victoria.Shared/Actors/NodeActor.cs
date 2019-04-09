@@ -51,6 +51,7 @@ namespace Victoria.Shared.Actors
 
         private void Execute(Diagram diagram)
         {
+
             try
             {
                 Node node = diagram.Execute(this.stageSimulation.GetVariables());
@@ -68,6 +69,7 @@ namespace Victoria.Shared.Actors
         {
             if (node != null && this.stageSimulation.CanContinue())
             {
+                // Chequeo si el nodo tiene breakpoint en modoDebug
                 while (this.stageSimulation.DebugginMode())
                 {
                     if (node.HasBreakPoint)

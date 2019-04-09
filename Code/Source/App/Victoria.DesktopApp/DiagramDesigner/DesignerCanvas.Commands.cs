@@ -103,8 +103,9 @@ namespace DiagramDesigner
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-
-            Console.WriteLine("PROBANDO NUEVO BOTON");  
+            Stage executingNode = XMLParser.GetExecutingSimulatin().Stages.ElementAt(0);
+            
+            Console.WriteLine("El nodo que encontramos es " + executingNode);  
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)

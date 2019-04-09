@@ -32,11 +32,6 @@ namespace Victoria.Shared
             }
         }
 
-        public override void setBreakpointColor(bool value)
-        {
-            
-        }
-
         private string GetSentenceToEvaluate(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
         {
             sentence = this.ReplaceCommonVariablesInSentence(variables, cultureInfo, sentence);
