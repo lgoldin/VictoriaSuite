@@ -82,22 +82,22 @@
                             <TextBox x:Name="txtCol" PreviewTextInput="NumberValidationTextBox"  x:FieldModifier="private" Margin="495,110,464.428,527.572" Width="50" Text="1"/>
                             <TextBox x:Name="txtFila" PreviewTextInput="NumberValidationTextBox"   x:FieldModifier="private" Margin="673,110,286.428,526.572" Width="50" Text="1"/>
                             <DataGrid DockPanel.Dock="Top" AutoGenerateColumns="True" x:Name="dgvDatosFdp" ColumnWidth="*" Visibility="visible" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding Source=dataGridRows}" Margin="197,167,509,128" SelectionChanged="DgvDatosFdp_SelectionChanged"/>
-                            <Button x:Name="btnAddRegister" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,166,812.314,434.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <Button x:Name="btnAddRegister" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,166,812.314,433.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Grid Height="62" Width="197" Background="{StaticResource SecondaryColor}">
                                     <Label Content="Agregar registro" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
                                 </Grid>
                             </Button>
-                            <Button x:Name="btnModifyRegister" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,160,812.314,434.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <Button x:Name="btnModifyRegister" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,227,812.314,371.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Grid Height="62" Width="197" Background="{StaticResource SecondaryColor}">
                                     <Label Content="Modificar registro" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
                                 </Grid>
                             </Button>
-                            <Button x:Name="btnDeleteRegisters" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,166,812.314,434.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <Button x:Name="btnDeleteRegisters" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,288.686,812.314,310.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Grid Height="62" Width="197" Background="{StaticResource SecondaryColor}">
                                     <Label Content="Borrar registros" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
                                 </Grid>
                             </Button>
-                            <Button x:Name="btnSelectAll" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,166,812.314,434.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <Button x:Name="btnSelectAll" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,349,812.314,249.686" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Grid Height="62" Width="197" Background="{StaticResource SecondaryColor}">
                                     <Label Content="Seleccionar todo" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
                                 </Grid>
