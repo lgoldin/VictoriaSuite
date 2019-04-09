@@ -4,7 +4,7 @@
   <?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
   <?define Version="Victoria V"?>
   <?define Title="Victoria Suite"?>
-  <Product Id="*" Name="$(var.Title)" Language="1033" Version="4.0.0.9" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
+  <Product Id="*" Name="$(var.Title)" Language="1033" Version="4.1.0.2" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)victoria_suite.ico" />
@@ -856,8 +856,8 @@
       <Component Id="Microsoft.EntityFrameworkCore.dll" Guid="d7a751fd-c075-4708-9920-7bcf3c8dfdf6">
         <File Id="Microsoft.EntityFrameworkCore.dll" Name="Microsoft.EntityFrameworkCore.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.dll" />
       </Component>
-      <Component Id="ClosedXML.dll" Guid="90d016a0-a36f-489b-a595-cb4741028de2">
-        <File Id="ClosedXML.dll" Name="ClosedXML.dll" Source="$(var.Kairos_TargetDir)ClosedXML.dll" />
+      <Component Id="ClosedXML.dll.2" Guid="90d016a0-a36f-489b-a595-cb4741028de2">
+        <File Id="ClosedXML.dll.2" Name="ClosedXML.dll" Source="$(var.Kairos_TargetDir)ClosedXML.dll" />
       </Component>
       <Component Id="Microsoft.EntityFrameworkCore.Relational.dll" Guid="e293206c-2462-47ad-b01b-06545e678a03">
         <File Id="Microsoft.EntityFrameworkCore.Relational.dll" Name="Microsoft.EntityFrameworkCore.Relational.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.Relational.dll" />
@@ -943,11 +943,11 @@
       <Component Id="Microsoft.Extensions.Logging.dll" Guid="f8e7d86c-456b-4442-a1e4-ffa44f3b3896">
         <File Id="Microsoft.Extensions.Logging.dll" Name="Microsoft.Extensions.Logging.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Logging.dll" />
       </Component>
-      <Component Id="DocumentFormat.OpenXml.dll" Guid="4eb16263-9d56-484c-898c-a7825a178830">
-        <File Id="DocumentFormat.OpenXml.dll" Name="DocumentFormat.OpenXml.dll" Source="$(var.Kairos_TargetDir)DocumentFormat.OpenXml.dll" />
+      <Component Id="DocumentFormat.OpenXml.dll.2" Guid="4eb16263-9d56-484c-898c-a7825a178830">
+        <File Id="DocumentFormat.OpenXml.dll.2" Name="DocumentFormat.OpenXml.dll" Source="$(var.Kairos_TargetDir)DocumentFormat.OpenXml.dll" />
       </Component>
-      <Component Id="ExcelNumberFormat.dll" Guid="96d824ba-6e59-4a74-ad0a-5aa02f96a3cc">
-        <File Id="ExcelNumberFormat.dll" Name="ExcelNumberFormat.dll" Source="$(var.Kairos_TargetDir)ExcelNumberFormat.dll" />
+      <Component Id="ExcelNumberFormat.dll.2" Guid="96d824ba-6e59-4a74-ad0a-5aa02f96a3cc">
+        <File Id="ExcelNumberFormat.dll.2" Name="ExcelNumberFormat.dll" Source="$(var.Kairos_TargetDir)ExcelNumberFormat.dll" />
       </Component>
       <Component Id="FastMember.Signed.dll" Guid="c89404ad-83f3-4026-864d-4d1be46678ca">
         <File Id="FastMember.Signed.dll" Name="FastMember.Signed.dll" Source="$(var.Kairos_TargetDir)FastMember.Signed.dll" />
