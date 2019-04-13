@@ -74,7 +74,7 @@ namespace Victoria.Shared.Actors
                 {
                     if (node.HasBreakPoint)
                     {
-                        
+                        XMLParser.setExecutingNode(node.Name);
                     }
                 }
 

@@ -15,9 +15,19 @@ namespace Victoria.Shared
     {
 
         private static Simulation simulation = null;
+        private static String node_id = null;
 
         public static Simulation GetExecutingSimulation() {
             return simulation;
+        }
+
+        public static String getExecutingNode() {
+            return node_id;
+        }
+
+        public static void setExecutingNode(String nodeGUID)
+        {
+            node_id = nodeGUID;
         }
 
         public static Simulation GetSimulation(string xmlString)
