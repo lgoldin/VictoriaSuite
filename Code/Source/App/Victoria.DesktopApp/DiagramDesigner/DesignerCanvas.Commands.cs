@@ -103,8 +103,9 @@ namespace DiagramDesigner
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Stage executingNode = XMLParser.GetExecutingSimulatin().Stages.ElementAt(0);
-            
+            //Stage executingNode = XMLParser.GetExecutingSimulation().Stages.ElementAt(0);
+            String executingNode = XMLParser.getExecutingNode();
+            DesignerItem.setDebugColor(executingNode, true);
             Console.WriteLine("El nodo que encontramos es " + executingNode);  
         }
 

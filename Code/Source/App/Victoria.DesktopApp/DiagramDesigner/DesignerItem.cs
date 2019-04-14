@@ -142,6 +142,7 @@ namespace DiagramDesigner
         #endregion
 
         private List<String> lstNodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
+        private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();
 
         static DesignerItem()
         {
@@ -217,11 +218,13 @@ namespace DiagramDesigner
                         if (!this.hasBreakpoint)
                         {
                             this.originalColor = shape.Stroke;
-                            shape.Stroke = Brushes.Red;
+                            shape.Stroke = Brushes.Red;   
+                            nodesWithBreakPoints.Add(this);
                         }
                         else
                         {
                             shape.Stroke = this.originalColor;
+                            nodesWithBreakPoints.Remove(this);
                         }
 
                         grid.Tag = ToogleBreakPoint();
@@ -234,6 +237,20 @@ namespace DiagramDesigner
 
             }
 
+        }
+
+        public static void setDebugColor(String node_id, Boolean value) {
+
+            DesignerItem node = nodesWithBreakPoints.Find(n => n.ID.ToString() == node_id);
+            Grid grid = (Grid)node.Content;
+            Path shape = (Path)grid.Children[0];
+
+            if (value) {
+                shape.Stroke = Brushes.Blue;
+            }
+            else {
+                shape.Stroke = Brushes.Red;
+            }
         }
 
         String ToogleBreakPoint()

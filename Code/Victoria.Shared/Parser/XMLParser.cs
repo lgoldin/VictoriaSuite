@@ -16,11 +16,21 @@ namespace Victoria.Shared
 
         private static Simulation simulation = null;
         private static String node_id = null;
+        private static Boolean debuggingNode = false;
 
         public static Simulation GetExecutingSimulation() {
             return simulation;
         }
 
+        public static Boolean getdebuggingNode()
+        {
+            return debuggingNode;
+        }
+
+        public static void setDebuggingNode(Boolean value)
+        {
+            debuggingNode = value;
+        }
         public static String getExecutingNode() {
             return node_id;
         }
@@ -79,7 +89,8 @@ namespace Victoria.Shared
                     stages = new List<Stage>();
                 }
 
-                return simulation == null ? new Simulation(diagramas, variables, stages) : simulation;
+                // return simulation == null ? new Simulation(diagramas, variables, stages) : simulation;
+                return new Simulation(diagramas, variables, stages);
             }
             catch (Exception e)
             {                
