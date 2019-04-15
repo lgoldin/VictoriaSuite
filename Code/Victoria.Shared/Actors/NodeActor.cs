@@ -54,16 +54,6 @@ namespace Victoria.Shared.Actors
 
             try
             {
-                // Chequeo si el nodo tiene breakpoint en modoDebug
-                //while (this.stageSimulation.DebugginMode() && XMLParser.getExecutingNode() != null)
-                //{
-                //
-                //}
-
-                // Seteo en el XMLParser que estoy en modo debug
-                //if (this.stageSimulation.DebugginMode())
-                //    XMLParser.setDebuggingNode(true);
-
                 Node node = diagram.Execute(this.stageSimulation.GetVariables());
                 this.Self.Tell(node);
 

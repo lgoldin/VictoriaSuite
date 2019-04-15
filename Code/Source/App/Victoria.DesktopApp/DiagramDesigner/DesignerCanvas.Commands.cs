@@ -104,7 +104,7 @@ namespace DiagramDesigner
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
             XMLParser.setJumpToNextNode(true);
-            DesignerItem.setDebugColor(XMLParser.getExecutingNode(), true); //Cambio el color del nodo que esta ejecutando
+            DesignerItem.setDebugColor(XMLParser.getExecutingNode()); //Cambio el color del nodo que esta ejecutando
          
         }
 
@@ -142,9 +142,12 @@ namespace DiagramDesigner
                 dataGridVariablesSimulation.Items.Add(variable);
             }
 
-            DesignerItem.setDebugColor("first", true);
+            XMLParser.setDebuggingNode(true);
             mainWindow.executeSimulation(true);
-            
+            if(XMLParser.getExecutingNode() != null)
+                DesignerItem.setDebugColor(XMLParser.getExecutingNode());
+            //DesignerItem.setDebugColor("first");
+
         }
 
         #endregion

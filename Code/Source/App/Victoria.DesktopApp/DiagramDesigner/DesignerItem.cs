@@ -218,17 +218,17 @@ namespace DiagramDesigner
                         if (!this.hasBreakpoint)
                         {
                             this.originalColor = shape.Stroke;
-                            shape.Stroke = Brushes.Red;   
+                            changeColor(this, Brushes.Red);
                             nodesWithBreakPoints.Add(this);
                         }
                         else
                         {
-                            shape.Stroke = this.originalColor;
+                            changeColor(this, this.originalColor);
                             nodesWithBreakPoints.Remove(this);
                         }
 
                         grid.Tag = ToogleBreakPoint();
-                        //this.Content = grid;
+                        
                     }
                 }
                 catch (Exception ex) {
@@ -245,7 +245,7 @@ namespace DiagramDesigner
             shape.Stroke = color;
         }
 
-        public static void setDebugColor(String node_id, Boolean value) {
+        public static void setDebugColor(String node_id) {
 
             //Pongo a todos los nodos con el color de debug
             foreach (DesignerItem n in nodesWithBreakPoints)
@@ -258,12 +258,8 @@ namespace DiagramDesigner
                 node = nodesWithBreakPoints.Find(n => 1 == 1 );
             }
                         
-            if (value) {
-                changeColor(node, Brushes.Blue);
-            }
-            //else {
-            //    changeColor(node, Brushes.Red);
-            //}
+            changeColor(node, Brushes.Blue);
+            
         }
 
         String ToogleBreakPoint()
