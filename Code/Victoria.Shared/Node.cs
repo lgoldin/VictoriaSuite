@@ -18,14 +18,15 @@ namespace Victoria.Shared
         {
             if (this.NextNode != null)
             {
-                // Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInt,etc..)
+                
                 if (this.NextNode.HasBreakPoint)
                 {
-                    XMLParser.setExecutingNode(this.NextNode.Name);
-                    while (XMLParser.getdebuggingNode()) {
+                    //Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInt,etc..)
+                    XMLParser.setExecutingNode(this.NextNode.Name); //Aviso que nodo esta ejecutando
+                    while (XMLParser.getdebuggingNode() && !XMLParser.getJumpToNextNode() ) { 
                         // Waiting for action
                     }
-                    
+                    XMLParser.setJumpToNextNode(false);
                 }
 
                 return this.NextNode.Execute(variables);

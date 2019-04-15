@@ -239,18 +239,31 @@ namespace DiagramDesigner
 
         }
 
-        public static void setDebugColor(String node_id, Boolean value) {
-
-            DesignerItem node = nodesWithBreakPoints.Find(n => n.ID.ToString() == node_id);
+        private static void changeColor(DesignerItem node, Brush color) {
             Grid grid = (Grid)node.Content;
             Path shape = (Path)grid.Children[0];
+            shape.Stroke = color;
+        }
 
+        public static void setDebugColor(String node_id, Boolean value) {
+
+            //Pongo a todos los nodos con el color de debug
+            foreach (DesignerItem n in nodesWithBreakPoints)
+            {
+                changeColor(n, Brushes.Red);
+            }
+
+            DesignerItem node = nodesWithBreakPoints.Find(n => n.ID.ToString() == node_id);
+            if (node_id == "first"){
+                node = nodesWithBreakPoints.Find(n => 1 == 1 );
+            }
+                        
             if (value) {
-                shape.Stroke = Brushes.Blue;
+                changeColor(node, Brushes.Blue);
             }
-            else {
-                shape.Stroke = Brushes.Red;
-            }
+            //else {
+            //    changeColor(node, Brushes.Red);
+            //}
         }
 
         String ToogleBreakPoint()

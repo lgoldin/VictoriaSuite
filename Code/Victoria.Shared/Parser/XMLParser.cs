@@ -15,11 +15,24 @@ namespace Victoria.Shared
     {
 
         private static Simulation simulation = null;
+
         private static String node_id = null;
         private static Boolean debuggingNode = false;
+        private static Boolean jumpToNextNode = false;
+
 
         public static Simulation GetExecutingSimulation() {
             return simulation;
+        }
+
+        public static Boolean getJumpToNextNode()
+        {
+            return jumpToNextNode;
+        }
+
+        public static void setJumpToNextNode(Boolean value)
+        {
+            jumpToNextNode = value;
         }
 
         public static Boolean getdebuggingNode()
@@ -31,12 +44,14 @@ namespace Victoria.Shared
         {
             debuggingNode = value;
         }
+
         public static String getExecutingNode() {
+            
             return node_id;
         }
 
         public static void setExecutingNode(String nodeGUID)
-        {
+        { 
             node_id = nodeGUID;
         }
 

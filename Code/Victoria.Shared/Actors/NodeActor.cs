@@ -61,8 +61,8 @@ namespace Victoria.Shared.Actors
                 //}
 
                 // Seteo en el XMLParser que estoy en modo debug
-                if (this.stageSimulation.DebugginMode())
-                    XMLParser.setDebuggingNode(true);
+                //if (this.stageSimulation.DebugginMode())
+                //    XMLParser.setDebuggingNode(true);
 
                 Node node = diagram.Execute(this.stageSimulation.GetVariables());
                 this.Self.Tell(node);

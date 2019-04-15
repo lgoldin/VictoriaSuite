@@ -103,10 +103,9 @@ namespace DiagramDesigner
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            //Stage executingNode = XMLParser.GetExecutingSimulation().Stages.ElementAt(0);
-            String executingNode = XMLParser.getExecutingNode();
-            DesignerItem.setDebugColor(executingNode, true);
-            Console.WriteLine("El nodo que encontramos es " + executingNode);  
+            XMLParser.setJumpToNextNode(true);
+            DesignerItem.setDebugColor(XMLParser.getExecutingNode(), true); //Cambio el color del nodo que esta ejecutando
+         
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -142,7 +141,8 @@ namespace DiagramDesigner
             foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
                 dataGridVariablesSimulation.Items.Add(variable);
             }
-            
+
+            DesignerItem.setDebugColor("first", true);
             mainWindow.executeSimulation(true);
             
         }
