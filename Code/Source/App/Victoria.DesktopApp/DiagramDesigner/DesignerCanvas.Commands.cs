@@ -106,7 +106,7 @@ namespace DiagramDesigner
         {
             XMLParser.setJumpToNextNode(true);
             DesignerItem.setDebugColor(XMLParser.getExecutingNode()); //Cambio el color del nodo que esta ejecutando
-         
+            Console.WriteLine(XMLParser.getExecutingNode());
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -147,12 +147,17 @@ namespace DiagramDesigner
             mainWindow.executeSimulation(true);
 
             //Espero hasta encontrar el primer nodo con breakpoing si es que existe 
-            while (DesignerItem.ifAnyNodeHasBreakpoint() && XMLParser.getExecutingNode() == null) {
-                //wait
+            if (DesignerItem.ifAnyNodeHasBreakpoint())
+            {
+                while ( XMLParser.getExecutingNode() == null )
+                {
+                    //wait
+                }
+
+                //Cambio el color del primer nodo
+                DesignerItem.setDebugColor(XMLParser.getExecutingNode());
+
             }
-            
-            //Cambio el color del primer nodo
-            DesignerItem.setDebugColor(XMLParser.getExecutingNode());
 
         }
 
