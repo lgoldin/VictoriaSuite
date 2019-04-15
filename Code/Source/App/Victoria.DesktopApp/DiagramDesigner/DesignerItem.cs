@@ -205,7 +205,7 @@ namespace DiagramDesigner
             
             if ( (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None )
             {
-
+                
                 try
                 {
                     Grid grid = (Grid)this.Content;
@@ -213,7 +213,7 @@ namespace DiagramDesigner
 
                     if (lstNodesToBreakpoint.Contains(shape.ToolTip.ToString()))
                     {
-
+                        
                         //Cambio color del borde a rojo para indicar breakpoint
                         if (!this.hasBreakpoint)
                         {
@@ -239,10 +239,15 @@ namespace DiagramDesigner
 
         }
 
-        private static void changeColor(DesignerItem node, Brush color) {
+        private static void changeColor(DesignerItem node, Brush color)
+        {
             Grid grid = (Grid)node.Content;
             Path shape = (Path)grid.Children[0];
             shape.Stroke = color;
+        }
+
+        public static Boolean ifAnyNodeHasBreakpoint() {
+            return nodesWithBreakPoints.Count > 0;
         }
 
         public static void setDebugColor(String node_id) {

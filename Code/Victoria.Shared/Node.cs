@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Victoria.Shared
 {
@@ -19,12 +20,13 @@ namespace Victoria.Shared
             if (this.NextNode != null)
             {
                 
-                if (this.NextNode.HasBreakPoint)
+                if (this.HasBreakPoint)
                 {
-                    //Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInt,etc..)
-                    XMLParser.setExecutingNode(this.NextNode.Name); //Aviso que nodo esta ejecutando
-                    while (XMLParser.getdebuggingNode() && !XMLParser.getJumpToNextNode() ) { 
-                        // Waiting for action
+                    
+                    XMLParser.setExecutingNode(this.Name); //Aviso que nodo esta ejecutando
+                    while (XMLParser.getdebuggingNode() && !XMLParser.getJumpToNextNode() ) {
+                        //Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInt,etc..)
+                        //getJumpToNextNode se pone en true para romper el while
                     }
                     XMLParser.setJumpToNextNode(false);
                 }

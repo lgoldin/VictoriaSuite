@@ -9,6 +9,7 @@ using Victoria.Shared.Parser;
 using Victoria.Shared.AnalisisPrevio;
 
 
+
 namespace Victoria.Shared
 {
     public static class XMLParser
@@ -27,7 +28,7 @@ namespace Victoria.Shared
 
         public static Boolean getJumpToNextNode()
         {
-            return jumpToNextNode;
+            return jumpToNextNode; 
         }
 
         public static void setJumpToNextNode(Boolean value)

@@ -56,7 +56,6 @@ namespace DiagramDesigner
 
         private MainWindow mainWindow;
 
-
         public DesignerCanvas()
         {
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
@@ -92,12 +91,14 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.DistributeVertical, DistributeVertical_Executed, Distribute_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.SelectAll, SelectAll_Executed));
 
-
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
-            
+
+            //this.GotFocus += new RoutedEventHandler(Color_Node_As_Debug);
+
             this.AllowDrop = true;
             Clipboard.Clear();
         }
+
 
         #region DebugCommands
 
@@ -144,11 +145,17 @@ namespace DiagramDesigner
 
             XMLParser.setDebuggingNode(true);
             mainWindow.executeSimulation(true);
-            if(XMLParser.getExecutingNode() != null)
-                DesignerItem.setDebugColor(XMLParser.getExecutingNode());
-            //DesignerItem.setDebugColor("first");
+
+            //Espero hasta encontrar el primer nodo con breakpoing si es que existe 
+            while (DesignerItem.ifAnyNodeHasBreakpoint() && XMLParser.getExecutingNode() == null) {
+                //wait
+            }
+            
+            //Cambio el color del primer nodo
+            DesignerItem.setDebugColor(XMLParser.getExecutingNode());
 
         }
+
 
         #endregion
 
