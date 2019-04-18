@@ -51,7 +51,7 @@ namespace Victoria.Shared
         public bool MustNotifyUI()
         {
             //-- Notificar cada n vueltas
-            int n = 20;
+            int n = this.DebugginMode() ? 1 : 20;
             return (int)this.GetVariables().First(variable => variable.Name == "T").ActualValue % n == 0 || !this.CanContinue();
         }
 
