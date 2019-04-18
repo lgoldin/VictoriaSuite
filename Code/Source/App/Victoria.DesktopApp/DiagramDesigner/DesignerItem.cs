@@ -142,7 +142,7 @@ namespace DiagramDesigner
         #endregion
 
         private List<String> lstNodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
-        private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();
+        private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();        
 
         static DesignerItem()
         {
@@ -250,22 +250,24 @@ namespace DiagramDesigner
             return nodesWithBreakPoints.Count > 0;
         }
 
-        public static void setDebugColor(String node_id) {
+        public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node) {
+                       
+            changeColor(executing_node, Brushes.Blue);
 
-            //Pongo a todos los nodos con el color de debug
-            foreach (DesignerItem n in nodesWithBreakPoints)
+            if (previous_node != null)
             {
-                changeColor(n, Brushes.Red);
+                if (nodesWithBreakPoints.Contains(previous_node))
+                {
+                    changeColor(previous_node, Brushes.Red);
+                }
+                else
+                {
+                    changeColor(previous_node, Brushes.DarkOrange);
+                }
+                
             }
-
-            DesignerItem node = nodesWithBreakPoints.Find(n => n.ID.ToString() == node_id);
-            if (node_id == "first"){
-                node = nodesWithBreakPoints.Find(n => 1 == 1 );
-            }
-                        
-            changeColor(node, Brushes.Blue);
-            
-        }
+                
+        }        
 
         String ToogleBreakPoint()
         {

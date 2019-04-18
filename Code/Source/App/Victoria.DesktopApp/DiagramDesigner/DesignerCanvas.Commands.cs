@@ -28,6 +28,7 @@ using Victoria.DesktopApp.Helpers;
 using System.Data;
 using System.Collections.ObjectModel;
 using Victoria.DesktopApp.DiagramDesigner.Commands;
+using Victoria.ViewModelWPF;
 
 namespace DiagramDesigner
 {
@@ -53,6 +54,7 @@ namespace DiagramDesigner
         public DataGrid dataGridVariablesSimulation { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
         public GroupBox groupBoxVariablesSimulation { get; internal set; }
+        public String previous_node_id { get; internal set; }
 
         private MainWindow mainWindow;
 
@@ -92,7 +94,7 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.SelectAll, SelectAll_Executed));
 
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
-
+            
             //this.GotFocus += new RoutedEventHandler(Color_Node_As_Debug);
 
             this.AllowDrop = true;
@@ -103,10 +105,18 @@ namespace DiagramDesigner
         #region DebugCommands
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {            
+            XMLParser.setJumpToNextNode(true);     
+            string executing_node_id = XMLParser.getExecutingNode();
+
+            DesignerItem.setDebugColor(getNodeByID(executing_node_id), getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
+
+            this.previous_node_id = executing_node_id;            
+        }
+
+        private DesignerItem getNodeByID(string id_to_find)
         {
-            XMLParser.setJumpToNextNode(true);
-            DesignerItem.setDebugColor(XMLParser.getExecutingNode()); //Cambio el color del nodo que esta ejecutando
-            //Console.WriteLine(XMLParser.getExecutingNode());
+            return id_to_find != null ? this.Children.OfType<DesignerItem>().Where(x => x.ID.ToString() == id_to_find).First() : null;
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -142,7 +152,7 @@ namespace DiagramDesigner
             foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
                 dataGridVariablesSimulation.Items.Add(variable);
             }
-
+            
             XMLParser.setDebuggingNode(true);
             mainWindow.executeSimulation(true);
 
@@ -153,8 +163,10 @@ namespace DiagramDesigner
                     //wait
                 }
 
+                string executing_node_id = XMLParser.getExecutingNode();
                 //Cambio el color del primer nodo
-                DesignerItem.setDebugColor(XMLParser.getExecutingNode());
+                DesignerItem.setDebugColor(getNodeByID(executing_node_id),getNodeByID(this.previous_node_id));
+                this.previous_node_id = executing_node_id;
             }
 
         }
