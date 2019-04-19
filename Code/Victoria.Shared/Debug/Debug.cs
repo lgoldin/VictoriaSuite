@@ -29,7 +29,7 @@ namespace Victoria.Shared.Debug
 
         #region Methods
 
-        public void execute(Node node)
+        public void execute(Node node, Delegate NotifyUIMethod)
         {
             if ( this.debugModeOn )
             {
@@ -45,7 +45,8 @@ namespace Victoria.Shared.Debug
                     {
                         this.waitForCommand(node.Name);
                     }
-                }               
+                }
+                NotifyUIMethod.DynamicInvoke();
             }
         }
 

@@ -109,7 +109,8 @@ namespace DiagramDesigner
 
             DesignerItem.setDebugColor(getNodeByID(executing_node_id), getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
 
-            this.previous_node_id = executing_node_id;            
+            this.previous_node_id = executing_node_id;    
+            
         }
 
         private DesignerItem getNodeByID(string id_to_find)

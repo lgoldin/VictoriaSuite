@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Victoria.Shared
 {
@@ -6,7 +7,7 @@ namespace Victoria.Shared
     {
         public IEnumerable<string> Variables { get; set; }
 
-        public override Node Execute(IList<StageVariable> variables)
+        public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             return null;
         }

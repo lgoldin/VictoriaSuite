@@ -11,11 +11,11 @@ namespace Victoria.Shared
 
         public string Name { get; set; }
 
-        public virtual Node Execute(IList<StageVariable> variables)
+        public virtual Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             try
             {
-                return this.Nodes.First().Execute(variables);
+                return this.Nodes.First().Execute(variables, NotifyUIMethod);
             }
             catch (Exception ex)
             {

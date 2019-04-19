@@ -15,6 +15,13 @@ namespace Victoria.Shared.Actors
 
         private IActorRef mainSimulationActor;
 
+        public delegate void DelegateNotifyUI();
+
+        public void notifyUserInterace()
+        {
+            this.MainSimulationActor.Tell(this.stageSimulation);
+        } 
+
         public NodeActor(IStageSimulation stageSimulation)
         {
             this.stageSimulation = stageSimulation;
@@ -51,10 +58,11 @@ namespace Victoria.Shared.Actors
 
         private void Execute(Diagram diagram)
         {
+            DelegateNotifyUI notifyUserInteraceMethod = notifyUserInterace;
 
             try
             {
-                Node node = diagram.Execute(this.stageSimulation.GetVariables());
+                Node node = diagram.Execute(this.stageSimulation.GetVariables(), notifyUserInteraceMethod );
                 this.Self.Tell(node);
 
             }
@@ -70,7 +78,9 @@ namespace Victoria.Shared.Actors
         {
             if (node != null && this.stageSimulation.CanContinue())
             {
-                 node = node.Execute(this.stageSimulation.GetVariables());
+                DelegateNotifyUI notifyUserInteraceMethod = notifyUserInterace;
+
+                node = node.Execute(this.stageSimulation.GetVariables(), notifyUserInteraceMethod);
                     
                 if (node != null)
                 {

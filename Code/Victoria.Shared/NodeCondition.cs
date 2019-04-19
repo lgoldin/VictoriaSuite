@@ -14,11 +14,11 @@ namespace Victoria.Shared
 
         public Node ChilNodeTrue { get; set; }
 
-        public override Node Execute(IList<StageVariable> variables)
+        public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         { 
             try
             {
-                Debug.Debug.instance().execute(this);
+                Debug.Debug.instance().execute(this, NotifyUIMethod);
 
                 var cultureInfo = new CultureInfo("en-US");
                 
@@ -26,7 +26,7 @@ namespace Victoria.Shared
 
                 var result = ExpressionResolver.ResolveBoolen(sentence);
 
-                return result ? this.ChildNodeFalse.Execute(variables) : this.ChilNodeTrue.Execute(variables);
+                return result ? this.ChildNodeFalse.Execute(variables, NotifyUIMethod) : this.ChilNodeTrue.Execute(variables, NotifyUIMethod);
             }
             catch (Exception exception)
             {

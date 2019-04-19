@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Victoria.Shared
@@ -17,22 +18,22 @@ namespace Victoria.Shared
 
         public Node IterationNode { get; set; }
 
-        public override Node Execute(IList<StageVariable> variables)
+        public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
-            Debug.Debug.instance().execute(this);
+            Debug.Debug.instance().execute(this, NotifyUIMethod);
 
             if (this.variableIteradora == null) InicializarVariableIteradora(variables);
             if (this.variableIteradora.ActualValue < this.ValorFinal)
             {
                 this.variableIteradora.ActualValue += this.Incremento;
                 variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
-                return this.IterationNode.Execute(variables);
+                return this.IterationNode.Execute(variables, NotifyUIMethod);
             }
             else
             {
                 this.variableIteradora.ActualValue = this.ValorInicial;
                 variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
-                return base.Execute(variables);
+                return base.Execute(variables, NotifyUIMethod);
             }
 
         }

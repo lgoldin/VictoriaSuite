@@ -10,11 +10,11 @@ namespace Victoria.Shared
     {
         public string Code { get; set; }
         
-        public override Node Execute(IList<StageVariable> variables)
+        public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             try
             {
-                Debug.Debug.instance().execute(this);
+                Debug.Debug.instance().execute(this, NotifyUIMethod);
 
                 var cultureInfo = new CultureInfo("en-US");
                 int indexEqual = this.Code.IndexOf("=");
@@ -27,7 +27,7 @@ namespace Victoria.Shared
 
                 ExpressionResolver.Resolve(variable, sentence);
                 
-                return base.Execute(variables);
+                return base.Execute(variables, NotifyUIMethod);
             }
             catch (Exception exception)
             {
