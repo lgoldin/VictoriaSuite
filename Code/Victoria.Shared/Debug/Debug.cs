@@ -33,7 +33,7 @@ namespace Victoria.Shared.Debug
         {
             if ( this.debugModeOn )
             {
-                //Me posiciono en el primer nodo con breakpoing
+                //Me posiciono en el primer nodo con breakpoint
                 if (this.isFirstNode && node.HasBreakPoint)
                 {
                     this.waitForCommand(node.Name);

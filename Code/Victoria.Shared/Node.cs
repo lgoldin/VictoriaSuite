@@ -19,9 +19,7 @@ namespace Victoria.Shared
         public virtual Node Execute(IList<StageVariable> variables)
         {
             if (this.NextNode != null)
-            {
-                //Debug.Debug.instance().execute(this, thi);
-            
+            {         
                 return this.NextNode.Execute(variables);
             }
 

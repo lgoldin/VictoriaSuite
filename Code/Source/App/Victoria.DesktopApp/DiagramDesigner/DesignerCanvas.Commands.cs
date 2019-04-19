@@ -114,7 +114,7 @@ namespace DiagramDesigner
 
         private DesignerItem getNodeByID(string id_to_find)
         {
-            return id_to_find != null ? this.Children.OfType<DesignerItem>().Where(x => x.ID.ToString() == id_to_find).First() : null;
+            return id_to_find != null ? this.Children.OfType<DesignerItem>().Where(x => x.ID.ToString() == id_to_find).FirstOrDefault() : null;
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)

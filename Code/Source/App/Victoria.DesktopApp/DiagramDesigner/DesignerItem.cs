@@ -242,7 +242,7 @@ namespace DiagramDesigner
         private static void changeColor(DesignerItem node, Brush color)
         {
             Grid grid = (Grid)node.Content;
-            Path shape = (Path)grid.Children[0];
+            Path shape = grid.Children[0] as Path; // Devuelve null si NO puede castearlo
             if(shape != null)
                 shape.Stroke = color;
         }
@@ -251,9 +251,10 @@ namespace DiagramDesigner
             return nodesWithBreakPoints.Count > 0;
         }
 
-        public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node) {
-                       
-            changeColor(executing_node, Brushes.Blue);
+        public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node)
+        {
+            if(executing_node != null)
+                DesignerItem.changeColor(executing_node, Brushes.Blue);
 
             if (previous_node != null)
             {
