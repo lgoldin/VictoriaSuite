@@ -83,6 +83,11 @@ namespace Victoria.DesktopApp.View
             }
         }
 
+        private void comboBoxIntervalo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
