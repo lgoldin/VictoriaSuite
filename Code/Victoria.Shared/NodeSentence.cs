@@ -14,6 +14,8 @@ namespace Victoria.Shared
         {
             try
             {
+                Debug.Debug.instance().execute(this);
+
                 var cultureInfo = new CultureInfo("en-US");
                 int indexEqual = this.Code.IndexOf("=");
                 

@@ -18,6 +18,8 @@ namespace Victoria.Shared
         { 
             try
             {
+                Debug.Debug.instance().execute(this);
+
                 var cultureInfo = new CultureInfo("en-US");
                 
                 string sentence = this.GetSentenceToEvaluate(variables, cultureInfo, this.Code);

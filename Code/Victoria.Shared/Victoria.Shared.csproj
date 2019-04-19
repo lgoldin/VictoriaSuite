@@ -85,6 +85,7 @@
     <Compile Include="AnalisisPrevio\VariableType.cs" />
     <Compile Include="AnalisisPrevio\VariableAP.cs" />
     <Compile Include="Contract\IComponent.cs" />
+    <Compile Include="Debug\Debug.cs" />
     <Compile Include="Diagram.cs" />
     <Compile Include="EventArgs\SimulationFinishedEventArgs.cs" />
     <Compile Include="EventArgs\VariableValueChangeEventArgs.cs" />

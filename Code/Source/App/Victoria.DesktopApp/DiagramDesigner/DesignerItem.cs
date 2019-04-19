@@ -243,7 +243,8 @@ namespace DiagramDesigner
         {
             Grid grid = (Grid)node.Content;
             Path shape = (Path)grid.Children[0];
-            shape.Stroke = color;
+            if(shape != null)
+                shape.Stroke = color;
         }
 
         public static Boolean ifAnyNodeHasBreakpoint() {

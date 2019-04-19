@@ -19,6 +19,8 @@ namespace Victoria.Shared
 
         public override Node Execute(IList<StageVariable> variables)
         {
+            Debug.Debug.instance().execute(this);
+
             if (this.variableIteradora == null) InicializarVariableIteradora(variables);
             if (this.variableIteradora.ActualValue < this.ValorFinal)
             {
