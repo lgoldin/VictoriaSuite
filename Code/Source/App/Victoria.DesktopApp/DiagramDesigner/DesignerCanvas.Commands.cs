@@ -95,8 +95,6 @@ namespace DiagramDesigner
 
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
             
-            //this.GotFocus += new RoutedEventHandler(Color_Node_As_Debug);
-
             this.AllowDrop = true;
             Clipboard.Clear();
         }
