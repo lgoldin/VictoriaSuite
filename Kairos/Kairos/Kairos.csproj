@@ -284,7 +284,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arduino\EscrituraTxt.cs" />
-    <Compile Include="Forms\FrmCapturaDatosArduino.cs" />
+    <Compile Include="Forms\FrmCapturaDatosArduino.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FrmCapturaDatosArduino.Designer.cs">
       <DependentUpon>FrmCapturaDatosArduino.cs</DependentUpon>
     </Compile>
@@ -293,16 +295,22 @@
     <Compile Include="EventoContexto.cs" />
     <Compile Include="Filtros\FiltroImpl.cs" />
     <Compile Include="Filtros\INuevoFiltro.cs" />
-    <Compile Include="Forms\FrmPantallaPrincipal.cs" />
+    <Compile Include="Forms\FrmPantallaPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FrmPantallaPrincipal.Designer.cs">
       <DependentUpon>FrmPantallaPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Entidades\Origen.cs" />
-    <Compile Include="Forms\FrmAjusteFunciones.cs" />
+    <Compile Include="Forms\FrmAjusteFunciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FrmAjusteFunciones.Designer.cs">
       <DependentUpon>FrmAjusteFunciones.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmProcesmientoDatos.cs" />
+    <Compile Include="Forms\FrmProcesmientoDatos.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FrmProcesmientoDatos.Designer.cs">
       <DependentUpon>FrmProcesmientoDatos.cs</DependentUpon>
     </Compile>

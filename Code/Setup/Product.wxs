@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define Victoria.DesktopApp_TargetDir=$(var.Victoria.DesktopApp.TargetDir)?>
-  <Product Id="*" Name="Victoria IV" Language="1033" Version="4.1.0.0" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
+  <?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
+  <?define Version="Victoria V"?>
+  <?define Title="Victoria Suite"?>
+  <Product Id="*" Name="$(var.Title)" Language="1033" Version="5.0.0.1" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Victoria3.ico" />
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)victoria_suite.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
-    <WixVariable Id="WixUIBannerBmp" Value="Images\top-banner.bmp" />
-    <WixVariable Id="WixUIDialogBmp" Value="Images\dialog.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="Images\top-banner.png" />
+    <WixVariable Id="WixUIDialogBmp" Value="Images\dialog_utnba_logo.png" />
     
     <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)License.rtf" />
 
@@ -18,7 +21,7 @@
     <MajorUpgrade Schedule="afterInstallInitialize" AllowSameVersionUpgrades="yes" AllowDowngrades="no" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
-    <Feature Id="ProductFeature" Title="Victoria IV" Level="1">
+    <Feature Id="ProductFeature" Title="$(var.Title)" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="dlls_files" />
       <ComponentGroupRef Id="Responsive_HTML5_files" />
@@ -31,27 +34,33 @@
       <ComponentRef Id="ApplicationShortcut" />
       <ComponentRef Id="ApplicationShortcutDesktop" />
       <ComponentGroupRef Id="Manual_de_usuario_files" />
-      <ComponentGroupRef Id="Resources_files" />
-    </Feature>
+      <ComponentGroupRef Id="Resources_files" />      
+      <ComponentGroupRef Id="Kairos" />      
+    </Feature>        
   </Product>
 
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
+      
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER" Name="Victoria IV">
-          <Directory Id="Resources" Name="Resources" />
-          <Directory Id="Responsive_HTML5" Name="Responsive_HTML5">
-            <Directory Id="Responsive_HTML5_Manual_de_usuario_archivos" Name="Manual_de_usuario_archivos" />
-            <Directory Id="Responsive_HTML5_whxdata" Name="whxdata" />
-            <Directory Id="Responsive_HTML5_template" Name="template">
-              <Directory Id="Responsive_HTML5_template_styles" Name="styles" />
-              <Directory Id="Responsive_HTML5_template_scripts" Name="scripts" />
-              <Directory Id="Responsive_HTML5_template_Azure_Blue" Name="Azure_Blue" />
-            </Directory>
+        <Directory Id="INSTALLFOLDER" Name="Victoria Suite">
+          <Directory Id="Kairos" Name="Kairos">            
           </Directory>
-          <Directory Id="templates" Name="templates" />
-          <Directory Id="dlls" Name="dlls" />
-          <Directory Id="Manual_de_usuario" Name="Manual de usuario" />
+          <Directory Id="Victoria" Name="$(var.Version)">
+            <Directory Id="Resources" Name="Resources" />
+            <Directory Id="Responsive_HTML5" Name="Responsive_HTML5">
+              <Directory Id="Responsive_HTML5_Manual_de_usuario_archivos" Name="Manual_de_usuario_archivos" />
+              <Directory Id="Responsive_HTML5_whxdata" Name="whxdata" />
+              <Directory Id="Responsive_HTML5_template" Name="template">
+                <Directory Id="Responsive_HTML5_template_styles" Name="styles" />
+                <Directory Id="Responsive_HTML5_template_scripts" Name="scripts" />
+                <Directory Id="Responsive_HTML5_template_Azure_Blue" Name="Azure_Blue" />
+              </Directory>
+            </Directory>
+            <Directory Id="templates" Name="templates" />
+            <Directory Id="dlls" Name="dlls" />
+            <Directory Id="Manual_de_usuario" Name="Manual de usuario" />
+        </Directory>
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
@@ -64,22 +73,25 @@
   <Fragment>
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="16fcb609-7357-4d39-b8e0-b5b924f61fc5">
-        <Shortcut Id="ApplicationStartMenuShortcut" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <Shortcut Id="ApplicationStartMenuShortcutVictoria" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]$(var.Version)/Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <Shortcut Id="ApplicationStartMenuShortcutKairos" Name="Kairos" Description="Kairos is a ..." Target="[INSTALLFOLDER]Kairos/Kairos.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
         <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\UTN\Victoria" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\UTN\$(var.Title)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
+            
     </DirectoryRef>
     <DirectoryRef Id="DesktopFolder">
       <Component Id="ApplicationShortcutDesktop" Guid="16fcb609-7357-4d39-b8e0-b5b924f61fc6">
-        <Shortcut Id="ApplicationDesktopShortcut" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <Shortcut Id="ApplicationDesktopShortcutVictoria" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]$(var.Version)/Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <Shortcut Id="ApplicationDesktopShortcutKairos" Name="Kairos" Description="Kairos is ..." Target="[INSTALLFOLDER]Kairos/Kairos.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
         <RemoveFolder Id="RemoveDesktopFolder" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\UTN\Victoria" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\UTN\$(var.Title)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
   </Fragment>
 
   <Fragment>
-    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+    <ComponentGroup Id="ProductComponents" Directory="Victoria">
       <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
       <!-- <Component Id="ProductComponent"> -->
       <!-- TODO: Insert files, registry keys, and other resources here. -->
@@ -89,10 +101,7 @@
       </Component>-->
       <Component Id="System.Windows.dll" Guid="9940872e-718f-4fab-a410-8564e87085e4">
         <File Id="System.Windows.dll" Name="System.Windows.dll" Source="$(var.Victoria.DesktopApp_TargetDir)System.Windows.dll" />
-      </Component>
-      <!--<Component Id="Victoria_2.0.exe" Guid="dceb381a-0958-4413-b03c-09c0fda037d8">
-        <File Id="Victoria_2.0.exe" Name="Victoria 2.0.exe" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria 2.0.exe" />
-      </Component>-->
+      </Component>      
       <Component Id="Victoria.exe" Guid="bc69412a-5f35-4304-8c29-4800b5d7261a">
         <File Id="Victoria.exe" Name="Victoria.exe" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.exe" />
       </Component>
@@ -191,6 +200,18 @@
       </Component>
       <Component Id="Victoria.FormulaParser.dll" Guid="615bbbdf-ec3c-4372-8c2f-8420d751b96a">
         <File Id="Victoria.FormulaParser.dll" Name="Victoria.FormulaParser.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.FormulaParser.dll" />
+      </Component>         
+      <Component Id="ClosedXML.dll" Guid="e7693c3f-911e-46b1-b019-228a0b7821ad">
+        <File Id="ClosedXML.dll" Name="ClosedXML.dll" Source="$(var.Victoria.DesktopApp_TargetDir)ClosedXML.dll" />
+      </Component>
+      <Component Id="DocumentFormat.OpenXml.dll" Guid="9d12b23a-57fb-466c-bbfa-f2b870a79736">
+        <File Id="DocumentFormat.OpenXml.dll" Name="DocumentFormat.OpenXml.dll" Source="$(var.Victoria.DesktopApp_TargetDir)DocumentFormat.OpenXml.dll" />
+      </Component>
+      <Component Id="ExcelNumberFormat.dll" Guid="d698cc77-988f-445f-8fda-1baf09a526eb">
+        <File Id="ExcelNumberFormat.dll" Name="ExcelNumberFormat.dll" Source="$(var.Victoria.DesktopApp_TargetDir)ExcelNumberFormat.dll" />
+      </Component>
+      <Component Id="FastMember.dll" Guid="e9e1170b-64ba-469b-9be9-f1ceba86ca46">
+        <File Id="FastMember.dll" Name="FastMember.dll" Source="$(var.Victoria.DesktopApp_TargetDir)FastMember.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
@@ -812,7 +833,7 @@
       </Component>
       <Component Id="dlls_dllHallEspera.dll" Guid="2ad28729-5548-4b16-ba08-fd134a48d97a">
         <File Id="dlls_dllHallEspera.dll" Name="dllHallEspera.dll" Source="$(var.Victoria.DesktopApp_TargetDir)dlls\dllHallEspera.dll" />
-      </Component>
+      </Component>      
     </ComponentGroup>
   </Fragment>
   <Fragment>
@@ -822,4 +843,184 @@
       </Component>
     </ComponentGroup>
   </Fragment>
+  <Fragment>
+    <ComponentGroup Id="Kairos" Directory="Kairos">
+      <Component Id="Kairos.exe" Guid="9f775d51-4477-4fb2-8700-436b4f21d3e3">
+        <File Id="Kairos.exe" Name="Kairos.exe" Source="$(var.Kairos_TargetDir)Kairos.exe" />
+      </Component>
+      <Component Id="Kairos.exe.config" Guid="21740286-9e1c-4a92-92bd-9fc180a1f876">
+        <File Id="Kairos.exe.config" Name="Kairos.exe.config" Source="$(var.Kairos_TargetDir)Kairos.exe.config" />
+      </Component>
+    <!--</ComponentGroup>
+    <ComponentGroup Id="dll" Directory="dll">-->
+      <Component Id="Accord.dll.config" Guid="8b00eb76-4b77-4908-8136-95c25d895433">
+        <File Id="Accord.dll.config" Name="Accord.dll.config" Source="$(var.Kairos_TargetDir)Accord.dll.config" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.dll" Guid="d7a751fd-c075-4708-9920-7bcf3c8dfdf6">
+        <File Id="Microsoft.EntityFrameworkCore.dll" Name="Microsoft.EntityFrameworkCore.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.dll" />
+      </Component>
+      <Component Id="ClosedXML.dll.2" Guid="90d016a0-a36f-489b-a595-cb4741028de2">
+        <File Id="ClosedXML.dll.2" Name="ClosedXML.dll" Source="$(var.Kairos_TargetDir)ClosedXML.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.Relational.dll" Guid="e293206c-2462-47ad-b01b-06545e678a03">
+        <File Id="Microsoft.EntityFrameworkCore.Relational.dll" Name="Microsoft.EntityFrameworkCore.Relational.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.Relational.dll" />
+      </Component>
+      <Component Id="Accord.Statistics.dll" Guid="c1331f15-8b76-43e9-80e1-977ca416f1b4">
+        <File Id="Accord.Statistics.dll" Name="Accord.Statistics.dll" Source="$(var.Kairos_TargetDir)Accord.Statistics.dll" />
+      </Component>
+      <Component Id="MathNet.Symbolics.dll" Guid="77d5d897-9476-4e84-b891-b19c73e748f1">
+        <File Id="MathNet.Symbolics.dll" Name="MathNet.Symbolics.dll" Source="$(var.Kairos_TargetDir)MathNet.Symbolics.dll" />
+      </Component>
+      <Component Id="Accord.Math.dll" Guid="33211b50-f72c-444d-8e8d-19c7dda3d0b6">
+        <File Id="Accord.Math.dll" Name="Accord.Math.dll" Source="$(var.Kairos_TargetDir)Accord.Math.dll" />
+      </Component>
+      <Component Id="EPPlus.dll_2" Guid="ab80df7d-8df1-492f-b9f6-687998a5aaae">
+        <File Id="EPPlus.dll_2" Name="EPPlus.dll" Source="$(var.Kairos_TargetDir)EPPlus.dll" />
+      </Component>
+      <Component Id="EntityFrameworkCore.SqlServerCompact40.dll" Guid="01d21e2e-8673-4db0-9d6b-77915f3f9d02">
+        <File Id="EntityFrameworkCore.SqlServerCompact40.dll" Name="EntityFrameworkCore.SqlServerCompact40.dll" Source="$(var.Kairos_TargetDir)EntityFrameworkCore.SqlServerCompact40.dll" />
+      </Component>
+      <Component Id="netstandard.dll" Guid="5b715e78-c9f7-496f-9f2d-5f893d3ed326">
+        <File Id="netstandard.dll" Name="netstandard.dll" Source="$(var.Kairos_TargetDir)netstandard.dll" />
+      </Component>
+      <Component Id="System.Data.Common.dll" Guid="69ccfb4d-b4f4-4ebd-97d1-099e81a68794">
+        <File Id="System.Data.Common.dll" Name="System.Data.Common.dll" Source="$(var.Kairos_TargetDir)System.Data.Common.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.Tracing.dll" Guid="fd7ef812-472a-4912-a40c-1db8bc6af5af">
+        <File Id="System.Diagnostics.Tracing.dll" Name="System.Diagnostics.Tracing.dll" Source="$(var.Kairos_TargetDir)System.Diagnostics.Tracing.dll" />
+      </Component>
+      <Component Id="System.Globalization.Extensions.dll" Guid="66e09fe3-1177-4e01-bd0a-887577bb5792">
+        <File Id="System.Globalization.Extensions.dll" Name="System.Globalization.Extensions.dll" Source="$(var.Kairos_TargetDir)System.Globalization.Extensions.dll" />
+      </Component>
+      <Component Id="System.IO.Compression.dll" Guid="705fc295-b55c-4cb6-a807-e91a372b6f4e">
+        <File Id="System.IO.Compression.dll" Name="System.IO.Compression.dll" Source="$(var.Kairos_TargetDir)System.IO.Compression.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Guid="26b03cac-6bcf-4ae5-b394-74c6e4d17406">
+        <File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Primitives.dll" Guid="81a45121-4512-4814-ab03-df25f8bae037">
+        <File Id="Microsoft.Extensions.Primitives.dll" Name="Microsoft.Extensions.Primitives.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Primitives.dll" />
+      </Component>
+      <Component Id="System.Memory.dll" Guid="6fedeab3-418a-4177-9095-cbf546930c1e">
+        <File Id="System.Memory.dll" Name="System.Memory.dll" Source="$(var.Kairos_TargetDir)System.Memory.dll" />
+      </Component>
+      <Component Id="System.Numerics.Vectors.dll" Guid="be4ebf5e-afbb-44f0-a021-a3e980e3dc48">
+        <File Id="System.Numerics.Vectors.dll" Name="System.Numerics.Vectors.dll" Source="$(var.Kairos_TargetDir)System.Numerics.Vectors.dll" />
+      </Component>
+      <Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="457ab4ec-36b0-46f4-b618-136f7650f234">
+        <File Id="System.Runtime.CompilerServices.Unsafe.dll" Name="System.Runtime.CompilerServices.Unsafe.dll" Source="$(var.Kairos_TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
+      </Component>
+      <Component Id="System.Runtime.dll" Guid="1a198449-b177-4ac6-825c-6439044756c3">
+        <File Id="System.Runtime.dll" Name="System.Runtime.dll" Source="$(var.Kairos_TargetDir)System.Runtime.dll" />
+      </Component>
+      <Component Id="System.Buffers.dll" Guid="870226e6-d08c-4ae2-a8cd-40dcb5405ac4">
+        <File Id="System.Buffers.dll" Name="System.Buffers.dll" Source="$(var.Kairos_TargetDir)System.Buffers.dll" />
+      </Component>
+      <Component Id="Remotion.Linq.dll" Guid="d7819ae0-cfba-4dc8-a498-140e83662ecd">
+        <File Id="Remotion.Linq.dll" Name="Remotion.Linq.dll" Source="$(var.Kairos_TargetDir)Remotion.Linq.dll" />
+      </Component>
+      <Component Id="System.Interactive.Async.dll" Guid="c99f9bad-afd0-4079-ae34-4b322e1d9fc5">
+        <File Id="System.Interactive.Async.dll" Name="System.Interactive.Async.dll" Source="$(var.Kairos_TargetDir)System.Interactive.Async.dll" />
+      </Component>
+      <Component Id="System.ComponentModel.Annotations.dll" Guid="6ad1bcd2-088d-4867-8324-97ae3f8ff174">
+        <File Id="System.ComponentModel.Annotations.dll" Name="System.ComponentModel.Annotations.dll" Source="$(var.Kairos_TargetDir)System.ComponentModel.Annotations.dll" />
+      </Component>
+      <Component Id="Microsoft.EntityFrameworkCore.Abstractions.dll" Guid="43cf1b55-a2ab-4168-8262-2c07e0ba7088">
+        <File Id="Microsoft.EntityFrameworkCore.Abstractions.dll" Name="Microsoft.EntityFrameworkCore.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.EntityFrameworkCore.Abstractions.dll" />
+      </Component>
+      <Component Id="System.Collections.Immutable.dll_2" Guid="c703ea71-9fcc-4191-92ca-b2789c85a577">
+        <File Id="System.Collections.Immutable.dll_2" Name="System.Collections.Immutable.dll" Source="$(var.Kairos_TargetDir)System.Collections.Immutable.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.DiagnosticSource.dll" Guid="37ba3ce7-ee6b-4afb-903f-396b3556e709">
+        <File Id="System.Diagnostics.DiagnosticSource.dll" Name="System.Diagnostics.DiagnosticSource.dll" Source="$(var.Kairos_TargetDir)System.Diagnostics.DiagnosticSource.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.DependencyInjection.dll" Guid="057f36af-6595-4b92-9875-f75741c6d2f0">
+        <File Id="Microsoft.Extensions.DependencyInjection.dll" Name="Microsoft.Extensions.DependencyInjection.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Caching.Memory.dll" Guid="193db8a0-77ba-437b-b00b-29254a54de37">
+        <File Id="Microsoft.Extensions.Caching.Memory.dll" Name="Microsoft.Extensions.Caching.Memory.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Caching.Memory.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Options.dll" Guid="cc0b8aa7-5c66-419f-9b3b-0a63b1413d63">
+        <File Id="Microsoft.Extensions.Options.dll" Name="Microsoft.Extensions.Options.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Options.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Logging.dll" Guid="f8e7d86c-456b-4442-a1e4-ffa44f3b3896">
+        <File Id="Microsoft.Extensions.Logging.dll" Name="Microsoft.Extensions.Logging.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Logging.dll" />
+      </Component>
+      <Component Id="DocumentFormat.OpenXml.dll.2" Guid="4eb16263-9d56-484c-898c-a7825a178830">
+        <File Id="DocumentFormat.OpenXml.dll.2" Name="DocumentFormat.OpenXml.dll" Source="$(var.Kairos_TargetDir)DocumentFormat.OpenXml.dll" />
+      </Component>
+      <Component Id="ExcelNumberFormat.dll.2" Guid="96d824ba-6e59-4a74-ad0a-5aa02f96a3cc">
+        <File Id="ExcelNumberFormat.dll.2" Name="ExcelNumberFormat.dll" Source="$(var.Kairos_TargetDir)ExcelNumberFormat.dll" />
+      </Component>
+      <Component Id="FastMember.Signed.dll" Guid="c89404ad-83f3-4026-864d-4d1be46678ca">
+        <File Id="FastMember.Signed.dll" Name="FastMember.Signed.dll" Source="$(var.Kairos_TargetDir)FastMember.Signed.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Configuration.Abstractions.dll" Guid="0a244b4d-e904-45a9-a90e-7bb52e02d840">
+        <File Id="Microsoft.Extensions.Configuration.Abstractions.dll" Name="Microsoft.Extensions.Configuration.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
+      </Component>
+      <Component Id="Accord.dll" Guid="78327a02-639e-4f89-9020-942211227d32">
+        <File Id="Accord.dll" Name="Accord.dll" Source="$(var.Kairos_TargetDir)Accord.dll" />
+      </Component>
+      <Component Id="Accord.Math.Core.dll" Guid="98c4f9c7-258a-4c06-a2a9-17694fcd1eff">
+        <File Id="Accord.Math.Core.dll" Name="Accord.Math.Core.dll" Source="$(var.Kairos_TargetDir)Accord.Math.Core.dll" />
+      </Component>
+      <Component Id="FSharp.Core.dll" Guid="954cd3da-eb0e-49a3-8d6f-567b506e85bc">
+        <File Id="FSharp.Core.dll" Name="FSharp.Core.dll" Source="$(var.Kairos_TargetDir)FSharp.Core.dll" />
+      </Component>
+      <Component Id="MathNet.Numerics.FSharp.dll" Guid="81da8f62-176d-4f8f-b437-c3a60610bd33">
+        <File Id="MathNet.Numerics.FSharp.dll" Name="MathNet.Numerics.FSharp.dll" Source="$(var.Kairos_TargetDir)MathNet.Numerics.FSharp.dll" />
+      </Component>
+      <Component Id="MathNet.Numerics.dll" Guid="7a436f49-1c64-4566-bf89-079a78856212">
+        <File Id="MathNet.Numerics.dll" Name="MathNet.Numerics.dll" Source="$(var.Kairos_TargetDir)MathNet.Numerics.dll" />
+      </Component>
+      <Component Id="FParsec.dll" Guid="6895f8dc-42f7-45e5-b0c9-7087a5d53141">
+        <File Id="FParsec.dll" Name="FParsec.dll" Source="$(var.Kairos_TargetDir)FParsec.dll" />
+      </Component>
+      <Component Id="FParsecCS.dll" Guid="37768f42-3033-40db-979f-6a2b00862bd4">
+        <File Id="FParsecCS.dll" Name="FParsecCS.dll" Source="$(var.Kairos_TargetDir)FParsecCS.dll" />
+      </Component>
+      <Component Id="System.Data.SqlServerCe.dll" Guid="75e62c24-c9ff-4a1b-bde5-76ca36a009ef">
+        <File Id="System.Data.SqlServerCe.dll" Name="System.Data.SqlServerCe.dll" Source="$(var.Kairos_TargetDir)System.Data.SqlServerCe.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Caching.Abstractions.dll" Guid="d0dfcb80-0514-443f-94d4-ed0147f766fe">
+        <File Id="Microsoft.Extensions.Caching.Abstractions.dll" Name="Microsoft.Extensions.Caching.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Caching.Abstractions.dll" />
+      </Component>
+      <Component Id="Microsoft.Extensions.Logging.Abstractions.dll" Guid="538a9737-803f-4054-a444-136730997526">
+        <File Id="Microsoft.Extensions.Logging.Abstractions.dll" Name="Microsoft.Extensions.Logging.Abstractions.dll" Source="$(var.Kairos_TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />
+      </Component>
+      <Component Id="System.Xml.XPath.XDocument.dll" Guid="fe67e9cb-3f28-4d6c-a9aa-26488a67783d">
+        <File Id="System.Xml.XPath.XDocument.dll" Name="System.Xml.XPath.XDocument.dll" Source="$(var.Kairos_TargetDir)System.Xml.XPath.XDocument.dll" />
+      </Component>
+      <Component Id="System.Threading.Overlapped.dll" Guid="f7da0806-7c4f-438a-b30c-04de0e9d3d2b">
+        <File Id="System.Threading.Overlapped.dll" Name="System.Threading.Overlapped.dll" Source="$(var.Kairos_TargetDir)System.Threading.Overlapped.dll" />
+      </Component>
+      <Component Id="System.Security.SecureString.dll" Guid="e9ef6982-0b49-4265-8a3a-a1e64d1603f5">
+        <File Id="System.Security.SecureString.dll" Name="System.Security.SecureString.dll" Source="$(var.Kairos_TargetDir)System.Security.SecureString.dll" />
+      </Component>
+      <Component Id="System.Security.Cryptography.Algorithms.dll" Guid="25245048-9159-4fdd-9055-df13638a1923">
+        <File Id="System.Security.Cryptography.Algorithms.dll" Name="System.Security.Cryptography.Algorithms.dll" Source="$(var.Kairos_TargetDir)System.Security.Cryptography.Algorithms.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Primitives.dll" Guid="40168354-338c-490c-894e-a98e53a465b8">
+        <File Id="System.Runtime.Serialization.Primitives.dll" Name="System.Runtime.Serialization.Primitives.dll" Source="$(var.Kairos_TargetDir)System.Runtime.Serialization.Primitives.dll" />
+      </Component>
+      <Component Id="System.Runtime.Serialization.Xml.dll" Guid="de50bd70-697b-4544-acef-743fbba16dab">
+        <File Id="System.Runtime.Serialization.Xml.dll" Name="System.Runtime.Serialization.Xml.dll" Source="$(var.Kairos_TargetDir)System.Runtime.Serialization.Xml.dll" />
+      </Component>
+      <Component Id="System.Runtime.InteropServices.RuntimeInformation.dll" Guid="d9f92904-40a2-4366-8dbb-85db87e5ef2f">
+        <File Id="System.Runtime.InteropServices.RuntimeInformation.dll" Name="System.Runtime.InteropServices.RuntimeInformation.dll" Source="$(var.Kairos_TargetDir)System.Runtime.InteropServices.RuntimeInformation.dll" />
+      </Component>
+      <Component Id="System.ValueTuple.dll" Guid="ce7c1a5a-19a4-4ff2-b497-93d78d785d80">
+        <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.Kairos_TargetDir)System.ValueTuple.dll" />
+      </Component>
+      <Component Id="System.Net.Sockets.dll" Guid="5c66c435-f2c4-4b61-8268-1e2714d615e0">
+        <File Id="System.Net.Sockets.dll" Name="System.Net.Sockets.dll" Source="$(var.Kairos_TargetDir)System.Net.Sockets.dll" />
+      </Component>
+      <Component Id="System.Net.Http.dll" Guid="93c5a2bc-cdbc-4b17-9d6f-627e112347e5">
+        <File Id="System.Net.Http.dll" Name="System.Net.Http.dll" Source="$(var.Kairos_TargetDir)System.Net.Http.dll" />
+      </Component>
+      <Component Id="System.Diagnostics.StackTrace.dll" Guid="d536946a-8c7c-4946-bb90-89f0186aeac3">
+        <File Id="System.Diagnostics.StackTrace.dll" Name="System.Diagnostics.StackTrace.dll" Source="$(var.Kairos_TargetDir)System.Diagnostics.StackTrace.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>  
 </Wix>

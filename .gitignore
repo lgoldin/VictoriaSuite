@@ -16,4 +16,8 @@ Code/Victoria.UI.SharedWPF/Victoria.UI.SharedWPF.csproj.user
 Code/Victoria.Shared/Victoria.Shared.csproj.user
 Code/.vs/Victoria/
 Code/UpgradeLog*
+/Code/Setup/XSLT
 /Plan de Pruebas
+/Kairos/.vs/Kairos/v15/Server/sqlite3
+/Code/packages
+
