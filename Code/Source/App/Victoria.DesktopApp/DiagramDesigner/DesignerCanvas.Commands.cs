@@ -113,11 +113,6 @@ namespace DiagramDesigner
             
         }
 
-        private DesignerItem getNodeByID(string id_to_find)
-        {
-            return id_to_find != null ? this.Children.OfType<DesignerItem>().Where(x => x.ID.ToString() == id_to_find).FirstOrDefault() : null;
-        }
-
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
             Console.WriteLine("PROBANDO NUEVO BOTON");
@@ -125,12 +120,23 @@ namespace DiagramDesigner
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Console.WriteLine("PROBANDO NUEVO BOTON");
+            XMLParser.setJumpToNextNode(true);
+            string executing_node_id = XMLParser.getExecutingNode();
+
+            DesignerItem.setDebugColor(getNodeByID(executing_node_id), getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
+
+            this.previous_node_id = executing_node_id;
         }
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
             Console.WriteLine("PROBANDO NUEVO BOTON");
+        }
+
+
+        private DesignerItem getNodeByID(string id_to_find)
+        {
+            return id_to_find != null ? this.Children.OfType<DesignerItem>().Where(x => x.ID.ToString() == id_to_find).FirstOrDefault() : null;
         }
 
         #endregion

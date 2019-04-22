@@ -46,6 +46,7 @@ namespace Victoria.Shared.Debug
                         this.waitForCommand(node.Name);
                     }
                 }
+
                 NotifyUIMethod.DynamicInvoke();
             }
         }
