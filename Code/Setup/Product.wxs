@@ -4,7 +4,7 @@
   <?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
   <?define Version="Victoria V"?>
   <?define Title="Victoria Suite"?>
-  <Product Id="*" Name="$(var.Title)" Language="1033" Version="4.1.0.2" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
+  <Product Id="*" Name="$(var.Title)" Language="1033" Version="5.0.0.1" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)victoria_suite.ico" />
