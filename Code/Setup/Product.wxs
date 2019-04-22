@@ -210,6 +210,9 @@
       <Component Id="ExcelNumberFormat.dll" Guid="d698cc77-988f-445f-8fda-1baf09a526eb">
         <File Id="ExcelNumberFormat.dll" Name="ExcelNumberFormat.dll" Source="$(var.Victoria.DesktopApp_TargetDir)ExcelNumberFormat.dll" />
       </Component>
+      <Component Id="FastMember.dll" Guid="e9e1170b-64ba-469b-9be9-f1ceba86ca46">
+        <File Id="FastMember.dll" Name="FastMember.dll" Source="$(var.Victoria.DesktopApp_TargetDir)FastMember.dll" />
+      </Component>
     </ComponentGroup>
   </Fragment>
 
@@ -830,7 +833,7 @@
       </Component>
       <Component Id="dlls_dllHallEspera.dll" Guid="2ad28729-5548-4b16-ba08-fd134a48d97a">
         <File Id="dlls_dllHallEspera.dll" Name="dllHallEspera.dll" Source="$(var.Victoria.DesktopApp_TargetDir)dlls\dllHallEspera.dll" />
-      </Component>
+      </Component>      
     </ComponentGroup>
   </Fragment>
   <Fragment>
@@ -1019,5 +1022,5 @@
         <File Id="System.Diagnostics.StackTrace.dll" Name="System.Diagnostics.StackTrace.dll" Source="$(var.Kairos_TargetDir)System.Diagnostics.StackTrace.dll" />
       </Component>
     </ComponentGroup>
-  </Fragment>
+  </Fragment>  
 </Wix>
