@@ -1,1 +1,3 @@
-2019-04-09 16:59:06,248 - INFO - Victoria.DesktopApp.App.Application_Startup - WELCOME VICTORIA V
+2019-04-19 12:39:08,255 - INFO - Victoria.DesktopApp.App.Application_Startup - INICIO VICTORIA V
+2019-04-19 12:39:12,123 - INFO - Victoria.DesktopApp.View.WelcomeView.btnAnalisisPrevio_OnClick - Inicio Analisis Previo
+2019-04-19 12:39:23,284 - INFO - Victoria.DesktopApp.View.WelcomeView.btnAnalisisPrevio_OnClick - Fin Analisis Previo

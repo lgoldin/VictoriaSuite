@@ -48,6 +48,7 @@ namespace DiagramDesigner
 
         public DataGrid dataGridVariables { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
 
 
         public DesignerCanvas()
@@ -759,13 +760,17 @@ namespace DiagramDesigner
 
         private void ImprimirDiagrama()
         {
+            logger.Info("Inicio Imprimir Diagrama");
             SelectionService.ClearSelection();
             PrintDialog printDialog = new PrintDialog();
             if (true == printDialog.ShowDialog()) printDialog.PrintVisual(this, "Diagrama");
+            logger.Info("Fin Imprimir Diagrama");
         }
 
         private void DarPDFAlUsuario()
         {
+
+            logger.Info("Inicio dar PDF Al Usuario");
             var parentFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var sourcePath = Path.Combine(parentFolder, @"Manual de usuario\Manual de usuario Victoria.pdf");
 
@@ -781,14 +786,19 @@ namespace DiagramDesigner
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+                    logger.Error("Error dar PDF Al Usuario "+ex.Message);
                 }
             }
+
+            logger.Info("Fin dar PDF Al Usuario");
         }
 
         public void AbrirDiagrama()
         {
             try
             {
+
+                logger.Info("Inicio Abrir Diagrama");
                 XElement root = LoadSerializedDataFromFile();
 
                 if (root == null)
@@ -829,20 +839,26 @@ namespace DiagramDesigner
                     Canvas.SetZIndex(connection, Int32.Parse(connectionXML.Element("zIndex").Value));
                     this.Children.Add(connection);
                 }
+
+                logger.Info("Fin Abrir Diagrama");
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Se produjo un error al abrir el diagrama.");
                 viewException.ShowDialog();
+                logger.Error("Se produjo un error al abrir el diagrama: "+ex.Message);
                 return;
             }
         }
 
         private void BorrarDiagrama()
         {
+
+            logger.Info("Inicio Borrar Diagrama");
             this.Children.Clear();
             this.SelectionService.ClearSelection();
 
+            logger.Info("Fin Guardar Diagrama");
             /*var viewDeleteDiagram = new DeleteDiagramPopUp();
             viewDeleteDiagram.ShowDialog();
 
@@ -860,6 +876,8 @@ namespace DiagramDesigner
 
         private void GuardarDiagrama()
         {
+
+            logger.Info("Inicio Guardar Diagrama");
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
             IEnumerable<Connection> connections = this.Children.OfType<Connection>();
 
@@ -874,10 +892,13 @@ namespace DiagramDesigner
             root.Add(helperVic.generarTagDeVariables(variables));
 
             GuardarArchivoDialog(root);
+
+            logger.Info("Fin Guardar Diagrama");
         }
 
         void GuardarArchivoDialog(XElement xElement)
         {
+            logger.Info("Inicio Guardar Archivo");
             SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.Filter = "Files (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFile.ShowDialog() == true)
@@ -889,8 +910,10 @@ namespace DiagramDesigner
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+                    logger.Error("Error al Guardar Archivo: "+ ex.Message);
                 }
             }
+            logger.Info("Fin Guardar Archivo");
         }
 
         private XElement LoadSerializedDataFromFile()
@@ -910,34 +933,45 @@ namespace DiagramDesigner
         {
             try
             {
+                logger.Info("Inicio Validar y Lanzar Simulador");
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
                 var mainWindow = new MainWindow(root.ToString(), true);
                 mainWindow.Show();
+                logger.Info("Fin Validar y Lanzar Simulador");
+
             }
             catch (DiagramValidationException ex)
             {
                 var viewException = new AlertPopUp(ex.Message);
                 viewException.ShowDialog();
+                logger.Error("Validar y Lanzar Simulador: "+ex.Message);
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Error de parseo. Revisa tu diagrama.");
                 viewException.ShowDialog();
+                logger.Error("Error de parseo.Revisa tu diagrama. " + ex.Message);
+
             }
         }
 
         private void ValidarDiagrama()
         {
+
+            logger.Info("Inicio Validar Diagrama");
             var errorList = ValidateUseOfCorrectVariables().Concat(ValidateFinDiagrama());
             if (errorList.Any())
             {
                 throw new DiagramValidationException(String.Join("\n", errorList.ToArray()));
             }
+            logger.Info("Fin Validar Diagrama");
         }
 
         private HashSet<string> ValidateUseOfCorrectVariables()
         {
+
+            logger.Info("Inicio Validar Uso Correcto de Variables");
             var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
 
             foreach (var variable in variables)
@@ -1000,6 +1034,8 @@ namespace DiagramDesigner
 
             ValidateReferences(errorList, referencesList);
 
+
+            logger.Info("Fin Validar Uso Correcto de Variables");
             return errorList;
         }
 
@@ -1073,6 +1109,8 @@ namespace DiagramDesigner
         
         private void ValidateUseOfCorrectVariablesInTextBox(HashSet<string> errorLIst, string textBoxText, List<string> variableNames)
         {
+
+            logger.Info("Inicio Validar Caracteres");
             var regex = "[a-zA-Z0-9]+";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1086,10 +1124,14 @@ namespace DiagramDesigner
                     errorLIst.Add("-Estas utilizando una variable " + '"' + match + '"' + " no declarada.");
                 }
             }
+
+            logger.Info("Fin Validar Caracteres");
         }
 
         private void ValidateUseOfCorrectCharacters(HashSet<string> errorLIst, string textBoxText)
         {
+
+            logger.Info("Inicio Validar Caracteres");
             var regex = @"(?![a-zA-Z0-9\!\&\|\ \<\>\%\^\+\=\-\*\/\(\)]+).";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1097,10 +1139,12 @@ namespace DiagramDesigner
             {
                 errorLIst.Add("-Estas utilizando un caracter desconocido " + '"' + match + '"' + ".");
             }
+            logger.Info("Fin Validar Caracteres");
         }
 
         private void ValidateUseOfValidConditionOperators(HashSet<string> errorLIst, string textBoxText)
         {
+            logger.Info("Inicio Validar Condiciones y Operadores");
             var regex = @"[^a-zA-Z0-9\ ]+";
             var operatorsUsed = Regex.Matches(textBoxText, regex);
 
@@ -1115,6 +1159,8 @@ namespace DiagramDesigner
                     errorLIst.Add("Para hacer comparaciones utilizá " + '"' + "==" + '"' + ".");
                 }
             }
+
+            logger.Info("Fin Validar Condiciones y Operadores");
         }
 
         private XElement GenerarVicXmlDelDiagrama()
@@ -1137,6 +1183,7 @@ namespace DiagramDesigner
 
         private XElement serializarModelo(IEnumerable<DesignerItem> designerItems, IEnumerable<Connection> connections)
         {
+            logger.Info("Inicio Sereliazar Modelo");
             XElement modelo = new XElement("Modelo");
             XElement designerItemsXML = SerializarDesignerItems(designerItems);
             XName name = "Name";
@@ -1145,11 +1192,14 @@ namespace DiagramDesigner
             connectionsXML.SetAttributeValue(name, "ModeloAnalisisSensibilidad");
             modelo.Add(designerItemsXML);
             modelo.Add(connectionsXML);
+            logger.Info("Fin Serializar Modelo");
             return modelo;
+
         }
 
         private void CopiarSeleccionDiagrama()
         {
+            logger.Info("Inicio Copiar Seleccion Diagrama");
             IEnumerable<DesignerItem> selectedDesignerItems =
                 this.SelectionService.CurrentSelection.OfType<DesignerItem>();
 
@@ -1175,6 +1225,7 @@ namespace DiagramDesigner
                         selectedConnections.Add(connection);
                     }
                 }
+                logger.Info("Fin Borrar Seleccion Diagrama");
             }
 
             XElement designerItemsXML = SerializarDesignerItems(selectedDesignerItems);
@@ -1193,6 +1244,7 @@ namespace DiagramDesigner
 
         private void PegarSeleccionDiagrama()
         {
+            logger.Info("Inicio Pegar Seleccion Diagrama");
             XElement root = LoadSerializedDataFromClipBoard();
 
             if (root == null)
@@ -1267,10 +1319,12 @@ namespace DiagramDesigner
             root.Attribute("OffsetY").Value = (offsetY + 10).ToString();
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Xaml, root);
+            logger.Info("Fin Pegar Seleccion Diagrama");
         }
 
         private void BorrarSeleccionDiagrama()
         {
+            logger.Info("Inicio Borrar Seleccion Diagrama");
             foreach (Connection connection in SelectionService.CurrentSelection.OfType<Connection>())
             {
                 this.Children.Remove(connection);
@@ -1295,6 +1349,7 @@ namespace DiagramDesigner
 
             SelectionService.ClearSelection();
             UpdateZIndex();
+            logger.Info("Fin Borrar Seleccion Diagrama");
         }
 
         private XElement LoadSerializedDataFromClipBoard()
@@ -1319,6 +1374,7 @@ namespace DiagramDesigner
 
         private void AgruparSeleccionDiagrama()
         {
+            logger.Info("Inicio Agrupar Seleccion Diagrama");
             var items = from item in this.SelectionService.CurrentSelection.OfType<DesignerItem>()
                         where item.ParentID == Guid.Empty
                         select item;
@@ -1340,10 +1396,12 @@ namespace DiagramDesigner
                 item.ParentID = groupItem.ID;
 
             this.SelectionService.SelectItem(groupItem);
+            logger.Info("Fin Agrupar Seleccion Diagrama");
         }
 
         private void DesagruparSeleccionDiagrama()
         {
+            logger.Info("Inicio Desagrupar Seleccion Diagrama");
             var groups = (from item in SelectionService.CurrentSelection.OfType<DesignerItem>()
                           where item.IsGroup && item.ParentID == Guid.Empty
                           select item).ToArray();
@@ -1361,6 +1419,8 @@ namespace DiagramDesigner
                 this.Children.Remove(groupRoot);
                 UpdateZIndex();
             }
+            logger.Info("Fin Desagrupar Seleccion Diagrama");
+
         }
 
         public string collectionJson()

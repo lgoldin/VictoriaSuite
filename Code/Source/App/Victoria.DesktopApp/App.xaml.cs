@@ -29,7 +29,7 @@ namespace Victoria.DesktopApp
             //Disable shutdown when the dialog closes
             Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
             
-             logger.Info("WELCOME VICTORIA V");
+             logger.Info("INICIO VICTORIA V");
              
 
             if (e.Args.Any() && e.Args[0].IndexOf(".vic", System.StringComparison.Ordinal) > 0)
