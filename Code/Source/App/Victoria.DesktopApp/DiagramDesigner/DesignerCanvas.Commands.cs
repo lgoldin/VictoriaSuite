@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Microsoft.Win32;
 using Victoria.DesktopApp;
 using Victoria.Shared;
+using Victoria.Shared.Debug;
 using Victoria.DesktopApp.Behavior;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
@@ -103,14 +104,13 @@ namespace DiagramDesigner
         #region DebugCommands
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
-        {            
-            XMLParser.setJumpToNextNode(true);     
-            string executing_node_id = XMLParser.getExecutingNode();
-
-            DesignerItem.setDebugColor(getNodeByID(executing_node_id), getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
-
-            this.previous_node_id = executing_node_id;    
-            
+        {
+            Debug.instance().jumpToNextNode = true; //XMLParser.setJumpToNextNode(true);
+            Debug.instance().debugCommand = "Step Over";
+            DesignerItem.setDebugColor(
+                    getNodeByID(Debug.instance().executingNode.Name), // NodeID //XMLParser.getExecutingNode();
+                    getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
+            this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -120,12 +120,13 @@ namespace DiagramDesigner
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            XMLParser.setJumpToNextNode(true);
-            string executing_node_id = XMLParser.getExecutingNode();
+            Debug.instance().jumpToNextNode = true;  //XMLParser.setJumpToNextNode(true);
+            Debug.instance().debugCommand = "Continue";
+            DesignerItem.setDebugColor(
+                getNodeByID(Debug.instance().executingNode.Name),
+                getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
 
-            DesignerItem.setDebugColor(getNodeByID(executing_node_id), getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
-
-            this.previous_node_id = executing_node_id;
+            this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -156,22 +157,26 @@ namespace DiagramDesigner
             ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
             foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
                 dataGridVariablesSimulation.Items.Add(variable);
-            }
+            }          
             
-            XMLParser.setDebuggingNode(true);
+            Debug.instance().debugModeOn = true; //XMLParser.setDebuggingNode(true);
+            Debug.instance().jumpToNextNode = false;
             mainWindow.executeSimulation(true);
 
             //Espero hasta encontrar el primer nodo con breakpoing si es que existe 
             if (DesignerItem.ifAnyNodeHasBreakpoint())
             {
-                while ( XMLParser.getExecutingNode() == null ) {
+                while ( Debug.instance().executingNode == null ){//( XMLParser.getExecutingNode() == null ) {
                     //wait
                 }
 
-                string executing_node_id = XMLParser.getExecutingNode();
+                //string executing_node_id = Debug.instance().executingNode.NameXMLParser.getExecutingNode();
                 //Cambio el color del primer nodo
-                DesignerItem.setDebugColor(getNodeByID(executing_node_id),getNodeByID(this.previous_node_id));
-                this.previous_node_id = executing_node_id;
+                DesignerItem.setDebugColor(
+                    getNodeByID(Debug.instance().executingNode.Name),
+                    getNodeByID(this.previous_node_id));
+
+                this.previous_node_id = Debug.instance().executingNode.Name;
             }
 
         }

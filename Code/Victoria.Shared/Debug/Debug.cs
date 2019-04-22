@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Victoria.Shared.Debug
 {
-    class Debug
+    public class Debug
     {
 
         #region Properties
@@ -15,7 +15,13 @@ namespace Victoria.Shared.Debug
 
         private bool isFirstNode = true;
 
-        private bool debugModeOn = XMLParser.getdebuggingNode();
+        public String debugCommand { get;  set; }
+
+        public bool debugModeOn { get; set; }
+
+        public bool jumpToNextNode { get; set; }
+
+        public Node executingNode { get; set; }
 
         #endregion
 
@@ -31,35 +37,50 @@ namespace Victoria.Shared.Debug
 
         public void execute(Node node, Delegate NotifyUIMethod)
         {
+           
             if ( this.debugModeOn )
             {
                 //Me posiciono en el primer nodo con breakpoint
                 if (this.isFirstNode && node.HasBreakPoint)
                 {
-                    this.waitForCommand(node.Name);
+                    this.waitForCommand(node);
                     this.isFirstNode = false;
                 }
                 else
                 {
                     if (!this.isFirstNode)
                     {
-                        this.waitForCommand(node.Name);
+                        this.waitForCommand(node);
                     }
                 }
 
+                //Aviso a la vista que cambie el valor de las variables
                 NotifyUIMethod.DynamicInvoke();
             }
         }
 
-        private void waitForCommand(String node_id)
+        private void waitForCommand(Node node)
         {
-            XMLParser.setExecutingNode(node_id); //Aviso que nodo esta ejecutando
-            while (!XMLParser.getJumpToNextNode())
-            {
+            this.executingNode = node;
+            while (!this.jumpToNextNode){
                 //Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInto,etc..)
             }
-            XMLParser.setJumpToNextNode(false);            
+
+            if (this.debugCommand.Equals("Step Over"))
+            {
+                this.jumpToNextNode = false;
+            }
+            if (this.debugCommand.Equals("Continue"))
+            {
+                this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
+            }
         }
+
+        //public void Continue()
+        //{
+        //    this.jumpToNextNode = true;
+        //    this.needToStopExecution = this.executingNode.HasBreakPoint ? true : false;
+        //}
 
         #endregion
     }

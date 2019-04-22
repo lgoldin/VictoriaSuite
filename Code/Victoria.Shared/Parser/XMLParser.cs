@@ -21,7 +21,6 @@ namespace Victoria.Shared
         private static Boolean debuggingNode = false;
         private static Boolean jumpToNextNode = false;
 
-
         public static Simulation GetExecutingSimulation() {
             return simulation;
         }

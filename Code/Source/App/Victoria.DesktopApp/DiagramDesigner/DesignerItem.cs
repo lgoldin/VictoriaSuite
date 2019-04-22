@@ -253,7 +253,8 @@ namespace DiagramDesigner
 
         public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node)
         {
-            if(executing_node != null)
+
+            if (executing_node != null)
                 DesignerItem.changeColor(executing_node, Brushes.Blue);
 
             if (previous_node != null)
