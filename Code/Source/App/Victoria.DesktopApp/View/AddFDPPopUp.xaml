@@ -138,21 +138,20 @@
 
             </StackPanel>
         </Border>
-        <Grid x:Name="pnlMoficable" Grid.ColumnSpan="3" Visibility="Visible" Margin="800,353,250.286,153.286">
-            <Border Background="White" BorderThickness="2" BorderBrush="Gray" CornerRadius="10" Margin="0,0,-0.143,-22.143">
-            </Border>
+        <Grid x:Name="pnlMoficable" Grid.ColumnSpan="2" Visibility="Visible" Margin="800,353,250.143,129">
+            <Border Background="White" BorderThickness="2" BorderBrush="Gray" CornerRadius="10" Height="363" VerticalAlignment="Top"/>
             <Label x:Name="lblAgregarRegistro" Content="Agregar Registro" FontWeight="SemiBold" FontSize="15" Margin="7.714,7.714,275.143,296.143" RenderTransformOrigin="0.46,-0.776" ></Label>
             <RadioButton Margin="19,48,0,0" Name="rbAgregarPorFechaYHora" HorizontalAlignment="Left" VerticalAlignment="Top" Width="93" Height="15" Background="White" Foreground="Black">
                 Fecha y hora
             </RadioButton>
             <DatePicker Height="25" HorizontalAlignment="Left" Margin="44,68,0,0" Name="datePicker1" VerticalAlignment="Top" Width="226" />
-            <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm:ss " Value="00:00" Margin="44,107,144.857,206.857" />
+            <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm:ss " Value="00:00" Margin="44,107,145,231.143" />
 
             <RadioButton Margin="19,146,0,0" Name="rbAgregarPorIntervalo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="15" Background="White" Foreground="Black">
                 Intervalo
             </RadioButton>
-            <xctk:SingleUpDown Value="0" Margin="44,166,302.857,147.857" />
-            <ComboBox x:Name="comboBox_Intervalo"  RenderTransformOrigin="0.497,0.484" Margin="192.714,166,56.143,147.857" SelectionChanged="comboBoxIntervalo_SelectionChanged">
+            <xctk:SingleUpDown Value="0" Margin="44,166,303,170.143" />
+            <ComboBox x:Name="comboBox_Intervalo"  RenderTransformOrigin="0.497,0.484" Margin="193,166,56,170.143" SelectionChanged="comboBoxIntervalo_SelectionChanged">
                 <ComboBoxItem x:Name="Segundos" Content="Segundos" />
                 <ComboBoxItem x:Name="Minutos" Content="Minutos" />
                 <ComboBoxItem x:Name="Horas" Content="Horas" />
@@ -164,6 +163,23 @@
             <RadioButton Margin="132,300,0,0" Name="rbdeltaTConstante" HorizontalAlignment="Left" VerticalAlignment="Top" Width="92" Height="15" Background="White" Foreground="Black">
                 Δt constante
             </RadioButton>
+            <RadioButton Margin="257,300,0,0" Name="rbEventoAEvento" HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="15" Background="White" Foreground="Black">
+                Evento a evento
+            </RadioButton>
+            <RadioButton Margin="132,335,0,0" Name="rbDia" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="15" Background="White" Foreground="Black">
+                dia
+            </RadioButton>
+            <RadioButton Margin="188,335,0,0" Name="rbHora" HorizontalAlignment="Left" VerticalAlignment="Top" Width="59" Height="15" Background="White" Foreground="Black" RenderTransformOrigin="0.107,0.533">
+                Hora
+            </RadioButton>
+            <RadioButton Margin="252,335,0,0" Name="rbMinuto" HorizontalAlignment="Left" VerticalAlignment="Top" Width="59" Height="15" Background="White" Foreground="Black" RenderTransformOrigin="0.107,0.533">
+                Minuto
+            </RadioButton>
+            <RadioButton Margin="321,335,0,0" Name="rbSegundo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="71" Height="15" Background="White" Foreground="Black" RenderTransformOrigin="0.107,0.533">
+                Segundo
+            </RadioButton>
+
+
         </Grid>
 
     </Grid>
