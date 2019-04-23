@@ -65,7 +65,7 @@ namespace Victoria.Shared.Debug
             while (!this.jumpToNextNode){
                 //Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInto,etc..)
             }
-
+            //this.jumpToNextNode = false;
             if (this.debugCommand.Equals("Step Over"))
             {
                 this.jumpToNextNode = false;
@@ -75,12 +75,6 @@ namespace Victoria.Shared.Debug
                 this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
             }
         }
-
-        //public void Continue()
-        //{
-        //    this.jumpToNextNode = true;
-        //    this.needToStopExecution = this.executingNode.HasBreakPoint ? true : false;
-        //}
 
         #endregion
     }

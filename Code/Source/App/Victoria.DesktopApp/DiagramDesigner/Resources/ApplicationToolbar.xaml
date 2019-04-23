@@ -246,7 +246,7 @@
         <Grid Margin="3">
             <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
-                            Command="debugCommand:DebugCommands.StepOver"          
+                            Command="debugCommand:DebugCommands.Continue"          
                             CommandTarget="{Binding ElementName=MyDesigner}">
                 <Button.Content>
                     <Grid>

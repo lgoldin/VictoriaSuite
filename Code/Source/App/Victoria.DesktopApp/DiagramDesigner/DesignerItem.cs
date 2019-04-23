@@ -251,6 +251,10 @@ namespace DiagramDesigner
             return nodesWithBreakPoints.Count > 0;
         }
 
+        /*
+         * @exeucting_node: Node que esta ejecutando para ponerle el contorno en azul
+         * @previous_node: Ultimo nodo ejecutado para ponerle el contorno a como estaba antes de setearse en azul
+         */
         public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node)
         {
 

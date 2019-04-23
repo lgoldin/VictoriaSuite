@@ -105,11 +105,11 @@ namespace DiagramDesigner
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.instance().jumpToNextNode = true; //XMLParser.setJumpToNextNode(true);
+            Debug.instance().jumpToNextNode = true; 
             Debug.instance().debugCommand = "Step Over";
             DesignerItem.setDebugColor(
-                    getNodeByID(Debug.instance().executingNode.Name), // NodeID //XMLParser.getExecutingNode();
-                    getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
+                    getNodeByID(Debug.instance().executingNode.Name), 
+                    getNodeByID(this.previous_node_id)); 
             this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
@@ -120,8 +120,14 @@ namespace DiagramDesigner
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.instance().jumpToNextNode = true;  //XMLParser.setJumpToNextNode(true);
             Debug.instance().debugCommand = "Continue";
+            Debug.instance().jumpToNextNode = true; //XMLParser.setJumpToNextNode(true);
+
+            //while (Debug.instance().jumpToNextNode) {
+            //    //Debug.instance().jumpToNextNode = true;
+            //    //Debug.instance().jumpToNextNode = false;
+            //}
+            //Debug.instance().jumpToNextNode = false;
             DesignerItem.setDebugColor(
                 getNodeByID(Debug.instance().executingNode.Name),
                 getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
@@ -159,7 +165,7 @@ namespace DiagramDesigner
                 dataGridVariablesSimulation.Items.Add(variable);
             }          
             
-            Debug.instance().debugModeOn = true; //XMLParser.setDebuggingNode(true);
+            Debug.instance().debugModeOn = true; 
             Debug.instance().jumpToNextNode = false;
             mainWindow.executeSimulation(true);
 
