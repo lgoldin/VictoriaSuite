@@ -410,12 +410,15 @@ namespace Victoria.ViewModelWPF
 
         private void DebugStage()
         {
-            this.Simulation.SetDebugMode(true);
+            this.StopExecution();
+            if (!this.Executing)
+            {
+                this.Simulation.SetDebugMode(true);
 
-            this.Simulation.StopExecution(false);
-            this.Simulation.ChangeStatus(SimulationStatus.Started);
-            this.MainSimulationActor.Tell(this.Simulation);
-            
+                this.Simulation.StopExecution(false);
+                this.Simulation.ChangeStatus(SimulationStatus.Started);
+                this.MainSimulationActor.Tell(this.Simulation);
+            }
         }
 
         private void StopExecution()
