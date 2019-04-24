@@ -105,8 +105,10 @@ namespace DiagramDesigner
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
+            string originalNode = Debug.instance().executingNode.Name;
             Debug.instance().jumpToNextNode = true; 
             Debug.instance().debugCommand = "Step Over";
+            while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
             DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name), 
                     getNodeByID(this.previous_node_id)); 
@@ -121,13 +123,10 @@ namespace DiagramDesigner
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
             Debug.instance().debugCommand = "Continue";
-            Debug.instance().jumpToNextNode = true; //XMLParser.setJumpToNextNode(true);
+            Debug.instance().jumpToNextNode = true; 
 
-            while (!Debug.instance().executingNode.HasBreakPoint) {
-                //Debug.instance().jumpToNextNode = true;
-                //Debug.instance().jumpToNextNode = false;
-            }
-            //Debug.instance().jumpToNextNode = false;
+            while (!Debug.instance().executingNode.HasBreakPoint) {}
+            
             DesignerItem.setDebugColor(
                 getNodeByID(Debug.instance().executingNode.Name),
                 getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
@@ -169,14 +168,11 @@ namespace DiagramDesigner
             Debug.instance().jumpToNextNode = false;
             mainWindow.executeSimulation(true);
 
-            //Espero hasta encontrar el primer nodo con breakpoing si es que existe 
+            //Veo de encontrar el primer nodo con breakpoing si es que existe 
             if (DesignerItem.ifAnyNodeHasBreakpoint())
             {
-                while ( Debug.instance().executingNode == null ){//( XMLParser.getExecutingNode() == null ) {
-                    //wait
-                }
+                while ( Debug.instance().executingNode == null ){}
 
-                //string executing_node_id = Debug.instance().executingNode.NameXMLParser.getExecutingNode();
                 //Cambio el color del primer nodo
                 DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name),
