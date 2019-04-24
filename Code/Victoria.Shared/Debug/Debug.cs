@@ -63,7 +63,7 @@ namespace Victoria.Shared.Debug
         {        
             this.executingNode = node;
             while (!this.jumpToNextNode){
-                //Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInto,etc..)
+                //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
             }
         
             if (this.debugCommand.Equals("Step Over"))

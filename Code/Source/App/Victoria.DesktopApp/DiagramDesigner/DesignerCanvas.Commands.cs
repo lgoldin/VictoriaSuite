@@ -108,28 +108,32 @@ namespace DiagramDesigner
             string originalNode = Debug.instance().executingNode.Name;
             Debug.instance().jumpToNextNode = true; 
             Debug.instance().debugCommand = "Step Over";
+
             while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
+
             DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name), 
                     getNodeByID(this.previous_node_id)); 
             this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
-        private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
-        {
-            Console.WriteLine("PROBANDO NUEVO BOTON");
-        }
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
+            string originalNode = Debug.instance().executingNode.Name;
             Debug.instance().debugCommand = "Continue";
-            Debug.instance().jumpToNextNode = true; 
+            Debug.instance().jumpToNextNode = true;
 
-            while (!Debug.instance().executingNode.HasBreakPoint) {}
-            
+            while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
+
+            while (!Debug.instance().executingNode.HasBreakPoint)
+            {
+                Debug.instance().jumpToNextNode = true;
+            }
+
             DesignerItem.setDebugColor(
                 getNodeByID(Debug.instance().executingNode.Name),
-                getNodeByID(this.previous_node_id)); //Cambio el color del nodo que esta ejecutando
+                getNodeByID(this.previous_node_id)); 
 
             this.previous_node_id = Debug.instance().executingNode.Name;
         }
@@ -139,6 +143,10 @@ namespace DiagramDesigner
             Console.WriteLine("PROBANDO NUEVO BOTON");
         }
 
+        private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            Console.WriteLine("PROBANDO NUEVO BOTON");
+        }
 
         private DesignerItem getNodeByID(string id_to_find)
         {
