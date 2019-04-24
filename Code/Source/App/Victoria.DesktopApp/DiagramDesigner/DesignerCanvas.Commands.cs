@@ -123,10 +123,10 @@ namespace DiagramDesigner
             Debug.instance().debugCommand = "Continue";
             Debug.instance().jumpToNextNode = true; //XMLParser.setJumpToNextNode(true);
 
-            //while (Debug.instance().jumpToNextNode) {
-            //    //Debug.instance().jumpToNextNode = true;
-            //    //Debug.instance().jumpToNextNode = false;
-            //}
+            while (!Debug.instance().executingNode.HasBreakPoint) {
+                //Debug.instance().jumpToNextNode = true;
+                //Debug.instance().jumpToNextNode = false;
+            }
             //Debug.instance().jumpToNextNode = false;
             DesignerItem.setDebugColor(
                 getNodeByID(Debug.instance().executingNode.Name),

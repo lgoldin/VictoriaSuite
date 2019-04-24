@@ -60,19 +60,19 @@ namespace Victoria.Shared.Debug
         }
 
         private void waitForCommand(Node node)
-        {
+        {        
             this.executingNode = node;
             while (!this.jumpToNextNode){
                 //Tengo que esperar hasta que se se tome una accion si estoy en debug(stepOver,StepInto,etc..)
             }
-            //this.jumpToNextNode = false;
+        
             if (this.debugCommand.Equals("Step Over"))
             {
                 this.jumpToNextNode = false;
             }
             if (this.debugCommand.Equals("Continue"))
             {
-                this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
+                this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;          
             }
         }
 
