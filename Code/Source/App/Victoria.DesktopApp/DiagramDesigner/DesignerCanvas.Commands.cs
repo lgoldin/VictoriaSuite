@@ -102,7 +102,6 @@ namespace DiagramDesigner
 
 
         #region DebugCommands
-
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
             string originalNode = Debug.instance().executingNode.Name;
@@ -140,7 +139,24 @@ namespace DiagramDesigner
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Console.WriteLine("PROBANDO NUEVO BOTON");
+
+            string originalNode = Debug.instance().executingNode.Name;
+            Debug.instance().debugCommand = "Conditioned Continue";
+            Debug.instance().jumpToNextNode = true;
+            Debug.instance().conditionResult = false;
+
+            while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
+
+            while (!Debug.instance().executingNode.HasBreakPoint && !Debug.instance().executingNode.HasBreakPoint)
+            {
+                Debug.instance().jumpToNextNode = true;
+            }
+
+            DesignerItem.setDebugColor(
+                getNodeByID(Debug.instance().executingNode.Name),
+                getNodeByID(this.previous_node_id));
+
+            this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -159,6 +175,8 @@ namespace DiagramDesigner
 
         private void Debugger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            //Button stepOver_btn = this.FindName("StepOver_btn") as Button;
+
             //Muestro Datagrid
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;

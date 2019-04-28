@@ -227,10 +227,11 @@
         <!-- Botonera de debug -->
         <!--{Binding DebugCommands.StepOver}"-->
         <Grid Margin="3">
-                    <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
+            <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
                             Command="debugCommand:DebugCommands.StepOver"          
-                            CommandTarget="{Binding ElementName=MyDesigner}">
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True">
                 <Button.Content>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -244,10 +245,11 @@
             </Button>
         </Grid>
         <Grid Margin="3">
-            <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
+            <Button Name="Continue_btn" Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
                             Command="debugCommand:DebugCommands.Continue"          
-                            CommandTarget="{Binding ElementName=MyDesigner}">
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True">
                 <Button.Content>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -256,6 +258,24 @@
                         </Grid.ColumnDefinitions>
                         <Image Source="Images/stepOver.png" Width="25"/>
                         <TextBlock Margin="3,0,3,0" Text="Continuar" VerticalAlignment="Center" Grid.Column="1"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <Grid Margin="3">
+            <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="debugCommand:DebugCommands.ConditionedContinue"          
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True">
+                <Button.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="Images/stepOver.png" Width="25"/>
+                        <TextBlock Margin="3,0,3,0" Text="Continuar Condicionado" VerticalAlignment="Center" Grid.Column="1"/>
                     </Grid>
                 </Button.Content>
             </Button>

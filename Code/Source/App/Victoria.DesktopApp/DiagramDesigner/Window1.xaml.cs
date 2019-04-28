@@ -19,6 +19,7 @@ namespace DiagramDesigner
             this.diagrama().dimensiones = this.dimensiones;
             this.diagrama().dataGridVariablesSimulation = this.dataGridVariablesSimulation;
             this.diagrama().groupBoxVariablesSimulation = this.groupBoxVariablesSimulation; //Solo inicializo este porque necesito el Setter
+
         }
 
         public DialogResult Result { get; set; }

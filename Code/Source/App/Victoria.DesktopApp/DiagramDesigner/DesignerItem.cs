@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using DiagramDesigner.Controls;
 using Victoria.DesktopApp.DiagramDesigner.Nodes;
 using Victoria.Shared;
+using Victoria.Shared.Debug;
 using Node = Victoria.DesktopApp.DiagramDesigner.Nodes.Node;
 using Path = System.Windows.Shapes.Path;
 
@@ -141,7 +142,7 @@ namespace DiagramDesigner
 
         #endregion
 
-        private List<String> lstNodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
+        private List<String> lstNodesToBreakpoint = Debug.instance().getNodesToBreakpoint(); //new List<string> { "nodo_sentencia", "nodo_condicion" };
         private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();        
 
         static DesignerItem()

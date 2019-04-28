@@ -15,7 +15,11 @@ namespace Victoria.Shared.Debug
 
         private bool isFirstNode = true;
 
-        public String debugCommand { get;  set; }
+        private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
+
+        public bool conditionResult { get; set; }
+
+        public String debugCommand { get; set; }
 
         public bool debugModeOn { get; set; }
 
@@ -23,12 +27,13 @@ namespace Victoria.Shared.Debug
 
         public Node executingNode { get; set; }
 
+
         #endregion
 
 
         public static Debug instance()
         {
-            _instance =  _instance == null ? new Debug() : _instance;
+            _instance = _instance == null ? new Debug() : _instance;
 
             return _instance;
         }
@@ -37,8 +42,8 @@ namespace Victoria.Shared.Debug
 
         public void execute(Node node, Delegate NotifyUIMethod)
         {
-           
-            if ( this.debugModeOn )
+
+            if (this.debugModeOn)
             {
                 //Me posiciono en el primer nodo con breakpoint
                 if (this.isFirstNode && node.HasBreakPoint)
@@ -60,20 +65,29 @@ namespace Victoria.Shared.Debug
         }
 
         private void waitForCommand(Node node)
-        {        
+        {
             this.executingNode = node;
-            while (!this.jumpToNextNode){
+            while (!this.jumpToNextNode) {
                 //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
             }
-        
+
             if (this.debugCommand.Equals("Step Over"))
             {
                 this.jumpToNextNode = false;
             }
             if (this.debugCommand.Equals("Continue"))
             {
-                this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;          
+                this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
             }
+            if (this.debugCommand.Equals("Conditioned Continue"))
+            {
+                this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
+                this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
+            }
+        }
+
+        public List<String>getNodesToBreakpoint(){
+            return this.nodesToBreakpoint;
         }
 
         #endregion
