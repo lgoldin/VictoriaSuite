@@ -15,17 +15,17 @@ namespace Victoria.FormulaParser
             return false;
         }
 
-        public override double Operar(double terminoIzquierdo, double terminoDerecho)
+        protected override double OperarInterno(double terminoIzquierdo, double terminoDerecho)
         {
             return terminoIzquierdo / terminoDerecho;
         }
 
-        public override double Operar(double termino)
+        protected override double OperarInterno(double termino)
         {
             throw new InvalidOperationException("El operador '" + this.Valor() + "' es binario.");
         }
 
-        public override double Operar(double[] terminos)
+        protected override double OperarInterno(double[] terminos)
         {
             throw new InvalidOperationException("El operador '" + this.Valor() + "' es binario.");
         }
