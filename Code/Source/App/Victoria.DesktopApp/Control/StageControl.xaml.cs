@@ -15,6 +15,8 @@ namespace Victoria.DesktopApp.Control
     /// </summary>
     public partial class StageControl : UserControl
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         public StageControl()
         {
             InitializeComponent();
@@ -24,6 +26,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
+                logger.Info("Inicio agregar gráfico");
                 List<object> parameters = new List<object>();
 
                 var addChartPopUp = new AddChartPopUp();
@@ -43,9 +46,11 @@ namespace Victoria.DesktopApp.Control
                         }
                         break;
                 }
+                logger.Info("Fin agregar gráfico");
             }
             catch
             {
+                logger.Error("Se produjo un error al agregar un gráfico.");
                 var viewException = new AlertPopUp("Se produjo un error al agregar un gráfico. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -55,6 +60,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
+                logger.Info("Inicio Exportar Escenario");
                 using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|PDF files (*.pdf)|*.pdf";
@@ -64,9 +70,11 @@ namespace Victoria.DesktopApp.Control
                     if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         ((StageViewModel)this.DataContext).ExportStageCommand.Execute(saveFileDialog.FileName);
                 }
+                logger.Info("Fin Exportar Escenario");
             }
             catch (Exception ex)
             {
+                logger.Error("Se produjo un error al exportar el escenario");
                 var viewException = new AlertPopUp("Se produjo un error al exportar el escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -76,10 +84,13 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
+                logger.Info("Inicio Eliminar Gráfico");
                 ((StageViewModel)this.DataContext).DeleteChartCommand.Execute(null);
+                logger.Info("Fin Eliminar Grafico");
             }
             catch
             {
+                logger.Error("Se produjo un error al eliminar un gráfico");
                 var viewException = new AlertPopUp("Se produjo un error al eliminar un gráfico. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -89,10 +100,13 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
+                logger.Info("Inicio Ejecutar Escenario");
                 ((StageViewModel)this.DataContext).StopExecutionStageCommand.Execute(null);
+                logger.Info("Fin Ejecutar Escenario");
             }
             catch
             {
+                logger.Error("Se produjo un error al ejecutar el escenario");
                 var viewException = new AlertPopUp( "Se produjo un error al ejecutar el escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -102,8 +116,10 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
+                logger.Info("Inicio Agregar Animación");
                 if (!((StageViewModel)this.DataContext).DllConfigurations.Any())
                 {
+                    logger.Error("No se encontraron animaciones disponbles. Revise la configuración de Victoria");
                     var viewException = new AlertPopUp("No se encontraron animaciones disponibles. Revise la configuración de Victoria.");
                     viewException.ShowDialog();
                     return;
@@ -132,16 +148,19 @@ namespace Victoria.DesktopApp.Control
                         }
                         break;
                 }
+                logger.Info("Fin Agregar Animación");
             }
             catch
             {
-                var viewException = new AlertPopUp( "Se produjo un error al agregar una animacion. Para ver detalles, despliegue el control correspondiente.");
+                logger.Error("Se produjo un error al agregar una animación");
+                var viewException = new AlertPopUp( "Se produjo un error al agregar una animación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
         }
 
         private void BtnExecute_Animations(object sender, RoutedEventArgs e)
         {
+            logger.Info("Inicio Ejecutar Animaciones");
             var hasVectorVariable = (((StageViewModel)this.DataContext).Variables.Any(v => v.Name.Contains("(")));
             if ((((StageViewModel)this.DataContext).Variables.First(v => v.Name == "T").Values.Any() && 
                 ((StageViewModel)this.DataContext).Animations.Any()) || (hasVectorVariable && ((StageViewModel)this.DataContext).Animations.Any()))
@@ -159,14 +178,17 @@ namespace Victoria.DesktopApp.Control
                 }
                 catch
                 {
+                    logger.Error("Se produjo un error al intentar ejecutar las animaciones. Por favor revisa la configuracion de las mismas.");
                     var viewException = new AlertPopUp("Se produjo un error al intentar ejecutar las animaciones. Por favor revisa la configuración de las mismas.");
                     viewException.ShowDialog();
                 }
             }else
             {
+                logger.Error("No se puede abrir la ventana de animaciones si no se ha ejecutado la simulación o no se han creado animaciones.");
                 var viewException = new AlertPopUp("No se puede abrir la ventana de animaciones si no se ha ejecutado la simulación o no se han creado animaciones.");
                 viewException.ShowDialog();
             }
+            logger.Info("Fin Ejecutar Animaciones");
         }
 
         private ObservableCollection<AnimationViewModel> CreateAnimationsClones(ObservableCollection<AnimationViewModel> animations)
