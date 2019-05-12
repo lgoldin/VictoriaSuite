@@ -1,10 +1,12 @@
 ﻿using System.Windows;
+
 using Victoria.UI.SharedWPF;
 using DiagramDesigner;
 using System.ComponentModel;
 using System.Windows.Input;
 using Victoria.Shared.AnalisisPrevio;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace DiagramDesigner
 {
@@ -17,9 +19,9 @@ namespace DiagramDesigner
             Closing += HideWindow;
             this.diagrama().dataGridVariables = this.dataGridVariables;
             this.diagrama().dimensiones = this.dimensiones;
-            this.diagrama().dataGridVariablesSimulation = this.dataGridVariablesSimulation;
-            this.diagrama().groupBoxVariablesSimulation = this.groupBoxVariablesSimulation; //Solo inicializo este porque necesito el Setter
-
+            this.diagrama().dataGridVariablesSimulation = this.dataGridVariablesSimulation;            
+            this.diagrama().groupBoxVariablesSimulation = this.groupBoxVariablesSimulation; //Solo inicializo este porque necesito el Setter            
+            this.diagrama().debugButtonList = this.getListButtonDebug();
         }
 
         public DialogResult Result { get; set; }
@@ -31,7 +33,12 @@ namespace DiagramDesigner
         {
             return this.MyDesigner;
         }
-
+        /*
+        public ToolBar toolBar()
+        {
+            return this.MyToolBar;
+        }
+        */
         public void HideWindow(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
@@ -64,11 +71,29 @@ namespace DiagramDesigner
 
         private void BtnClose_OnClick(object sender, RoutedEventArgs e)
         {
+            this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden);
             this.Close();
         }
 
         private void dataGridVariables_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+        }
+
+        private List<Button> getListButtonDebug()
+        {
+            List<Button> debugButtonList = new List<Button>();
+            ToolBar tb = (ToolBar)this.MyToolBar.Content;
+            foreach (Grid g in tb.ItemContainerGenerator.Items)
+            {
+                if (g.Name.StartsWith("Debug"))
+                {
+                    foreach (Button b in g.Children)
+                    {
+                        debugButtonList.Add(b);
+                    }
+                }
+            }
+            return debugButtonList;
         }
     }
 }

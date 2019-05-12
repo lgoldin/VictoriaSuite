@@ -53,8 +53,10 @@ namespace DiagramDesigner
 
         public DataGrid dataGridVariables { get; internal set; }
         public DataGrid dataGridVariablesSimulation { get; internal set; }
+        public Button Continue_btn { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
         public GroupBox groupBoxVariablesSimulation { get; internal set; }
+        public List<Button> debugButtonList { get; internal set; }
         public String previous_node_id { get; internal set; }
 
         private MainWindow mainWindow;
@@ -71,11 +73,12 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, Delete_Executed, Delete_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));            
 
             this.CommandBindings.Add(new CommandBinding(DebugCommands.StepOver, StepOver_Enabled));
             this.CommandBindings.Add(new CommandBinding(DebugCommands.StepInto, StepInto_Enabled));
             this.CommandBindings.Add(new CommandBinding(DebugCommands.Continue, Continue_Enabled));
+            
             this.CommandBindings.Add(new CommandBinding(DebugCommands.ConditionedContinue, ConditionedContinue_Enabled));
 
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.Group, Group_Executed, Group_Enabled));
@@ -116,6 +119,13 @@ namespace DiagramDesigner
             this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
+        public void setDebugButtonsVisibility(Visibility _visibility)
+        {
+            foreach (Button b in this.debugButtonList)
+            {
+                b.Visibility = _visibility;
+            }
+        }
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
@@ -176,10 +186,11 @@ namespace DiagramDesigner
         private void Debugger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             //Button stepOver_btn = this.FindName("StepOver_btn") as Button;
-
+            //this.Continue_btn.Visibility = Visibility.Visible;
             //Muestro Datagrid
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
+            this.setDebugButtonsVisibility(Visibility.Visible);
 
             // Creo la  ventan de simulacion y NO la muestro
             this.ValidarYLanzarSimulador(false); 

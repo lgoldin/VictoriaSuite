@@ -555,6 +555,11 @@
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <Resource Include="DiagramDesigner\Resources\Images\stepOver.png" />
+    <Resource Include="DiagramDesigner\Resources\Images\btnContinue.png" />
+    <Resource Include="DiagramDesigner\Resources\Images\ConditionalContinue.png" />
+    <Resource Include="DiagramDesigner\Resources\Images\debug.png" />
+    <Resource Include="DiagramDesigner\Resources\Images\StepInto.png" />
+    <Resource Include="DiagramDesigner\Resources\Images\Stop.png" />
     <Content Include="dlls\dllHallEspera.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
