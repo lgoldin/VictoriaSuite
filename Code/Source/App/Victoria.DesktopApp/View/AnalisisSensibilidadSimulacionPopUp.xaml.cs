@@ -70,7 +70,8 @@ namespace Victoria.DesktopApp.View
                 var simulation = XMLParser.GetSimulation(simulationFile);
                 if (simulation.Stages.Any())
                 {
-                    StageViewModel stage = new StageViewModel(simulation) { Name = simulation.Stages.First().Name };
+                    var s = simulation.Stages.First();
+                    StageViewModel stage = new StageViewModel(simulation, s) { Name = s.Name };
                     this.stages.Add(stage);
                     Variable tiempoFinal = stage.Simulation.GetVariables().First(v => v.Name == "TF");
                     if (tiempoFinal != null && tiempoFinal.InitialValue > 0)
