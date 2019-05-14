@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define Victoria.DesktopApp_TargetDir=$(var.Victoria.DesktopApp.TargetDir)?>
-  <Product Id="*" Name="Victoria IV" Language="1033" Version="4.1.0.2" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
+  <Product Id="*" Name="Victoria IV" Language="1033" Version="4.1.0.3" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Victoria3.ico" />
