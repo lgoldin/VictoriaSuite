@@ -135,16 +135,21 @@ namespace DiagramDesigner
 
             while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
 
+
             while (!Debug.instance().executingNode.HasBreakPoint)
             {
-                Debug.instance().jumpToNextNode = true;
+                //Debug.instance().jumpToNextNode = true;
+                //originalNode = Debug.instance().executingNode.Name;
+                //while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
             }
 
             DesignerItem.setDebugColor(
                 getNodeByID(Debug.instance().executingNode.Name),
-                getNodeByID(this.previous_node_id)); 
+                getNodeByID(this.previous_node_id));
 
             this.previous_node_id = Debug.instance().executingNode.Name;
+       
+            
         }
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -157,9 +162,12 @@ namespace DiagramDesigner
 
             while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
 
-            while (!Debug.instance().executingNode.HasBreakPoint && !Debug.instance().executingNode.HasBreakPoint)
+            while (!Debug.instance().executingNode.HasBreakPoint)
             {
+                originalNode = Debug.instance().executingNode.Name;
                 Debug.instance().jumpToNextNode = true;
+                while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
+
             }
 
             DesignerItem.setDebugColor(
@@ -185,11 +193,12 @@ namespace DiagramDesigner
 
         private void Debugger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //Button stepOver_btn = this.FindName("StepOver_btn") as Button;
-            //this.Continue_btn.Visibility = Visibility.Visible;
+
             //Muestro Datagrid
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
+
+            //Hago visible los botones de Debug
             this.setDebugButtonsVisibility(Visibility.Visible);
 
             // Creo la  ventan de simulacion y NO la muestro

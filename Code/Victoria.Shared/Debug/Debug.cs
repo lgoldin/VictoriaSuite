@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Victoria.Shared.Debug
 {
     public class Debug
@@ -19,13 +20,15 @@ namespace Victoria.Shared.Debug
 
         public bool conditionResult { get; set; }
 
-        public String debugCommand { get; set; }
+        public String debugCommand { get; set; } = "";
 
         public bool debugModeOn { get; set; }
 
         public bool jumpToNextNode { get; set; }
 
         public Node executingNode { get; set; }
+
+        public bool setDebugColor = false;
 
 
         #endregion
@@ -66,10 +69,7 @@ namespace Victoria.Shared.Debug
 
         private void waitForCommand(Node node)
         {
-            this.executingNode = node;
-            while (!this.jumpToNextNode) {
-                //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
-            }
+            this.executingNode = node;          
 
             if (this.debugCommand.Equals("Step Over"))
             {
@@ -84,6 +84,12 @@ namespace Victoria.Shared.Debug
                 this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
                 this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
             }
+
+            while (!this.jumpToNextNode)
+            {
+                //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
+            }
+            
         }
 
         public List<String>getNodesToBreakpoint(){

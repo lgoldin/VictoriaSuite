@@ -32,7 +32,7 @@ namespace DiagramDesigner
         public DesignerCanvas diagrama() 
         {
             return this.MyDesigner;
-        }
+        } 
         /*
         public ToolBar toolBar()
         {

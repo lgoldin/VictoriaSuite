@@ -23,7 +23,7 @@ namespace DiagramDesigner
     [TemplatePart(Name = "PART_ResizeDecorator", Type = typeof(Control))]
     [TemplatePart(Name = "PART_ConnectorDecorator", Type = typeof(Control))]
     [TemplatePart(Name = "PART_ContentPresenter", Type = typeof(ContentPresenter))]
-    
+
     public class DesignerItem : ContentControl, ISelectable, IGroupable
     {
         #region ID
@@ -143,7 +143,7 @@ namespace DiagramDesigner
         #endregion
 
         private List<String> lstNodesToBreakpoint = Debug.instance().getNodesToBreakpoint(); //new List<string> { "nodo_sentencia", "nodo_condicion" };
-        private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();        
+        private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();
 
         static DesignerItem()
         {
@@ -172,7 +172,6 @@ namespace DiagramDesigner
             this.Uid = uid;
             this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
         }
-
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
@@ -214,7 +213,6 @@ namespace DiagramDesigner
 
                     if (lstNodesToBreakpoint.Contains(shape.ToolTip.ToString()))
                     {
-                        
                         //Cambio color del borde a rojo para indicar breakpoint
                         if (!this.hasBreakpoint)
                         {
@@ -259,6 +257,7 @@ namespace DiagramDesigner
         public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node)
         {
             nodesWithBreakPoints.ForEach(n => changeColor(n,Brushes.Red)); //Sin esta linea al debuguear por Continue no despinta todos los nodos
+            
             if (executing_node != null)
                 DesignerItem.changeColor(executing_node, Brushes.Blue);
 
@@ -271,8 +270,7 @@ namespace DiagramDesigner
                 else
                 {
                     changeColor(previous_node, Brushes.DarkOrange);
-                }
-                
+                }                
             }
                 
         }        
