@@ -144,6 +144,7 @@ namespace DiagramDesigner
 
         private List<String> lstNodesToBreakpoint = Debug.instance().getNodesToBreakpoint(); //new List<string> { "nodo_sentencia", "nodo_condicion" };
         private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();
+        private static List<DesignerItem> nodesWithoutBreakPoints = new List<DesignerItem>();
 
         static DesignerItem()
         {
@@ -157,12 +158,14 @@ namespace DiagramDesigner
             this.id = id;
             this.Loaded += new RoutedEventHandler(DesignerItem_Loaded);
             this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
+            DesignerItem.nodesWithoutBreakPoints.Add(this);
         }
 
         public DesignerItem()
             : this(Guid.NewGuid())
         {
             this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
+            DesignerItem.nodesWithoutBreakPoints.Add(this);
         }
 
         public DesignerItem(Guid id, string tag, string uid)
@@ -171,6 +174,7 @@ namespace DiagramDesigner
             this.Tag = tag;
             this.Uid = uid;
             this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
+            DesignerItem.nodesWithoutBreakPoints.Add(this);
         }
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
@@ -219,11 +223,13 @@ namespace DiagramDesigner
                             this.originalColor = shape.Stroke;
                             changeColor(this, Brushes.Red);
                             nodesWithBreakPoints.Add(this);
+                            nodesWithoutBreakPoints.Remove(this);
                         }
                         else
                         {
                             changeColor(this, this.originalColor);
                             nodesWithBreakPoints.Remove(this);
+                            nodesWithoutBreakPoints.Add(this);
                         }
 
                         grid.Tag = ToogleBreakPoint();
@@ -257,21 +263,21 @@ namespace DiagramDesigner
         public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node)
         {
             nodesWithBreakPoints.ForEach(n => changeColor(n,Brushes.Red)); //Sin esta linea al debuguear por Continue no despinta todos los nodos
-            
+            nodesWithoutBreakPoints.ForEach(n => changeColor(n, Brushes.DarkOrange));
             if (executing_node != null)
                 DesignerItem.changeColor(executing_node, Brushes.Blue);
 
-            if (previous_node != null)
-            {
-                if (nodesWithBreakPoints.Contains(previous_node))
-                {
-                    changeColor(previous_node, Brushes.Red);
-                }
-                else
-                {
-                    changeColor(previous_node, Brushes.DarkOrange);
-                }                
-            }
+            //if (previous_node != null)
+            //{
+            //    if (nodesWithBreakPoints.Contains(previous_node))
+            //    {
+            //        changeColor(previous_node, Brushes.Red);
+            //    }
+            //    else
+            //    {
+            //        changeColor(previous_node, Brushes.DarkOrange);
+            //    }                
+            //}
                 
         }        
 

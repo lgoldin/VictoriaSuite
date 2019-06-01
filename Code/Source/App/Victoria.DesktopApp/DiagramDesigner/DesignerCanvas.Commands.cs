@@ -133,15 +133,15 @@ namespace DiagramDesigner
             Debug.instance().debugCommand = "Continue";
             Debug.instance().jumpToNextNode = true;
 
-            while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
+            //while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
 
 
-            while (!Debug.instance().executingNode.HasBreakPoint)
-            {
+            while (Debug.instance().jumpToNextNode) { }
+            //{
                 //Debug.instance().jumpToNextNode = true;
                 //originalNode = Debug.instance().executingNode.Name;
                 //while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
-            }
+           // }
 
             DesignerItem.setDebugColor(
                 getNodeByID(Debug.instance().executingNode.Name),

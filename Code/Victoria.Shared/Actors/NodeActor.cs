@@ -16,26 +16,10 @@ namespace Victoria.Shared.Actors
         private IActorRef mainSimulationActor;
 
         public delegate void DelegateNotifyUI();
-        public delegate void DelegateWaitForDebugCommand();
 
         public void notifyUserInterace()
         {
             this.MainSimulationActor.Tell(this.stageSimulation);
-        }
-
-        public void waitForDebugCommand()
-        {
-            if (!stageSimulation.CanContinue())
-            {
-                stageSimulation.StopExecution(true);
-            }
-            else
-            {
-                stageSimulation.StopExecution(false);
-            }
-
-            this.MainSimulationActor.Tell(this.stageSimulation);
-
         }
 
         public NodeActor(IStageSimulation stageSimulation)
