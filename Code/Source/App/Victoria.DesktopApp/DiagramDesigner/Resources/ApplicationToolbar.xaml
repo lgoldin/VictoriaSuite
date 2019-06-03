@@ -252,7 +252,7 @@
         <Grid Name="Debug_StepInto" Margin="3">
             <Button Name="StepInto_btn" Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
-                            Command="debugCommand:DebugCommands.StepOver"          
+                            Command="debugCommand:DebugCommands.StepInto"          
                             CommandTarget="{Binding ElementName=MyDesigner}"
                             IsEnabled="True"
                             Visibility="Hidden">

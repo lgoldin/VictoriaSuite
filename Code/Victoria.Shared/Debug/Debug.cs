@@ -16,7 +16,9 @@ namespace Victoria.Shared.Debug
 
         private bool isFirstNode = true;
 
-        private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion" };
+        private bool forcedContinue = false;
+
+        private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion","nodo_diagrama" };
 
         public bool conditionResult { get; set; }
 
@@ -71,7 +73,30 @@ namespace Victoria.Shared.Debug
         {
             this.executingNode = node;          
 
-            if (this.debugCommand.Equals("Step Over"))
+            //if (this.debugCommand.Equals("Step Over") || this.forcedContinue)
+            //{
+            //    bool leavingSubDiagram = false;
+            //    this.forcedContinue = this.executingNode.GetType().ToString() == "Diagram" ? true : false;
+            //         
+            //    
+            //    if (this.executingNode.NextNode == null)
+            //    {
+            //        this.forcedContinue = false;
+            //        leavingSubDiagram = true;
+            //    }
+            //    else
+            //    {
+            //        if (leavingSubDiagram)
+            //        {
+            //            this.jumpToNextNode = false;
+            //            leavingSubDiagram = false;
+            //        }
+            //                
+            //    }
+            //
+            //    this.debugCommand = "";
+            //}
+            if (this.debugCommand.Equals("Step Into"))
             {
                 this.jumpToNextNode = false;
             }
@@ -89,7 +114,6 @@ namespace Victoria.Shared.Debug
             {
                 //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
             }
-            
         }
 
         public List<String>getNodesToBreakpoint(){

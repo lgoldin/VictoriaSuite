@@ -107,34 +107,38 @@ namespace DiagramDesigner
         #region DebugCommands
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            string originalNode = Debug.instance().executingNode.Name;
+            //string originalNode = Debug.instance().executingNode.Name;
             Debug.instance().jumpToNextNode = true; 
             Debug.instance().debugCommand = "Step Over";
 
-            while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
+            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
+            while (Debug.instance().jumpToNextNode) { }
 
             DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name), 
                     getNodeByID(this.previous_node_id)); 
-            this.previous_node_id = Debug.instance().executingNode.Name;
+           // this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
-        public void setDebugButtonsVisibility(Visibility _visibility)
+        private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            foreach (Button b in this.debugButtonList)
-            {
-                b.Visibility = _visibility;
-            }
+            Debug.instance().jumpToNextNode = true;
+            Debug.instance().debugCommand = "Step Into";
+
+            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
+            while (Debug.instance().jumpToNextNode) { }
+
+            DesignerItem.setDebugColor(
+                    getNodeByID(Debug.instance().executingNode.Name),
+                    null);
         }
+
+
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            string originalNode = Debug.instance().executingNode.Name;
             Debug.instance().debugCommand = "Continue";
             Debug.instance().jumpToNextNode = true;
-
-            //while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
-
 
             while (Debug.instance().jumpToNextNode) { }
             //{
@@ -147,7 +151,7 @@ namespace DiagramDesigner
                 getNodeByID(Debug.instance().executingNode.Name),
                 getNodeByID(this.previous_node_id));
 
-            this.previous_node_id = Debug.instance().executingNode.Name;
+            //this.previous_node_id = Debug.instance().executingNode.Name;
        
             
         }
@@ -177,14 +181,19 @@ namespace DiagramDesigner
             this.previous_node_id = Debug.instance().executingNode.Name;
         }
 
-        private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
-        {
-            Console.WriteLine("PROBANDO NUEVO BOTON");
-        }
+
 
         private DesignerItem getNodeByID(string id_to_find)
         {
             return id_to_find != null ? this.Children.OfType<DesignerItem>().Where(x => x.ID.ToString() == id_to_find).FirstOrDefault() : null;
+        }
+
+        public void setDebugButtonsVisibility(Visibility _visibility)
+        {
+            foreach (Button b in this.debugButtonList)
+            {
+                b.Visibility = _visibility;
+            }
         }
 
         #endregion
