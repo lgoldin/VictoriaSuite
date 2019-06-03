@@ -118,9 +118,9 @@ namespace Victoria.Shared
                 case "nodo_condicion":
                     return parseNodoCondicion(node,hasBreakPoint);
                 case "nodo_inicializador":
-                    return parseNodoDiagrama(node, true);
+                    return parseNodoDiagrama(node, true, false);
                 case "nodo_diagrama":
-                    return parseNodoDiagrama(node, false);
+                    return parseNodoDiagrama(node, false, hasBreakPoint);
                 case "nodo_condicion_cierre":
                     return parseNodoCondicionCierre(node);
                 case "nodo_referencia":
@@ -257,13 +257,14 @@ namespace Victoria.Shared
             };
         }
 
-        static PreParsedNode parseNodoDiagrama(XElement node, bool isInitializer)
+        static PreParsedNode parseNodoDiagrama(XElement node, bool isInitializer, bool hasBreakPoint)
         {
             var ns = new NodeDiagram
             {
                 Name = node.Attribute("id").Value,
                 DiagramName = node.Attribute("caption").Value,
-                IsInitializer = isInitializer
+                IsInitializer = isInitializer,
+                HasBreakPoint = hasBreakPoint
 
             };
             return new PreparsedNodeDiagram

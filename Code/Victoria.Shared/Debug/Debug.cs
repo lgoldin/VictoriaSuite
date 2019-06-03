@@ -16,7 +16,7 @@ namespace Victoria.Shared.Debug
 
         private bool isFirstNode = true;
 
-        private bool forcedContinue = false;
+        private bool canStopStepOver = false;
 
         private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion","nodo_diagrama" };
 
@@ -73,29 +73,25 @@ namespace Victoria.Shared.Debug
         {
             this.executingNode = node;          
 
-            //if (this.debugCommand.Equals("Step Over") || this.forcedContinue)
-            //{
-            //    bool leavingSubDiagram = false;
-            //    this.forcedContinue = this.executingNode.GetType().ToString() == "Diagram" ? true : false;
-            //         
-            //    
-            //    if (this.executingNode.NextNode == null)
-            //    {
-            //        this.forcedContinue = false;
-            //        leavingSubDiagram = true;
-            //    }
-            //    else
-            //    {
-            //        if (leavingSubDiagram)
-            //        {
-            //            this.jumpToNextNode = false;
-            //            leavingSubDiagram = false;
-            //        }
-            //                
-            //    }
-            //
-            //    this.debugCommand = "";
-            //}
+            if (this.debugCommand.Equals("Step Over") )
+            {
+                bool isEndNode = false;
+                this.jumpToNextNode = this.executingNode.GetType().ToString() == "Diagram" ? true : false;
+                isEndNode = this.jumpToNextNode && this.executingNode.NextNode == null ? true : false;
+                if (isEndNode)
+                {
+                    if (!this.canStopStepOver)
+                    {
+                        this.canStopStepOver = true;
+                    }
+                    else
+                    {
+                        this.jumpToNextNode = false;
+                        this.canStopStepOver = false;
+                        isEndNode = false;
+                    }               
+                }
+             }
             if (this.debugCommand.Equals("Step Into"))
             {
                 this.jumpToNextNode = false;
