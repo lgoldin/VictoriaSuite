@@ -44,6 +44,8 @@ namespace Victoria.DesktopApp.Helpers
             int maxMergeValue = 1;
             int maxIndexCol = 0;
 
+            Dictionary<String, int> ubi_col_variables = new Dictionary<string, int>();
+
             bool tieneTituloVariables = false;
 
             //Insertar Titulo
@@ -70,7 +72,7 @@ namespace Victoria.DesktopApp.Helpers
                      * la cantidad de escenarios.
                      */
                     cant_escenarios++;
-                    maxIndexCol = index_col > maxIndexCol ? index_col : maxIndexCol;                    
+                    maxIndexCol = ubi_col_variables.Count + 1 > maxIndexCol ? ubi_col_variables.Count + 1 : maxIndexCol;                    
                     index_col = 1;
                     ws.Cell(index_row_header + cant_escenarios, index_col).Value = tbl.TableName;
                     ws.Cell(index_row_header + cant_escenarios, index_col).Style.Font.SetBold(true);
@@ -87,7 +89,8 @@ namespace Victoria.DesktopApp.Helpers
                     //En la primer pasada setea el header (combinando celdas) indicando el tipo de variable
                     if (!tieneTituloVariables)
                     {
-                        maxMergeValue = (tbl.Rows.Count - 1) > 8 ? 8 : tbl.Rows.Count - 1;
+                        //maxMergeValue = (tbl.Rows.Count - 1) > 8 ? 8 : tbl.Rows.Count - 1;
+                        maxMergeValue = ubi_col_variables.Count + 1 > 8 ? 8 : ubi_col_variables.Count + 1;
                         ws.Cell(index_row_header - 1, index_col).Value = tbl.Rows[i].Table.Columns[0].ToString();
                         ws.Range(index_row_header - 1, index_col, index_row_header - 1, index_col + maxMergeValue).Merge();
                         
@@ -103,20 +106,26 @@ namespace Victoria.DesktopApp.Helpers
                     }
 
                     //Setea el nombre de las variables
-                    ws.Cell(index_row_header, index_col).Value = tbl.Rows[i][0].ToString();
-                    ws.Cell(index_row_header, index_col).Style.Font.SetBold(true);
-                    ws.Cell(index_row_header, index_col).Style.Font.SetItalic(true);
-                    ws.Cell(index_row_header, index_col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    if (ws.Cell(index_row_header, index_col).Value.ToString() == String.Empty)
+                    {
+                        ws.Cell(index_row_header, index_col).Value = tbl.Rows[i][0].ToString();
+                        ws.Cell(index_row_header, index_col).Style.Font.SetBold(true);
+                        ws.Cell(index_row_header, index_col).Style.Font.SetItalic(true);
+                        ws.Cell(index_row_header, index_col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
-                    //Setea el valor que tomaron las variables y lo coloca en filas diferentes en funcion del escenario.
-                    ws.Cell(index_row_header + cant_escenarios, index_col).Value = decimal.Parse(tbl.Rows[i][1].ToString());
+                        ubi_col_variables.Add(tbl.Rows[i][0].ToString(), index_col);
+                    }
+
+                    //Setea el valor que tomaron las variables y lo coloca en filas diferentes en funcion del escenario.                    
+                    ubi_col_variables.TryGetValue(tbl.Rows[i][0].ToString(), out int val);
+                    ws.Cell(index_row_header + cant_escenarios, val).Value = decimal.Parse(tbl.Rows[i][1].ToString());
 
                     //SetCellBorder(index_row_header + cant_escenarios, index_col);                    
                 }
                 tieneTituloVariables = false;
             }
-
-            maxMergeValue = maxIndexCol >= 10 ? 10 : maxIndexCol;
+            
+            maxMergeValue = maxIndexCol >= 10 ? 10 : ubi_col_variables.Count +1 ;
             
             //Da formato al Titulo
             ws.Range(1, 1, 1, maxMergeValue).Style.Fill.BackgroundColor = XLColor.Aquamarine;
@@ -126,9 +135,9 @@ namespace Victoria.DesktopApp.Helpers
             ws.Range(1, 1, 1, maxMergeValue).Style.Font.SetFontSize(16);
             ws.Row(2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             ws.Row(3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
-            SetCellBorder(ws.Range(index_row_header - 1, 2, index_row_header, maxIndexCol));
-            SetCellBorder(ws.Range(index_row_header + 1, 1, index_row_header + cant_escenarios, maxIndexCol));
+            
+            SetCellBorder(ws.Range(index_row_header - 1, 2, index_row_header, ubi_col_variables.Count + 1));
+            SetCellBorder(ws.Range(index_row_header + 1, 1, index_row_header + cant_escenarios, ubi_col_variables.Count+1));
 
             //Se coloca el tiempo de ejecución
             int index_tiempo_ejecucion = index_row_header + cant_escenarios + 2;
@@ -137,7 +146,8 @@ namespace Victoria.DesktopApp.Helpers
 
             //Autoajustar al contenido
             ws.Row(3).AdjustToContents(35.0, 37.00);
-            ws.Columns().AdjustToContents(index_row_header + 1,index_row_header + cant_escenarios,5.0, 13.0);
+            ws.Columns().AdjustToContents(index_row_header + 1,index_row_header + cant_escenarios,8.0, 13.0);
+            //ws.Rows().AdjustToContents(1, ubi_col_variables.Count + 1, 5.0, 13.0);
             ws.Column(2).AdjustToContents(15.0, 30.0);            
             ws.Column(1).AdjustToContents(22.0, 30.0);
 
