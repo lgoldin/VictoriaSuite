@@ -263,6 +263,7 @@ namespace Victoria.DesktopApp.Helpers
 
         public Connector GetConnector(Guid itemID, String connectorName, IList<DesignerItem> designerItems, ConnectorOrientation orientation)
         {
+            logger.Info("Inicio Obtener Conector");
             DesignerItem designerItem = (from item in designerItems
                                          where item.ID == itemID
                                          select item).FirstOrDefault();
@@ -270,6 +271,7 @@ namespace Victoria.DesktopApp.Helpers
             result.Name = connectorName;
             result.ParentDesignerItem = designerItem;
             result.Orientation = orientation;
+            logger.Info("Fin Obtener Conector");
             return result;
         }
 
@@ -368,6 +370,8 @@ namespace Victoria.DesktopApp.Helpers
                         new XAttribute("id", "Inicializar" + (variables.Count() + cantVec + 1).ToString()),
                         new XAttribute("caption", ""),
                         new XAttribute("type", "nodo_fin"))));
+
+            
         }
 
         public string SetItToVector(VariableAP variable, double i)

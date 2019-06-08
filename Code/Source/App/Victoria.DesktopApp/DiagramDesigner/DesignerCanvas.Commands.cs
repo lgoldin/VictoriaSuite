@@ -624,6 +624,7 @@ namespace DiagramDesigner
 
         private XElement SerializarDesignerItems(IEnumerable<DesignerItem> designerItems)
         {
+            logger.Info("Inicio Serializar Diseñador Items");
             List<Connector> connectors2 = new List<Connector>();
             List<Connection> connectors3 = new List<Connection>();
 
@@ -654,11 +655,14 @@ namespace DiagramDesigner
 
                                               )
                                    ));
+            logger.Info("Fin Serializar Diseñador Items");
             return serializedItems;
         }
 
         private XElement SerializarConnections(IEnumerable<Connection> connections)
         {
+
+            logger.Info("Inicio Serializar Conexeiones");
             var serializedConnections = new XElement("Connections",
                            from connection in connections
                            select new XElement("Connection",
@@ -674,11 +678,13 @@ namespace DiagramDesigner
                                      )
                                   );
 
+            logger.Info("Fin Serializar Conexiones");
             return serializedConnections;
         }
 
         public static DesignerItem DeserializarDesignerItem(XElement itemXML, Guid id, double OffsetX, double OffsetY)
         {
+            logger.Info("Inicio Deserializar Diseñador Item");
             DesignerItem item = new DesignerItem(id);
             item.Width = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture);
             item.Height = Double.Parse(itemXML.Element("Height").Value, CultureInfo.InvariantCulture);
@@ -689,11 +695,13 @@ namespace DiagramDesigner
             Canvas.SetZIndex(item, Int32.Parse(itemXML.Element("zIndex").Value));
             Object content = XamlReader.Load(XmlReader.Create(new StringReader(itemXML.Element("Content").Value)));
             item.Content = content;
+            logger.Info("Fin Deserializar Diseñador Item");
             return item;
         }
 
         private void UpdateZIndex()
         {
+            logger.Info("Inicio Actualizar Indice");
             List<UIElement> ordered = (from UIElement item in this.Children
                                        orderby Canvas.GetZIndex(item as UIElement)
                                        select item as UIElement).ToList();
@@ -702,6 +710,7 @@ namespace DiagramDesigner
             {
                 Canvas.SetZIndex(ordered[i], i);
             }
+            logger.Info("Fin Actualizar Indice");
         }
 
         private static Rect GetBoundingRectangle(IEnumerable<DesignerItem> items)
@@ -725,6 +734,7 @@ namespace DiagramDesigner
 
         private void GetConnectors(DependencyObject parent, List<Connector> connectors)
         {
+            logger.Info("Inicio Obtener Conectores");
             int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childrenCount; i++)
             {
@@ -736,17 +746,20 @@ namespace DiagramDesigner
                 else
                     GetConnectors(child, connectors);
             }
+            logger.Info("Fin Obtener Conectores");
+
         }
 
         public Connector GetConnector(Guid itemID, String connectorName)
         {
+            logger.Info("Inicio Obtener Conector");
             DesignerItem designerItem = (from item in this.Children.OfType<DesignerItem>()
                                          where item.ID == itemID
                                          select item).FirstOrDefault();
 
             Control connectorDecorator = designerItem.Template.FindName("PART_ConnectorDecorator", designerItem) as Control;
             connectorDecorator.ApplyTemplate();
-
+            logger.Info("Fin Obtener Conector");
             return connectorDecorator.Template.FindName(connectorName, connectorDecorator) as Connector;
         }
 
