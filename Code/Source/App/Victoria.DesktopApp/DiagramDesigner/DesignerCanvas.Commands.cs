@@ -1076,12 +1076,14 @@ namespace DiagramDesigner
             var regex = "[a-zA-Z0-9]+";
             var matches = Regex.Matches(textBoxText, regex);
 
-            foreach (var match in matches.Cast<Match>().Select(match => match.Value).ToList())
+            foreach (var match in matches.Cast<Match>().Select(match => match.Value.ToUpper()).ToList())
             {
                 int n;
                 bool isNumeric = int.TryParse(match, out n);
 
-                if (!isNumeric && !variableNames.Contains(match) && match != "T" && match != "R")
+                if (!isNumeric && !variableNames.Contains(match) && match != "T" && match != "R" && 
+                    match != "FACTORIAL" && match != "LN" && match != "E" && match != "LOG" && match != "NOT" 
+                    && match != "PI" && match != "RANDOM" && match != "SUMATORIA" && match != "INT")
                 {
                     errorLIst.Add("-Estas utilizando una variable " + '"' + match + '"' + " no declarada.");
                 }
@@ -1090,7 +1092,7 @@ namespace DiagramDesigner
 
         private void ValidateUseOfCorrectCharacters(HashSet<string> errorLIst, string textBoxText)
         {
-            var regex = @"(?![a-zA-Z0-9\!\&\|\ \<\>\%\^\+\=\-\*\/\(\)]+).";
+            var regex = @"(?![a-zA-Z0-9\!\&\|\ \<\>\%\^\+\=\-\*\/\(\)\,]+).";
             var matches = Regex.Matches(textBoxText, regex);
 
             foreach (var match in matches.Cast<Match>().Select(match => match.Value).ToList())

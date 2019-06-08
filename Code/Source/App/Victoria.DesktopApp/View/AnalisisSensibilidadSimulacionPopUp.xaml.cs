@@ -40,7 +40,8 @@ namespace Victoria.DesktopApp.View
         public DialogResult Result { get; set; }
         public bool IsSimulationOpen { get; set; }
         private string simulationPath { get; set; }
-        private int StagesFinished { get; set; }
+        private bool mustPrint { get; set; }
+        private List<string> stagesFinished { get; set; }
         private bool simulationStoped { get; set; }
         private DateTime simulationStartedTime { get; set; }
         private TimeSpan simulationTotalTime { get; set; }
@@ -57,7 +58,8 @@ namespace Victoria.DesktopApp.View
             this.simulationStoped = false;
             this.vicPaths = vicPaths;
             this.analisisSensibilidadPopUp = analisisSensibilidadPopUp;
-            this.StagesFinished = 0;
+            this.mustPrint = false;
+            this.stagesFinished = new List<string>();
             double totalValue = 0;
             this.stages = new ObservableCollection<StageViewModelBase>();
             this.simulationStartedTime = DateTime.Now;
@@ -68,7 +70,8 @@ namespace Victoria.DesktopApp.View
                 var simulation = XMLParser.GetSimulation(simulationFile);
                 if (simulation.Stages.Any())
                 {
-                    StageViewModel stage = new StageViewModel(simulation) { Name = simulation.Stages.First().Name };
+                    var s = simulation.Stages.First();
+                    StageViewModel stage = new StageViewModel(simulation, s) { Name = s.Name };
                     this.stages.Add(stage);
                     Variable tiempoFinal = stage.Simulation.GetVariables().First(v => v.Name == "TF");
                     if (tiempoFinal != null && tiempoFinal.InitialValue > 0)
@@ -120,9 +123,20 @@ namespace Victoria.DesktopApp.View
             switch (simulationStatusChangedEventArgs.Status)
             {
                 case SimulationStatus.Stoped:
-                    this.StagesFinished += 1;
-                    if (this.StagesFinished == this.stages.Count)
+                    var simulation = (Simulation)sender;
+                    var stageFinished = this.stagesFinished.FirstOrDefault(x => x == simulation.Stages.First().Name);
+                    if (stageFinished == null)
                     {
+                        this.stagesFinished.Add(simulation.Stages.First().Name);
+                        if (this.stagesFinished.Count == this.stages.Count)
+                        {
+                            this.mustPrint = true;
+                        }
+                    }
+
+                    if (this.mustPrint)
+                    {
+                        this.mustPrint = false;
                         this.simulationStoped = true;
                         DateTime now = DateTime.Now;
                         this.simulationTotalTime = now.Subtract(this.simulationStartedTime);

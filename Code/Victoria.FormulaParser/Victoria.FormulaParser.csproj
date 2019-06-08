@@ -43,6 +43,19 @@
     <Compile Include="ElementoAgrupador.cs" />
     <Compile Include="ElementoFuncion.cs" />
     <Compile Include="ElementoNumerico.cs" />
+    <Compile Include="FuncionFactorial.cs" />
+    <Compile Include="FuncionE.cs" />
+    <Compile Include="FuncionLn.cs" />
+    <Compile Include="FuncionNot.cs" />
+    <Compile Include="FuncionPi.cs" />
+    <Compile Include="IndefinicionMatematicaException.cs" />
+    <Compile Include="OperadorNotEqual.cs" />
+    <Compile Include="OperadorGreaterThan.cs" />
+    <Compile Include="OperadorGreaterThanOrEqualsTo.cs" />
+    <Compile Include="OperadorLessThanOrEqualsTo.cs" />
+    <Compile Include="OperadorLessThan.cs" />
+    <Compile Include="OperadorEqual.cs" />
+    <Compile Include="OperadorLogico.cs" />
     <Compile Include="ElementoOperador.cs" />
     <Compile Include="ElementoSeparador.cs" />
     <Compile Include="Expresion.cs" />
@@ -58,8 +71,10 @@
     <Compile Include="OperadorDivision.cs" />
     <Compile Include="OperadorModulo.cs" />
     <Compile Include="OperadorMultiplicacion.cs" />
+    <Compile Include="OperadorAnd.cs" />
     <Compile Include="OperadorPotencia.cs" />
     <Compile Include="OperadorResta.cs" />
+    <Compile Include="OperadorOr.cs" />
     <Compile Include="OperadorSuma.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

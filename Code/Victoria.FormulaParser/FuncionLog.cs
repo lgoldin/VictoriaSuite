@@ -14,14 +14,36 @@ namespace Victoria.FormulaParser
             return simboloOperador;
         }
 
-        public override double Operar(List<double> argumentos)
+        protected override double OperarInterno(List<double> argumentos)
         {
-            if (argumentos.Count != 2)
+            double resultado = 0;
+            double argumento;
+            double logBase;
+
+            switch (argumentos.Count)
             {
-                throw new InvalidOperationException("La funcion log() recibió '" + argumentos.Count.ToString() + "' argumentos. [log(argumento, base)]");
+                case 1:
+                    logBase = 10;
+                    break;
+                case 2:
+                    logBase = argumentos[1];
+                    break;
+                default:
+                    throw new InvalidOperationException("La funcion log() recibió '" + argumentos.Count.ToString() + "' argumentos. [log(argumento) / log(argumento, base)]");
             }
 
-            return Math.Log(argumentos[0], argumentos[1]);
+            argumento = argumentos[0];
+
+            if (logBase == 10)
+            {
+                resultado = Math.Log10(argumento);
+            }
+            else
+            {
+                resultado = Math.Log(argumento, logBase);
+            }
+
+            return resultado;
         }
     }
 }
