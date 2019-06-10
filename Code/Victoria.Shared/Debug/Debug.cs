@@ -111,14 +111,7 @@ namespace Victoria.Shared.Debug
                 }
                 if (this.debugCommand.Equals("Step Into"))
                 {
-                    if (this.executingNode.NextNode == null)
-                    {
-                        this.jumpToNextNode = true;
-                    }
-                    else
-                    {
-                        this.jumpToNextNode = false;
-                    }
+                    this.jumpToNextNode = false;
                 }
                 if (this.debugCommand.Equals("Continue"))
                 {
