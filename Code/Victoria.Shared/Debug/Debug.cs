@@ -18,7 +18,7 @@ namespace Victoria.Shared.Debug
 
         private bool subDiagramHasStarted = false;
 
-        private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion","nodo_diagrama" };
+        private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion","nodo_diagrama","nodo_random" };
 
         public bool conditionResult { get; set; }
 
@@ -74,7 +74,9 @@ namespace Victoria.Shared.Debug
         {
             this.executingNode = node;
 
-            if (this.executingNode.GetType().ToString() == "Victoria.Shared.Node")
+            //En este if deberia poner todos los nodos que no deberian poder debuguearse como nodoInicio
+            if (this.executingNode.GetType().ToString() == "Victoria.Shared.Node" ||
+                this.executingNode.GetType().ToString() == "Victoria.Shared.NodeReferencia")
                 this.jumpToNextNode = true; 
 
                 while (!this.jumpToNextNode)
