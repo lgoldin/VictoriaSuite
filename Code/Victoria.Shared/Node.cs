@@ -15,13 +15,17 @@ namespace Victoria.Shared
 
         public Node NextNode { get; set; }
 
+        public bool canDebugMe { get; set; } = false;
+
         public virtual Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
+            
             if (this.NextNode != null)
             {
                 return this.NextNode.Execute(variables, NotifyUIMethod);
             }
-            
+
+            Debug.Debug.instance().execute(this, NotifyUIMethod);
             return null;
         }
     }

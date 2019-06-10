@@ -112,7 +112,7 @@ namespace DiagramDesigner
             Debug.instance().debugCommand = "Step Over";
 
             //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-            while (Debug.instance().jumpToNextNode) { }
+            while (!Debug.instance().canSetDebugColor) { }
 
             DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name), 
@@ -126,7 +126,8 @@ namespace DiagramDesigner
             Debug.instance().debugCommand = "Step Into";
 
             //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-            while (Debug.instance().jumpToNextNode) { }
+            //while (Debug.instance().jumpToNextNode) { }
+            while (!Debug.instance().canSetDebugColor) { }
 
             DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name),
@@ -140,7 +141,7 @@ namespace DiagramDesigner
             Debug.instance().debugCommand = "Continue";
             Debug.instance().jumpToNextNode = true;
 
-            while (Debug.instance().jumpToNextNode) { }
+            while (Debug.instance().canSetDebugColor) { }
             //{
                 //Debug.instance().jumpToNextNode = true;
                 //originalNode = Debug.instance().executingNode.Name;
