@@ -11,6 +11,11 @@ namespace Victoria.Shared
 
         public bool IsInitializer { get; set; }
 
+        public override bool canBeDebugged
+        {
+            get { return false; }
+        } 
+
         public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             if (!this.IsInitializer)

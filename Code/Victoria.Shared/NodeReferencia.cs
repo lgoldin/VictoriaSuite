@@ -9,6 +9,11 @@ namespace Victoria.Shared
     {
         public string Code { get; set; }
 
+        public override bool canBeDebugged
+        {
+            get { return false; }
+        }
+
         public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             Debug.Debug.instance().execute(this, NotifyUIMethod);

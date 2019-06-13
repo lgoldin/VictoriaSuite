@@ -15,7 +15,10 @@ namespace Victoria.Shared
 
         public Node NextNode { get; set; }
 
-        public bool canDebugMe { get; set; } = false;
+        public virtual bool canBeDebugged
+        {
+            get { return true; } 
+        }
 
         public virtual Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {

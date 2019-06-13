@@ -18,6 +18,7 @@ namespace Victoria.Shared.Debug
 
         private bool subDiagramHasStarted = false;
 
+        //DesignerItem usa esta lista para saber a quien les puede dibujar los contornos rojo o azul para el Debug
         private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion","nodo_diagrama","nodo_random" };
 
         public bool conditionResult { get; set; }
@@ -75,8 +76,10 @@ namespace Victoria.Shared.Debug
             this.executingNode = node;
 
             //En este if deberia poner todos los nodos que no deberian poder debuguearse como nodoInicio
-            if (this.executingNode.GetType().ToString() == "Victoria.Shared.Node" ||
-                this.executingNode.GetType().ToString() == "Victoria.Shared.NodeReferencia")
+            //if (this.executingNode.GetType().ToString() == "Victoria.Shared.Node" ||
+            //    this.executingNode.GetType().ToString() == "Victoria.Shared.NodeIterator" ||
+            //    this.executingNode.GetType().ToString() == "Victoria.Shared.NodeReferencia")
+            if(!this.executingNode.canBeDebugged)
                 this.jumpToNextNode = true; 
 
                 while (!this.jumpToNextNode)
