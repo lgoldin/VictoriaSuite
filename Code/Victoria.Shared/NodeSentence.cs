@@ -9,7 +9,12 @@ namespace Victoria.Shared
     public class NodeSentence : Node
     {
         public string Code { get; set; }
-        
+
+        public override bool canBeDebugged
+        {
+            get { return true; }
+        }
+
         public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             try

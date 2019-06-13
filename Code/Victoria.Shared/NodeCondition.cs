@@ -14,6 +14,11 @@ namespace Victoria.Shared
 
         public Node ChilNodeTrue { get; set; }
 
+        public override bool canBeDebugged
+        {
+            get { return true; }
+        }
+
         public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         { 
             try

@@ -17,7 +17,7 @@ namespace Victoria.Shared
 
         public virtual bool canBeDebugged
         {
-            get { return true; } 
+            get { return false; } 
         }
 
         public virtual Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)

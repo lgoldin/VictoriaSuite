@@ -11,6 +11,7 @@ namespace Victoria.Shared
 
         public string Name { get; set; }
 
+
         public virtual Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             try
