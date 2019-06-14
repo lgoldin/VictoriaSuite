@@ -75,56 +75,51 @@ namespace Victoria.Shared.Debug
         {
             this.executingNode = node;
 
-            //En este if deberia poner todos los nodos que no deberian poder debuguearse como nodoInicio
-            //if (this.executingNode.GetType().ToString() == "Victoria.Shared.Node" ||
-            //    this.executingNode.GetType().ToString() == "Victoria.Shared.NodeIterator" ||
-            //    this.executingNode.GetType().ToString() == "Victoria.Shared.NodeReferencia")
-            if(!this.executingNode.canBeDebugged)
+            if(!this.executingNode.canBeDebugged && !this.subDiagramHasStarted)
                 this.jumpToNextNode = true; 
 
-                while (!this.jumpToNextNode)
+            while (!this.jumpToNextNode)
+            {
+                this.canSetDebugColor = true; //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
+            }
+            this.canSetDebugColor = false;
+
+            if (this.debugCommand.Equals("Step Over"))
+            {
+                if (this.executingNode.GetType().ToString() == "Victoria.Shared.NodeDiagram")
                 {
-                    this.canSetDebugColor = true; //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
+                    this.subDiagramHasStarted = true;
+                    this.jumpToNextNode = true;
                 }
-                this.canSetDebugColor = false;
-
-                if (this.debugCommand.Equals("Step Over"))
+                else
                 {
-
-                    if (this.executingNode.GetType().ToString() == "Victoria.Shared.NodeDiagram")
+                    if (!this.subDiagramHasStarted)
                     {
-                        this.subDiagramHasStarted = true;
-                        this.jumpToNextNode = true;
+                        this.jumpToNextNode = false;
                     }
                     else
                     {
-                        if (this.subDiagramHasStarted)
+                        if (this.executingNode.NextNode == null)
                         {
-                            if (this.executingNode.NextNode == null)
-                            {
-                                this.subDiagramHasStarted = false;
-                                this.jumpToNextNode = false;
-                            }
-                        }
-                        else
-                        {
+                            this.subDiagramHasStarted = false;
                             this.jumpToNextNode = false;
                         }
                     }
                 }
-                if (this.debugCommand.Equals("Step Into"))
-                {
-                    this.jumpToNextNode = false;
-                }
-                if (this.debugCommand.Equals("Continue"))
-                {
-                    this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
-                }
-                if (this.debugCommand.Equals("Conditioned Continue"))
-                {
-                    this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
-                    this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
-                }
+            }
+            if (this.debugCommand.Equals("Step Into"))
+            {
+                this.jumpToNextNode = false;
+            }
+            if (this.debugCommand.Equals("Continue"))
+            {
+                this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
+            }
+            if (this.debugCommand.Equals("Conditioned Continue"))
+            {
+                this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
+                this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
+            }
         }
 
         public List<String>getNodesToBreakpoint(){
