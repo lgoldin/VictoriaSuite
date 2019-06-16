@@ -109,77 +109,35 @@ namespace DiagramDesigner
 
         #region DebugCommands
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
-        {
-            Debug.instance().debugCommand = "Step Over";
-            Debug.instance().jumpToNextNode = true;
-
-            //Espero a que el Debug me avise que puedo colorear el borde del nodo 
-            manualResetEvent.WaitOne();
-            //while (!Debug.instance().canSetDebugColor) { }
-
-            DesignerItem.setDebugColor(
-                    getNodeByID(Debug.instance().executingNode.Name), 
-                    null); 
-
+        {   
+            this.executeDebugCommand( Debug.Mode.StepOver );
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.instance().debugCommand = "Step Into";
-            Debug.instance().jumpToNextNode = true;
-            
-            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-            manualResetEvent.WaitOne();
-            
-            //while (!Debug.instance().canSetDebugColor) { }
-
-            DesignerItem.setDebugColor(
-                    getNodeByID(Debug.instance().executingNode.Name),
-                    null);
+            this.executeDebugCommand( Debug.Mode.StepInto );
         }
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.instance().debugCommand = "Continue";
-            Debug.instance().jumpToNextNode = true;
-
-            while (Debug.instance().canSetDebugColor) { }
-
-            DesignerItem.setDebugColor(
-                getNodeByID(Debug.instance().executingNode.Name),
-                getNodeByID(this.previous_node_id));
-
-            //this.previous_node_id = Debug.instance().executingNode.Name;
-       
-            
+            this.executeDebugCommand( Debug.Mode.Continue );
         }
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-
-            string originalNode = Debug.instance().executingNode.Name;
-            Debug.instance().debugCommand = "Conditioned Continue";
-            Debug.instance().jumpToNextNode = true;
-            Debug.instance().conditionResult = false;
-
-            while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
-
-            while (!Debug.instance().executingNode.HasBreakPoint)
-            {
-                originalNode = Debug.instance().executingNode.Name;
-                Debug.instance().jumpToNextNode = true;
-                while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
-
-            }
-
-            DesignerItem.setDebugColor(
-                getNodeByID(Debug.instance().executingNode.Name),
-                getNodeByID(this.previous_node_id));
-
-            this.previous_node_id = Debug.instance().executingNode.Name;
+            this.executeDebugCommand(Debug.Mode.ConditionedContinue);
         }
 
+        private void executeDebugCommand( Debug.Mode command)
+        {
+            Debug.instance().debugCommand = command;
+            Debug.instance().jumpToNextNode = true;
 
+            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
+            manualResetEvent.WaitOne();
+
+            DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name), null);
+        }
 
         private DesignerItem getNodeByID(string id_to_find)
         {

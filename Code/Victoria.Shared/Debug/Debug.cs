@@ -24,8 +24,6 @@ namespace Victoria.Shared.Debug
 
         public bool conditionResult { get; set; }
 
-        public String debugCommand { get; set; } = "";
-
         public bool debugModeOn { get; set; }
 
         public bool canSetDebugColor { get; set; }  = false;
@@ -36,8 +34,18 @@ namespace Victoria.Shared.Debug
 
         public ManualResetEvent colorSignalEvent { get; set; }
 
-        #endregion
+        public enum Mode
+        {
+            None,
+            StepInto,
+            StepOver,
+            Continue,
+            ConditionedContinue
+        }
 
+        public Mode debugCommand { get; set; } = Mode.None;
+
+        #endregion
 
         public static Debug instance()
         {
@@ -87,7 +95,7 @@ namespace Victoria.Shared.Debug
             }
             this.canSetDebugColor = false;
 
-            if (this.debugCommand.Equals("Step Over"))
+            if (this.debugCommand.Equals(Mode.StepOver))
             {
                 if (this.executingNode.GetType().ToString() == "Victoria.Shared.NodeDiagram")
                 {
@@ -110,15 +118,15 @@ namespace Victoria.Shared.Debug
                     }
                 }
             }
-            if (this.debugCommand.Equals("Step Into"))
+            if (this.debugCommand.Equals(Mode.StepInto))
             {
                 this.jumpToNextNode = false;
             }
-            if (this.debugCommand.Equals("Continue"))
+            if (this.debugCommand.Equals(Mode.Continue))
             {
                 this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
             }
-            if (this.debugCommand.Equals("Conditioned Continue"))
+            if (this.debugCommand.Equals(Mode.ConditionedContinue))
             {
                 this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
                 this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
