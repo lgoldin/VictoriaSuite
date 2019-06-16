@@ -26,8 +26,6 @@ namespace Victoria.Shared.Debug
 
         public bool debugModeOn { get; set; }
 
-        public bool canSetDebugColor { get; set; }  = false;
-
         public bool jumpToNextNode { get; set; }
 
         public Node executingNode { get; set; }
@@ -84,16 +82,30 @@ namespace Victoria.Shared.Debug
         {    
             this.executingNode = node;
 
-            if(!this.executingNode.canBeDebugged && !this.subDiagramHasStarted)
+            if (!this.executingNode.canBeDebugged && !this.subDiagramHasStarted)
+            {
                 this.jumpToNextNode = true;
+            }
+            else
+            {
+                if (this.debugCommand.Equals(Mode.Continue))
+                {
+                    this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
+                }
+                if (this.debugCommand.Equals(Mode.ConditionedContinue))
+                {
+                    this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
+                    this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
+                }
+            }
 
+            //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc)
             while (!this.jumpToNextNode)
             {
                 this.colorSignalEvent.Set();
                 this.colorSignalEvent.Reset();
-                this.canSetDebugColor = true; //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc)    
             }
-            this.canSetDebugColor = false;
+            
 
             if (this.debugCommand.Equals(Mode.StepOver))
             {
@@ -121,15 +133,6 @@ namespace Victoria.Shared.Debug
             if (this.debugCommand.Equals(Mode.StepInto))
             {
                 this.jumpToNextNode = false;
-            }
-            if (this.debugCommand.Equals(Mode.Continue))
-            {
-                this.jumpToNextNode = this.executingNode.HasBreakPoint ? false : true;
-            }
-            if (this.debugCommand.Equals(Mode.ConditionedContinue))
-            {
-                this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
-                this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
             }
         }
 
