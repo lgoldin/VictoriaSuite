@@ -30,6 +30,7 @@ using System.Data;
 using System.Collections.ObjectModel;
 using Victoria.DesktopApp.DiagramDesigner.Commands;
 using Victoria.ViewModelWPF;
+using System.Threading;
 
 namespace DiagramDesigner
 {
@@ -58,6 +59,8 @@ namespace DiagramDesigner
         public GroupBox groupBoxVariablesSimulation { get; internal set; }
         public List<Button> debugButtonList { get; internal set; }
         public String previous_node_id { get; internal set; }
+
+        static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
         private MainWindow mainWindow;
 
@@ -107,34 +110,33 @@ namespace DiagramDesigner
         #region DebugCommands
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            //string originalNode = Debug.instance().executingNode.Name;
-            Debug.instance().jumpToNextNode = true; 
             Debug.instance().debugCommand = "Step Over";
+            Debug.instance().jumpToNextNode = true;
 
-            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-            while (!Debug.instance().canSetDebugColor) { }
+            //Espero a que el Debug me avise que puedo colorear el borde del nodo 
+            manualResetEvent.WaitOne();
+            //while (!Debug.instance().canSetDebugColor) { }
 
             DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name), 
-                    getNodeByID(this.previous_node_id)); 
-           // this.previous_node_id = Debug.instance().executingNode.Name;
+                    null); 
+
         }
 
         private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.instance().jumpToNextNode = true;
             Debug.instance().debugCommand = "Step Into";
-
+            Debug.instance().jumpToNextNode = true;
+            
             //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-            //while (Debug.instance().jumpToNextNode) { }
-            while (!Debug.instance().canSetDebugColor) { }
+            manualResetEvent.WaitOne();
+            
+            //while (!Debug.instance().canSetDebugColor) { }
 
             DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name),
                     null);
         }
-
-
 
         private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
@@ -142,11 +144,6 @@ namespace DiagramDesigner
             Debug.instance().jumpToNextNode = true;
 
             while (Debug.instance().canSetDebugColor) { }
-            //{
-                //Debug.instance().jumpToNextNode = true;
-                //originalNode = Debug.instance().executingNode.Name;
-                //while (originalNode.Equals(Debug.instance().executingNode.Name)) { }
-           // }
 
             DesignerItem.setDebugColor(
                 getNodeByID(Debug.instance().executingNode.Name),
@@ -222,6 +219,8 @@ namespace DiagramDesigner
             
             Debug.instance().debugModeOn = true; 
             Debug.instance().jumpToNextNode = false;
+            Debug.instance().colorSignalEvent = manualResetEvent;
+
             mainWindow.executeSimulation(true);
 
             //Veo de encontrar el primer nodo con breakpoing si es que existe 

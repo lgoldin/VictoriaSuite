@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -33,7 +34,7 @@ namespace Victoria.Shared.Debug
 
         public Node executingNode { get; set; }
 
-
+        public ManualResetEvent colorSignalEvent { get; set; }
 
         #endregion
 
@@ -72,15 +73,17 @@ namespace Victoria.Shared.Debug
         }
 
         private void waitForCommand(Node node)
-        {
+        {    
             this.executingNode = node;
 
             if(!this.executingNode.canBeDebugged && !this.subDiagramHasStarted)
-                this.jumpToNextNode = true; 
+                this.jumpToNextNode = true;
 
             while (!this.jumpToNextNode)
             {
-                this.canSetDebugColor = true; //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc..)
+                this.colorSignalEvent.Set();
+                this.colorSignalEvent.Reset();
+                this.canSetDebugColor = true; //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc)    
             }
             this.canSetDebugColor = false;
 
