@@ -273,21 +273,32 @@ namespace Victoria.DesktopApp
             this.executeSimulation(false);
         }
 
+        public void stopDebug()
+        {
+            try
+            {
+                ((MainViewModel)this.DataContext).StopDebugCommand.Execute(null);
+            }
+            catch (Exception ex)
+            {
+                var viewException = new AlertPopUp("Se produjo un error al parar la simulacion");
+                viewException.ShowDialog();
+            }
+        }
+
         public void executeSimulation(bool debugginMode)
         {
             try
             {
                 if (debugginMode)
                 {
-                    // ((MainViewModel)this.DataContext).debugginMode = debugginMode;
                     ((MainViewModel)this.DataContext).DebugSimulationCommand.Execute(null);
                 }
                 else
                 {
                     ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);
                 }
-                
-                                
+
             }
             catch (Exception ex)
             {

@@ -29,6 +29,7 @@ namespace Victoria.ViewModelWPF
         protected new DelegateCommand deleteChartCommand;
         protected new DelegateCommand executeStageCommand;
         protected new DelegateCommand stopExecutionStageCommand;
+        protected new DelegateCommand stopDebugStageCommand;
         protected new DelegateCommand exportStageCommand;
         protected new DelegateCommand addAnimationToCanvasCommand;
         private ObservableCollection<Variable> variables;
@@ -202,6 +203,17 @@ namespace Victoria.ViewModelWPF
         }
 
         /// <summary>
+        /// Gets StopExecutionSimulationCommand.
+        /// </summary>
+        public new ICommand StopDebugStageCommand
+        {
+            get
+            {
+                return this.stopDebugStageCommand;
+            }
+        }
+        
+        /// <summary>
         /// Gets ExportStageCommand.
         /// </summary>
         public new ICommand ExportStageCommand
@@ -292,6 +304,7 @@ namespace Victoria.ViewModelWPF
             this.exportStageCommand = new DelegateCommand(this.ExportStage);
             this.executeStageCommand = new DelegateCommand(this.ExecuteStage);
             this.debugStageCommand = new DelegateCommand(this.DebugStage);
+            this.stopDebugStageCommand = new DelegateCommand(this.DebugStopExecution);
             this.stopExecutionStageCommand = new DelegateCommand(this.StopExecution);
             this.addAnimationToCanvasCommand = new DelegateCommand(this.AddAnimationToCanvas);
         }
@@ -324,6 +337,7 @@ namespace Victoria.ViewModelWPF
             this.exportStageCommand = new DelegateCommand(this.ExportStage);
             this.executeStageCommand = new DelegateCommand(this.ExecuteStage);
             this.debugStageCommand = new DelegateCommand(this.DebugStage);
+            this.stopDebugStageCommand = new DelegateCommand(this.DebugStopExecution);
             this.stopExecutionStageCommand = new DelegateCommand(this.StopExecution);
             this.addAnimationToCanvasCommand = new DelegateCommand(this.AddAnimationToCanvas);
         }
@@ -418,6 +432,15 @@ namespace Victoria.ViewModelWPF
                 this.Simulation.StopExecution(false);
                 this.Simulation.ChangeStatus(SimulationStatus.Started);
                 this.MainSimulationActor.Tell(this.Simulation);
+            }
+        }
+
+        private void DebugStopExecution()
+        {
+            if (this.Executing)
+            {
+                this.Simulation.StopExecution(true);
+                this.Simulation.ChangeStatus(SimulationStatus.Stoped);
             }
         }
 

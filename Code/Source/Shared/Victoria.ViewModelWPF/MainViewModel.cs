@@ -26,6 +26,7 @@ namespace Victoria.ViewModelWPF
         protected DelegateCommand exportSimulationCommand;
         protected DelegateCommand addStageCommand;
         protected DelegateCommand deleteStageCommand;
+        protected DelegateCommand stopDebugCommand;
 
         #endregion
 
@@ -140,6 +141,17 @@ namespace Victoria.ViewModelWPF
         /// <summary>
         /// Gets ExecuteSimulationCommand.
         /// </summary>
+        public ICommand StopDebugCommand
+        {
+            get
+            {
+                return this.stopDebugCommand;
+            }
+        }
+
+        /// <summary>
+        /// Gets ExecuteSimulationCommand.
+        /// </summary>
         public ICommand ExportSimulationCommand
         {
             get
@@ -186,6 +198,7 @@ namespace Victoria.ViewModelWPF
             this.exportSimulationCommand = new DelegateCommand(this.ExportSimulation);
             this.executeSimulationCommand = new DelegateCommand(this.ExecuteSimulation);
             this.debugSimulationCommand = new DelegateCommand(this.DebugSimulation);
+            this.stopDebugCommand = new DelegateCommand(this.StopDebug);
             this.addStageCommand = new DelegateCommand(this.AddStage);
             this.deleteStageCommand = new DelegateCommand(this.DeleteStage);
             this.Stages = new ObservableCollection<StageViewModelBase>();
@@ -252,6 +265,14 @@ namespace Victoria.ViewModelWPF
             foreach (StageViewModel s in this.Stages)
             {
                s.DebugStageCommand.Execute(null);
+            }
+        }
+
+        private void StopDebug()
+        {
+            foreach (StageViewModel s in this.Stages)
+            {
+                s.StopDebugStageCommand.Execute(null);
             }
         }
 

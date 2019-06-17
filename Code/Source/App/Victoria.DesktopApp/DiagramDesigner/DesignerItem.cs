@@ -262,10 +262,11 @@ namespace DiagramDesigner
          */
         public static void setDebugColor(DesignerItem executing_node,DesignerItem previous_node)
         {
-            nodesWithBreakPoints.ForEach(n => changeColor(n,Brushes.Red)); //Sin esta linea al debuguear por Continue no despinta todos los nodos
+            nodesWithBreakPoints.ForEach(n => changeColor(n, Brushes.Red)); //Sin esta linea al debuguear por Continue no despinta todos los nodos
             nodesWithoutBreakPoints.ForEach(n => changeColor(n, Brushes.DarkOrange));
             if (executing_node != null)
                 DesignerItem.changeColor(executing_node, Brushes.Blue);
+            
 
             //if (previous_node != null)
             //{

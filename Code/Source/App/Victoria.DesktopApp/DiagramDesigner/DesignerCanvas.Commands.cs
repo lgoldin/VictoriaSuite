@@ -76,12 +76,13 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, Delete_Executed, Delete_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));            
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
 
             this.CommandBindings.Add(new CommandBinding(DebugCommands.StepOver, StepOver_Enabled));
             this.CommandBindings.Add(new CommandBinding(DebugCommands.StepInto, StepInto_Enabled));
             this.CommandBindings.Add(new CommandBinding(DebugCommands.Continue, Continue_Enabled));
-            
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Stop, Stop_Enabled));
+
             this.CommandBindings.Add(new CommandBinding(DebugCommands.ConditionedContinue, ConditionedContinue_Enabled));
 
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.Group, Group_Executed, Group_Enabled));
@@ -108,6 +109,15 @@ namespace DiagramDesigner
 
 
         #region DebugCommands
+        private void Stop_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.mainWindow.stopDebug();
+
+            this.setDebugButtonsVisibility(Visibility.Hidden);
+
+            DesignerItem.setDebugColor(null, null);
+        }
+
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {   
             this.executeDebugCommand( Debug.Mode.StepOver );
@@ -179,7 +189,7 @@ namespace DiagramDesigner
             Debug.instance().jumpToNextNode = false;
             Debug.instance().colorSignalEvent = manualResetEvent;
 
-            mainWindow.executeSimulation(true);
+            this.mainWindow.executeSimulation(true);
 
             //Veo de encontrar el primer nodo con breakpoing si es que existe 
             if (DesignerItem.ifAnyNodeHasBreakpoint())
@@ -189,9 +199,7 @@ namespace DiagramDesigner
                 //Cambio el color del primer nodo
                 DesignerItem.setDebugColor(
                     getNodeByID(Debug.instance().executingNode.Name),
-                    getNodeByID(this.previous_node_id));
-
-                this.previous_node_id = Debug.instance().executingNode.Name;
+                    null);
             }
 
         }
