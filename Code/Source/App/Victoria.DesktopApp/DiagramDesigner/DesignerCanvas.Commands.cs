@@ -82,7 +82,6 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DebugCommands.StepInto, StepInto_Enabled));
             this.CommandBindings.Add(new CommandBinding(DebugCommands.Continue, Continue_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Stop, Stop_Enabled));
-
             this.CommandBindings.Add(new CommandBinding(DebugCommands.ConditionedContinue, ConditionedContinue_Enabled));
 
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.Group, Group_Executed, Group_Enabled));
@@ -115,7 +114,7 @@ namespace DiagramDesigner
 
             this.setDebugButtonsVisibility(Visibility.Hidden);
 
-            DesignerItem.setDebugColor(null, null);
+            DesignerItem.setDebugColor(null);
         }
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
@@ -146,7 +145,7 @@ namespace DiagramDesigner
             //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
             manualResetEvent.WaitOne();
 
-            DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name), null);
+            DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
         }
 
         private DesignerItem getNodeByID(string id_to_find)
@@ -197,9 +196,7 @@ namespace DiagramDesigner
                 while ( Debug.instance().executingNode == null ){}
 
                 //Cambio el color del primer nodo
-                DesignerItem.setDebugColor(
-                    getNodeByID(Debug.instance().executingNode.Name),
-                    null);
+                DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );
             }
 
         }
@@ -1033,8 +1030,10 @@ namespace DiagramDesigner
         private void ValidarYLanzarSimulador(Boolean showWindow)
         {
             this.createSimulationWindow();
-            if(showWindow)
+            if (showWindow)
                 this.mainWindow.Show();
+            //this.mainWindow.Visibility = Visibility.Visible;
+            
         }
 
         private void createSimulationWindow(){
