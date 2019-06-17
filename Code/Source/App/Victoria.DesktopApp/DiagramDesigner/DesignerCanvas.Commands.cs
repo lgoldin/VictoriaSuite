@@ -1031,9 +1031,7 @@ namespace DiagramDesigner
         {
             this.createSimulationWindow();
             if (showWindow)
-                this.mainWindow.Show();
-            //this.mainWindow.Visibility = Visibility.Visible;
-            
+                this.mainWindow.Show();            
         }
 
         private void createSimulationWindow(){
@@ -1043,7 +1041,7 @@ namespace DiagramDesigner
             {
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
-                this.mainWindow = this.mainWindow == null ?  new MainWindow(root.ToString(), true) : this.mainWindow;
+                this.mainWindow = new MainWindow(root.ToString(), true);
             }
             catch (DiagramValidationException ex)
             {

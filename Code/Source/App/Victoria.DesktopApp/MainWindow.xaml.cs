@@ -74,7 +74,7 @@ namespace Victoria.DesktopApp
                 ((MainViewModel)this.DataContext).OpenSimulationCommand.Execute(simulation);
             }
 
-            this.Loaded += MainWindow_Loaded;
+            this.Loaded += MainWindow_Loaded; 
         }
 
         #endregion
