@@ -76,7 +76,7 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, Delete_Executed, Delete_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debugger_Executed));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debuger_Executed));
 
             this.CommandBindings.Add(new CommandBinding(DebugCommands.StepOver, StepOver_Enabled));
             this.CommandBindings.Add(new CommandBinding(DebugCommands.StepInto, StepInto_Enabled));
@@ -111,8 +111,11 @@ namespace DiagramDesigner
         private void Stop_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
             this.mainWindow.stopDebug();
+            this.mainWindow.Close();
 
             this.setDebugButtonsVisibility(Visibility.Hidden);
+            groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
+            dataGridVariablesSimulation.Visibility = Visibility.Hidden;
 
             DesignerItem.setDebugColor(null);
         }
@@ -165,30 +168,31 @@ namespace DiagramDesigner
 
         #region Find Command
 
-        private void Debugger_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Debuger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
-            //Muestro Datagrid
-            groupBoxVariablesSimulation.Visibility = Visibility.Visible;
-            dataGridVariablesSimulation.Visibility = Visibility.Visible;
 
             //Hago visible los botones de Debug
             this.setDebugButtonsVisibility(Visibility.Visible);
 
             // Creo la  ventan de simulacion y NO la muestro
-            this.ValidarYLanzarSimulador(false); 
+            this.ValidarYLanzarSimulador(false);
 
             // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
+            dataGridVariablesSimulation.Items.Clear();
             ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
             foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
                 dataGridVariablesSimulation.Items.Add(variable);
-            }          
-            
+            }
+
+            this.mainWindow.executeSimulation(true);
+
+            //Muestro Datagrid
+            groupBoxVariablesSimulation.Visibility = Visibility.Visible;
+            dataGridVariablesSimulation.Visibility = Visibility.Visible;
+
             Debug.instance().debugModeOn = true; 
             Debug.instance().jumpToNextNode = false;
             Debug.instance().colorSignalEvent = manualResetEvent;
-
-            this.mainWindow.executeSimulation(true);
 
             //Veo de encontrar el primer nodo con breakpoing si es que existe 
             if (DesignerItem.ifAnyNodeHasBreakpoint())

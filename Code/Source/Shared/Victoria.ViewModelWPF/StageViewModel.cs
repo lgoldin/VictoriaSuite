@@ -424,7 +424,7 @@ namespace Victoria.ViewModelWPF
 
         private void DebugStage()
         {
-            this.StopExecution();
+            //this.StopExecution();
             if (!this.Executing)
             {
                 this.Simulation.SetDebugMode(true);
