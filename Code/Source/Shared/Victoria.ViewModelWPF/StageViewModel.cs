@@ -91,7 +91,10 @@ namespace Victoria.ViewModelWPF
         }
 
         // Asi puedo acceder de mainWindows a las variables sin crear una lista nueva
-        public ObservableCollection<Variable> getVariables { get { return variables; } } 
+        public ObservableCollection<Variable> getVariables
+        {
+            get { return variables; }
+        } 
 
         public new List<Variable> FilteredVariables
         {
@@ -424,24 +427,29 @@ namespace Victoria.ViewModelWPF
 
         private void DebugStage()
         {
+            this.Simulation.SetDebugMode(true);
+            this.ExecuteStage();
             //this.StopExecution();
-            if (!this.Executing)
-            {
-                this.Simulation.SetDebugMode(true);
-
-                this.Simulation.StopExecution(false);
-                this.Simulation.ChangeStatus(SimulationStatus.Started);
-                this.MainSimulationActor.Tell(this.Simulation);
-            }
+            //if (!this.Executing)
+            //{
+            //    this.Simulation.SetDebugMode(true);
+            //
+            //    this.Simulation.StopExecution(false);
+            //    this.Simulation.ChangeStatus(SimulationStatus.Started);
+            //    this.MainSimulationActor.Tell(this.Simulation);
+            //}
         }
 
         private void DebugStopExecution()
         {
-            if (this.Executing)
-            {
-                this.Simulation.StopExecution(true);
-                this.Simulation.ChangeStatus(SimulationStatus.Stoped);
-            }
+            this.StopExecution();
+            this.mainSimulationActor.Tell(PoisonPill.Instance);
+
+            //if (this.Executing)
+            //{
+            //    this.Simulation.StopExecution(true);
+            //    this.Simulation.ChangeStatus(SimulationStatus.Stoped);
+            //}
         }
 
         private void StopExecution()

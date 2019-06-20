@@ -60,7 +60,7 @@ namespace DiagramDesigner
         public List<Button> debugButtonList { get; internal set; }
         public String previous_node_id { get; internal set; }
 
-        static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
+        static ManualResetEvent manualResetEvent;
 
         private MainWindow mainWindow;
 
@@ -112,6 +112,8 @@ namespace DiagramDesigner
         {
             this.mainWindow.stopDebug();
             this.mainWindow.Close();
+
+            Debug.instance().jumpToNextNode = true;
 
             this.setDebugButtonsVisibility(Visibility.Hidden);
             groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
@@ -190,6 +192,10 @@ namespace DiagramDesigner
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
 
+            if (Debug.instance().colorSignalEvent != null)
+                Debug.instance().colorSignalEvent.Reset();
+
+            DesignerCanvas.manualResetEvent = new ManualResetEvent(false);
             Debug.instance().debugModeOn = true; 
             Debug.instance().jumpToNextNode = false;
             Debug.instance().colorSignalEvent = manualResetEvent;
@@ -197,7 +203,8 @@ namespace DiagramDesigner
             //Veo de encontrar el primer nodo con breakpoing si es que existe 
             if (DesignerItem.ifAnyNodeHasBreakpoint())
             {
-                while ( Debug.instance().executingNode == null ){}
+                //while ( Debug.instance().executingNode == null ){}
+                manualResetEvent.WaitOne();
 
                 //Cambio el color del primer nodo
                 DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );

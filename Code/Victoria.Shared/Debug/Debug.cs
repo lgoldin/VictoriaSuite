@@ -30,11 +30,12 @@ namespace Victoria.Shared.Debug
 
         public Node executingNode { get; set; }
 
-        public ManualResetEvent colorSignalEvent { get; set; }
+        public ManualResetEvent colorSignalEvent { get; set; } = null;
 
         public enum Mode
         {
             None,
+            Stop,
             StepInto,
             StepOver,
             Continue,
