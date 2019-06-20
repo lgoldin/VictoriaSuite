@@ -16,7 +16,6 @@ using System.Xml.Linq;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
-using commonFDP;
 using System.Data;
 
 
@@ -185,13 +184,14 @@ namespace Victoria.DesktopApp.View
                 dgvDatosFdp.ItemsSource = eventos;
                 using (var archivo = new XLWorkbook(rutaFile.Text ))
                 {
-                    var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
+                    
                     int numeroFila = Convert.ToInt32(txtFila.Text);
                     int columna = Convert.ToInt32(txtCol.Text);
                 //Origen nuevoOrigen = new Origen();
 
                 try
                 {
+                    var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
                     while (!hoja.Cell(numeroFila, columna).IsEmpty())
                     {
                             DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
@@ -218,7 +218,7 @@ namespace Victoria.DesktopApp.View
                 catch
                 {
                     dgvDatosFdp.Visibility = Visibility.Hidden;
-                    createAlertPopUp("El excel importado no tiene el formato correcto y no pudo cargarse, por favor seleccione otro archivo y vuelva a intentarlo");
+                    createAlertPopUp("El excel importado no tiene el formato correcto o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
                     rutaFile.Text = "";
                     pnlPosicion_datos.Visibility = Visibility.Hidden;
                     pnlButtonsGrid.Visibility = Visibility.Hidden;
@@ -264,7 +264,9 @@ namespace Victoria.DesktopApp.View
 
         private void BtnAddRegister_onClick(object sender, RoutedEventArgs e)
         {
-
+            var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO;
+            modificarLayout(tipoAccion);
+            botonSeleccionado(addRegisterGrid);
         }
 
         private void RbIntervalos_Checked(object sender, RoutedEventArgs e)
@@ -276,7 +278,7 @@ namespace Victoria.DesktopApp.View
                 {
                     var tipoAccion =  (int)commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR; 
              
-                    //modificarLayout(tipoAccion);
+                    modificarLayout(tipoAccion);
                     
                     rbDtConstante.Visibility = Visibility.Hidden;
                     pnlSegmentacion.Visibility = Visibility.Hidden;
@@ -345,7 +347,7 @@ namespace Victoria.DesktopApp.View
                         // modificarLayout(TipoAccionProcesamiento.FILTRAR);
 
                     }
-                    //actualizarEstadisticas();
+                    //  ();
 
                 }
             }
@@ -413,69 +415,157 @@ namespace Victoria.DesktopApp.View
             else
                 pnlSegmentacion.Visibility = Visibility.Hidden;
         }
-        /*/ private void modificarLayout(int tipoAccion)
+
+        private void modificarLayout(int tipoAccion)
          {
-             hacerVisible(tipoAccion);
+             //hacerVisible(tipoAccion);
              switch (tipoAccion)
              {
                  case 0:
-                     lblTituloAccion.Text = "Agregar Registro";
-                     lblAccion1.Text = "Fecha";
-                     dtp1.Format = DateTimePickerFormat.Short;
-                     lblAccion2.Text = "Hora";
-                     dtp2.Format = DateTimePickerFormat.Custom;
-                     dtp2.CustomFormat = "HH:mm:ss";
-                     rbAgregarPorFechaYHora.Checked = true;
-                     rbAgregarPorFechaYHora.Visible = true;
-                     rbAgregarPorIntervalo.Checked = false;
-                     rbAgregarPorIntervalo.Visible = true;
-                     nudAgregarPorIntervalo.Visible = false;
-                     cbAgregarPorIntervalo.Visible = false;
-                     cambiarFiltrosVistaFecha(0);
+                     lblTituloAccion.Content = "Agregar Registro";
+
+                    //dtp1.Format = DateTimePickerFormat.Short;
+
+                    // dtp2.Format = DateTimePickerFormat.Custom;
+                     pnlMoficable.Visibility = Visibility.Visible;
+                     rbAgregarPorFechaYHora.IsChecked = true;
+                     rbAgregarPorFechaYHora.Visibility = Visibility.Visible;
+                     rbAgregarPorIntervalo.IsChecked = false;
+                     rbAgregarPorIntervalo.Visibility = Visibility.Visible;
+                     nudAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                     cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                     //cambiarFiltrosVistaFecha(0);
                      break;
                  case 1:
-                     lblTituloAccion.Text = "Modificar Registro";
-                     lblAccion1.Text = "Fecha";
-                     dtp1.Format = DateTimePickerFormat.Short;
-                     lblAccion2.Text = "Hora";
-                     dtp2.Format = DateTimePickerFormat.Custom;
-                     dtp2.CustomFormat = "HH:mm:ss";
-                     rbAgregarPorFechaYHora.Visible = false;
-                     rbAgregarPorIntervalo.Visible = false;
-                     nudAgregarPorIntervalo.Visible = false;
-                     cbAgregarPorIntervalo.Visible = false;
-                     cambiarFiltrosVistaFecha(0);
+                    lblTituloAccion.Content = "Modificar Registro";
+                    // lblAccion1.Text = "Fecha";
+
+                    // lblAccion2.Text = "Hora";
+
+                    // dtp2.CustomFormat = "HH:mm:ss";
+                    rbAgregarPorFechaYHora.Visibility = Visibility.Hidden;
+                    rbAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                    nudAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                    cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                    // cambiarFiltrosVistaFecha(0);
                      break;
                  case 2:
-                     lblTituloAccion.Text = "Filtrar";
+                     lblTituloAccion.Content = "Filtrar";
 
-                     dtp1.Format = DateTimePickerFormat.Short;
-                     if (rbFecha.Checked)
-                     {
+                     //dtp1.Format = DateTimePickerFormat.Short;
+                     if (rbFecha.IsChecked.Value)
+                     {     /*
                          lblAccion1.Text = "Fecha";
                          txtIntervalo.Visible = false;
                          txtIntervalo2.Visible = false;
-                         cambiarFiltrosVistaFecha(0);
+                         cambiarFiltrosVistaFecha(0); */
                      }
                      else
-                     {
+                     {     /*
                          lblAccion1.Text = "Intervalo";
                          dtp1.Visible = false;
-                         txtIntervalo.Visible = true;
+                         txtIntervalo.Visible = true; */
                      }
-                     lblAccion2.Text = "Hora";
+                     /*lblAccion2.Text = "Hora";
                      dtp2.Format = DateTimePickerFormat.Custom;
-                     dtp2.CustomFormat = "HH:mm:ss";
-                     rbAgregarPorFechaYHora.Visible = false;
-                     rbAgregarPorIntervalo.Visible = false;
-                     nudAgregarPorIntervalo.Visible = false;
-                     cbAgregarPorIntervalo.Visible = false;
+                     dtp2.CustomFormat = "HH:mm:ss";*/
+                     rbAgregarPorFechaYHora.Visibility = Visibility.Hidden;
+                     rbAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                    nudAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                    cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
 
 
-                     break;
+                    break;
                  default:
                      break;
              }
-         }/*/
+         }
+
+
+        private void hacerVisible(commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion)
+        {
+            switch (tipoAccion)
+            {
+                case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
+                case commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
+                    pnlMoficable.Visibility = Visibility.Visible;
+                    /*foreach (Control control in pnlMoficable.Controls)
+                    {
+                        control.Visible = true;
+                    }
+                    lblTipoFiltro.Visible = false;
+                    cmbTipoFiltro.Visible = false;*/
+                    btnLimpiar.Visibility = Visibility.Hidden;
+                    /*txtIntervalo.Visible = false;
+                    txtIntervalo2.Visible = false;*/
+                    break;
+                case commonFDP.commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS:
+                case commonFDP.commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS:
+                    pnlMoficable.Visibility = Visibility.Hidden;
+                    break;
+                case commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR:
+                    pnlMoficable.Visibility = Visibility.Visible;
+                    /*foreach (Control control in pnlMoficable.Controls)
+                    {
+                        control.Visible = true;
+                    }*/
+                    if (rbFecha.IsChecked.Value)
+                    {
+                        //lblTipoFiltro.Visible = true;
+                        //cmbTipoFiltro.Visible = true;
+                        btnLimpiar.Visibility = Visibility.Visible;
+
+                        //cargarFiltros();
+                    }
+                    else
+                    {
+                        /*cmbTipoFiltro.DataSource = null;
+                        cmbTipoFiltro.Items.Clear();
+                        List<ComboItem> tipos = new List<ComboItem> { new ComboItem(0, "Intervalo menor a"), new ComboItem(1, "Intervalo mayor a"), new ComboItem(2, "Intervalo entre") };
+                        cmbTipoFiltro.DisplayMember = "Display";
+                        cmbTipoFiltro.ValueMember = "Value";
+                        cmbTipoFiltro.DataSource = tipos;*/
+
+                        lblTituloAccion.Content = "Filtrar";
+                       // lblAccion1.Text = "Intervalo";
+                        dtp1.Visibility = Visibility.Hidden;
+                       // lblAccion2.Visible = false;
+                        dtp2.Visibility = Visibility.Hidden;
+                        //txtIntervalo.Visible = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void botonSeleccionado(Grid boton)
+        {
+
+            // btnBorrarSeleccionados.BackColor = Color.FromArgb(187, 0, 4);
+            IEnumerable<Grid> grids = pnlButtonsGrid.Children.OfType<Grid>(); 
+
+             foreach (Grid grid in grids)
+             {
+                 if (grid != deleteRegistersGrid)
+                 {
+                    
+                     grid.Background = Brushes.Gray;
+                     
+                 }
+             }
+
+             if (boton != deleteRegistersGrid)
+             {
+                 boton.Background = Brushes.LightGray;
+             }
+        }
+
+        private void BtnModifyRegister_onClick(object sender, RoutedEventArgs e)
+        {
+            var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO;
+            modificarLayout(tipoAccion);
+            botonSeleccionado(modifyRegisterGrid);
+        }
     }
 }

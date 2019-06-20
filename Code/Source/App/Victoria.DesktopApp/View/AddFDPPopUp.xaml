@@ -113,31 +113,31 @@
 
                             <DataGrid AutoGenerateColumns="True" x:Name="dgvDatosFdp" ColumnWidth="*" Visibility="visible" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding Source=dataGridRows}" Margin="271,178,489,104.143" SelectionChanged="DgvDatosFdp_SelectionChanged" Grid.RowSpan="2"/>
 
-                            <Button x:Name="btnAddRegister" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,178,786,428.143" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.RowSpan="2">
-                                <Grid x:Name="addRegisterGrid" Height="69" Width="197" Background="Gray">
+                            <Grid x:Name="addRegisterGrid" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,178,786,428.143" Width="197" Grid.RowSpan="2">
+                                <Button x:Name="btnAddRegister" Height="69" Width="197" Background="Transparent" BorderThickness="0" Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                     <Label Content="Agregar registro" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
-                                </Grid>
-                            </Button>
-                            <Button x:Name="btnModifyRegister" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,42,786,346.143" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Row="1">
-                                <Grid x:Name="modifyRegisterGrid"  Height="68" Width="197" Background="Gray">
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="modifyRegisterGrid" Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,42,786,346.143" Width="197" Grid.Row="1">
+                                <Button x:Name="btnModifyRegister"  Height="68" Width="197" Background="Transparent" BorderThickness="0" Click="BtnModifyRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  >
                                     <Label Content="Modificar registro" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
-                                </Grid>
-                            </Button>
-                            <Button x:Name="btnDeleteRegisters" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,123,786,262.143" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Row="1">
-                                <Grid x:Name="deleteRegistersGrid" Height="71" Width="197" Background="Gray">
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="deleteRegistersGrid" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,123,786,262.143" Width="197"  Grid.Row="1">
+                                <Button x:Name="btnDeleteRegisters" Height="71" Width="197" BorderThickness="0" Background="Transparent"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                     <Label Content="Borrar registros" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
-                                </Grid>
-                            </Button>
-                            <Button x:Name="btnSelectAll" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,208,786,182.143" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Row="1">
-                                <Grid x:Name="selectAllGrid" Height="66" Width="197" Background="Gray">
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="selectAllGrid" Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,208,786,182.143" Width="197"  Grid.Row="1">
+                                <Button x:Name="btnSelectAll" Height="66" Width="197" Background="Transparent" BorderThickness="0"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                     <Label Content="Seleccionar todo" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
-                                </Grid>
-                            </Button>
-                            <Button x:Name="btnFilter" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,288,786,105.143" Width="197"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Row="1">
-                                <Grid  x:Name="filterRegisterGrid" Height="63" Width="197" Background="Gray">
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="filterRegisterGrid" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,288,786,105.143" Width="197"  Grid.Row="1">
+                                <Button x:Name="btnFilter" Height="63" Width="197" Background="Transparent" BorderThickness="0"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                     <Label Content="Filtrar registros" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
-                                </Grid>
-                            </Button>
+                                </Button>
+                            </Grid>
 
                         </Grid>
 
@@ -159,14 +159,14 @@
             <RadioButton Margin="19,48,0,0" Name="rbAgregarPorFechaYHora" HorizontalAlignment="Left" VerticalAlignment="Top" Width="93" Height="15" Background="White" Foreground="Black">
                 Fecha y hora
             </RadioButton>
-            <DatePicker Height="25" HorizontalAlignment="Left" Margin="44,68,0,0" Name="datePicker1" VerticalAlignment="Top" Width="226" />
-            <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm:ss " Value="00:00" Margin="44,107,145,231.143" />
+            <DatePicker x:Name="dtp1"  Height="25" HorizontalAlignment="Left" Margin="44,68,0,0"  VerticalAlignment="Top" Width="226" />
+            <xctk:DateTimeUpDown x:Name="dtp2"  Format="Custom" FormatString="HH:mm:ss " Value="00:00" Margin="44,107,145,231.143" />
 
             <RadioButton Margin="19,146,0,0" Name="rbAgregarPorIntervalo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="15" Background="White" Foreground="Black">
                 Intervalo
             </RadioButton>
-            <xctk:SingleUpDown Value="0" Margin="44,166,303,170.143" />
-            <ComboBox x:Name="comboBox_Intervalo"  RenderTransformOrigin="0.497,0.484" Margin="193,166,56,170.143" SelectionChanged="comboBoxIntervalo_SelectionChanged">
+            <xctk:SingleUpDown x:Name="nudAgregarPorIntervalo" Value="0" Margin="44,166,303,170.143" />
+            <ComboBox x:Name="cbAgregarPorIntervalo"  RenderTransformOrigin="0.497,0.484" Margin="193,166,56,170.143" SelectionChanged="comboBoxIntervalo_SelectionChanged">
                 <ComboBoxItem x:Name="Segundos" Content="Segundos" />
                 <ComboBoxItem x:Name="Minutos" Content="Minutos" />
                 <ComboBoxItem x:Name="Horas" Content="Horas" />
