@@ -60,7 +60,7 @@ namespace DiagramDesigner
         public List<Button> debugButtonList { get; internal set; }
         public String previous_node_id { get; internal set; }
 
-        static ManualResetEvent manualResetEvent;
+        static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
         private MainWindow mainWindow;
 
@@ -139,7 +139,9 @@ namespace DiagramDesigner
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            this.executeDebugCommand(Debug.Mode.ConditionedContinue);
+            ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
+            popup.Show();
+            //this.executeDebugCommand(Debug.Mode.ConditionedContinue);
         }
 
         private void executeDebugCommand( Debug.Mode command)
@@ -172,6 +174,8 @@ namespace DiagramDesigner
 
         private void Debuger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            if(this.mainWindow != null && Debug.instance().debugModeOn)
+                this.mainWindow.stopDebug();
 
             //Hago visible los botones de Debug
             this.setDebugButtonsVisibility(Visibility.Visible);
@@ -192,10 +196,10 @@ namespace DiagramDesigner
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
 
-            if (Debug.instance().colorSignalEvent != null)
-                Debug.instance().colorSignalEvent.Reset();
+            //if (Debug.instance().colorSignalEvent != null)
+            //    Debug.instance().colorSignalEvent.Reset();
 
-            DesignerCanvas.manualResetEvent = new ManualResetEvent(false);
+            //DesignerCanvas.manualResetEvent = new ManualResetEvent(false);
             Debug.instance().debugModeOn = true; 
             Debug.instance().jumpToNextNode = false;
             Debug.instance().colorSignalEvent = manualResetEvent;
@@ -1053,6 +1057,7 @@ namespace DiagramDesigner
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
                 this.mainWindow = new MainWindow(root.ToString(), true);
+                //this.mainWindow = this.mainWindow == null ? new MainWindow(root.ToString(), true) : this.mainWindow;
             }
             catch (DiagramValidationException ex)
             {

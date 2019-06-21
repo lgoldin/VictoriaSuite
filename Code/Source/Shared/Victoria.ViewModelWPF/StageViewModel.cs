@@ -18,6 +18,7 @@ using Victoria.Shared.Actors;
 using Victoria.Shared.EventArgs;
 using Victoria.ViewModelWPF.Actors;
 using Variable = Victoria.ModelWPF.Variable;
+using System.Threading.Tasks;
 
 namespace Victoria.ViewModelWPF
 {
@@ -444,7 +445,8 @@ namespace Victoria.ViewModelWPF
         {
             this.StopExecution();
             this.mainSimulationActor.Tell(PoisonPill.Instance);
-
+            Task shutdownTask = CoordinatedShutdown.Get(this.systemActor).Run(CoordinatedShutdown.PhaseActorSystemTerminate);
+            shutdownTask.Wait();
             //if (this.Executing)
             //{
             //    this.Simulation.StopExecution(true);

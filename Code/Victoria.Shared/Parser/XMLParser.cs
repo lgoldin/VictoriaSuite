@@ -18,9 +18,10 @@ namespace Victoria.Shared
         private static Simulation simulation = null;
 
 
-        public static Simulation GetExecutingSimulation() {
-            return simulation;
-        }
+        //public static Simulation GetExecutingSimulation() {
+        //    return simulation;
+        //}
+
         public static Simulation GetSimulation(string xmlString)
         {
             try
@@ -70,8 +71,12 @@ namespace Victoria.Shared
                     stages = new List<Stage>();
                 }
 
-                // return simulation == null ? new Simulation(diagramas, variables, stages) : simulation;
-                return new Simulation(diagramas, variables, stages);
+                
+                if (simulation == null)
+                    simulation = new Simulation(diagramas, variables, stages);
+
+                return simulation;
+                //return new Simulation(diagramas, variables, stages);
             }
             catch (Exception e)
             {                

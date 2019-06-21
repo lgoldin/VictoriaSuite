@@ -254,6 +254,9 @@
     <Compile Include="View\AddNameEscenarioPopUp.xaml.cs">
       <DependentUpon>AddNameEscenarioPopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ConditionedContinuePopUp.xaml.cs">
+      <DependentUpon>ConditionedContinuePopUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DeleteDiagramPopUp.xaml.cs">
       <DependentUpon>DeleteDiagramPopUp.xaml</DependentUpon>
     </Compile>
@@ -425,6 +428,10 @@
     <Page Include="View\AddNameEscenarioPopUp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ConditionedContinuePopUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DeleteDiagramPopUp.xaml">
       <Generator>MSBuild:Compile</Generator>
