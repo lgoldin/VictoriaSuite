@@ -124,12 +124,12 @@
                                 </Button>
                             </Grid>
                             <Grid x:Name="deleteRegistersGrid" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,123,786,262.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnDeleteRegisters" Height="71" Width="197" BorderThickness="0" Background="Transparent"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                <Button x:Name="btnDeleteRegisters" Height="71" Width="197" BorderThickness="0" Background="Transparent"  Click="BtnDeleteRegisters_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                     <Label Content="Borrar registros" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
                                 </Button>
                             </Grid>
                             <Grid x:Name="selectAllGrid" Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,208,786,182.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnSelectAll" Height="66" Width="197" Background="Transparent" BorderThickness="0"  Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                <Button x:Name="btnSelectAll" Height="66" Width="197" Background="Transparent" BorderThickness="0"  Click="BtnSelectAll_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                     <Label Content="Seleccionar todo" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
                                 </Button>
                             </Grid>

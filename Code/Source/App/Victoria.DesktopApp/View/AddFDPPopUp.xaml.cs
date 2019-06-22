@@ -63,6 +63,7 @@ namespace Victoria.DesktopApp.View
     {
         private List<Evento> eventos = new List<Evento>();
         public List<Evento> interv = new List<Evento>();
+        public int idEvento = 0;
         private AnalisisPrevio analisisPrevio;  
 
         public void FDPGenerator(AnalisisPrevio analisisPrevio)
@@ -182,6 +183,7 @@ namespace Victoria.DesktopApp.View
            // {
                 
                 dgvDatosFdp.ItemsSource = eventos;
+                
                 using (var archivo = new XLWorkbook(rutaFile.Text ))
                 {
                     
@@ -192,16 +194,25 @@ namespace Victoria.DesktopApp.View
                 try
                 {
                     var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
+                    idEvento++;
                     while (!hoja.Cell(numeroFila, columna).IsEmpty())
                     {
                             DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
-                            eventos.Add(new Evento() { fecha = auxFecha });//, origen = nuevoOrigen, activo = true });
+                            eventos.Add(new Evento() { fecha = auxFecha, Id= idEvento });//, origen = nuevoOrigen, activo = true });
                             numeroFila++;
+                            idEvento++;
                     }
 
                 
                     dgvDatosFdp.Columns[0].Width = 235;
-                    dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
+                    try
+                    {
+                        dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
+                    }
+                    catch
+                    {
+
+                    }
                     dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
                     dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
                     dgvDatosFdp.Columns[1].Visibility = Visibility.Visible;
@@ -212,7 +223,7 @@ namespace Victoria.DesktopApp.View
                     dgvDatosFdp.Visibility = Visibility.Visible;
                     rbFecha.IsChecked = true;
                     pnlButtonsGrid.Visibility = Visibility.Visible;
-                    
+                    dgvDatosFdp.Items.Refresh();
                 }
 
                 catch
@@ -293,6 +304,11 @@ namespace Victoria.DesktopApp.View
                     if (eventos != null && eventos.Count > 0)
                     {
                         //calculo intervalos
+                        if (interv != null && interv.Count > 0)
+                        {
+                            interv.Clear();
+                        }
+                        
                         var eventosOrdenados = eventos.OrderBy(x => x.fecha);
                         List<double> lista = new List<double>();
 
@@ -388,6 +404,7 @@ namespace Victoria.DesktopApp.View
             if (rbFecha.IsChecked.Value)
             {
                 //quitarFiltrosIntervalos();
+                
                 rbDtConstante.Visibility = Visibility.Visible;
                 cargarEventos();
                 btnAddRegister.IsEnabled = true;
@@ -566,6 +583,32 @@ namespace Victoria.DesktopApp.View
             var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO;
             modificarLayout(tipoAccion);
             botonSeleccionado(modifyRegisterGrid);
+        }
+
+        private void BtnDeleteRegisters_onClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Collections.IList itemsToDelete = dgvDatosFdp.SelectedItems;
+                foreach (var itemToDelete in itemsToDelete)
+                {
+                      
+                    Evento eventToDelete = (Evento)itemToDelete;
+                    eventos.Remove(eventToDelete);
+                }
+                dgvDatosFdp.Items.Refresh();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void BtnSelectAll_onClick(object sender, RoutedEventArgs e)
+        {
+            dgvDatosFdp.SelectAll();
+            
+            
         }
     }
 }
