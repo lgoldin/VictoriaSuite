@@ -68,6 +68,7 @@ namespace Victoria.DesktopApp.View
         private AnalisisPrevio analisisPrevio;
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
+        private commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion;
 
         public void FDPGenerator(AnalisisPrevio analisisPrevio)
         {
@@ -387,7 +388,14 @@ namespace Victoria.DesktopApp.View
 
                 dgvDatosFdp.ItemsSource = eventos;
                 dgvDatosFdp.Columns[0].Width = 235;
-                dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
+                try
+                {
+                    dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
+                }
+                catch
+                {
+
+                }
                 dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
                 dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
                 dgvDatosFdp.Columns[1].Visibility = Visibility.Visible;
@@ -396,9 +404,10 @@ namespace Victoria.DesktopApp.View
                 dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
                 dgvDatosFdp.Columns[5].Visibility = Visibility.Hidden;
                 dgvDatosFdp.Visibility = Visibility.Visible;
+                dgvDatosFdp.Items.Refresh();
 
                 //if (eventos != null && tipoAccion == TipoAccionProcesamiento.FILTRAR)
-                   // filtrar();
+                // filtrar();
             }
             catch
             {
@@ -520,7 +529,11 @@ namespace Victoria.DesktopApp.View
                     }
                     lblTipoFiltro.Visible = false;*/
                     comboBoxFilters.Visibility = Visibility.Hidden;
-                    btnLimpiar.Visibility = Visibility.Hidden;
+                    btnClean.Visibility = Visibility.Hidden;
+                    lbldtp1.Visibility = Visibility.Visible;
+                    lbldtp2.Visibility = Visibility.Visible;
+                    dtp1.Visibility = Visibility.Visible;
+                    dtp2.Visibility = Visibility.Visible;
                     /*txtIntervalo.Visible = false;
                     txtIntervalo2.Visible = false;*/
                     break;
@@ -534,8 +547,8 @@ namespace Victoria.DesktopApp.View
                     if (rbFecha.IsChecked.Value)
                     {
                         //lblTipoFiltro.Visible = true;
-                        
-                        btnLimpiar.Visibility = Visibility.Visible;
+
+                        btnClean.Visibility = Visibility.Visible;
 
                         cargarFiltros();
                     }
@@ -646,5 +659,135 @@ namespace Victoria.DesktopApp.View
             comboBoxFilters.ItemsSource = filtros;
         }
 
+        private void rbIntervalPNLM_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (rbAgregarPorIntervalo.IsChecked.Value)
+            {
+                nudAgregarPorIntervalo.Visibility = Visibility.Visible;
+                cbAgregarPorIntervalo.Visibility = Visibility.Visible;
+                dtp1.Visibility = Visibility.Hidden;
+                dtp2.Visibility = Visibility.Hidden;
+                lbldtp1.Visibility = Visibility.Hidden;
+                lbldtp2.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+
+        private void rbFechaPNLM_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (rbAgregarPorFechaYHora.IsChecked.Value)
+            {
+                nudAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
+                dtp1.Visibility = Visibility.Visible;
+                dtp2.Visibility = Visibility.Visible;
+                lbldtp1.Visibility = Visibility.Visible;
+                lbldtp2.Visibility = Visibility.Visible;
+            }
+        }
+
+
+        public void nuevoPorIntervalo(int cantidad, commonFDP.Segment.Segmentacion segm, int idEvento)
+        {
+            DateTime fechaAAgregar = DateTime.Now;
+             
+            DateTime maxFecha;
+            if (eventos.Count > 0)
+                maxFecha =eventos.Max(x => x.fecha);
+            else
+                maxFecha = DateTime.Now;
+
+            switch (segm)
+            {
+                case commonFDP.Segment.Segmentacion.DIA:
+                    fechaAAgregar = maxFecha.AddDays(cantidad);
+                    break;
+                case commonFDP.Segment.Segmentacion.HORA:
+                    fechaAAgregar = maxFecha.AddHours(cantidad);
+                    break;
+                case commonFDP.Segment.Segmentacion.MINUTO:
+                    fechaAAgregar = maxFecha.AddMinutes(cantidad);
+                    break;
+                case commonFDP.Segment.Segmentacion.SEGUNDO:
+                    fechaAAgregar = maxFecha.AddSeconds(cantidad);
+                    break;
+                default:
+                    break;
+            }
+            eventos.Add( new Evento { fecha = fechaAAgregar,Id= idEvento, activo = true });
+            
+        }
+        private void BtnAcept_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime fecha;
+            commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
+            switch (tipoAccion)
+            {
+                case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
+                    if (rbAgregarPorFechaYHora.IsChecked.Value)
+                    {
+                        DateTime fechaSelected = (DateTime)dtp1.Value;
+                        DateTime horaSelected = (DateTime)dtp2.Value;
+                        fecha = new DateTime(fechaSelected.Year, fechaSelected.Month, fechaSelected.Day, horaSelected.Hour, horaSelected.Minute, horaSelected.Second);
+                        idEvento++;
+                        eventos.Add(new Evento() { fecha = fecha, Id = idEvento });
+                    }
+                    else if (rbAgregarPorIntervalo.IsChecked.Value)
+                    {
+                        ComboBoxItem SegItem = (ComboBoxItem)cbAgregarPorIntervalo.SelectedItem;
+                        string segment = SegItem.Content.ToString();
+                        switch (segment)
+                        {
+                            case "Segundos":
+                                segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
+                                break;
+                            case "Minutos":
+                                segmentacion = commonFDP.Segment.Segmentacion.MINUTO;
+                                break;
+                            case "Horas":
+                                segmentacion = commonFDP.Segment.Segmentacion.HORA;
+                                break;
+                            case "Dias":
+                                segmentacion = commonFDP.Segment.Segmentacion.DIA;
+                                break;
+                            default:
+                                break;
+                        }
+                        idEvento++;
+                        nuevoPorIntervalo(Convert.ToInt32(nudAgregarPorIntervalo.Value), segmentacion, idEvento );
+                    }
+                    //mostrarMensaje("Registro agregado correctamente", Color.FromArgb(128, 255, 128));
+                    cargarEventos();
+                   // actualizarEstadisticas();
+
+                    break;
+               /* case TipoAccionProcesamiento.MODIFICAR_REGISTRO:
+                    fecha = new DateTime(dtp1.Value.Year, dtp1.Value.Month, dtp1.Value.Day, dtp2.Value.Hour, dtp2.Value.Minute, dtp2.Value.Second);
+                    if (eventosSeleccionados.Count == 1)
+                    {
+                        cargarEventos();
+                        mostrarMensaje("Registro modificado correctamente", Color.FromArgb(128, 255, 128));
+                        actualizarEstadisticas();
+                    }
+                    else
+                        mostrarMensaje("Seleccione solo un registro", Color.FromArgb(255, 89, 89));
+                    break;*/
+               /* case TipoAccionProcesamiento.FILTRAR:
+                    agregarFiltro();
+                    filtrar();
+                    mostrarMensaje("Filtro aplicado correctamente", Color.FromArgb(128, 255, 128));
+                    actualizarEstadisticas();
+                    break;*/
+                default:
+                    break;
+            }
+        }
+
+        private void BtnClean_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
