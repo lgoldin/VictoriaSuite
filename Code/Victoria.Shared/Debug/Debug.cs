@@ -25,7 +25,7 @@ namespace Victoria.Shared.Debug
         //DesignerItem usa esta lista para saber a quien les puede dibujar los contornos rojo o azul para el Debug
         private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion","nodo_diagrama","nodo_random" };
 
-        public bool conditionResult { get; set; }
+        public bool conditionResult { get; set; } = false;
 
         public string conditionExpresion { get; set; } = null;
 
@@ -101,8 +101,19 @@ namespace Victoria.Shared.Debug
                 if (this.debugCommand.Equals(Mode.ConditionedContinue))
                 {
                     string replacedCondition = ExpressionResolver.GetSentenceToEvaluate(executionVariables, new CultureInfo("en-US"), this.conditionExpresion);
-                    this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen(replacedCondition) ? true : false;
-                    this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
+                    if (!this.conditionResult)
+                    {
+                        this.conditionResult = ExpressionResolver.ResolveBoolen(replacedCondition);
+                        this.jumpToNextNode = true;
+                    }
+                    else
+                    {
+                        if (this.executingNode.HasBreakPoint)
+                        {
+                            this.conditionResult = false;
+                            this.jumpToNextNode = false;
+                        }                    
+                    }
                 }
             }
 
