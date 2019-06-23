@@ -28,7 +28,7 @@ namespace Victoria.Shared
                 return this.NextNode.Execute(variables, NotifyUIMethod);
             }
 
-            Debug.Debug.instance().execute(this, NotifyUIMethod);
+            Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
             return null;
         }
     }

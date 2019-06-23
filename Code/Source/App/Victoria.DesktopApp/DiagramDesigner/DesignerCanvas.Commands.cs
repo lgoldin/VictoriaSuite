@@ -31,6 +31,7 @@ using System.Collections.ObjectModel;
 using Victoria.DesktopApp.DiagramDesigner.Commands;
 using Victoria.ViewModelWPF;
 using System.Threading;
+using Victoria.UI.SharedWPF;
 
 namespace DiagramDesigner
 {
@@ -140,8 +141,15 @@ namespace DiagramDesigner
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
             ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
-            popup.Show();
-            //this.executeDebugCommand(Debug.Mode.ConditionedContinue);
+            popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
+            popup.ShowDialog();
+
+            if (popup.Result == DialogResult.Accept)
+            {
+                Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
+                this.executeDebugCommand(Debug.Mode.ConditionedContinue);
+            }
+            
         }
 
         private void executeDebugCommand( Debug.Mode command)

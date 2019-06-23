@@ -19,7 +19,7 @@ namespace Victoria.Shared
         {
             try
             {
-                Debug.Debug.instance().execute(this, NotifyUIMethod);
+                Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
 
                 var cultureInfo = new CultureInfo("en-US");
                 int indexEqual = this.Code.IndexOf("=");

@@ -25,7 +25,7 @@ namespace Victoria.DesktopApp.View
 
         public ConditionedContinuePopUp()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void btnAccept_OnClick(object sender, RoutedEventArgs e)

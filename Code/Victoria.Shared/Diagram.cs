@@ -20,7 +20,9 @@ namespace Victoria.Shared
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Error mientras ejecutaba nodo:" + ex.Message);
                 throw ex;
+
             }
         }
     }

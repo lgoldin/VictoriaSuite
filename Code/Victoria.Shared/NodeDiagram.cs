@@ -20,7 +20,7 @@ namespace Victoria.Shared
         {
             if (!this.IsInitializer)
             {
-                Debug.Debug.instance().execute(this, NotifyUIMethod);
+                Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
                 this.Diagram.Execute(variables, NotifyUIMethod);
             }
              

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,6 +16,8 @@ namespace Victoria.Shared.Debug
 
         private static Debug _instance = null;
 
+        
+
         private bool isFirstNode = true;
 
         private bool subDiagramHasStarted = false;
@@ -23,6 +26,8 @@ namespace Victoria.Shared.Debug
         private List<String> nodesToBreakpoint = new List<string> { "nodo_sentencia", "nodo_condicion","nodo_diagrama","nodo_random" };
 
         public bool conditionResult { get; set; }
+
+        public string conditionExpresion { get; set; } = null;
 
         public bool debugModeOn { get; set; }
 
@@ -55,7 +60,7 @@ namespace Victoria.Shared.Debug
 
         #region Methods
 
-        public void execute(Node node, Delegate NotifyUIMethod)
+        public void execute(Node node, Delegate NotifyUIMethod, IList<StageVariable> executionVariables)
         {
 
             if (this.debugModeOn)
@@ -63,14 +68,14 @@ namespace Victoria.Shared.Debug
                 //Me posiciono en el primer nodo con breakpoint
                 if (this.isFirstNode && node.HasBreakPoint)
                 {
-                    this.waitForCommand(node);
+                    this.waitForCommand(node, executionVariables);
                     this.isFirstNode = false;
                 }
                 else
                 {
                     if (!this.isFirstNode)
                     {
-                        this.waitForCommand(node);
+                        this.waitForCommand(node,executionVariables);
                     }
                 }
 
@@ -79,7 +84,7 @@ namespace Victoria.Shared.Debug
             }
         }
 
-        private void waitForCommand(Node node)
+        private void waitForCommand(Node node, IList<StageVariable> executionVariables)
         {    
             this.executingNode = node;
 
@@ -95,7 +100,8 @@ namespace Victoria.Shared.Debug
                 }
                 if (this.debugCommand.Equals(Mode.ConditionedContinue))
                 {
-                    this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen("NS > 1") ? true : false;
+                    string replacedCondition = ExpressionResolver.GetSentenceToEvaluate(executionVariables, new CultureInfo("en-US"), this.conditionExpresion);
+                    this.conditionResult = !this.conditionResult && ExpressionResolver.ResolveBoolen(replacedCondition) ? true : false;
                     this.jumpToNextNode = this.executingNode.HasBreakPoint && this.conditionResult ? false : true;
                 }
             }
