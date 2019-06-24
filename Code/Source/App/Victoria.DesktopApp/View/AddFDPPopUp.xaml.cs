@@ -68,7 +68,7 @@ namespace Victoria.DesktopApp.View
         private AnalisisPrevio analisisPrevio;
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
-        private commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion;
+        public commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion;
 
         public void FDPGenerator(AnalisisPrevio analisisPrevio)
         {
@@ -228,6 +228,8 @@ namespace Victoria.DesktopApp.View
                     rbFecha.IsChecked = true;
                     pnlButtonsGrid.Visibility = Visibility.Visible;
                     dgvDatosFdp.Items.Refresh();
+                    pnlModificable.Visibility = Visibility.Hidden;
+                    pnlMetodologia.Visibility = Visibility.Visible;
                 }
 
                 catch
@@ -279,100 +281,111 @@ namespace Victoria.DesktopApp.View
 
         private void BtnAddRegister_onClick(object sender, RoutedEventArgs e)
         {
-            var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO;
+            tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO;
             modificarLayout(tipoAccion);
-            botonSeleccionado(addRegisterGrid);
+            //botonSeleccionado(addRegisterGrid);
         }
 
         private void RbIntervalos_Checked(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (rbIntervalos.IsChecked.Value)
-      
+                if (dgvDatosFdp.Items.Count <= 1)
                 {
-                    var tipoAccion =  (int)commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR; 
-             
-                    modificarLayout(tipoAccion);
-                    
-                    rbDtConstante.Visibility = Visibility.Hidden;
-                    pnlSegmentacion.Visibility = Visibility.Hidden;
-                    
-                    rbEventoAEvento.IsChecked = true;
-                    if (rbDtConstante.IsChecked.Value)
-                    {
-                        rbEventoAEvento.IsChecked = true;
-                        pnlSegmentacion.Visibility = Visibility.Visible;
-                    }
-
-                    if (eventos != null && eventos.Count > 0)
-                    {
-                        //calculo intervalos
-                        if (interv != null && interv.Count > 0)
-                        {
-                            interv.Clear();
-                        }
-                        
-                        var eventosOrdenados = eventos.OrderBy(x => x.fecha);
-                        List<double> lista = new List<double>();
-
-                        lista = eventosOrdenados.Select(x => x.fecha.TimeOfDay)
-                        .Zip(eventosOrdenados.Select(x => x.fecha)
-                        .Skip(1), (x, y) => y - x)
-                        .Select(x => Math.Abs(x.TimeOfDay.TotalSeconds))
-                        .ToList();
-                        List<double> intervalos = lista; //para limpir los filtros y volver al original
-                        List<double> intervalosParciales = lista; //para los filtros consecutivos
-                        
-                   
-
-                        foreach (var intervalo in  lista)
-                        {
-                            interv.Add(new Evento() { vIntervalo = intervalo });
-                        }
-
-                        dgvDatosFdp.ItemsSource = null;
-                        dgvDatosFdp.ItemsSource = interv;
-                        dgvDatosFdp.Items.Refresh();
-
-                        dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
-                        dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
-                        dgvDatosFdp.Columns[1].Visibility = Visibility.Hidden;
-                        dgvDatosFdp.Columns[3].Visibility = Visibility.Hidden;
-                        dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
-                        dgvDatosFdp.Columns[5].Visibility = Visibility.Visible;
-                        dgvDatosFdp.Visibility = Visibility.Visible;
-                        dgvDatosFdp.Columns[5].Header = "Intervalos";
-
-
-                        //dgvDatosFdp.Columns[0].Visible = true;
-                        // dgvDatosFdp.Columns[0].Width = 235;
-
-                        //deshabilito funciones
-                       
-                        btnAddRegister.IsEnabled = false;
-                        addRegisterGrid.Background = Brushes.LightGray ;
-                        btnModifyRegister.IsEnabled = false;
-                        modifyRegisterGrid.Background = Brushes.LightGray;
-                        btnDeleteRegisters.IsEnabled = false;
-                        deleteRegistersGrid.Background = Brushes.LightGray;
-                        //btnDeleteRegisters. = Color.FromArgb(134, 0, 3);
-                        btnSelectAll.IsEnabled = false;
-                        selectAllGrid.Background = Brushes.LightGray;
-                        CheckListBoxFiltros.IsEnabled = false;
-   
-                        
-                        // chlFiltros.Enabled = false;
-
-                        modificarLayout((int)commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR);
-
-                    }
-                    //  ();
+                    rbFecha.IsChecked = true;
+                    createAlertPopUp("No se pueden calcular los intervalos con menos de 2 eventos");
 
                 }
                 else
                 {
-;                    cargarFiltros();
+                    if (rbIntervalos.IsChecked.Value)
+
+                    {
+                        var tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR;
+
+                        modificarLayout(tipoAccion);
+
+                        rbDtConstante.Visibility = Visibility.Hidden;
+                        pnlSegmentacion.Visibility = Visibility.Hidden;
+
+                        rbEventoAEvento.IsChecked = true;
+                        if (rbDtConstante.IsChecked.Value)
+                        {
+                            rbEventoAEvento.IsChecked = true;
+                            pnlSegmentacion.Visibility = Visibility.Visible;
+                        }
+
+                        if (eventos != null && eventos.Count > 0)
+                        {
+                            //calculo intervalos
+                            if (interv != null && interv.Count > 0)
+                            {
+                                interv.Clear();
+                            }
+
+                            var eventosOrdenados = eventos.OrderBy(x => x.fecha);
+                            List<double> lista = new List<double>();
+
+                            lista = eventosOrdenados.Select(x => x.fecha.TimeOfDay)
+                            .Zip(eventosOrdenados.Select(x => x.fecha)
+                            .Skip(1), (x, y) => y - x)
+                            .Select(x => Math.Abs(x.TimeOfDay.TotalSeconds))
+                            .ToList();
+                            List<double> intervalos = lista; //para limpir los filtros y volver al original
+                            List<double> intervalosParciales = lista; //para los filtros consecutivos
+
+
+
+                            foreach (var intervalo in lista)
+                            {
+                                interv.Add(new Evento() { vIntervalo = intervalo });
+                            }
+
+                            dgvDatosFdp.ItemsSource = null;
+                            dgvDatosFdp.ItemsSource = interv;
+                            dgvDatosFdp.Items.Refresh();
+
+                            dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
+                            dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
+                            dgvDatosFdp.Columns[1].Visibility = Visibility.Hidden;
+                            dgvDatosFdp.Columns[3].Visibility = Visibility.Hidden;
+                            dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
+                            dgvDatosFdp.Columns[5].Visibility = Visibility.Visible;
+                            dgvDatosFdp.Visibility = Visibility.Visible;
+                            dgvDatosFdp.Columns[5].Header = "Intervalos";
+
+
+                            //dgvDatosFdp.Columns[0].Visible = true;
+                            // dgvDatosFdp.Columns[0].Width = 235;
+
+                            //deshabilito funciones
+
+                            btnAddRegister.IsEnabled = false;
+                            addRegisterGrid.Background = Brushes.LightGray;
+                            btnModifyRegister.IsEnabled = false;
+                            modifyRegisterGrid.Background = Brushes.LightGray;
+                            btnDeleteRegisters.IsEnabled = false;
+                            deleteRegistersGrid.Background = Brushes.LightGray;
+                            //btnDeleteRegisters. = Color.FromArgb(134, 0, 3);
+                            btnSelectAll.IsEnabled = false;
+                            selectAllGrid.Background = Brushes.LightGray;
+                            CheckListBoxFiltros.IsEnabled = false;
+
+
+                            // chlFiltros.Enabled = false;
+
+                            //modificarLayout(commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR);
+                            pnlModificable.Visibility = Visibility.Hidden;
+
+                        }
+
+                        //  ();
+
+                    }
+                    else
+                    {
+                        ; cargarFiltros();
+                    }
                 }
             }
             catch
@@ -435,10 +448,14 @@ namespace Victoria.DesktopApp.View
                 btnSelectAll.IsEnabled = true;
                 selectAllGrid.Background = Brushes.Gray;
                 CheckListBoxFiltros.IsEnabled = true;
-                //modificarLayout(tipoAccion);
+                modificarLayout(tipoAccion);
                 //botonSeleccionado(btnFiltrar);
+                lbldtp1.Visibility = Visibility.Hidden;
+                lbldtp2.Visibility = Visibility.Hidden;
+                txtInterv1.Visibility = Visibility.Hidden;
+                txtInterv2.Visibility = Visibility.Hidden;
                 rbDtConstante.Visibility = Visibility.Visible;
-                
+                pnlModificable.Visibility = Visibility.Hidden;
                 //actualizarEstadisticas();
             }
         }
@@ -451,18 +468,18 @@ namespace Victoria.DesktopApp.View
                 pnlSegmentacion.Visibility = Visibility.Hidden;
         }
 
-        private void modificarLayout(int tipoAccion)
+        private void modificarLayout(commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion)
          {
              hacerVisible(tipoAccion);
              switch (tipoAccion)
              {
-                 case 0:
+                 case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
                      lblTituloAccion.Content = "Agregar Registro";
 
                      dtp1.FormatString = dateFormat;
 
                      dtp2.FormatString = hourFormat;
-                     pnlMoficable.Visibility = Visibility.Visible;
+                     pnlModificable.Visibility = Visibility.Visible;
                      rbAgregarPorFechaYHora.IsChecked = true;
                      rbAgregarPorFechaYHora.Visibility = Visibility.Visible;
                      rbAgregarPorIntervalo.IsChecked = false;
@@ -471,7 +488,7 @@ namespace Victoria.DesktopApp.View
                      cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
                      //cambiarFiltrosVistaFecha(0);
                      break;
-                 case 1:
+                 case commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
                     lblTituloAccion.Content = "Modificar Registro";
                      lbldtp1.Content = "Fecha";
 
@@ -484,21 +501,21 @@ namespace Victoria.DesktopApp.View
                     cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
                     // cambiarFiltrosVistaFecha(0);
                      break;
-                 case 4:
+                 case commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR:
                      lblTituloAccion.Content = "Filtrar";
 
                      dtp1.FormatString = dateFormat;
                      if (rbFecha.IsChecked.Value)
-                     {     /*
-                         lblAccion1.Text = "Fecha";
-                         txtIntervalo.Visible = false;
-                         txtIntervalo2.Visible = false;
-                         cambiarFiltrosVistaFecha(0); */
+                     {    
+                         lbldtp1.Content = "Fecha";
+                         txtInterv1.Visibility = Visibility.Hidden;
+                         txtInterv2.Visibility = Visibility.Hidden;
+                         //cambiarFiltrosVistaFecha(0); 
                      }
                      else
                      {     
-                         //lblAccion1.Text = "Intervalo";
-                         dtp1.Visibility = Visibility.Hidden;
+                         lbldtp1.Content = "Intervalo";
+                         dtp1.Visibility = Visibility.Visible;
                         // txtIntervalo.Visible = true; 
                      }
                      lbldtp2.Content = "Hora";
@@ -516,14 +533,14 @@ namespace Victoria.DesktopApp.View
          }
 
 
-        private void hacerVisible(int tipoAccion)
+        private void hacerVisible(commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion)
         {
             switch (tipoAccion)
             {
-                case (int)commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
-                case (int)commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
-                    pnlMoficable.Visibility = Visibility.Visible;
-                    /*foreach (Control control in pnlMoficable.Controls)
+                case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
+                case commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
+                    pnlModificable.Visibility = Visibility.Visible;
+                    /*foreach (Control control in pnlModificable.Controls)
                     {
                         control.Visible = true;
                     }
@@ -537,13 +554,16 @@ namespace Victoria.DesktopApp.View
                     /*txtIntervalo.Visible = false;
                     txtIntervalo2.Visible = false;*/
                     break;
-                case (int)commonFDP.commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS:
-                case (int)commonFDP.commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS:
-                    pnlMoficable.Visibility = Visibility.Hidden;
+                case commonFDP.commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS:
+                case commonFDP.commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS:
+                    pnlModificable.Visibility = Visibility.Hidden;
                     break;
-                case (int)commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR:
-                    pnlMoficable.Visibility = Visibility.Visible;
-                    
+                case commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR:
+                    pnlModificable.Visibility = Visibility.Visible;
+                    dtp1.Visibility = Visibility.Hidden;
+                    dtp2.Visibility = Visibility.Hidden;
+                    lbldtp1.Visibility = Visibility.Hidden;
+                    lbldtp2.Visibility = Visibility.Hidden;
                     if (rbFecha.IsChecked.Value)
                     {
                         //lblTipoFiltro.Visible = true;
@@ -598,18 +618,18 @@ namespace Victoria.DesktopApp.View
 
         private void BtnModifyRegister_onClick(object sender, RoutedEventArgs e)
         {
-            var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO;
+            tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO;
             modificarLayout(tipoAccion);
-            botonSeleccionado(modifyRegisterGrid);
+            //botonSeleccionado(modifyRegisterGrid);
         }
 
         private void BtnDeleteRegisters_onClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS;
+                tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS;
                 modificarLayout(tipoAccion);
-                botonSeleccionado(deleteRegistersGrid);
+                //botonSeleccionado(deleteRegistersGrid);
                 System.Collections.IList itemsToDelete = dgvDatosFdp.SelectedItems;
                 foreach (var itemToDelete in itemsToDelete)
                 {
@@ -623,15 +643,15 @@ namespace Victoria.DesktopApp.View
             {
 
             }
-            botonSeleccionado(deleteRegistersGrid);
+            //botonSeleccionado(deleteRegistersGrid);
         }
 
         private void BtnSelectAll_onClick(object sender, RoutedEventArgs e)
         {
             dgvDatosFdp.SelectAll();
-            var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS;
+            var tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS;
             modificarLayout(tipoAccion);
-            botonSeleccionado(selectAllGrid);
+            //botonSeleccionado(selectAllGrid);
 
         }
 
@@ -639,9 +659,9 @@ namespace Victoria.DesktopApp.View
         {
             if (eventos.Count() > 0)
             {
-                var tipoAccion = (int)commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR;
+                tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR;
                 modificarLayout(tipoAccion);
-                botonSeleccionado(filterRegisterGrid);
+                //botonSeleccionado(filterRegisterGrid);
             }
             else
             {
@@ -728,9 +748,9 @@ namespace Victoria.DesktopApp.View
                 case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
                     if (rbAgregarPorFechaYHora.IsChecked.Value)
                     {
-                        DateTime fechaSelected = (DateTime)dtp1.Value;
-                        DateTime horaSelected = (DateTime)dtp2.Value;
-                        fecha = new DateTime(fechaSelected.Year, fechaSelected.Month, fechaSelected.Day, horaSelected.Hour, horaSelected.Minute, horaSelected.Second);
+                        DateTime fechaMSelected = (DateTime)dtp1.Value;
+                        DateTime horaMSelected = (DateTime)dtp2.Value;
+                        fecha = new DateTime(fechaMSelected.Year, fechaMSelected.Month, fechaMSelected.Day, horaMSelected.Hour, horaMSelected.Minute, horaMSelected.Second);
                         idEvento++;
                         eventos.Add(new Evento() { fecha = fecha, Id = idEvento });
                     }
@@ -763,17 +783,34 @@ namespace Victoria.DesktopApp.View
                    // actualizarEstadisticas();
 
                     break;
-               /* case TipoAccionProcesamiento.MODIFICAR_REGISTRO:
-                    fecha = new DateTime(dtp1.Value.Year, dtp1.Value.Month, dtp1.Value.Day, dtp2.Value.Hour, dtp2.Value.Minute, dtp2.Value.Second);
-                    if (eventosSeleccionados.Count == 1)
+                case commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
+                    DateTime fechaSelected = (DateTime)dtp1.Value;
+                    DateTime horaSelected = (DateTime)dtp2.Value;
+                    fecha = new DateTime(fechaSelected.Year, fechaSelected.Month, fechaSelected.Day, horaSelected.Hour, horaSelected.Minute, horaSelected.Second);
+                    var mensaje = "";
+
+                    if (dgvDatosFdp.SelectedItems.Count == 1)
+
                     {
+                        Evento eventToModify = (Evento)dgvDatosFdp.SelectedItem;
+                        Evento obj = eventos.FirstOrDefault(x => x.Id == eventToModify.Id);
+                        if (obj != null) obj.fecha = fecha;
                         cargarEventos();
-                        mostrarMensaje("Registro modificado correctamente", Color.FromArgb(128, 255, 128));
-                        actualizarEstadisticas();
+                        break;
+                        //actualizarEstadisticas();
                     }
                     else
-                        mostrarMensaje("Seleccione solo un registro", Color.FromArgb(255, 89, 89));
-                    break;*/
+                        
+                        if (dgvDatosFdp.SelectedItems.Count == 0)
+                        {
+                            mensaje = "Seleccione un registro a modificar y vuelva a intentarlo";
+                        }
+                        else
+                        {
+                            mensaje = "Seleccione solo un registro a modificar";
+                        }
+                        createAlertPopUp(mensaje);
+                    break;
                /* case TipoAccionProcesamiento.FILTRAR:
                     agregarFiltro();
                     filtrar();
@@ -788,6 +825,148 @@ namespace Victoria.DesktopApp.View
         private void BtnClean_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+
+        private void comboBoxFilters_SelectionChanged(object sender, EventArgs e)
+        {
+            if (comboBoxFilters.SelectedValue != null)
+            {
+                if (rbFecha.IsChecked.Value)
+                    cambiarFiltrosVistaFecha(Convert.ToInt32(comboBoxFilters.SelectedValue));
+                else if (rbIntervalos.IsChecked.Value)
+                    cambiarFiltrosVistaIntervalos(Convert.ToInt32(comboBoxFilters.SelectedValue));
+            }
+        }
+
+        private void cambiarFiltrosVistaFecha(int valorSeleccionado)
+        {
+            if (tipoAccion == commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR)
+            {
+                txtInterv1.Visibility = Visibility.Hidden;
+                txtInterv2.Visibility = Visibility.Hidden;
+                if (valorSeleccionado > 2)
+                {
+                    dtp1.FormatString = hourFormat;
+                    DateTime fechaInicial = (DateTime)dtp1.Value;
+                    fechaInicial.AddHours(fechaInicial.Hour * -1);
+                    fechaInicial.AddMinutes(fechaInicial.Minute * -1);
+                    fechaInicial.AddSeconds(fechaInicial.Second * -1);
+                    dtp1.Value = fechaInicial;
+                    dtp2.FormatString = hourFormat;
+                    dtp2.Value = dtp1.Value;
+                }
+                else
+                {
+                    dtp1.FormatString = dateFormat;
+                    dtp2.FormatString = hourFormat;
+                    dtp2.Value = dtp1.Value;
+
+                }
+                switch (valorSeleccionado)
+                {
+                    case 0:
+                        btnAcept.Visibility = Visibility.Visible;
+                        lblTituloAccion.Visibility = Visibility.Visible;
+                        lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Visibility = Visibility.Visible;
+                        lbldtp1.Content = "Fecha";
+                        dtp1.Visibility = Visibility.Visible;
+                        lbldtp2.Visibility = Visibility.Hidden;
+                        dtp2.Visibility = Visibility.Hidden;
+                        btnClean.Visibility = Visibility.Visible;
+                        break;
+                    case 1:
+                        btnAcept.Visibility = Visibility.Visible;
+                        lblTituloAccion.Visibility = Visibility.Visible;
+                        lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Content = "Fecha";
+                        dtp1.Visibility = Visibility.Visible;
+                        lbldtp2.Visibility = Visibility.Hidden;
+                        dtp2.Visibility = Visibility.Hidden;
+                        btnClean.Visibility = Visibility.Visible;
+                        break;
+                    case 2:
+                        btnAcept.Visibility = Visibility.Visible;
+                        lblTituloAccion.Visibility = Visibility.Visible;
+                        lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Content = "Fecha desde";
+                        dtp1.Visibility = Visibility.Visible;
+                        lbldtp2.Visibility = Visibility.Visible;
+                        lbldtp2.Content = "Fecha hasta";
+                        dtp2.FormatString = dateFormat;
+                        dtp2.Visibility = Visibility.Visible;
+                        btnClean.Visibility = Visibility.Visible;
+                        break;
+                    case 3:
+                        btnAcept.Visibility = Visibility.Visible;
+                        lblTituloAccion.Visibility = Visibility.Visible;
+                        lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Content = "Hora";
+                        dtp1.Visibility = Visibility.Visible;
+                        lbldtp2.Visibility = Visibility.Hidden;
+                        dtp2.Visibility = Visibility.Hidden;
+                        btnClean.Visibility = Visibility.Visible;
+                        break;
+                    case 4:
+                        btnAcept.Visibility = Visibility.Visible;
+                        lblTituloAccion.Visibility = Visibility.Visible;
+                        lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Content = "Hora";
+                        dtp1.Visibility = Visibility.Visible;
+                        lbldtp2.Visibility = Visibility.Hidden;
+                        dtp2.Visibility = Visibility.Hidden;
+                        btnClean.Visibility = Visibility.Visible;
+                        break;
+                    case 5:
+                        btnAcept.Visibility = Visibility.Visible;
+                        lblTituloAccion.Visibility = Visibility.Visible;
+                        lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Content = "Hora desde";
+                        dtp1.Visibility = Visibility.Visible;
+                        lbldtp2.Visibility = Visibility.Visible;
+                        lbldtp2.Content = "Hora hasta";
+                        dtp2.Visibility = Visibility.Visible;
+                        btnClean.Visibility = Visibility.Visible;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void cambiarFiltrosVistaIntervalos(int valorSeleccionado)
+        {
+            btnAcept.Visibility = Visibility.Visible;
+            lblTituloAccion.Visibility = Visibility.Visible;
+            lblTituloAccion.Content = "Filtrar";
+            txtInterv1.Text = "0";
+            txtInterv2.Text = "0";
+
+            switch (valorSeleccionado)
+            {
+                case 0: //intervalo menor a
+                case 1: //intervalo mayor a
+                    lbldtp1.Visibility = Visibility.Visible;
+                    lbldtp1.Content = "Intervalo";
+                    txtInterv1.Visibility = Visibility.Visible;
+                    txtInterv2.Visibility = Visibility.Hidden;
+                    btnClean.Visibility = Visibility.Visible;
+                    lbldtp2.Visibility = Visibility.Hidden;
+                   
+                    break;
+                case 2://intervalo entre
+                    lbldtp1.Visibility = Visibility.Visible;
+                    lbldtp1.Content = "Intervalo desde";
+                    txtInterv1.Visibility = Visibility.Visible;
+                    lbldtp2.Visibility = Visibility.Visible;
+                    lbldtp2.Content = "Intervalo hasta";
+                    txtInterv2.Visibility = Visibility.Visible;
+                    btnClean.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
