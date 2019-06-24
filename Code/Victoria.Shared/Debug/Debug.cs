@@ -16,8 +16,6 @@ namespace Victoria.Shared.Debug
 
         private static Debug _instance = null;
 
-        
-
         private bool isFirstNode = true;
 
         private bool subDiagramHasStarted = false;
@@ -56,6 +54,13 @@ namespace Victoria.Shared.Debug
             _instance = _instance == null ? new Debug() : _instance;
 
             return _instance;
+        }
+
+        public void initilize()
+        {
+            this.debugModeOn = true;
+            this.isFirstNode = true;
+            this.jumpToNextNode = false;
         }
 
         #region Methods

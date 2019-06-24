@@ -114,7 +114,8 @@ namespace DiagramDesigner
             this.mainWindow.stopDebug();
             this.mainWindow.Close();
 
-            Debug.instance().jumpToNextNode = true;
+            Debug.instance().debugModeOn = false;
+           // Debug.instance().jumpToNextNode = true;
 
             this.setDebugButtonsVisibility(Visibility.Hidden);
             groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
@@ -208,17 +209,15 @@ namespace DiagramDesigner
             //    Debug.instance().colorSignalEvent.Reset();
 
             //DesignerCanvas.manualResetEvent = new ManualResetEvent(false);
-            Debug.instance().debugModeOn = true; 
-            Debug.instance().jumpToNextNode = false;
-            Debug.instance().colorSignalEvent = manualResetEvent;
+            Debug.instance().initilize();
+            Debug.instance().colorSignalEvent = DesignerCanvas.manualResetEvent;
 
             //Veo de encontrar el primer nodo con breakpoing si es que existe 
             if (DesignerItem.ifAnyNodeHasBreakpoint())
             {
-                //while ( Debug.instance().executingNode == null ){}
                 manualResetEvent.WaitOne();
 
-                //Cambio el color del primer nodo
+                //Cambio el color del primer nodo con breakpoint
                 DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );
             }
 
@@ -270,6 +269,7 @@ namespace DiagramDesigner
 
         private void Simulate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            Debug.instance().debugModeOn = false;
             ValidarYLanzarSimulador(true);
         }
 

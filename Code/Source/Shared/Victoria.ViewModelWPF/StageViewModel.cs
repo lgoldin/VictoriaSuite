@@ -444,14 +444,9 @@ namespace Victoria.ViewModelWPF
         private void DebugStopExecution()
         {
             this.StopExecution();
-            this.mainSimulationActor.Tell(PoisonPill.Instance);
+            this.MainSimulationActor.Tell(PoisonPill.Instance);
             Task shutdownTask = CoordinatedShutdown.Get(this.systemActor).Run(CoordinatedShutdown.PhaseActorSystemTerminate);
             shutdownTask.Wait();
-            //if (this.Executing)
-            //{
-            //    this.Simulation.StopExecution(true);
-            //    this.Simulation.ChangeStatus(SimulationStatus.Stoped);
-            //}
         }
 
         private void StopExecution()
