@@ -276,7 +276,7 @@ namespace Victoria.DesktopApp.View
 
         private void BtnModifyRegister_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void BtnAddRegister_onClick(object sender, RoutedEventArgs e)
