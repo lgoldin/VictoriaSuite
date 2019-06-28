@@ -1,24 +1,25 @@
-﻿using System;
+﻿using Accord.Statistics.Distributions.Univariate;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Accord.Statistics;
-using Accord.Statistics.Distributions.Univariate;
 
-namespace commonFDP
+namespace commonFDP.Functions
 {
-    class WEIBULL05 : FDP, IFunctions
+   class Weibull : FDP, IFunctions
     {
-        private readonly double shape = 0.5;
-        private readonly double scale = 1;
+        private double shape = 0;
+        private double scale = 0;
 
         public string FDP => string.Format("f(x) = ({0}/{1})*(x/{1})^({0}-1)*e^(-(x/{1})^{0})", shape, scale);
 
         public string Inverse => string.Format("f(R) = {1}*(-ln(-R+1))^(1/{0})", shape, scale);
 
-        public WEIBULL05(double[] events)
+        public Weibull(double[] events,double shape, double scale)
         {
             try
             {
+                this.shape = shape;
+                this.scale = scale;
                 this.continuousDistribution = new WeibullDistribution(shape, scale);
                 this.result = new DistributionResult(this.FDP, this.Inverse, this.continuousDistribution.StandardDeviation, this.continuousDistribution.Mean, this.continuousDistribution.Variance, this);
             }
