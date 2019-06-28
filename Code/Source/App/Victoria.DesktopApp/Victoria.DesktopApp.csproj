@@ -660,8 +660,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\commonFDP\commonFDP\commonFDP.csproj">
-      <Project>{ce068b69-6755-4db1-be65-0a695ccaa517}</Project>
+    <ProjectReference Include="..\..\..\..\commonFDP\commonFDP\commonFDP.csproj">
+      <Project>{16980ad7-17f1-434a-8108-3fb8205eaa24}</Project>
       <Name>commonFDP</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Victoria.ModelWPF\Victoria.ModelWPF.csproj">

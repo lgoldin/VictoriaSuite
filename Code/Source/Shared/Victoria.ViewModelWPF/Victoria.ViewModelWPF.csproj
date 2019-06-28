@@ -105,10 +105,6 @@
     <Compile Include="StageViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\commonFDP\commonFDP\commonFDP.csproj">
-      <Project>{ce068b69-6755-4db1-be65-0a695ccaa517}</Project>
-      <Name>commonFDP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Victoria.ModelWPF\Victoria.ModelWPF.csproj">
       <Project>{d5469314-5082-4bd7-acd3-86552fa568b6}</Project>
       <Name>Victoria.ModelWPF</Name>
