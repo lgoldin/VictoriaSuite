@@ -337,6 +337,9 @@
     <Compile Include="View\ExcercisesList.xaml.cs">
       <DependentUpon>ExcercisesList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\FrmAjusteFunciones.xaml.cs">
+      <DependentUpon>FrmAjusteFunciones.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GetWebExcercisePopUp.xaml.cs">
       <DependentUpon>GetWebExcercisePopUp.xaml</DependentUpon>
     </Compile>
@@ -529,6 +532,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ExcercisesList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FrmAjusteFunciones.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

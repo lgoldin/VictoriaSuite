@@ -29,47 +29,19 @@ namespace Victoria.DesktopApp.View
 
     // esto va a ir en la libreria common fdp
 
-    public class Evento : IEquatable<Evento>
-    {
-        public int Id { get; set; }
-        public DateTime fecha { get; set; }
-        public bool activo { get; set; }
-
-        public int idOrigen { get; set; }
-        public Origen origen { get; set; }
-        public double vIntervalo { get; set; }
-
-
-        public bool Equals(Evento other)
-        {
-            return this.Id == other.Id;
-        }
-    }
-
-    public class Origen
-    {
-        public int Id { get; set; }
-        public DateTime fechaCreacion { get; set; }
-
-        public string nombreOrigen { get; set; }
-
-        public bool activo { get; set; }
-
-        public List<Evento> eventos { get; set; }
-       
-    }
 
     // hasta aca va a ir a la common fdp 
 
     public partial class AddFDPPopUp : Window
     {
-        private List<Evento> eventos = new List<Evento>();
-        public List<Evento> interv = new List<Evento>();
+        private List<commonFDP.Evento> eventos = new List<commonFDP.Evento>();
+        public List<commonFDP.Evento> interv = new List<commonFDP.Evento>();
         public int idEvento = 0;
         private AnalisisPrevio analisisPrevio;
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
         public commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion;
+        List<double> intervalosParciales;
 
         public void FDPGenerator(AnalisisPrevio analisisPrevio)
         {
@@ -134,32 +106,32 @@ namespace Victoria.DesktopApp.View
         {
             this.Close();
         }
-        /*
+        
         private void btnCalcularFDP_OnClick(object sender, RoutedEventArgs e)
         {
-
+            
             if (eventos.Count() >= 15)
             {
                 try
                 {
-                    MetodologiaAjuste metodologia = MetodologiaAjuste.EVENTO_A_EVENTO;
+                    commonFDP.MetodologiaAjuste metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
                     commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
                     int flagIntervalos = 0;
 
                     if (rbFecha.IsChecked.Value)
                     {
-                        metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : MetodologiaAjuste.DT_CONSTANTE;
+                        metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : commonFDP.MetodologiaAjuste.DT_CONSTANTE;
                         segmentacion = rbDia.IsChecked.Value ? commonFDP.Segment.Segmentacion.DIA : (rbHora.IsChecked.Value ? commonFDP.Segment.Segmentacion.HORA : (rbMinuto.IsChecked.Value ? commonFDP.Segment.Segmentacion.MINUTO : commonFDP.Segment.Segmentacion.SEGUNDO));
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, this.proyecto);
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null);
                         this.Visibility = Visibility.Hidden;
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;
                     }
                     else if (rbIntervalos.IsChecked.Value)
                     {
-                        metodologia = MetodologiaAjuste.EVENTO_A_EVENTO;
+                        metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
                         flagIntervalos = 1;
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, this.proyecto);
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, null);
                         this.Visibility = Visibility.Hidden;
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;
@@ -167,15 +139,18 @@ namespace Victoria.DesktopApp.View
                 }
                 catch
                 {
-                    mostrarMensaje("Error al calcular funciones", Color.FromArgb(255, 89, 89));
+                    createAlertPopUp("Error al calcular funciones");
                 }
             }
             else
             {
-                mostrarMensaje("Debe haber al menos 15 eventos en el proyecto", Color.FromArgb(255, 255, 0));
+                createAlertPopUp("Debe haber al menos 15 eventos en el proyecto");
             }
             
-        } */
+        } 
+       
+        
+
 
         private void Btnserch_Click(object sender, RoutedEventArgs e)
         {
@@ -240,7 +215,7 @@ namespace Victoria.DesktopApp.View
                     while (!hoja.Cell(numeroFila, columna).IsEmpty())
                     {
                             DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
-                            eventos.Add(new Evento() { fecha = auxFecha, Id= idEvento });//, origen = nuevoOrigen, activo = true });
+                            eventos.Add(new commonFDP.Evento() { fecha = auxFecha, Id= idEvento });//, origen = nuevoOrigen, activo = true });
                             numeroFila++;
                             idEvento++;
                     }
@@ -376,7 +351,7 @@ namespace Victoria.DesktopApp.View
 
                             foreach (var intervalo in lista)
                             {
-                                interv.Add(new Evento() { vIntervalo = intervalo });
+                                interv.Add(new commonFDP.Evento() { vIntervalo = intervalo });
                             }
 
                             dgvDatosFdp.ItemsSource = null;
@@ -671,8 +646,8 @@ namespace Victoria.DesktopApp.View
                 System.Collections.IList itemsToDelete = dgvDatosFdp.SelectedItems;
                 foreach (var itemToDelete in itemsToDelete)
                 {
-                      
-                    Evento eventToDelete = (Evento)itemToDelete;
+
+                    commonFDP.Evento eventToDelete = (commonFDP.Evento)itemToDelete;
                     eventos.Remove(eventToDelete);
                 }
                 dgvDatosFdp.Items.Refresh();
@@ -774,7 +749,7 @@ namespace Victoria.DesktopApp.View
                 default:
                     break;
             }
-            eventos.Add( new Evento { fecha = fechaAAgregar,Id= idEvento, activo = true });
+            eventos.Add( new commonFDP.Evento { fecha = fechaAAgregar,Id= idEvento, activo = true });
             
         }
         private void BtnAcept_Click(object sender, RoutedEventArgs e)
@@ -790,7 +765,7 @@ namespace Victoria.DesktopApp.View
                         DateTime horaMSelected = (DateTime)dtp2.Value;
                         fecha = new DateTime(fechaMSelected.Year, fechaMSelected.Month, fechaMSelected.Day, horaMSelected.Hour, horaMSelected.Minute, horaMSelected.Second);
                         idEvento++;
-                        eventos.Add(new Evento() { fecha = fecha, Id = idEvento });
+                        eventos.Add(new commonFDP.Evento() { fecha = fecha, Id = idEvento });
                     }
                     else if (rbAgregarPorIntervalo.IsChecked.Value)
                     {
@@ -830,8 +805,8 @@ namespace Victoria.DesktopApp.View
                     if (dgvDatosFdp.SelectedItems.Count == 1)
 
                     {
-                        Evento eventToModify = (Evento)dgvDatosFdp.SelectedItem;
-                        Evento obj = eventos.FirstOrDefault(x => x.Id == eventToModify.Id);
+                        commonFDP.Evento eventToModify = (commonFDP.Evento)dgvDatosFdp.SelectedItem;
+                        commonFDP.Evento obj = eventos.FirstOrDefault(x => x.Id == eventToModify.Id);
                         if (obj != null) obj.fecha = fecha;
                         cargarEventos();
                         break;
