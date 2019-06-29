@@ -111,11 +111,12 @@ namespace DiagramDesigner
         #region DebugCommands
         private void Stop_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
+            Debug.instance().debugCommand = Debug.Mode.Stop;
             this.mainWindow.stopDebug();
-            this.mainWindow.Close();
+            //this.mainWindow.Close();
 
             Debug.instance().debugModeOn = false;
-           // Debug.instance().jumpToNextNode = true;
+            Debug.instance().jumpToNextNode = true;
 
             this.setDebugButtonsVisibility(Visibility.Hidden);
             groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
