@@ -28,6 +28,7 @@ namespace Victoria.DesktopApp.View
     /// </summary>
 
     // esto va a ir en la libreria common fdp
+
     public class Evento : IEquatable<Evento>
     {
         public int Id { get; set; }
@@ -133,11 +134,48 @@ namespace Victoria.DesktopApp.View
         {
             this.Close();
         }
-
+        /*
         private void btnCalcularFDP_OnClick(object sender, RoutedEventArgs e)
-        {   
-            Archivo.Visibility = Visibility.Visible; 
-        }
+        {
+
+            if (eventos.Count() >= 15)
+            {
+                try
+                {
+                    MetodologiaAjuste metodologia = MetodologiaAjuste.EVENTO_A_EVENTO;
+                    commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
+                    int flagIntervalos = 0;
+
+                    if (rbFecha.IsChecked.Value)
+                    {
+                        metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : MetodologiaAjuste.DT_CONSTANTE;
+                        segmentacion = rbDia.IsChecked.Value ? commonFDP.Segment.Segmentacion.DIA : (rbHora.IsChecked.Value ? commonFDP.Segment.Segmentacion.HORA : (rbMinuto.IsChecked.Value ? commonFDP.Segment.Segmentacion.MINUTO : commonFDP.Segment.Segmentacion.SEGUNDO));
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, this.proyecto);
+                        this.Visibility = Visibility.Hidden;
+                        frm.ShowDialog();
+                        this.Visibility = Visibility.Visible;
+                    }
+                    else if (rbIntervalos.IsChecked.Value)
+                    {
+                        metodologia = MetodologiaAjuste.EVENTO_A_EVENTO;
+                        flagIntervalos = 1;
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, this.proyecto);
+                        this.Visibility = Visibility.Hidden;
+                        frm.ShowDialog();
+                        this.Visibility = Visibility.Visible;
+                    }
+                }
+                catch
+                {
+                    mostrarMensaje("Error al calcular funciones", Color.FromArgb(255, 89, 89));
+                }
+            }
+            else
+            {
+                mostrarMensaje("Debe haber al menos 15 eventos en el proyecto", Color.FromArgb(255, 255, 0));
+            }
+            
+        } */
 
         private void Btnserch_Click(object sender, RoutedEventArgs e)
         {
