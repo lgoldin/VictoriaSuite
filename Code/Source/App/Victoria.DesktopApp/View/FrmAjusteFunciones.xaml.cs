@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
 using Victoria.Shared.AnalisisPrevio;
 using System.Xml.Linq;
 using Microsoft.Win32;
@@ -70,6 +69,102 @@ namespace Victoria.DesktopApp.View
             this.proyecto = proyecto;
         }
 
+
+
+        private void FrmAjusteFunciones_Load(object sender, EventArgs e)
+        {
+            CalcularEventosSimplificados();
+            //CalcularYOrdenarFunciones();
+           // OrdenarFuncionesEnVista();
+           // SetupGraficoFuncion();
+        }
+
+        private void CalcularEventosSimplificados()
+        {
+            try
+            {
+                if (flagIntervalos == 0)
+                {
+                    if (metodologia == commonFDP.MetodologiaAjuste.DT_CONSTANTE)
+                    {
+                        List<double> lista = commonFDP.FdPUtils.AgruparSegmentacion(segmentacion, eventos);
+                        eventosParaAjuste = lista.ToArray();
+                        eventosSimplificados = commonFDP.FdPUtils.AgruparSegmentacionProbabilidad(lista);
+                    }
+                    else if (metodologia == commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO)
+                    {
+                        eventosSimplificados = commonFDP.FdPUtils.AgruparIntervalos(eventos);
+                        eventosParaAjuste = commonFDP.FdPUtils.CalcularIntervalos(eventos).ToArray();
+                    }
+                }
+                else
+                {
+                    double cant = intervalos.Count;
+                    eventosSimplificados = intervalos.GroupBy(x => x).ToDictionary(x => x.Key.ToString(), x => x.Count() / (cant > 1 ? cant - 1 : cant));
+                    eventosParaAjuste = intervalos.ToArray();
+                }
+            }
+            catch
+            {
+                createAlertPopUp("Error al calcular los intervalos");
+            }
+
+
+        }
+      
+        private void CalcularYOrdenarFunciones()
+        {
+            try
+            {
+                double[] arrEventos = eventosParaAjuste.ToArray();
+
+                /*
+                resultadoFuncionWeibull0_5 = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.WEIBULL05, arrEventos).Resultado;
+                if (resultadoFuncionWeibull0_5 != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.WEIBULL05, resultadoFuncionWeibull0_5);
+                resultadoFuncionBinomial = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.BINOMIAL, arrEventos).Resultado;
+                if (resultadoFuncionBinomial != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.BINOMIAL, resultadoFuncionBinomial);
+                resultadoFuncionExponencial = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.EXPONENCIAL, arrEventos).Resultado;
+                if (resultadoFuncionExponencial != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.EXPONENCIAL, resultadoFuncionExponencial);
+                resultadoFuncionLogistica = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.LOGISTICA, arrEventos).Resultado;
+                if (resultadoFuncionLogistica != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.LOGISTICA, resultadoFuncionLogistica);
+                resultadoFuncionLogNormal = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.LOG_NORMAL, arrEventos).Resultado;
+                if (resultadoFuncionLogNormal != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.LOG_NORMAL, resultadoFuncionLogNormal);
+                resultadoFuncionLogLogistica = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.LOG_LOGISTICA, arrEventos).Resultado;
+                if (resultadoFuncionLogLogistica != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.LOG_LOGISTICA, resultadoFuncionLogLogistica);
+                resultadoFuncionNormal = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.NORMAL, arrEventos).Resultado;
+                if (resultadoFuncionNormal != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.NORMAL, resultadoFuncionNormal);
+                resultadoFuncionWeibull1_5 = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.WEIBULL15, arrEventos).Resultado;
+                if (resultadoFuncionWeibull1_5 != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.WEIBULL15, resultadoFuncionWeibull1_5);
+                resultadoFuncionWeibull3 = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.WEIBULL3, arrEventos).Resultado;
+                if (resultadoFuncionWeibull3 != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.WEIBULL3, resultadoFuncionWeibull3);
+                resultadoFuncionPoisson = commonFDP..FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.POISSON, arrEventos).Resultado;
+                if (resultadoFuncionPoisson != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.POISSON, resultadoFuncionPoisson);
+                resultadoFuncionUniforme = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.UNIFORME, arrEventos).Resultado;
+                if (resultadoFuncionUniforme != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.UNIFORME, resultadoFuncionUniforme);
+                resultadoFuncionWeibull5 = commonFDP.FactoryFuncionDensidad.Instancia(commonFDP.FuncionDensidad.WEIBULL5, arrEventos).Resultado;
+                if (resultadoFuncionWeibull5 != null)
+                    lResultadosOrdenados.Add(commonFDP.FuncionDensidad.WEIBULL5, resultadoFuncionWeibull5);
+                lResultadosOrdenados = lResultadosOrdenados.OrderBy(x => x.Value.FDP.CalcularDesvio(eventosSimplificados)).ToDictionary(x => x.Key, y => y.Value);
+                */
+            }
+            catch
+            {
+                createAlertPopUp("Error al calcular y ordenar las funciones");
+            }
+        }
+        
+
         private void BtnShowResults_onClick(object sender, RoutedEventArgs e)
         {
 
@@ -98,6 +193,18 @@ namespace Victoria.DesktopApp.View
         {
 
         }
+        private void createAlertPopUp(string s)
+        {
+            GenerarAlerta(s);
+        }
+
+        private void GenerarAlerta(string s)
+        {
+            AlertPopUp Alert = new AlertPopUp(s);
+
+            Alert.Show();
+        }
+
     }
 
 

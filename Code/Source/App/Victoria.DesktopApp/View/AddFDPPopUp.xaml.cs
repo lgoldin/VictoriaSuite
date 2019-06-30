@@ -40,7 +40,7 @@ namespace Victoria.DesktopApp.View
         private AnalisisPrevio analisisPrevio;
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
-        public commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion;
+        public commonFDP.TipoAccionProcesamiento tipoAccion;
         List<double> intervalosParciales;
 
         public void FDPGenerator(AnalisisPrevio analisisPrevio)
@@ -294,7 +294,7 @@ namespace Victoria.DesktopApp.View
 
         private void BtnAddRegister_onClick(object sender, RoutedEventArgs e)
         {
-            tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO;
+            tipoAccion = commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO;
             modificarLayout(tipoAccion);
             //botonSeleccionado(addRegisterGrid);
         }
@@ -314,7 +314,7 @@ namespace Victoria.DesktopApp.View
                     if (rbIntervalos.IsChecked.Value)
 
                     {
-                        var tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR;
+                        var tipoAccion = commonFDP.TipoAccionProcesamiento.FILTRAR;
 
                         modificarLayout(tipoAccion);
 
@@ -481,12 +481,12 @@ namespace Victoria.DesktopApp.View
                 pnlSegmentacion.Visibility = Visibility.Hidden;
         }
 
-        private void modificarLayout(commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion)
+        private void modificarLayout(commonFDP.TipoAccionProcesamiento tipoAccion)
          {
              hacerVisible(tipoAccion);
              switch (tipoAccion)
              {
-                 case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
+                 case commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
                      lblTituloAccion.Content = "Agregar Registro";
 
                      dtp1.FormatString = dateFormat;
@@ -501,7 +501,7 @@ namespace Victoria.DesktopApp.View
                      cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
                      //cambiarFiltrosVistaFecha(0);
                      break;
-                 case commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
+                 case commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
                     lblTituloAccion.Content = "Modificar Registro";
                      lbldtp1.Content = "Fecha";
 
@@ -514,7 +514,7 @@ namespace Victoria.DesktopApp.View
                     cbAgregarPorIntervalo.Visibility = Visibility.Hidden;
                     // cambiarFiltrosVistaFecha(0);
                      break;
-                 case commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR:
+                 case commonFDP.TipoAccionProcesamiento.FILTRAR:
                      lblTituloAccion.Content = "Filtrar";
 
                      dtp1.FormatString = dateFormat;
@@ -546,12 +546,12 @@ namespace Victoria.DesktopApp.View
          }
 
 
-        private void hacerVisible(commonFDP.commonFDP.TipoAccionProcesamiento tipoAccion)
+        private void hacerVisible(commonFDP.TipoAccionProcesamiento tipoAccion)
         {
             switch (tipoAccion)
             {
-                case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
-                case commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
+                case commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
+                case commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
                     pnlModificable.Visibility = Visibility.Visible;
                     /*foreach (Control control in pnlModificable.Controls)
                     {
@@ -567,11 +567,11 @@ namespace Victoria.DesktopApp.View
                     /*txtIntervalo.Visible = false;
                     txtIntervalo2.Visible = false;*/
                     break;
-                case commonFDP.commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS:
-                case commonFDP.commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS:
+                case commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS:
+                case commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS:
                     pnlModificable.Visibility = Visibility.Hidden;
                     break;
-                case commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR:
+                case commonFDP.TipoAccionProcesamiento.FILTRAR:
                     pnlModificable.Visibility = Visibility.Visible;
                     dtp1.Visibility = Visibility.Hidden;
                     dtp2.Visibility = Visibility.Hidden;
@@ -631,7 +631,7 @@ namespace Victoria.DesktopApp.View
 
         private void BtnModifyRegister_onClick(object sender, RoutedEventArgs e)
         {
-            tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO;
+            tipoAccion = commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO;
             modificarLayout(tipoAccion);
             //botonSeleccionado(modifyRegisterGrid);
         }
@@ -640,7 +640,7 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
-                tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS;
+                tipoAccion = commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS;
                 modificarLayout(tipoAccion);
                 //botonSeleccionado(deleteRegistersGrid);
                 System.Collections.IList itemsToDelete = dgvDatosFdp.SelectedItems;
@@ -662,7 +662,7 @@ namespace Victoria.DesktopApp.View
         private void BtnSelectAll_onClick(object sender, RoutedEventArgs e)
         {
             dgvDatosFdp.SelectAll();
-            var tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS;
+            var tipoAccion = commonFDP.TipoAccionProcesamiento.SELECCIONAR_TODOS;
             modificarLayout(tipoAccion);
             //botonSeleccionado(selectAllGrid);
 
@@ -672,7 +672,7 @@ namespace Victoria.DesktopApp.View
         {
             if (eventos.Count() > 0)
             {
-                tipoAccion = commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR;
+                tipoAccion = commonFDP.TipoAccionProcesamiento.FILTRAR;
                 modificarLayout(tipoAccion);
                 //botonSeleccionado(filterRegisterGrid);
             }
@@ -758,7 +758,7 @@ namespace Victoria.DesktopApp.View
             commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
             switch (tipoAccion)
             {
-                case commonFDP.commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
+                case commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
                     if (rbAgregarPorFechaYHora.IsChecked.Value)
                     {
                         DateTime fechaMSelected = (DateTime)dtp1.Value;
@@ -796,7 +796,7 @@ namespace Victoria.DesktopApp.View
                    // actualizarEstadisticas();
 
                     break;
-                case commonFDP.commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
+                case commonFDP.TipoAccionProcesamiento.MODIFICAR_REGISTRO:
                     DateTime fechaSelected = (DateTime)dtp1.Value;
                     DateTime horaSelected = (DateTime)dtp2.Value;
                     fecha = new DateTime(fechaSelected.Year, fechaSelected.Month, fechaSelected.Day, horaSelected.Hour, horaSelected.Minute, horaSelected.Second);
@@ -854,7 +854,7 @@ namespace Victoria.DesktopApp.View
 
         private void cambiarFiltrosVistaFecha(int valorSeleccionado)
         {
-            if (tipoAccion == commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR)
+            if (tipoAccion == commonFDP.TipoAccionProcesamiento.FILTRAR)
             {
                 txtInterv1.Visibility = Visibility.Hidden;
                 txtInterv2.Visibility = Visibility.Hidden;

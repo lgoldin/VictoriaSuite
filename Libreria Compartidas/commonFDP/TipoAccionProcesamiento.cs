@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace commonFDP
 {
-    public static class commonFDP
-    {
         public  enum TipoAccionProcesamiento
         {
             AGREGAR_REGISTRO,
@@ -17,7 +15,7 @@ namespace commonFDP
             SELECCIONAR_TODOS,
             FILTRAR
         }
-    }
+    
 }
 
 
