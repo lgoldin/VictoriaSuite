@@ -23,6 +23,7 @@ using Microsoft.Win32;
 using Victoria.DesktopApp.DiagramDesigner;
 using System.Collections;
 
+
 namespace Victoria.DesktopApp.View
 {
     /// <summary>
@@ -33,8 +34,6 @@ namespace Victoria.DesktopApp.View
         private static object syncLock = new object();
 
         private Window1 VentanaDiagramador { get; set; }
-
-        private AddFDPPopUp VentanaFDP { get; set; }
 
         public AnalisisPrevio AnalisisPrevio { get; set; }
 
@@ -321,11 +320,12 @@ namespace Victoria.DesktopApp.View
         {
             GenerarDiagrama();
         }
-
+    
         private void btnGenerarFDP_OnClick(object sender, RoutedEventArgs e)
         {
             GenerarFDP();
         }
+
 
         private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -539,9 +539,9 @@ namespace Victoria.DesktopApp.View
         {
             AddFDPPopUp FDPGenerator = new AddFDPPopUp();
             FDPGenerator.FDPGenerator(AnalisisPrevio);
-    
+
             FDPGenerator.Show();
-        
+
         }
 
         private void DarPDFAlUsuario()
