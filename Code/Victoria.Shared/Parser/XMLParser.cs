@@ -15,13 +15,6 @@ namespace Victoria.Shared
     public static class XMLParser
     {
 
-        private static Simulation simulation = null;
-
-
-        //public static Simulation GetExecutingSimulation() {
-        //    return simulation;
-        //}
-
         public static Simulation GetSimulation(string xmlString)
         {
             try
@@ -72,11 +65,7 @@ namespace Victoria.Shared
                 }
 
                 
-                if (simulation == null)
-                    simulation = new Simulation(diagramas, variables, stages);
-
-                return simulation;
-                //return new Simulation(diagramas, variables, stages);
+                return new Simulation(diagramas, variables, stages);
             }
             catch (Exception e)
             {                
