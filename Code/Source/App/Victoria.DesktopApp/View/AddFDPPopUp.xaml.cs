@@ -112,8 +112,8 @@ namespace Victoria.DesktopApp.View
             
             if (eventos.Count() >= 15)
             {
-                try
-                {
+               // try
+                //{
                     commonFDP.MetodologiaAjuste metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
                     commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
                     int flagIntervalos = 0;
@@ -136,11 +136,11 @@ namespace Victoria.DesktopApp.View
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;
                     }
-                }
-                catch
+               //}
+                /*catch
                 {
                     createAlertPopUp("Error al calcular funciones");
-                }
+                }*/
             }
             else
             {
