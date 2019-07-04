@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>jiervasi</Authors>
+    <Company>UTN FRBA</Company>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="NETStandard.Library" Version="2.0.3" />
+    <PackageReference Update="NETStandard.Library" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
