@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Accord.Statistics.Distributions.Univariate;
-using MathNet.Symbolics;
-using Expr = MathNet.Symbolics.Expression;
+//using MathNet.Symbolics;
+//using Expr = MathNet.Symbolics.Expression;
 
 namespace commonFDP
 {
