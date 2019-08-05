@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -97,12 +98,6 @@
     <Compile Include="ResultadoAjuste.cs" />
     <Compile Include="Segmentacion.cs" />
     <Compile Include="TipoAccionProcesamiento.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\..\.nuget\packages\accord\3.8.0\build\Accord.dll.config">
-      <Link>Accord.dll.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

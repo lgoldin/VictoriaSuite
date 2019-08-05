@@ -67,68 +67,51 @@
                             <Label x:Name="lblTituloRanking" Content="Ranking mejor ajuste" FontWeight="Bold" FontSize="15" Margin="45,30,805,150" RenderTransformOrigin="0.46,-0.776" />
 
                             <Grid x:Name="pnlFunction1" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,87,786,555.143" Width="197" Grid.RowSpan="2">
-                                <Button x:Name="btnFunction1" Height="30" Width="197" Background="Transparent" BorderThickness="0" Click="btnFuncionWeibull0_5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30"  />
+                                <Button x:Name="btnFuncionWEIBULL05" Content="Weibull 0.5" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0" Click="btnFuncionWeibull0_5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction2" Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,-100,786,525.143" Width="197" Grid.Row="1">
-                                <Button x:Name="btnFunction2"  Height="30" Width="197" Background="Transparent" BorderThickness="0" Click="btnFuncionBinomial_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  >
-                                    <Label Content="Function2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30"/>
+                                <Button x:Name="btnFuncionBINOMIAL" Content="Binomial" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0" Click="btnFuncionBinomial_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  >
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction3" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,-70,786,495.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction3" Height="30" Width="197" BorderThickness="0" Background="Transparent"  Click="btnFuncionExponencial_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function3" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30"/>
+                                <Button x:Name="btnFuncionEXPONENCIAL" Content="Exponencial" Foreground="White" Height="30" Width="197" BorderThickness="0" Background="Transparent"  Click="btnFuncionExponencial_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
-                            <Grid x:Name="pnlFunction4" Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,-40,786,465.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction4" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionLogistica_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function4" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30"  />
+                            <Grid x:Name="pnlFunction4"  Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,-40,786,465.143" Width="197"  Grid.Row="1">
+                                <Button x:Name="btnFuncionLOGISTICA"  Content="Logistica" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionLogistica_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction5" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,-10,786,435.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction5" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionLognormal_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionLOGNORMAL" Content="Logaritmo Normal" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionLognormal_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="function6" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,20,786,405.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction6" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionLogLogistica_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function6" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionLOGLOGISTICA" Content="Log Logistica" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionLogLogistica_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction7" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,50,786,375.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction7" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionNormal_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionNORMAL" Content="Normal" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionNormal_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction8" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,80,786,345.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction8" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull1_5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionWEIBULL15" Content="Weibull15" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull1_5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction9" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,110,786,315.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction9" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull3_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionWEIBULL3" Content="Weibull3" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull3_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction10" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,140,786,285.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction10" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionPoisson_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionPOISSON" Content="Poisson" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionPoisson_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction11" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,170,786,255.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction11" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionUniforme_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function11" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionUNIFORME" Content="Uniforme" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionUniforme_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction12" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,200,786,225.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction12" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
-                                </Button>
-                            </Grid>
-                            <Grid x:Name="pnlFunction13" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,230,786,195.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFunction13" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="BtnShowResults_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                    <Label Content="Function13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" />
+                                <Button x:Name="btnFuncionWEIBULL5" Content="Weibull5" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 </Button>
                             </Grid>
 

@@ -172,14 +172,22 @@ namespace Victoria.DesktopApp.View
             try
             {
                 List<Button> buttons = new List<Button>();
-                foreach (var item in pnlButtonsGrid.Children.OfType<Button>())
+                List<Grid> grids = pnlButtonsGrid.Children.OfType<Grid>().ToList();
+
+
+                foreach (Grid item in grids)
                 {
-                    buttons.Add((Button)item);
+
+                    foreach (Button butt in item.Children.OfType<Button>())
+                    {
+                        buttons.Add(butt);
+                    }
+                    item.Children.Clear();
                 }
 
-
-                int indice = 0;
-                int childrens = pnlButtonsGrid.Children.Count;
+                /*
+                int indice = 0;             
+                int childrens = buttons.Count();
                 for (int i = 0; i < childrens; i++)
                 {
                     Button btn = pnlButtonsGrid.Children[indice] as Button;
@@ -192,16 +200,21 @@ namespace Victoria.DesktopApp.View
                     {
                         indice++;
                     }
-                }
+                } */
 
+                int indice = 0;
                 foreach (var item in lResultadosOrdenados)
                 {
                     foreach (var button in buttons)
                     {
+
                         var auxName = button.Name.Replace("btnFuncion", "");
                         if (String.Compare(item.Key.ToString().Replace("_", ""), auxName, true) == 0)
-                            pnlButtonsGrid.Children.Add(button);
+                            grids[indice].Children.Add(button);
+
                     }
+                    indice++;
+
                 }
             }
             catch
@@ -250,6 +263,19 @@ namespace Victoria.DesktopApp.View
             Alert.Show();
         }
 
+        private void CambiarLblGraficoFuncion(string nombreFuncion)
+        {
+            lblTituloFuncion.Content = "Función " + nombreFuncion;
+        }
+
+        private void CambiarRepresentacionFuncionEInversa(commonFDP.ResultadoAjuste fdp)
+        {
+            lblFuncion.Content = fdp.Funcion;
+            lblFuncionInversa.Content = fdp.Inversa;
+        }
+
+
+
         private void btnFuncionWeibull0_5_Click(object sender, EventArgs e) => SetupPantallaSegunFDP(sender, "Weibull 0.5", resultadoFuncionWeibull0_5);
 
         private void btnFuncionBinomial_Click(object sender, EventArgs e) => SetupPantallaSegunFDP(sender, "Binomial", resultadoFuncionBinomial);
@@ -277,16 +303,16 @@ namespace Victoria.DesktopApp.View
         private void SetupPantallaSegunFDP(object boton, string nombreFuncion, commonFDP.ResultadoAjuste funcion)
         {
 
-            //CambiarLblGraficoFuncion(nombreFuncion);
-            //CambiarRepresentacionFuncionEInversa(funcion);
+            CambiarLblGraficoFuncion(nombreFuncion);
+            CambiarRepresentacionFuncionEInversa(funcion);
             //GraficarLineaFDP(funcion.FDP);
             //GraficarLineaInversa(funcion.FDP);
             resultadoSeleccionado = funcion;
             //lbxGenerados.Items.Clear();
             if (nombreFuncion.Contains("Poisson") || nombreFuncion.Contains("Binomial"))
-                lblFuncionInversa.Content = "Función Acumulada";
+                lblTituloFuncionInversa.Content = "Función Acumulada";
             else
-                lblFuncionInversa.Content = "Función Inversa";
+                lblTituloFuncionInversa.Content = "Función Inversa";
         }
 
     }
