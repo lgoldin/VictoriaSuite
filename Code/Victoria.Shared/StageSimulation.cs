@@ -35,7 +35,8 @@ namespace Victoria.Shared
 
         public bool CanContinue()
         {
-            return this.stopExecution == false && this.simulation.CanContinue();
+            //return this.stopExecution == false && this.simulation.CanContinue();
+            return this.simulation.DebugginMode() ? this.simulation.CanContinue() : (!this.stopExecution && this.simulation.CanContinue());
         }
 
         public List<StageVariable> GetVariables()

@@ -10,6 +10,8 @@ namespace Victoria.Shared
     {
         private bool stopExecution { get; set; }
 
+        private bool stopDebugExecution { get; set; }
+
         private bool debugginMode = false;
 
         private List<Diagram> diagrams { get; set; }
@@ -24,6 +26,7 @@ namespace Victoria.Shared
 
         public Simulation(IList<Diagram> diagrams, Dictionary<string, Variable> variables)
         {
+            this.stopDebugExecution = this.debugginMode ? true : false;
             this.diagrams = diagrams.ToList();
             this.variables = variables.Values.ToList();
             if (!this.variables.Any(v => "T".Equals(v.Name)))
@@ -34,7 +37,8 @@ namespace Victoria.Shared
 
 		public Simulation(List<Diagram> diagramas, Dictionary<string, Variable> variables, List<Stage> stages) : this(diagramas, variables)
 		{
-			this.Stages = stages;
+            this.stopDebugExecution = this.debugginMode ? true : false;
+            this.Stages = stages;
 		}
 
         public bool HasStatusChanged()
@@ -62,9 +66,15 @@ namespace Victoria.Shared
             this.stopExecution = value;
         }
 
+        public void StopDebugExecution(bool value)
+        {
+            this.stopDebugExecution = value;
+        }
+
         public bool CanContinue()
         {
-            return this.stopExecution == false;
+            //return this.stopExecution == false;
+            return this.debugginMode ? !this.stopDebugExecution : !this.stopExecution;
         }
 
         public void Update(IStageSimulation stageSimulation)
