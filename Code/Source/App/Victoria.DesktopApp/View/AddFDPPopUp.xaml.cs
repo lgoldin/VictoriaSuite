@@ -122,7 +122,7 @@ namespace Victoria.DesktopApp.View
                     {
                         metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : commonFDP.MetodologiaAjuste.DT_CONSTANTE;
                         segmentacion = rbDia.IsChecked.Value ? commonFDP.Segment.Segmentacion.DIA : (rbHora.IsChecked.Value ? commonFDP.Segment.Segmentacion.HORA : (rbMinuto.IsChecked.Value ? commonFDP.Segment.Segmentacion.MINUTO : commonFDP.Segment.Segmentacion.SEGUNDO));
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null);
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null, analisisPrevio);
                         this.Visibility = Visibility.Hidden;
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;
@@ -131,7 +131,7 @@ namespace Victoria.DesktopApp.View
                     {
                         metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
                         flagIntervalos = 1;
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, null);
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, null, analisisPrevio);
                         this.Visibility = Visibility.Hidden;
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;

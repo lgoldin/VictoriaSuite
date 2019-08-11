@@ -45,6 +45,8 @@ namespace Victoria.Shared.AnalisisPrevio
 
         public ObservableCollection<string> Tefs { get; set; }
 
+        public ObservableCollection<commonFDP.ResultadoAjuste> listFDP { get; set; }
+
         public AnalisisPrevio(Tipo tipo, TipoEvento tipoDeEaE)
         {
             this.InicializarColecciones();
@@ -59,7 +61,7 @@ namespace Victoria.Shared.AnalisisPrevio
             this.VariablesDeControl = new ObservableCollection<string>();
             this.VariablesEstado = new ObservableCollection<VariableAP>();
             this.VariablesResultado = new ObservableCollection<VariableAP>();
-
+            this.listFDP = new ObservableCollection<commonFDP.ResultadoAjuste>();
             this.Propios = new ObservableCollection<string>();
             this.ComprometidosAnterior = new ObservableCollection<string>();
             this.ComprometidosFuturos = new ObservableCollection<string>();
@@ -240,6 +242,11 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             return this.VariablesEstado.Any(variable => variable.vector);
         }
-       
+
+        public void addFDPToList(commonFDP.ResultadoAjuste fdp)
+        {
+            listFDP.Add(fdp);
+        }
+
     }
 }

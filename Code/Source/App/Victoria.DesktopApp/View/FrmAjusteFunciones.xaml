@@ -124,9 +124,9 @@
 
                         </Grid>
 
-                        <Button x:Name="btnExport" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,553,43.286,79.857" Width="135"  Click="btnExport_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="4">
+                        <Button x:Name="btnSelect" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,553,43.286,79.857" Width="135"  Click="btnSelectFDP_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="4">
                             <Grid Height="30" Width="130">
-                                <Label Content="Exportar" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,1,2,1" />
+                                <Label Content="Seleccionar" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,1,2,1" />
                                 <Image Source="/Victoria.UI.SharedWPF;Component/resources/flowchart.png" HorizontalAlignment="Right" Width="33" Margin="-1,-1,0,1" />
                             </Grid>
                         </Button>

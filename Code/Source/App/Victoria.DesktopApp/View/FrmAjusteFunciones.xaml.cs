@@ -17,6 +17,8 @@ using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using System.Data;
+using System.Windows.Controls.DataVisualization;
+
 
 namespace Victoria.DesktopApp.View
 {
@@ -48,7 +50,10 @@ namespace Victoria.DesktopApp.View
         private Dictionary<commonFDP.FuncionDensidad, commonFDP.ResultadoAjuste> lResultadosOrdenados = new Dictionary<commonFDP.FuncionDensidad, commonFDP.ResultadoAjuste>();
         private int flagIntervalos = 0;
         private List<Double> intervalos;
-        public FrmAjusteFunciones(commonFDP.MetodologiaAjuste metodologia, commonFDP.Segment.Segmentacion segmentacion, List<commonFDP.Evento> eventos, int flagIntervalos, commonFDP.Origen proyecto)
+        private System.Windows.Controls.DataVisualization.Charting.Chart chrtInversa;
+        private System.Windows.Controls.DataVisualization.Charting.Chart chrtFuncion;
+        private AnalisisPrevio analisisPrevio;
+        public FrmAjusteFunciones(commonFDP.MetodologiaAjuste metodologia, commonFDP.Segment.Segmentacion segmentacion, List<commonFDP.Evento> eventos, int flagIntervalos, commonFDP.Origen proyecto, AnalisisPrevio aPrevio)
         {
             InitializeComponent();
             InitializeComponent();
@@ -58,9 +63,10 @@ namespace Victoria.DesktopApp.View
             this.flagIntervalos = flagIntervalos;
             this.proyecto = proyecto;
             this.FrmAjusteFunciones_Load();
+            this.analisisPrevio = aPrevio;
         }
 
-        public FrmAjusteFunciones(commonFDP.MetodologiaAjuste metodologia, commonFDP.Segment.Segmentacion segmentacion, List<Double> intervalos, int flagIntervalos, commonFDP.Origen proyecto)
+        public FrmAjusteFunciones(commonFDP.MetodologiaAjuste metodologia, commonFDP.Segment.Segmentacion segmentacion, List<Double> intervalos, int flagIntervalos, commonFDP.Origen proyecto, AnalisisPrevio aPrevio)
         {
             InitializeComponent();
             this.metodologia = metodologia;
@@ -69,6 +75,7 @@ namespace Victoria.DesktopApp.View
             this.flagIntervalos = flagIntervalos;
             this.proyecto = proyecto;
             this.FrmAjusteFunciones_Load();
+            this.analisisPrevio = aPrevio;
 
         }
 
@@ -84,41 +91,41 @@ namespace Victoria.DesktopApp.View
 
         private void CalcularEventosSimplificados()
         {
-            // try
-            //{
-            if (flagIntervalos == 0)
+             try
             {
-                if (metodologia == commonFDP.MetodologiaAjuste.DT_CONSTANTE)
+                if (flagIntervalos == 0)
                 {
-                    List<double> lista = commonFDP.FdPUtils.AgruparSegmentacion(segmentacion, eventos);
-                    eventosParaAjuste = lista.ToArray();
-                    eventosSimplificados = commonFDP.FdPUtils.AgruparSegmentacionProbabilidad(lista);
+                    if (metodologia == commonFDP.MetodologiaAjuste.DT_CONSTANTE)
+                    {
+                        List<double> lista = commonFDP.FdPUtils.AgruparSegmentacion(segmentacion, eventos);
+                        eventosParaAjuste = lista.ToArray();
+                        eventosSimplificados = commonFDP.FdPUtils.AgruparSegmentacionProbabilidad(lista);
+                    }
+                    else if (metodologia == commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO)
+                    {
+                        eventosSimplificados = commonFDP.FdPUtils.AgruparIntervalos(eventos);
+                        eventosParaAjuste = commonFDP.FdPUtils.CalcularIntervalos(eventos).ToArray();
+                    }
                 }
-                else if (metodologia == commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO)
+                else
                 {
-                    eventosSimplificados = commonFDP.FdPUtils.AgruparIntervalos(eventos);
-                    eventosParaAjuste = commonFDP.FdPUtils.CalcularIntervalos(eventos).ToArray();
+                    double cant = intervalos.Count;
+                    eventosSimplificados = intervalos.GroupBy(x => x).ToDictionary(x => x.Key.ToString(), x => x.Count() / (cant > 1 ? cant - 1 : cant));
+                    eventosParaAjuste = intervalos.ToArray();
                 }
             }
-            else
-            {
-                double cant = intervalos.Count;
-                eventosSimplificados = intervalos.GroupBy(x => x).ToDictionary(x => x.Key.ToString(), x => x.Count() / (cant > 1 ? cant - 1 : cant));
-                eventosParaAjuste = intervalos.ToArray();
-            }
-            /* }
              catch
              {
                  createAlertPopUp("Error al calcular los intervalos");
-             } */
+             } 
 
 
         }
 
         private void CalcularYOrdenarFunciones()
         {
-            // try
-            //{
+             try
+            {
             double[] arrEventos = eventosParaAjuste.ToArray();
 
 
@@ -160,11 +167,11 @@ namespace Victoria.DesktopApp.View
                 lResultadosOrdenados.Add(commonFDP.FuncionDensidad.WEIBULL5, resultadoFuncionWeibull5);
             lResultadosOrdenados = lResultadosOrdenados.OrderBy(x => x.Value.FDP.CalcularDesvio(eventosSimplificados)).ToDictionary(x => x.Key, y => y.Value);
 
-            /* }
+             }
              catch
              {
                  createAlertPopUp("Error al calcular y ordenar las funciones");
-             }*/
+             }
         }
 
         private void OrdenarFuncionesEnVista()
@@ -185,22 +192,6 @@ namespace Victoria.DesktopApp.View
                     item.Children.Clear();
                 }
 
-                /*
-                int indice = 0;             
-                int childrens = buttons.Count();
-                for (int i = 0; i < childrens; i++)
-                {
-                    Button btn = pnlButtonsGrid.Children[indice] as Button;
-                    if (btn != null)
-                    {
-                        //Remove children
-                        pnlButtonsGrid.Children.RemoveAt(indice);
-                    }
-                    else
-                    {
-                        indice++;
-                    }
-                } */
 
                 int indice = 0;
                 foreach (var item in lResultadosOrdenados)
@@ -314,6 +305,63 @@ namespace Victoria.DesktopApp.View
             else
                 lblTituloFuncionInversa.Content = "Función Inversa";
         }
+
+        private void btnSelectFDP_OnClick(object sender, RoutedEventArgs e)
+        {
+            analisisPrevio.addFDPToList(resultadoSeleccionado);
+        }
+
+        /* private void SetupGraficoFuncion()
+         {
+             try
+             {
+                 this.chrtFuncion.Series.Clear();
+                 this.chrtFuncion.Palette = ChartColorPalette.None;
+                 this.chrtFuncion.ChartAreas.First().AxisY2.Enabled = AxisEnabled.False;
+                 Series series = this.chrtFuncion.Series.Add("Eventos");
+                 series.XValueType = ChartValueType.Double;
+                 series.XAxisType = AxisType.Primary;
+                 series.YAxisType = AxisType.Secondary;
+                 series.ChartType = SeriesChartType.Column;
+                 series.Color = Color.Red;
+                 series.BorderColor = Color.Black;
+                 series.IsVisibleInLegend = false;
+                 foreach (var item in eventosSimplificados.OrderBy(x => Convert.ToDouble(x.Key)))
+                 {
+                     series.Points.AddXY(Convert.ToDouble(item.Key), item.Value);
+                 }
+             }
+             catch
+             {
+                 mostrarMensaje("Error al graficar los eventos", Color.FromArgb(255, 89, 89));
+             }
+         } 
+
+         private void GraficarLineaFDP(commonFDP.FuncionDensidadProbabilidad fdp)
+         {
+             try
+             {
+                 Series series = this.chrtFuncion.Series.FindByName("FDP");
+                 if (series == null)
+                 {
+                     series = this.chrtFuncion.Series.Add("FDP");
+                     series.ChartType = SeriesChartType.Line;
+                     series.BorderWidth = 5;
+                     series.IsVisibleInLegend = false;
+                 }
+                 else
+                     series.Points.Clear();
+                 Dictionary<double, double> lGenerados = fdp.ObtenerDensidad(eventosSimplificados.ToDictionary(x => Convert.ToDouble(x.Key), x => x.Value));
+                 foreach (var item in lGenerados)
+                 {
+                     series.Points.AddXY(item.Key, item.Value);
+                 }
+             }
+             catch (Exception e)
+             {
+                 //mostrarMensaje("Error al graficar la función: " + e.Message, Color.FromArgb(255, 89, 89));
+             }
+         }*/
 
     }
 

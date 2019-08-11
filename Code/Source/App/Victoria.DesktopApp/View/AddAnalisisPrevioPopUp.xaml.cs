@@ -42,13 +42,15 @@ namespace Victoria.DesktopApp.View
         private string LastGridObject { get; set; }
         private bool NewGridObject { get; set; }
 
+
+
         private const string AGREGAR_CONDICION = "[Agregar Condición]";
         private const string AGREGAR_ENCADENADOR = "[Agregar Encadenador]";
         private const string AGREGAR_VARIABLE_CONTROL = "[Agregar Variable de Control]";
         private const string AGREGAR_VARIABLE_ESTADO = "[Agregar Variable de Estado]";
         private const string AGREGAR_VARIABLE_RESULTADO = "[Agregar Variable de Resultado]";
 
-
+        private List<commonFDP.ResultadoAjuste> listFDP = null;
         private const string AGREGAR_EVENTO = "[Agregar Evento]";
 
         public AddAnalisisPrevioPopUp(Window1 diagramador)
@@ -90,6 +92,9 @@ namespace Victoria.DesktopApp.View
         }
 
         private void inicializarCondiciones()
+
+
+
         {
             this.Conditions = new ObservableCollection<string>();
             if (this.AnalisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
