@@ -244,12 +244,16 @@ namespace DiagramDesigner
 
         }
 
-        private static void changeColor(DesignerItem node, Brush color)
+        private static void changeColor(DesignerItem node, Brush color, Double thickness = 1)
         {
             Grid grid = (Grid)node.Content;
             Path shape = grid.Children[0] as Path; // Devuelve null si NO puede castearlo
-            if(shape != null)
+            if (shape != null)
+            {
                 shape.Stroke = color;
+                shape.StrokeThickness = thickness;
+            }
+
         }
 
         public static Boolean ifAnyNodeHasBreakpoint() {

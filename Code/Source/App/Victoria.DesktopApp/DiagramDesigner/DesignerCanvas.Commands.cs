@@ -102,7 +102,10 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.SelectAll, SelectAll_Executed));
 
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
-            
+
+            //Capturo cuando se precionan los botones del teclado
+            this.KeyDown += new KeyEventHandler(this.OnKeyDown);
+
             this.AllowDrop = true;
             Clipboard.Clear();
         }
@@ -142,6 +145,11 @@ namespace DiagramDesigner
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
+            this.showConditionedContinuePopUp();            
+        }
+
+        private void showConditionedContinuePopUp()
+        {
             ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
             popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
             popup.ShowDialog();
@@ -151,7 +159,6 @@ namespace DiagramDesigner
                 Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
                 this.executeDebugCommand(Debug.Mode.ConditionedContinue);
             }
-            
         }
 
         private void executeDebugCommand( Debug.Mode command)
@@ -222,6 +229,34 @@ namespace DiagramDesigner
                 DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );
             }
 
+        }
+
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            Key actualKey = (e.SystemKey == Key.None) ? e.Key : e.SystemKey;
+            switch (actualKey)
+            {
+                case Key.F10:
+                    this.executeDebugCommand(Debug.Mode.StepOver);
+                    break;
+
+                case Key.F11:
+                    this.executeDebugCommand(Debug.Mode.StepInto);
+                    break;
+
+                case Key.F5:
+                    this.executeDebugCommand(Debug.Mode.Continue);
+                    break;
+
+                case Key.F6:
+                    this.showConditionedContinuePopUp();
+                    break;
+
+                case Key.F12:
+                    this.executeDebugCommand(Debug.Mode.Stop);
+                    break;
+            }
         }
 
 
