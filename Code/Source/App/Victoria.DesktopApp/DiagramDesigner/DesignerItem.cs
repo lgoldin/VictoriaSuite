@@ -269,21 +269,7 @@ namespace DiagramDesigner
             nodesWithBreakPoints.ForEach(n => changeColor(n, Brushes.Red)); //Sin esta linea al debuguear por Continue no despinta todos los nodos
             nodesWithoutBreakPoints.ForEach(n => changeColor(n, Brushes.DarkOrange));
             if (executing_node != null)
-                DesignerItem.changeColor(executing_node, Brushes.Blue);
-            
-
-            //if (previous_node != null)
-            //{
-            //    if (nodesWithBreakPoints.Contains(previous_node))
-            //    {
-            //        changeColor(previous_node, Brushes.Red);
-            //    }
-            //    else
-            //    {
-            //        changeColor(previous_node, Brushes.DarkOrange);
-            //    }                
-            //}
-                
+                DesignerItem.changeColor(executing_node, Brushes.Blue,2.5);               
         }        
 
         String ToogleBreakPoint()
