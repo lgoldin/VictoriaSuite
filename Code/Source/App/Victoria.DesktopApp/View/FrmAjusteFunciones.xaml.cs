@@ -309,6 +309,7 @@ namespace Victoria.DesktopApp.View
         private void btnSelectFDP_OnClick(object sender, RoutedEventArgs e)
         {
             analisisPrevio.addFDPToList(resultadoSeleccionado);
+            this.Close();
         }
 
         /* private void SetupGraficoFuncion()

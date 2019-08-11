@@ -136,11 +136,12 @@ namespace Victoria.DesktopApp.View
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;
                     }
-               //}
+                //}
                 /*catch
                 {
                     createAlertPopUp("Error al calcular funciones");
                 }*/
+                this.Close();
             }
             else
             {
@@ -243,6 +244,16 @@ namespace Victoria.DesktopApp.View
                     dgvDatosFdp.Items.Refresh();
                     pnlModificable.Visibility = Visibility.Hidden;
                     pnlMetodologia.Visibility = Visibility.Visible;
+
+                    if (rbDtConstante.IsChecked.Value) 
+                    {
+
+                    }
+                    else
+                    {
+                        rbEventoAEvento.IsChecked = true;
+                    }
+                    
                 }
 
                 catch
