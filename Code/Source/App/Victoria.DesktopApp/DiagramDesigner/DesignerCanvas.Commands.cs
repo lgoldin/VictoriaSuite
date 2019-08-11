@@ -116,7 +116,6 @@ namespace DiagramDesigner
         {
             Debug.instance().debugCommand = Debug.Mode.Stop;
             this.mainWindow.stopDebug();
-            //this.mainWindow.Close();
 
             Debug.instance().debugModeOn = false;
             Debug.instance().jumpToNextNode = true;
@@ -213,10 +212,6 @@ namespace DiagramDesigner
             groupBoxVariablesSimulation.Visibility = Visibility.Visible;
             dataGridVariablesSimulation.Visibility = Visibility.Visible;
 
-            //if (Debug.instance().colorSignalEvent != null)
-            //    Debug.instance().colorSignalEvent.Reset();
-
-            //DesignerCanvas.manualResetEvent = new ManualResetEvent(false);
             Debug.instance().initilize();
             Debug.instance().colorSignalEvent = DesignerCanvas.manualResetEvent;
 
