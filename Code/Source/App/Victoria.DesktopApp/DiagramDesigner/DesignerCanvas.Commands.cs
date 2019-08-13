@@ -85,12 +85,6 @@ namespace DiagramDesigner
             Clipboard.Clear();
         }
 
-        public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
-        {
-            this.functionsComboBox.SelectedIndex = 0; //Primer valor es el default
-            this.functionsComboBox.ItemsSource = analisisPrevio.listFDP;
-        }
-
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ScrollViewer scroll = (ScrollViewer)this.Parent;
@@ -231,6 +225,15 @@ namespace DiagramDesigner
         }
 
         #endregion
+
+        //El comboBox se carga aparte porque la ventana diagramador se crea antes 
+        // de que se generen las funciones FDP que toma como valores
+        public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
+        {
+            this.functionsComboBox.Visibility = Visibility.Visible;
+            this.functionsComboBox.SelectedIndex = 0; //Primer valor es el default
+            this.functionsComboBox.ItemsSource = analisisPrevio.listFDP;
+        }
 
         #region BringForward Command
 

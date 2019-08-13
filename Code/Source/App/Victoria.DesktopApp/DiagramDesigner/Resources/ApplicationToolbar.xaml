@@ -206,7 +206,7 @@
             </Button>
         </Grid>
         <Grid Margin="3" Name="ComboBox">
-            <ComboBox Name="Functions_comboBox">
+            <ComboBox Name="Functions_comboBox" Visibility="Hidden">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
