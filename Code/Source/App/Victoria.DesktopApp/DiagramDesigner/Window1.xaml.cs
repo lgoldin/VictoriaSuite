@@ -24,7 +24,7 @@ namespace DiagramDesigner
 
         public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
         {
-            this.diagrama().updateFDPPopUps(analisisPrevio);
+            this.diagrama().updateComboBox(analisisPrevio);
         }
 
         public DialogResult Result { get; set; }

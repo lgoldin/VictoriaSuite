@@ -71,7 +71,8 @@ namespace Victoria.Shared
 
             if (sentence.Contains("R"))
             {
-                sentence = sentence.Replace("R", new Random().NextDouble().ToString("F6", cultureInfo));
+                //sentence = sentence.Replace("R", new Random().NextDouble().ToString("F6", cultureInfo));
+                sentence = sentence.Replace("R", NodeRandomValue.getValue(cultureInfo));
             }
 
             return sentence;

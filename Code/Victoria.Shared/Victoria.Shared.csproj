@@ -100,6 +100,7 @@
     <Compile Include="NodeDiagram.cs" />
     <Compile Include="NodeIterator.cs" />
     <Compile Include="NodeRandom.cs" />
+    <Compile Include="NodeRandomValue.cs" />
     <Compile Include="NodeReferencia.cs" />
     <Compile Include="NodeResult.cs" />
     <Compile Include="NodeSentence.cs" />

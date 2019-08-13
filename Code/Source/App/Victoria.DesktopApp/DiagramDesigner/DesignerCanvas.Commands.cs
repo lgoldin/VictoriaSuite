@@ -228,11 +228,12 @@ namespace DiagramDesigner
 
         //El comboBox se carga aparte porque la ventana diagramador se crea antes 
         // de que se generen las funciones FDP que toma como valores
-        public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
+        public void updateComboBox(AnalisisPrevio analisisPrevio)
         {
             this.functionsComboBox.Visibility = Visibility.Visible;
             this.functionsComboBox.SelectedIndex = 0; //Primer valor es el default
             this.functionsComboBox.ItemsSource = analisisPrevio.listFDP;
+            //NodeRandomValue.setValue(stringValue);
         }
 
         #region BringForward Command
