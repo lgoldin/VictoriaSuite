@@ -70,7 +70,7 @@
                         <Setter Property="FontSize" Value="11"/>
                         <Setter Property="FontWeight" Value="Normal"/>
                         <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisualStyte}" />
+                        <!-- <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisualStyte}" /> -->
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -202,7 +202,7 @@
                 </TabControl.ItemTemplate>
                 <behavior:TabContent.Template>
                     <DataTemplate>
-                        <control:StageControl></control:StageControl>
+                        <control:StageControl></control:StageControl> <!--Se agrega la vista de los elementos de mainWindow-->
                     </DataTemplate>
                 </behavior:TabContent.Template>
             </TabControl>

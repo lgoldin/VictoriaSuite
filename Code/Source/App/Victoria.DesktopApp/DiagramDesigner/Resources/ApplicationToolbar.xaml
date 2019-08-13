@@ -205,7 +205,19 @@
                 </Button.Content>
             </Button>
         </Grid>
-
+        <Grid Margin="3" Name="ComboBox">
+            <ComboBox Name="Functions_comboBox">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Inversa}" Width="12" Height="8" Margin="0,2,5,2" />
+                            <TextBlock Text="{Binding Inversa}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                
+            </ComboBox>
+        </Grid>
 
 
     </ToolBar>

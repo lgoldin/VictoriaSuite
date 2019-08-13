@@ -37,7 +37,7 @@ namespace Victoria.DesktopApp.View
         private List<commonFDP.Evento> eventos = new List<commonFDP.Evento>();
         public List<commonFDP.Evento> interv = new List<commonFDP.Evento>();
         public int idEvento = 0;
-        private AnalisisPrevio analisisPrevio;
+        public AnalisisPrevio analisisPrevio { get; set; }
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
         public commonFDP.TipoAccionProcesamiento tipoAccion;
@@ -51,7 +51,6 @@ namespace Victoria.DesktopApp.View
         public AddFDPPopUp()
         {
             InitializeComponent();          
-
         }
 
 
@@ -136,6 +135,9 @@ namespace Victoria.DesktopApp.View
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;
                     }
+
+
+                
                 //}
                 /*catch
                 {

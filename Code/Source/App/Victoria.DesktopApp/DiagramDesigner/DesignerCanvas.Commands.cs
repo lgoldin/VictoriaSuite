@@ -48,8 +48,10 @@ namespace DiagramDesigner
 
         public DataGrid dataGridVariables { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
+        public ComboBox functionsComboBox { get; internal set; }
+        //public AnalisisPrevio analisisPrevio { get; set; }
 
-
+ 
         public DesignerCanvas()
         {
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
@@ -81,6 +83,12 @@ namespace DiagramDesigner
 
             this.AllowDrop = true;
             Clipboard.Clear();
+        }
+
+        public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
+        {
+            this.functionsComboBox.SelectedIndex = 0; //Primer valor es el default
+            this.functionsComboBox.ItemsSource = analisisPrevio.listFDP;
         }
 
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)

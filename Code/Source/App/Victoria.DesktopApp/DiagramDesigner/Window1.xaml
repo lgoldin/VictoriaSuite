@@ -63,7 +63,7 @@
                     <Image Source="/Victoria.UI.SharedWPF;Component/resources/corona.png" Width="36" HorizontalAlignment="Center" Margin="15,5,1045,-2" RenderTransformOrigin="3.821,0.438" />
                     <Label  Content="Diagrama de Simulación"  Foreground="White" FontSize="18" HorizontalAlignment="Center"  Width="238" Margin="348,0,266,1"/>
                 </Grid>
-                <ContentControl Content="{StaticResource MyToolbar}" Height="100"/>
+                <ContentControl Name="MyToolBar" Content="{StaticResource MyToolbar}" Height="100"/>
             </StackPanel>
 
             <Grid Margin="0,88.55,0,41.45" Grid.RowSpan="2">
