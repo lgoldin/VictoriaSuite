@@ -532,6 +532,7 @@ namespace Victoria.DesktopApp.View
 
         private void GenerarDiagrama()
         {
+            this.VentanaDiagramador.assignChartFPD(AnalisisPrevio); //Permite reempleazar las FDP por la funcion
             AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
             diagramGenerator.generateDiagram(VentanaDiagramador);
         }
@@ -542,9 +543,6 @@ namespace Victoria.DesktopApp.View
             FDPGenerator.FDPGenerator(AnalisisPrevio);
 
             FDPGenerator.Show();
-
-            this.VentanaDiagramador.updateFDPPopUps(FDPGenerator.analisisPrevio);
-
         }
 
         private void DarPDFAlUsuario()

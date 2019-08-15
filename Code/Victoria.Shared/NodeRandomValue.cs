@@ -16,7 +16,7 @@ namespace Victoria.Shared
             if (value == null)
                 value = new Random().NextDouble().ToString("F6", cultureInfo);
 
-                return value;
+            return value;
         }
 
         public static void setValue(string newValue)

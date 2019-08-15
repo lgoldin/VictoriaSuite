@@ -22,9 +22,14 @@ namespace DiagramDesigner
             this.diagrama().functionsComboBox = this.getFunctionsComboBox();
         }
 
-        public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
+        //public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
+        //{
+        //    this.diagrama().updateComboBox(analisisPrevio);
+        //}
+
+        public void assignChartFPD(AnalisisPrevio analisisPrevio)
         {
-            this.diagrama().updateComboBox(analisisPrevio);
+            this.diagrama().assignChartFPD(analisisPrevio);
         }
 
         public DialogResult Result { get; set; }

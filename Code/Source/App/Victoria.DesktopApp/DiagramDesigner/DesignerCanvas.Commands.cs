@@ -49,10 +49,11 @@ namespace DiagramDesigner
         public DataGrid dataGridVariables { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
         public ComboBox functionsComboBox { get; internal set; }
-        //public AnalisisPrevio analisisPrevio { get; set; }
+        public AnalisisPrevio analisisPrevio { get; set; }
+        
 
- 
-        public DesignerCanvas()
+
+    public DesignerCanvas()
         {
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
@@ -234,6 +235,25 @@ namespace DiagramDesigner
             this.functionsComboBox.SelectedIndex = 0; //Primer valor es el default
             this.functionsComboBox.ItemsSource = analisisPrevio.listFDP;
             //NodeRandomValue.setValue(stringValue);
+        }
+
+        //Logica para asignar lo
+        public void assignChartFPD(AnalisisPrevio analisisPrevio)
+        {
+            if(analisisPrevio.listFDP.Count != 0)
+            {
+                for (int i = 0; i < analisisPrevio.Datos.Count; i++)
+                {
+                    if (analisisPrevio.Datos.ElementAt(i).Contains("IA"))
+                    {
+                        //Inversa tiene forma de f(R) = ... (queres la segunda parte)
+                        string[] functionParts = analisisPrevio.listFDP.First().Inversa.Split('=');
+
+                        analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + "=" + functionParts[1];
+                    }
+                }
+                    this.analisisPrevio = analisisPrevio;
+            }
         }
 
         #region BringForward Command
