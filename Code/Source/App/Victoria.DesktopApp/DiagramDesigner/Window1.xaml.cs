@@ -61,12 +61,25 @@ namespace DiagramDesigner
             if (this.WindowState == WindowState.Maximized) 
             {
                 this.WindowState = WindowState.Normal;
-                this.dataGridVariables.Height = 180;
             } 
             else 
             { 
                 this.WindowState = WindowState.Maximized;
-                this.dataGridVariables.Height = 300;
+            }
+
+            this.resizeDatagrids(this.WindowState, this.dataGridVariables.Visibility);
+        }
+
+        private void resizeDatagrids(WindowState windowState , Visibility debugGridVisibility)
+        {
+            if (debugGridVisibility != Visibility.Visible)
+            {
+                this.dataGridVariables.Height = windowState == WindowState.Maximized ? 300 : 180;
+            }
+            else
+            {
+                this.dataGridVariables.Height = windowState == WindowState.Maximized ? 230 : 180;
+                this.dataGridVariablesSimulation.Height = windowState == WindowState.Maximized ? 230 : 180;
             }
         }
 
