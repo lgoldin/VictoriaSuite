@@ -146,6 +146,8 @@ namespace DiagramDesigner
         private static List<DesignerItem> nodesWithBreakPoints = new List<DesignerItem>();
         private static List<DesignerItem> nodesWithoutBreakPoints = new List<DesignerItem>();
 
+        private Boolean doubleClickSuscription = false;
+
         static DesignerItem()
         {
             // set the key to reference the style for this control
@@ -157,14 +159,14 @@ namespace DiagramDesigner
         {
             this.id = id;
             this.Loaded += new RoutedEventHandler(DesignerItem_Loaded);
-            this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
+            this.suscribeDoubleClickEvent();
             DesignerItem.nodesWithoutBreakPoints.Add(this);
         }
 
         public DesignerItem()
             : this(Guid.NewGuid())
         {
-            this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
+            this.suscribeDoubleClickEvent();
             DesignerItem.nodesWithoutBreakPoints.Add(this);
         }
 
@@ -173,8 +175,18 @@ namespace DiagramDesigner
             this.id = id;
             this.Tag = tag;
             this.Uid = uid;
-            this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
+            this.suscribeDoubleClickEvent();
             DesignerItem.nodesWithoutBreakPoints.Add(this);
+        }
+
+ 
+        private void suscribeDoubleClickEvent()
+        {
+            if (!this.doubleClickSuscription)
+            {
+                this.doubleClickSuscription = true;
+                this.MouseDoubleClick += DesignerItem_MouseDoubleClick;
+            }
         }
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
