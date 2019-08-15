@@ -122,6 +122,10 @@
                             <Label x:Name="lblFuncionInversa" Content="Funcion" FontWeight="SemiBold" HorizontalAlignment="Center" FontSize="15" Margin="260,310,250,-120" RenderTransformOrigin="0.46,-0.776" />
                             <DVC:Chart Name="chart2" Width="500" Background="Gray" Margin="258,119.8,251.314,153.2" Grid.Row="1"/>
 
+                            <Label x:Name="lblTituloDato" Content="Seleccione dato a asociar " FontWeight="Bold" HorizontalAlignment="Center" FontSize="15" Margin="790,40,20,150" RenderTransformOrigin="0.46,-0.776" />
+                            <ComboBox x:Name="comboBox"  RenderTransformOrigin="0.497,0.484" Margin="790,87,20,110" SelectionChanged="comboBox_SelectionChanged" Grid.Column="1">
+         
+                            </ComboBox>
                         </Grid>
 
                         <Button x:Name="btnSelect" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,553,43.286,79.857" Width="135"  Click="btnSelectFDP_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="4">
