@@ -5,17 +5,31 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Victoria.Shared.AnalisisPrevio;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace DiagramDesigner
 {
     public partial class Window1 : Window
     {
+        
+
         public Window1()
         {
             InitializeComponent();
             Closing += HideWindow;
             this.diagrama().dataGridVariables = this.dataGridVariables;
             this.diagrama().dimensiones = this.dimensiones;
+            this.diagrama().functionsComboBox = this.getFunctionsComboBox();
+        }
+
+        //public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
+        //{
+        //    this.diagrama().updateComboBox(analisisPrevio);
+        //}
+
+        public void assignChartFPD(AnalisisPrevio analisisPrevio)
+        {
+            this.diagrama().assignChartFPD(analisisPrevio);
         }
 
         public DialogResult Result { get; set; }
@@ -61,6 +75,24 @@ namespace DiagramDesigner
         private void BtnClose_OnClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private ComboBox getFunctionsComboBox()
+        {
+            ComboBox functionComboBox = new ComboBox();
+            ToolBar tb = (ToolBar)this.MyToolBar.Content;
+            foreach (Grid g in tb.ItemContainerGenerator.Items)
+            {
+                if (g.Name == "ComboBox")
+                {
+                    foreach (ComboBox b in g.Children)
+                    {
+                        functionComboBox = b;
+                    }
+                }
+            }
+
+            return functionComboBox;
         }
 
         private void dataGridVariables_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

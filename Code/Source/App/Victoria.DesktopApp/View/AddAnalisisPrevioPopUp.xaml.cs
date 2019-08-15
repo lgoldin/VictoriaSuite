@@ -50,7 +50,6 @@ namespace Victoria.DesktopApp.View
         private const string AGREGAR_VARIABLE_ESTADO = "[Agregar Variable de Estado]";
         private const string AGREGAR_VARIABLE_RESULTADO = "[Agregar Variable de Resultado]";
 
-        private List<commonFDP.ResultadoAjuste> listFDP = null;
         private const string AGREGAR_EVENTO = "[Agregar Evento]";
 
         public AddAnalisisPrevioPopUp(Window1 diagramador)
@@ -92,9 +91,6 @@ namespace Victoria.DesktopApp.View
         }
 
         private void inicializarCondiciones()
-
-
-
         {
             this.Conditions = new ObservableCollection<string>();
             if (this.AnalisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
@@ -536,6 +532,7 @@ namespace Victoria.DesktopApp.View
 
         private void GenerarDiagrama()
         {
+            this.VentanaDiagramador.assignChartFPD(AnalisisPrevio); //Permite reempleazar las FDP por la funcion
             AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
             diagramGenerator.generateDiagram(VentanaDiagramador);
         }
@@ -546,7 +543,6 @@ namespace Victoria.DesktopApp.View
             FDPGenerator.FDPGenerator(AnalisisPrevio);
 
             FDPGenerator.Show();
-
         }
 
         private void DarPDFAlUsuario()

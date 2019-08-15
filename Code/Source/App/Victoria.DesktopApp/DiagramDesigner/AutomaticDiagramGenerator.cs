@@ -514,7 +514,10 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 lastCenterNode = random;
                 actualPosition += topHeightStep;
 
-                Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + " = R");
+                //Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + " = R");
+                if (!analisisPrevio.Datos.ElementAt(i).Contains("="))
+                    analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + " = R";
+                Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i));
                 setElementIntoCanvas(sentence, getLeftPositionForBranch(i), actualPosition);
                 connectNodes(lastCenterNode, BOTTOM, sentence, TOP);
                 lastCenterNode = sentence;
