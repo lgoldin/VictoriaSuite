@@ -41,6 +41,8 @@ namespace Victoria.DesktopApp.View
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
         public commonFDP.TipoAccionProcesamiento tipoAccion;
+       // private List<commonFDP.Filtro> filtros = null;
+       // private readonly INuevoFiltro filtrador = new FiltroImpl();
         List<double> intervalosParciales;
 
         public void FDPGenerator(AnalisisPrevio analisisPrevio)
