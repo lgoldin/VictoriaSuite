@@ -312,8 +312,16 @@ namespace Victoria.DesktopApp.View
 
         private void btnSelectFDP_OnClick(object sender, RoutedEventArgs e)
         {
+            commonFDP.ResultadoAjuste existeFdp = analisisPrevio.listFDP.FirstOrDefault(x => x.DatoAsociado == comboBox.SelectedValue.ToString());
+            
+            if (existeFdp != null)
+            {
+                int indexFdp = analisisPrevio.listFDP.IndexOf(existeFdp);
+                analisisPrevio.listFDP.RemoveAt(indexFdp);               
+            }
+            resultadoSeleccionado.DatoAsociado = comboBox.SelectedValue.ToString();
             analisisPrevio.addFDPToList(resultadoSeleccionado);
-           
+
             this.Close();
         }
 

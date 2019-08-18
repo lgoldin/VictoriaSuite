@@ -10,7 +10,7 @@ namespace commonFDP
     {
         public string Funcion { get; }
         public string Inversa { get; }
-        public string DatoAsociado { get; }
+        public string DatoAsociado { get; set; }
         public double DesvioEstandar { get; }
         public double Entropia { get; }
         public double Media { get; }
