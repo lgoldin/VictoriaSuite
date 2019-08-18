@@ -62,8 +62,9 @@ namespace Victoria.DesktopApp.View
             this.eventos = eventos;
             this.flagIntervalos = flagIntervalos;
             this.proyecto = proyecto;
-            this.FrmAjusteFunciones_Load();
             this.analisisPrevio = aPrevio;
+            this.FrmAjusteFunciones_Load();
+            
         }
 
         public FrmAjusteFunciones(commonFDP.MetodologiaAjuste metodologia, commonFDP.Segment.Segmentacion segmentacion, List<Double> intervalos, int flagIntervalos, commonFDP.Origen proyecto, AnalisisPrevio aPrevio)
@@ -74,8 +75,10 @@ namespace Victoria.DesktopApp.View
             this.intervalos = intervalos;
             this.flagIntervalos = flagIntervalos;
             this.proyecto = proyecto;
-            this.FrmAjusteFunciones_Load();
             this.analisisPrevio = aPrevio;
+            this.FrmAjusteFunciones_Load();
+            
+            
 
         }
 
@@ -83,6 +86,7 @@ namespace Victoria.DesktopApp.View
 
         private void FrmAjusteFunciones_Load()
         {
+            comboBox.ItemsSource = this.analisisPrevio.Datos;
             CalcularEventosSimplificados();
             CalcularYOrdenarFunciones();
             OrdenarFuncionesEnVista();
@@ -311,6 +315,11 @@ namespace Victoria.DesktopApp.View
             analisisPrevio.addFDPToList(resultadoSeleccionado);
            
             this.Close();
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
 
         /* private void SetupGraficoFuncion()

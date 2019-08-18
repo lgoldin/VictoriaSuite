@@ -45,9 +45,9 @@ namespace Victoria.DesktopApp.View
        // private readonly INuevoFiltro filtrador = new FiltroImpl();
         List<double> intervalosParciales;
 
-        public void FDPGenerator(AnalisisPrevio analisisPrevio)
+        public void FDPGenerator(AnalisisPrevio aPrevio)
         {
-            this.analisisPrevio = analisisPrevio;
+            this.analisisPrevio = aPrevio;
         }
 
         public AddFDPPopUp()
@@ -123,7 +123,7 @@ namespace Victoria.DesktopApp.View
                     {
                         metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : commonFDP.MetodologiaAjuste.DT_CONSTANTE;
                         segmentacion = rbDia.IsChecked.Value ? commonFDP.Segment.Segmentacion.DIA : (rbHora.IsChecked.Value ? commonFDP.Segment.Segmentacion.HORA : (rbMinuto.IsChecked.Value ? commonFDP.Segment.Segmentacion.MINUTO : commonFDP.Segment.Segmentacion.SEGUNDO));
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null, analisisPrevio);
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null, this.analisisPrevio);
                         this.Visibility = Visibility.Hidden;
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;
@@ -132,7 +132,7 @@ namespace Victoria.DesktopApp.View
                     {
                         metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
                         flagIntervalos = 1;
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, null, analisisPrevio);
+                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, null, this.analisisPrevio);
                         this.Visibility = Visibility.Hidden;
                         frm.ShowDialog();
                         this.Visibility = Visibility.Visible;

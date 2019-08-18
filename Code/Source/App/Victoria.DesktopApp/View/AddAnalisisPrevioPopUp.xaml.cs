@@ -540,7 +540,7 @@ namespace Victoria.DesktopApp.View
         private void GenerarFDP()
         {
             AddFDPPopUp FDPGenerator = new AddFDPPopUp();
-            FDPGenerator.FDPGenerator(AnalisisPrevio);
+            FDPGenerator.FDPGenerator(this.AnalisisPrevio);
 
             FDPGenerator.Show();
         }
