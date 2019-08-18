@@ -10,6 +10,7 @@ namespace commonFDP
     {
         public string Funcion { get; }
         public string Inversa { get; }
+        public string DatoAsociado { get; }
         public double DesvioEstandar { get; }
         public double Entropia { get; }
         public double Media { get; }
@@ -23,6 +24,7 @@ namespace commonFDP
             this.Media = Media;
             this.Varianza = Varianza;
             this.FDP = fdp;
+            
         }
     }
 }
