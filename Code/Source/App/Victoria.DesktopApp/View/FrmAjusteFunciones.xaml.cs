@@ -87,6 +87,7 @@ namespace Victoria.DesktopApp.View
         private void FrmAjusteFunciones_Load()
         {
             comboBox.ItemsSource = this.analisisPrevio.Datos;
+            comboBox.SelectedValue = comboBox.Items[0]; 
             CalcularEventosSimplificados();
             CalcularYOrdenarFunciones();
             OrdenarFuncionesEnVista();
