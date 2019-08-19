@@ -155,11 +155,11 @@ namespace DiagramDesigner
 
             if (popup.Result == DialogResult.Accept)
             {
-                CCWaitingPopUp a = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
-                a.Show();
+                CCWaitingPopUp infoPopUp = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
+                infoPopUp.Show();
                 Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
                 this.executeDebugCommand(Debug.Mode.ConditionedContinue);
-                a.Close();
+                infoPopUp.Close();
 
             }
         }
