@@ -48,11 +48,27 @@ namespace Victoria.DesktopApp.View
         public void FDPGenerator(AnalisisPrevio aPrevio)
         {
             this.analisisPrevio = aPrevio;
+            rbFecha.IsChecked = true;
+            if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
+            {
+                rbDtConstante.Visibility = Visibility.Hidden;
+                rbEventoAEvento.IsChecked = true;
+            }
+            else
+            {
+                rbEventoAEvento.Visibility = Visibility.Hidden;
+                rbDtConstante.IsChecked = true;
+                rbSegundo.IsChecked = true;
+            }
+
         }
 
         public AddFDPPopUp()
         {
-            InitializeComponent();          
+            InitializeComponent();
+            pnlButtonsGrid.Visibility = Visibility.Visible;
+            pnlMetodologia.Visibility = Visibility.Visible;
+
         }
 
 
@@ -249,14 +265,26 @@ namespace Victoria.DesktopApp.View
                     pnlModificable.Visibility = Visibility.Hidden;
                     pnlMetodologia.Visibility = Visibility.Visible;
 
+                    if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
+                    {
+                        rbDtConstante.Visibility = Visibility.Hidden;
+                        rbEventoAEvento.IsChecked = true;
+                    }
+                    else
+                    {
+                        rbEventoAEvento.Visibility = Visibility.Hidden;
+                        rbDtConstante.IsChecked = true;
+                    }
+
+                    /*
                     if (rbDtConstante.IsChecked.Value) 
                     {
 
                     }
                     else
                     {
-                        rbEventoAEvento.IsChecked = true;
-                    }
+                       
+                    } */
                     
                 }
 
@@ -333,13 +361,13 @@ namespace Victoria.DesktopApp.View
 
                         modificarLayout(tipoAccion);
 
-                        rbDtConstante.Visibility = Visibility.Hidden;
+                        //rbDtConstante.Visibility = Visibility.Hidden;
                         pnlSegmentacion.Visibility = Visibility.Hidden;
 
-                        rbEventoAEvento.IsChecked = true;
+                       // rbEventoAEvento.IsChecked = true;
                         if (rbDtConstante.IsChecked.Value)
                         {
-                            rbEventoAEvento.IsChecked = true;
+                            //rbEventoAEvento.IsChecked = true;
                             pnlSegmentacion.Visibility = Visibility.Visible;
                         }
 
@@ -462,8 +490,11 @@ namespace Victoria.DesktopApp.View
             {
                 //quitarFiltrosIntervalos();
                 
-                rbDtConstante.Visibility = Visibility.Visible;
-                cargarEventos();
+                //rbDtConstante.Visibility = Visibility.Visible;
+                if (eventos.Count() > 0)
+                {
+                    cargarEventos();
+                }
                 cargarFiltros();
                 btnAddRegister.IsEnabled = true;
                 addRegisterGrid.Background = Brushes.Gray;
@@ -482,7 +513,7 @@ namespace Victoria.DesktopApp.View
                 lbldtp2.Visibility = Visibility.Hidden;
                 txtInterv1.Visibility = Visibility.Hidden;
                 txtInterv2.Visibility = Visibility.Hidden;
-                rbDtConstante.Visibility = Visibility.Visible;
+                //rbDtConstante.Visibility = Visibility.Visible;
                 pnlModificable.Visibility = Visibility.Hidden;
                 //actualizarEstadisticas();
             }
