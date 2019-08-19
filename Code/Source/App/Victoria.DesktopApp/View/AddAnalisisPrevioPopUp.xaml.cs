@@ -22,6 +22,7 @@ using System.IO;
 using Microsoft.Win32;
 using Victoria.DesktopApp.DiagramDesigner;
 using System.Collections;
+using Victoria.Shared;
 
 
 namespace Victoria.DesktopApp.View
@@ -551,7 +552,7 @@ namespace Victoria.DesktopApp.View
 
         private void GenerarDiagrama()
         {
-            this.VentanaDiagramador.assignChartFPD(AnalisisPrevio); //Permite reempleazar las FDP por la funcion
+            ExpressionResolver.listFdpPreviusAnalisis = AnalisisPrevio.listFDP;
             AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
             diagramGenerator.generateDiagram(VentanaDiagramador);
         }

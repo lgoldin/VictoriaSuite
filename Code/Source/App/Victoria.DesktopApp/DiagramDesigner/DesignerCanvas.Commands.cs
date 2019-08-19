@@ -237,25 +237,7 @@ namespace DiagramDesigner
             //NodeRandomValue.setValue(stringValue);
         }
 
-        //Logica para asignar lo
-        public void assignChartFPD(AnalisisPrevio analisisPrevio)
-        {
-        /*    if(analisisPrevio.listFDP.Count != 0)
-            {
-                for (int i = 0; i < analisisPrevio.Datos.Count; i++)
-                {
-                    commonFDP.ResultadoAjuste existeFdp = analisisPrevio.listFDP.FirstOrDefault(x => x.DatoAsociado == analisisPrevio.Datos.ElementAt(i));
-                    if (existeFdp != null)
-                    {
-                        //Inversa tiene forma de f(R) = ... (queres la segunda parte)
-                        string[] functionParts = existeFdp.Inversa.Split('=');
-
-                        analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + "=" + functionParts[1];
-                    }
-                }
-                    this.analisisPrevio = analisisPrevio;
-            }*/
-        }
+       
 
         #region BringForward Command
 

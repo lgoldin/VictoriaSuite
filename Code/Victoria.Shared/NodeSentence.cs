@@ -9,7 +9,8 @@ namespace Victoria.Shared
     public class NodeSentence : Node
     {
         public string Code { get; set; }
-        
+       
+
         public override Node Execute(IList<StageVariable> variables)
         {
             try
@@ -22,8 +23,9 @@ namespace Victoria.Shared
 
                 string variableStr = this.Code.Substring(0, indexEqual).Trim();
                 StageVariable variable = this.GetVariable(variables, cultureInfo, variableStr);
-
-                ExpressionResolver.Resolve(variable, sentence);
+          
+                
+                ExpressionResolver.Resolve(variable, sentence, new Random().NextDouble());
                 
                 return base.Execute(variables);
             }
@@ -71,8 +73,8 @@ namespace Victoria.Shared
 
             if (sentence.Contains("R"))
             {
-                //sentence = sentence.Replace("R", new Random().NextDouble().ToString("F6", cultureInfo));
-                sentence = sentence.Replace("R", NodeRandomValue.getValue(cultureInfo));
+                sentence = sentence.Replace("R", new Random().NextDouble().ToString("F6", cultureInfo));
+                //sentence = sentence.Replace("R", NodeRandomValue.getValue(cultureInfo));
             }
 
             return sentence;

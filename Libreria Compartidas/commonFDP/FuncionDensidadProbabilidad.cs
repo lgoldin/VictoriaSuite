@@ -90,6 +90,23 @@ namespace commonFDP
             }
         }
 
+        public Double getYforX(double x)
+        {
+            try
+            {
+                if (DistribucionContinua != null)
+                   
+                    return DistribucionContinua.QuantileDensityFunction(x);
+                else
+                    return DistribucionDiscreta.QuantileDensityFunction(x);
+               
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
         public double CalcularDesvio(Dictionary<string, double> eventos)
         {
             try

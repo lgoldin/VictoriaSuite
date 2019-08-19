@@ -27,10 +27,6 @@ namespace DiagramDesigner
         //    this.diagrama().updateComboBox(analisisPrevio);
         //}
 
-        public void assignChartFPD(AnalisisPrevio analisisPrevio)
-        {
-            this.diagrama().assignChartFPD(analisisPrevio);
-        }
 
         public DialogResult Result { get; set; }
 
