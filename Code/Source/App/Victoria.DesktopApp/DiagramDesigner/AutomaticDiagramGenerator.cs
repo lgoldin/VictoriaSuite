@@ -40,6 +40,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         public AutomaticDiagramGenerator(AnalisisPrevio analisisPrevio)
         {
+            logger.Info("Generador Automatico de Diagrama");
             this.analisisPrevio = analisisPrevio;
         }
 
@@ -47,6 +48,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
         public void generateDiagram(Window1 diagramWindow)
         {
 
+            logger.Info("Inicio Generar Diagrama");
             if (analisisPrevio.TipoDeEjercicio.Equals(AnalisisPrevio.Tipo.EaE))
             {
                 generateEaEDiagram(diagramWindow);
@@ -55,7 +57,8 @@ namespace Victoria.DesktopApp.DiagramDesigner
             {
                 generateDeltaTDiagram(diagramWindow);
             }
-
+        
+            logger.Info("Fin Generar Diagrama");
 
             setupAndShowDiagramWindow(diagramWindow, this.analisisPrevio);
         }

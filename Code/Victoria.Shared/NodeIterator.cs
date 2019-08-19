@@ -19,24 +19,27 @@ namespace Victoria.Shared
 
         public override Node Execute(IList<StageVariable> variables)
         {
+            logger.Info("Inicio Ejecutar Nodo");
             if (this.variableIteradora == null) InicializarVariableIteradora(variables);
             if (this.variableIteradora.ActualValue < this.ValorFinal)
             {
                 this.variableIteradora.ActualValue += this.Incremento;
                 variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
+                logger.Info("Fin Ejecutar Nodo");
                 return this.IterationNode.Execute(variables);
             }
             else
             {
                 this.variableIteradora.ActualValue = this.ValorInicial;
                 variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
+                logger.Info("Fin Ejecutar Nodo");
                 return base.Execute(variables);
             }
-
         }
 
         private void InicializarVariableIteradora(IList<StageVariable> variables)
         {
+            logger.Info("Inicio Inicializar Variable Iteradora");
             var variable = variables.FirstOrDefault(v => v.Name == this.VariableName);
             if (!string.IsNullOrEmpty(this.VariableName) && variable != null)
             {
@@ -50,6 +53,7 @@ namespace Victoria.Shared
 
             this.variableIteradora.InitialValue = this.ValorInicial;
             this.variableIteradora.ActualValue = this.ValorInicial;
+            logger.Info("Fin Incializar Variable Iteradora");
         }
     }
 }

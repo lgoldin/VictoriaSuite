@@ -26,7 +26,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio agregar gráfico");
+                logger.Info("Inicio Agregar gráfico");
                 List<object> parameters = new List<object>();
 
                 var addChartPopUp = new AddChartPopUp();
@@ -46,11 +46,11 @@ namespace Victoria.DesktopApp.Control
                         }
                         break;
                 }
-                logger.Info("Fin agregar gráfico");
+                logger.Info("Fin Agregar gráfico");
             }
             catch
             {
-                logger.Error("Se produjo un error al agregar un gráfico.");
+                logger.Error("Se produjo un error al Agregar un gráfico.");
                 var viewException = new AlertPopUp("Se produjo un error al agregar un gráfico. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -100,7 +100,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Ejecutar Escenario");
+                logger.Info("Inicio ejecutar Escenario");
                 ((StageViewModel)this.DataContext).StopExecutionStageCommand.Execute(null);
                 logger.Info("Fin Ejecutar Escenario");
             }
@@ -210,6 +210,7 @@ namespace Victoria.DesktopApp.Control
 
         private void BtnInformation_Animations(object sender, RoutedEventArgs e)
         {
+            logger.Info("Información Animaciones");
             var animationInformationPopUp = new AnimationInformationPopup();
             animationInformationPopUp.Show();
         }

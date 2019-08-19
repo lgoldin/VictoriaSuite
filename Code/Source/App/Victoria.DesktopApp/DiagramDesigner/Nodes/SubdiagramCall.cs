@@ -14,6 +14,7 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public SubdiagramCall()
         {
+            logger.Info("Llamada a subdiagrama");
             this.designerItem.Content = XamlReader.Parse(CONTENT);           
         }
 

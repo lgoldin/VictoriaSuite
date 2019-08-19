@@ -14,6 +14,7 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public SubdiagramInit()
         {
+            logger.Info("Inicializacion Subdiagrama");
             this.designerItem.Content = XamlReader.Parse(CONTENT);           
         }
 

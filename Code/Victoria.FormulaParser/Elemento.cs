@@ -2,6 +2,8 @@
 {
     public abstract class Elemento
     {
+
+       
         public abstract bool EsNumerico();
 
         public abstract bool EsOperador();

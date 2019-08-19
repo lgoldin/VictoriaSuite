@@ -14,6 +14,7 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public Sentence()
         {
+            logger.Info("Sentencia");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
         }
 

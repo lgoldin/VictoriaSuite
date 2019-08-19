@@ -10,6 +10,7 @@ namespace Victoria.Shared
 
         public override Node Execute(IList<StageVariable> variables)
         {
+            logger.Info("Ejecutar");
             return base.Execute(variables);
         }
     }

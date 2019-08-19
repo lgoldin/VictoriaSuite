@@ -13,6 +13,7 @@ namespace Victoria.Shared
 {
     public static class XMLParser
     {
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public static Simulation GetSimulation(string xmlString)
         {
             try

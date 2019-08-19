@@ -959,6 +959,7 @@ namespace DiagramDesigner
                 var viewException = new AlertPopUp(ex.Message);
                 viewException.ShowDialog();
                 logger.Error("Validar y Lanzar Simulador: "+ex.Message);
+                
             }
             catch (Exception ex)
             {
@@ -1054,6 +1055,7 @@ namespace DiagramDesigner
 
         private void ValidateReferences(HashSet<string> errorLIst, List<string> referencesList)
         {
+            logger.Info("Inicio Validar Referencias");
             var masDeDosReferencias = referencesList.GroupBy(x => x)
                         .Where(group => group.Count() > 2)
                         .Select(group => group.Key);
@@ -1077,10 +1079,14 @@ namespace DiagramDesigner
                     errorLIst.Add("-No se esta cerrando el uso de la referencia " + '"' + refe + '"' + ".");
                 }
             }
+
+            logger.Info("Fin Validar Referencias");
         }
 
         private HashSet<string> ValidateFinDiagrama()
         {
+
+            logger.Info("Inicio Validar Fin Diagrama");
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
             IEnumerable<Connection> connections = this.Children.OfType<Connection>();
             var cantidadNodosFin = 0;
@@ -1117,13 +1123,15 @@ namespace DiagramDesigner
             {
                 errorList.Add("-Tenes " + cantidadDiagramas + " diagrama/s y " + cantidadNodosFin + " nodo/s de cierre. Deben coincidir.");
             }
+
+            logger.Info("Fin Validar Fin Diagrama");
             return errorList;
         }
         
         private void ValidateUseOfCorrectVariablesInTextBox(HashSet<string> errorLIst, string textBoxText, List<string> variableNames)
         {
 
-            logger.Info("Inicio Validar Caracteres");
+            logger.Info("Inicio Validar Uso Correcto de Variables");
             var regex = "[a-zA-Z0-9]+";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1140,13 +1148,13 @@ namespace DiagramDesigner
                 }
             }
 
-            logger.Info("Fin Validar Caracteres");
+            logger.Info("Fin Validar Uso Correcto de Variables");
         }
 
         private void ValidateUseOfCorrectCharacters(HashSet<string> errorLIst, string textBoxText)
         {
 
-            logger.Info("Inicio Validar Caracteres");
+            logger.Info("Inicio Validar Uso corecto de Caracteres");
             var regex = @"(?![a-zA-Z0-9\!\&\|\ \<\>\%\^\+\=\-\*\/\(\)\,]+).";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1154,7 +1162,7 @@ namespace DiagramDesigner
             {
                 errorLIst.Add("-Estas utilizando un caracter desconocido " + '"' + match + '"' + ".");
             }
-            logger.Info("Fin Validar Caracteres");
+            logger.Info("Fin Validar Uso correcto de Caracteres");
         }
 
         private void ValidateUseOfValidConditionOperators(HashSet<string> errorLIst, string textBoxText)
@@ -1240,7 +1248,7 @@ namespace DiagramDesigner
                         selectedConnections.Add(connection);
                     }
                 }
-                logger.Info("Fin Borrar Seleccion Diagrama");
+                
             }
 
             XElement designerItemsXML = SerializarDesignerItems(selectedDesignerItems);
@@ -1255,6 +1263,7 @@ namespace DiagramDesigner
 
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Xaml, root);
+            logger.Info("Fin Copiar Seleccion Diagrama");
         }
 
         private void PegarSeleccionDiagrama()
@@ -1439,7 +1448,7 @@ namespace DiagramDesigner
         }
 
         public string collectionJson()
-        {
+        {   
             var variables = new List<VariableAP>();
 
             foreach (VariableAP d in dataGridVariables.ItemsSource)

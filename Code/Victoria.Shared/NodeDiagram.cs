@@ -11,7 +11,7 @@ namespace Victoria.Shared
         public bool IsInitializer { get; set; }
 
         public override Node Execute(IList<StageVariable> variables)
-        {
+        {   
             if (!this.IsInitializer)
             {
                 this.Diagram.Execute(variables);

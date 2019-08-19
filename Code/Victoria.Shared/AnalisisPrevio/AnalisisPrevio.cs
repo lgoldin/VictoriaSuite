@@ -11,6 +11,8 @@ namespace Victoria.Shared.AnalisisPrevio
 {
     public class AnalisisPrevio
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public enum Tipo
         {
             EaE,
@@ -47,14 +49,18 @@ namespace Victoria.Shared.AnalisisPrevio
 
         public AnalisisPrevio(Tipo tipo, TipoEvento tipoDeEaE)
         {
+            logger.Info("Inicio Analisis Previo");
             this.InicializarColecciones();
             this.TipoDeEjercicio = tipo;
             if (tipo == AnalisisPrevio.Tipo.EaE) this.TipoDeEaE = tipoDeEaE; 
             this.InicializarAnalisisPrevioPorDefecto();
+            logger.Info("Fin Analisis Previo");
+
         }
 
         private void InicializarColecciones() 
         {
+            logger.Info("Inicio Inicializar Colecciones");
             this.Datos = new ObservableCollection<string>();
             this.VariablesDeControl = new ObservableCollection<string>();
             this.VariablesEstado = new ObservableCollection<VariableAP>();
@@ -65,10 +71,12 @@ namespace Victoria.Shared.AnalisisPrevio
             this.ComprometidosFuturos = new ObservableCollection<string>();
             this.EventosEaE = new ObservableCollection<EventoAP>();
             this.Tefs = new ObservableCollection<string>();
+            logger.Info("Fin Inicializar Colecciones");
         }
 
         private void InicializarAnalisisPrevioPorDefecto() 
         {
+            logger.Info("Inicio Inicializar Analisis Previo por Defecto");
             if (Tipo.EaE.Equals(TipoDeEjercicio))
             {
                 this.CargarMetodologiaEaEPorDefecto();
@@ -77,10 +85,12 @@ namespace Victoria.Shared.AnalisisPrevio
             {
                 this.CargarMetodologiaDeltaTPorDefecto();
             }
+            logger.Info("Fin Inicializar Analisis Previo por Defecto");
         }
 
         private void CargarMetodologiaEaEPorDefecto()
         {
+            logger.Info("Inicio Cargar Metodo Logica EaE Por Defecto");
             if (this.TipoDeEaE == AnalisisPrevio.TipoEvento.Independiente)
             {
                 this.inicializarEaETEI();
@@ -102,11 +112,12 @@ namespace Victoria.Shared.AnalisisPrevio
                 this.VariablesResultado.Add(new VariableAP() { nombre = "CTM", valor = 0, vector = false, i = 1, type = VariableType.Result });
                 this.VariablesEstado.Add(new VariableAP() { nombre = "CTM", valor = 0, vector = false, i = 1, type = VariableType.State });
             }
-
+            logger.Info("Fin  Cargar Metodo Logica EaE Por Defecto");
         }
 
         private void inicializarEaETEventos()
         {
+            logger.Info("Inicio Inicializar EaE T Eventos");
             EventoAP evento = new EventoAP();
             evento.Nombre = "Rotura A";
             evento.EventosNoCondicionados.Add("Rotura A");
@@ -151,10 +162,14 @@ namespace Victoria.Shared.AnalisisPrevio
             this.EventosEaE.Add(evento);
             this.EventosEaE.Add(evento2);
             this.EventosEaE.Add(evento3);
+
+
+            logger.Info("Fin Inicializar EaE T Eventos");
         }
 
         private void inicializarEaETEI()
         {
+            logger.Info("Incio Inicializar EaE TEI");
             EventoAP llegada = new EventoAP();
             llegada.Nombre = "Llegada";
             llegada.EventosNoCondicionados.Add("Llegada");
@@ -175,10 +190,13 @@ namespace Victoria.Shared.AnalisisPrevio
             salida.Vector = false;
             salida.Arrepentimiento = false;
             this.EventosEaE.Add(salida);
+
+            logger.Info("Fin Inicializar EaE TEI");
         }
 
         private void CargarMetodologiaDeltaTPorDefecto()
         {
+            logger.Info("Inicio Cargar Metodo logica Delta T Por Defecto");
             this.Datos.Add("VD");
             this.VariablesEstado.Add(new VariableAP() { nombre = "ST", valor = 0, vector = false, i = 1, type = VariableType.State });
             this.VariablesDeControl.Add("SR");
@@ -187,27 +205,33 @@ namespace Victoria.Shared.AnalisisPrevio
             this.ComprometidosFuturos.Add("Emisión");
             this.ComprometidosAnterior.Add("Llegada");
             this.Tefs.Add("TPLL");
+
+            logger.Info("Fin Cargar Metodo logica Delta T Por Defecto");
         }
 
         public EventoAP ObtenerEventoAP(string nombreEvento)
         {
+            logger.Info("Inicio obtener evento AP");
             return this.EventosEaE.Count == 0 ? null : this.EventosEaE.FirstOrDefault(item => item.Nombre.ToUpper() == nombreEvento.ToUpper());
         }
 
         public List<VariableAP> ObtenerVariablesAP() 
         {
+            logger.Info("Inicio Obtener Variables AP");
             var variables = new List<VariableAP>();
             
             variables.AddRange(this.VariablesEstado);
             variables.AddRange(this.VariablesResultado);
             variables.AddRange(this.ObtenerVariablesAPDeEventosEaE());
             variables.AddRange(this.ObtenerVariablesAPDeVariablesSimples());
-            
+
+            logger.Info("Fin Obtener Variables AP");
             return variables;
         }
 
         private List<VariableAP> ObtenerVariablesAPDeEventosEaE() 
         {
+            logger.Info("Inicio Obtener Variables AP de Eventos Eae");
             var variablesEnEventos = new List<VariableAP>();
 
             foreach (EventoAP evento in this.EventosEaE)
@@ -215,11 +239,13 @@ namespace Victoria.Shared.AnalisisPrevio
                 variablesEnEventos.Add(evento.getAsVariableAP());
             }
 
+            logger.Info("Fin Obtener Variables AP de Eventos Eae");
             return variablesEnEventos;
         }
 
         private List<VariableAP> ObtenerVariablesAPDeVariablesSimples()
         {
+            logger.Info("Inicio Obtener Variables AP De Variables Simples");
             var variablesAP = new List<VariableAP>();
 
             foreach (string variableSimple in this.Datos)
@@ -233,11 +259,13 @@ namespace Victoria.Shared.AnalisisPrevio
                 variablesAP.Add((new VariableAP { nombre = variableSimple, valor = 0.0, vector = false, i = 0, type = VariableType.Control }));
             }
 
+            logger.Info("Fin Obtener Variables AP De Variables Simples");
             return variablesAP;
         }
  
         public Boolean TieneVectores() 
         {
+            logger.Info("Inicio Tiene Vectores");
             return this.VariablesEstado.Any(variable => variable.vector);
         }
        

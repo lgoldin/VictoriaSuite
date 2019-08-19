@@ -8,6 +8,7 @@ namespace Victoria.Shared
 {
     public class NodeCondition : Node
     {
+        
         public string Code { get; set; }
         
         public Node ChildNodeFalse { get; set; }
@@ -18,22 +19,28 @@ namespace Victoria.Shared
         {
             try
             {
+                logger.Info("Inicio Nodo Concicion");
                 var cultureInfo = new CultureInfo("en-US");
                 
                 string sentence = this.GetSentenceToEvaluate(variables, cultureInfo, this.Code);
 
                 var result = ExpressionResolver.ResolveBoolen(sentence);
 
+                logger.Info("Fin Nodo Concicion");
                 return result ? this.ChildNodeFalse.Execute(variables) : this.ChilNodeTrue.Execute(variables);
             }
             catch (Exception exception)
             {
+
+                logger.Error("Error Nodo Concidicon:" + exception.Message);
                 throw new Exception("Nodo condicion", exception);
             }
         }
 
         private string GetSentenceToEvaluate(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
         {
+
+            logger.Info("Inicio Obtener Sentencia para evaluar");
             sentence = this.ReplaceCommonVariablesInSentence(variables, cultureInfo, sentence);
             sentence = this.ReplaceArraysVariablesInSentence(variables, cultureInfo, sentence);
 
@@ -42,11 +49,14 @@ namespace Victoria.Shared
                 sentence = sentence.Replace("R", new Random().NextDouble().ToString("F6", cultureInfo));
             }
 
+            logger.Info("Fin Obtener Sentencia para evaluar");
             return sentence;
         }
 
         private string ReplaceCommonVariablesInSentence(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
         {
+
+            logger.Info("Inicio Reemplazar Variables Comunes");
             var regex = new Regex(@"[A-Za-z]+[A-Za-z0-9]*f{0,1}");
             MatchCollection matches = regex.Matches(sentence);
             int previousPosition = 0;
@@ -60,12 +70,14 @@ namespace Victoria.Shared
                     previousPosition += match.Length - actualValue.Length;
                 }
             }
-
+            logger.Info("Fin Reemplazar Variables Comunes");
             return sentence;
         }
 
         private string ReplaceArraysVariablesInSentence(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
         {
+            logger.Info("Inicio Reemplazar variables en array");
+
             var regex = new Regex(@"[A-Z0-9a-z]+[(][0-9]+[)]");
             MatchCollection matches = regex.Matches(sentence);
             int previousPosition = 0;
@@ -83,7 +95,7 @@ namespace Victoria.Shared
                     }
                 }
             }
-
+            logger.Info("Fin Reemplazar variables en array");
             return sentence;
         }
     }
