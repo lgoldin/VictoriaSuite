@@ -240,7 +240,7 @@ namespace DiagramDesigner
         //Logica para asignar lo
         public void assignChartFPD(AnalisisPrevio analisisPrevio)
         {
-            if(analisisPrevio.listFDP.Count != 0)
+        /*    if(analisisPrevio.listFDP.Count != 0)
             {
                 for (int i = 0; i < analisisPrevio.Datos.Count; i++)
                 {
@@ -254,7 +254,7 @@ namespace DiagramDesigner
                     }
                 }
                     this.analisisPrevio = analisisPrevio;
-            }
+            }*/
         }
 
         #region BringForward Command

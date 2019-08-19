@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace commonFDP
 {
-    class Filtro
+    public class Filtro
     {
         public bool IsChecked { get; set; }
         public string Name { get; }

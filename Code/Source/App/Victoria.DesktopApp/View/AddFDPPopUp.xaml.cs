@@ -41,8 +41,8 @@ namespace Victoria.DesktopApp.View
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
         public commonFDP.TipoAccionProcesamiento tipoAccion;
-       // private List<commonFDP.Filtro> filtros = null;
-       // private readonly INuevoFiltro filtrador = new FiltroImpl();
+        //private List<commonFDP.Filtro> filtros = null;
+        //private readonly commonFDP.INuevoFiltro filtrador = new commonFDP.FiltroImpl();
         List<double> intervalosParciales;
 
         public void FDPGenerator(AnalisisPrevio aPrevio)
@@ -113,8 +113,8 @@ namespace Victoria.DesktopApp.View
             
             if (eventos.Count() >= 15)
             {
-               // try
-                //{
+                try
+                {
                     commonFDP.MetodologiaAjuste metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
                     commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
                     int flagIntervalos = 0;
@@ -140,11 +140,11 @@ namespace Victoria.DesktopApp.View
 
 
                 
-                //}
-                /*catch
+                }
+                catch
                 {
                     createAlertPopUp("Error al calcular funciones");
-                }*/
+                }
                 this.Close();
             }
             else
@@ -400,7 +400,7 @@ namespace Victoria.DesktopApp.View
                             CheckListBoxFiltros.IsEnabled = false;
 
 
-                            // chlFiltros.Enabled = false;
+                            //chlFiltros.Enabled = false;
 
                             //modificarLayout(commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR);
                             pnlModificable.Visibility = Visibility.Hidden;
@@ -839,16 +839,115 @@ namespace Victoria.DesktopApp.View
                         }
                         createAlertPopUp(mensaje);
                     break;
-               /* case TipoAccionProcesamiento.FILTRAR:
-                    agregarFiltro();
-                    filtrar();
-                    mostrarMensaje("Filtro aplicado correctamente", Color.FromArgb(128, 255, 128));
-                    actualizarEstadisticas();
-                    break;*/
+                case commonFDP.TipoAccionProcesamiento.FILTRAR:
+                   // agregarFiltro();
+                   // filtrar();
+                    //mostrarMensaje("Filtro aplicado correctamente", Color.FromArgb(128, 255, 128));
+                    //actualizarEstadisticas();
+                    break;
                 default:
                     break;
             }
         }
+        /*
+        private void agregarFiltro()
+        {
+            int selectedValue = Convert.ToInt32(cmbTipoFiltro.SelectedValue);
+            Filtro auxFiltro = null;
+            DateTime fecha = DateTime.Now;
+            DateTime fecha2 = DateTime.Now;
+            fecha = dtp1.Value;
+            fecha2 = dtp2.Value;
+            double intervalo = -1;
+            double intervalo2 = -1;
+            if (rbFecha.Checked)
+            {
+                switch (selectedValue)
+                {
+                    case 0:
+                        auxFiltro = new Filtro(TipoFiltro.FECHA_MENOR, fecha);
+                        break;
+                    case 1:
+                        auxFiltro = new Filtro(TipoFiltro.FECHA_MAYOR, fecha);
+                        break;
+                    case 2:
+                        auxFiltro = new Filtro(TipoFiltro.FECHA_ENTRE, fecha, fecha2);
+                        break;
+                    case 3:
+                        auxFiltro = new Filtro(TipoFiltro.HORA_MENOR, fecha);
+                        break;
+                    case 4:
+                        auxFiltro = new Filtro(TipoFiltro.HORA_MAYOR, fecha);
+                        break;
+                    case 5:
+                        auxFiltro = new Filtro(TipoFiltro.HORA_ENTRE, fecha, fecha2);
+                        break;
+                    default:
+                        auxFiltro = null;
+                        break;
+                }
+            }
+            else if (rbIntervalos.IsChecked.Value)
+            {
+                //intervalo = Convert.ToDouble(txtIntervalo.Text);
+                //intervalo2 = Convert.ToDouble(txtIntervalo2.Text);
+
+                switch (selectedValue)
+                {
+                    case 0:
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.INTERVALO_MENOR, intervalo);
+                        break;
+                    case 1:
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.INTERVALO_MAYOR, intervalo);
+                        break;
+                    case 2:
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.INTERVALO_ENTRE, intervalo, intervalo2);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filtros.Add(auxFiltro);
+            //setupFiltrosCheckboxList();
+        }
+
+        /*private void filtrar()
+        {
+            if (rbFecha.Checked)
+            {
+                List<Evento> filtrado = filtrador.FiltrarFechas(this.proyecto.Id, filtros);
+                if (filtrado != null)
+                {
+                    eventos = filtrado;
+                    dgwEventos.DataSource = filtrado;
+                    dgwEventos.Columns[1].Width = 235;
+                    dgwEventos.Columns[0].Visible = false;
+                    dgwEventos.Columns[1].DefaultCellStyle.Format = "dd'/'MM'/'yyyy HH:mm:ss";
+                }
+            }
+            else if (rbIntervalos.Checked)
+            {
+                List<double> filtrado = filtrador.FiltrarIntervalos(this.intervalosParciales, cmbTipoFiltro.SelectedIndex, Convert.ToInt32(txtIntervalo.Text), Convert.ToInt32(txtIntervalo2.Text));
+                intervalosParciales = filtrado; //para filtros acumulativos
+
+                //leno dataGridView con los intervalos
+                DataTable tabla = new DataTable();
+                tabla.Columns.Add("Intervalos");
+                foreach (var item in filtrado)
+                {
+                    DataRow row = tabla.NewRow();
+                    row["Intervalos"] = item;
+                    tabla.Rows.Add(row);
+                }
+                dgwEventos.DataSource = tabla;
+                dgwEventos.Columns[0].Visible = true;
+                dgwEventos.Columns[0].Width = 235;
+
+            }
+        }
+        */
+
+
 
         private void BtnClean_Click(object sender, RoutedEventArgs e)
         {

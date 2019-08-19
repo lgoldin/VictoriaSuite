@@ -498,13 +498,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
         {
             double actualPosition = nextTopPosition;
             int i;
-            for (i = 0; i < analisisPrevio.Datos.Count; i++) 
+            for (i = 0; i < analisisPrevio.Datos.Count; i++)
             {
                 actualPosition = nextTopPosition;
 
                 SubdiagramInit init = new SubdiagramInit(analisisPrevio.Datos.ElementAt(i));
                 setElementIntoCanvas(init, getLeftPositionForBranch(i), actualPosition);
- 
+
                 lastCenterNode = init;
                 actualPosition += topHeightStep;
 
@@ -514,10 +514,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 lastCenterNode = random;
                 actualPosition += topHeightStep;
 
-                //Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + " = R");
-                if (!analisisPrevio.Datos.ElementAt(i).Contains("="))
-                    analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + " = R";
-                Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i));
+                //Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i));
+                //if (!analisisPrevio.Datos.ElementAt(i).Contains("="))
+                //    sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + " = R");
+                commonFDP.ResultadoAjuste associatedInverse = analisisPrevio.listFDP.FirstOrDefault(x => x.DatoAsociado == analisisPrevio.Datos.ElementAt(i));
+                string inverse = associatedInverse == null ? "R" : associatedInverse.Inversa;
+                Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + "= " +  inverse);
+                //analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + " = R";
+                //Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i));
                 setElementIntoCanvas(sentence, getLeftPositionForBranch(i), actualPosition);
                 connectNodes(lastCenterNode, BOTTOM, sentence, TOP);
                 lastCenterNode = sentence;

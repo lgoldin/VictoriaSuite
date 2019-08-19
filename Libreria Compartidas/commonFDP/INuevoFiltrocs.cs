@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace commonFDP
 {
-    interface INuevoFiltro
+    public interface INuevoFiltro
     {
         List<Evento> FiltrarFechas(int idOrigen, List<Filtro> filtros);
         List<double> FiltrarIntervalos(List<double> intervalos, int selectedFiltro, int intervalo, int intervalo2);

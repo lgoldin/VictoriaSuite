@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace commonFDP
 {
-    class FiltroImpl : INuevoFiltro
+    public class FiltroImpl : INuevoFiltro
     {
         private readonly EventoContexto contexto = new EventoContexto();
 
