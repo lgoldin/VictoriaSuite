@@ -70,7 +70,11 @@ namespace Victoria.Shared.Actors
             {
                 this.logger.Error(exception, exception.Message);
                 stageSimulation.StopExecution(true);
+                if(stageSimulation.DebugginMode())
+                    stageSimulation.StopDebugExecution(true);
                 this.MainSimulationActor.Tell(this.stageSimulation);
+                this.Self.Tell(PoisonPill.Instance);
+                this.MainSimulationActor.Tell(PoisonPill.Instance);
             }
         }
 

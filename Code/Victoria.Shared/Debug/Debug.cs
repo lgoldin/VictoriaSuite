@@ -116,7 +116,7 @@ namespace Victoria.Shared.Debug
                     }
                     else
                     { 
-                        string replacedCondition = ExpressionResolver.GetSentenceToEvaluate(executionVariables , new CultureInfo("en-US"), this.conditionExpresion).ToUpper();
+                        string replacedCondition = ExpressionResolver.GetSentenceToEvaluate(executionVariables , new CultureInfo("en-US"), this.conditionExpresion.ToUpper());
                     
                         if (!this.conditionResult)
                         {
