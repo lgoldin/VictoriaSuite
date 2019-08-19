@@ -348,8 +348,27 @@ namespace Victoria.DesktopApp.View
         {
             var tipo = this.TipoSeleccionado(comboBox.SelectedItem);
             var tipoEaE = this.TipoEaESeleccionado(comboBox_EventosEaE.SelectedItem);
-            this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+            
+            if (this.AnalisisPrevio != null)
+            {
+                if(this.AnalisisPrevio.listFDP!= null)
+                {
+                    ObservableCollection<commonFDP.ResultadoAjuste> listaFdp = this.AnalisisPrevio.listFDP; 
+                    this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+                    this.AnalisisPrevio.listFDP = listaFdp;
+                }
+                else
+                {
+                    this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+                }
+                
+            }
 
+            else
+            {
+                this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+            }
+               
             this.eventos.Visibility = tipo.Equals(AnalisisPrevio.Tipo.EaE) ? Visibility.Visible : Visibility.Hidden;
             this.eventosDeltaT.Visibility = tipo.Equals(AnalisisPrevio.Tipo.DeltaT) ? Visibility.Visible : Visibility.Hidden;
             this.nuevoEventoDeltaT.IsEnabled = tipo.Equals(AnalisisPrevio.Tipo.DeltaT);

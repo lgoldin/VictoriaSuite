@@ -244,10 +244,11 @@ namespace DiagramDesigner
             {
                 for (int i = 0; i < analisisPrevio.Datos.Count; i++)
                 {
-                    if (analisisPrevio.Datos.ElementAt(i).Contains("IA"))
+                    commonFDP.ResultadoAjuste existeFdp = analisisPrevio.listFDP.FirstOrDefault(x => x.DatoAsociado == analisisPrevio.Datos.ElementAt(i));
+                    if (existeFdp != null)
                     {
                         //Inversa tiene forma de f(R) = ... (queres la segunda parte)
-                        string[] functionParts = analisisPrevio.listFDP.First().Inversa.Split('=');
+                        string[] functionParts = existeFdp.Inversa.Split('=');
 
                         analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + "=" + functionParts[1];
                     }
