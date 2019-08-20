@@ -320,10 +320,18 @@ namespace Victoria.DesktopApp.View
                 int indexFdp = analisisPrevio.listFDP.IndexOf(existeFdp);
                 analisisPrevio.listFDP.RemoveAt(indexFdp);               
             }
-            resultadoSeleccionado.DatoAsociado = comboBox.SelectedValue.ToString();
-            analisisPrevio.addFDPToList(resultadoSeleccionado);
+            try
+            {
+                resultadoSeleccionado.DatoAsociado = comboBox.SelectedValue.ToString();
+                analisisPrevio.addFDPToList(resultadoSeleccionado);
 
-            this.Close();
+                this.Close();
+            }
+            catch
+            {
+                createAlertPopUp("No se seleccionó la funcion que desea asociar al dato");
+            }
+
         }
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

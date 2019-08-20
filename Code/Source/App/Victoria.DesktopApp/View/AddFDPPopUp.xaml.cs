@@ -37,6 +37,7 @@ namespace Victoria.DesktopApp.View
         private List<commonFDP.Evento> eventos = new List<commonFDP.Evento>();
         public List<commonFDP.Evento> interv = new List<commonFDP.Evento>();
         public int idEvento = 0;
+        public List<String> origenes =  new List<string>();
         public AnalisisPrevio analisisPrevio { get; set; }
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
@@ -47,18 +48,24 @@ namespace Victoria.DesktopApp.View
 
         public void FDPGenerator(AnalisisPrevio aPrevio)
         {
+            comboBox.ItemsSource = origenes;
+            origenes.Add("Archivo Excel");
+            origenes.Add("Archivo txt");
             this.analisisPrevio = aPrevio;
+            dgvDatosFdp.ItemsSource = null;
+            comboBox.SelectedItem = comboBox.Items[0];
             rbFecha.IsChecked = true;
             if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
             {
-                rbDtConstante.Visibility = Visibility.Hidden;
+                rbDtConstante.IsEnabled = false;
                 rbEventoAEvento.IsChecked = true;
             }
             else
             {
-                rbEventoAEvento.Visibility = Visibility.Hidden;
+                rbEventoAEvento.IsEnabled = false;
+                rbIntervalos.IsEnabled = false;
                 rbDtConstante.IsChecked = true;
-                rbSegundo.IsChecked = true;
+                rbDia.IsChecked = true;
             }
 
         }
@@ -75,10 +82,12 @@ namespace Victoria.DesktopApp.View
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem typeItem = (ComboBoxItem)comboBox.SelectedItem;
-            string value = typeItem.Content.ToString();
-            if (value == "Archivo Excel")
+            //ComboBoxItem typeItem = (ComboBoxItem)comboBox.SelectedItem;
+            string value = comboBox.SelectedValue.ToString();
+            if (value == "Archivo Excel" || value == "Archivo txt")
             {
+                rutaFile.Text = "";
+                pnlPosicion_datos.Visibility = Visibility.Hidden;
                 Archivo.Visibility = Visibility.Visible;
                 rutaFile.IsReadOnly = true;
                
@@ -165,7 +174,7 @@ namespace Victoria.DesktopApp.View
             }
             else
             {
-                createAlertPopUp("Debe haber al menos 15 eventos en el proyecto");
+                createAlertPopUp("Debe haber al menos 15 eventos para poder calcular la FDP");
             }
             
         } 
@@ -200,7 +209,39 @@ namespace Victoria.DesktopApp.View
 
         private void RutaFile_TextChanged(object sender, TextChangedEventArgs e)
         {
-           pnlPosicion_datos.Visibility = Visibility.Visible; 
+           switch(comboBox.SelectedValue.ToString())
+            {
+                case ("Archivo Excel"):
+                    label_posicion_datos.Content = "Indique la ubicación de los datos: ";
+                    label_hoja.Content = "Hoja";
+                    label_hoja.Visibility = Visibility.Visible;
+                    label_columna.Visibility = Visibility.Visible;
+                    label_fila.Visibility = Visibility.Visible;
+                    txtHoja.Visibility = Visibility.Visible;
+                    txtFila.Visibility = Visibility.Visible;
+                    txtCol.Visibility = Visibility.Visible;
+                    
+                    pnlPosicion_datos.Visibility = Visibility.Visible;
+
+                  break;
+
+                case ("Archivo txt"):
+                    label_hoja.Content = "";
+                    label_posicion_datos.Content = "Indique el delemitador a utilizar : ";
+                    pnlPosicion_datos.Visibility = Visibility.Visible;
+                    label_columna.Visibility = Visibility.Hidden;
+                    label_fila.Visibility = Visibility.Hidden;
+                    label_hoja.Visibility = Visibility.Hidden;
+                    txtCol.Visibility = Visibility.Hidden;
+                    txtFila.Visibility = Visibility.Hidden;
+                    txtHoja.Visibility = Visibility.Visible;
+
+                    
+                  break;
+            }
+           
+        
+            
             
         }
 
@@ -440,7 +481,7 @@ namespace Victoria.DesktopApp.View
                     }
                     else
                     {
-                        ; cargarFiltros();
+                         cargarFiltros();
                     }
                 }
             }
@@ -1126,5 +1167,7 @@ namespace Victoria.DesktopApp.View
                     break;
             }
         }
+
+
     }
 }

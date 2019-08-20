@@ -58,7 +58,7 @@
 
 
                         <ComboBox x:Name="comboBox"  RenderTransformOrigin="0.497,0.484" Margin="85,27,286.286,620.857" SelectionChanged="comboBox_SelectionChanged" Grid.Column="1" Grid.ColumnSpan="2">
-                            <ComboBoxItem x:Name="ArchivoExcel" Content="Archivo Excel" />
+                            
                         </ComboBox>
 
                         <Grid x:Name="Archivo" Grid.ColumnSpan="3" Visibility="Hidden" Margin="0,0,0.286,-0.286">
@@ -88,7 +88,7 @@
                             <Label x:Name="label_columna" Content="Columna" Margin="413,106,536,84.857"/>
                             <Label x:Name="label_fila" Content="Fila Inicial" Margin="584,106,356,84.857"/>
 
-                            <TextBox x:Name="txtHoja" PreviewTextInput="NumberValidationTextBox" x:FieldModifier="private" Margin="330,110,639,85" Text="1"/>
+                            <TextBox x:Name="txtHoja" PreviewTextInput="NumberValidationTextBox" x:FieldModifier="private" Margin="330,110,639,85" Text="1" />
                             <TextBox x:Name="txtCol" PreviewTextInput="NumberValidationTextBox"  x:FieldModifier="private" Margin="495,110,473,85" Text="1"/>
                             <TextBox x:Name="txtFila" PreviewTextInput="NumberValidationTextBox"   x:FieldModifier="private" Margin="673,110,300,85" Text="1"/>
 
