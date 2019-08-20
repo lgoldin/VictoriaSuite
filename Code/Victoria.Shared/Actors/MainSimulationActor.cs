@@ -16,6 +16,7 @@ namespace Victoria.Shared.Actors
         public MainSimulationActor()
         {
             logger.Info("Inicio actor principal de simulación");
+
             Receive<ISimulation>(simulation => this.Execute(simulation));
             Receive<IStageSimulation>(simulationStage => this.UpdateSimulation(simulationStage));
             logger.Info("Fin actor principal de simulación");
