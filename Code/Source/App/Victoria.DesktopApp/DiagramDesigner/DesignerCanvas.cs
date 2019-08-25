@@ -55,7 +55,7 @@ namespace DiagramDesigner
         {
             base.OnMouseMove(e);
 
-            // if mouse button is not pressed we have no drag operation, ...
+            // if mouse button is not pres<d we have no drag operation, ...
             if (e.LeftButton != MouseButtonState.Pressed)
                 this.rubberbandSelectionStartPoint = null;
 

@@ -11,20 +11,14 @@ namespace Victoria.Shared
 
 
         //el parametro R se utiliza unicamente en casos en los que se  haya definido una FDP para el dato que se va a ejecutar ya que se calcula a partir del objeto y no por el parser
-        public static void Resolve(StageVariable variable, string expression, double R=0)
+        public static void Resolve(StageVariable variable, string expression, double R=1)
         {
-            commonFDP.ResultadoAjuste associatedInverse = listFdpPreviusAnalisis.FirstOrDefault(x => x.DatoAsociado == variable.Name);
-            if (associatedInverse != null)
-            {
-                variable.ActualValue = associatedInverse.FDP.getYfroX(R);
-            }
-            else
-            {
-                var formulaParser = new FormulaParser.FormulaParser(expression);
 
-                variable.ActualValue = formulaParser.GetValor();
-            }
+            expression = expression.Replace(',','.');
+            var formulaParser = new FormulaParser.FormulaParser(expression);
 
+            variable.ActualValue = formulaParser.GetValor(); 
+            
         }
 
         public static bool ResolveBoolen(string expression)
