@@ -393,7 +393,7 @@ namespace Victoria.Shared
         }
 
         static List<Stage> parseStages(XElement stages)
-        {
+        {   
             return stages.Descendants("Stage").Select(st => new Stage
             {
                 Name = st.Attribute("Name").Value,

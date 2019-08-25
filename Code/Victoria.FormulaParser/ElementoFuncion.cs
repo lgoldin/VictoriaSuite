@@ -26,7 +26,7 @@ namespace Victoria.FormulaParser
             if (!matrizDeInstancias.ContainsKey(funcion))
             {
 
-                logger.Error("Error: No se encontró la funcion '" + funcion );
+                logger.Error("Error: No se encontró la funcion " + funcion );
                 throw new InvalidOperationException("No se encontró la funcion '" + funcion + "'.");
             }
 
