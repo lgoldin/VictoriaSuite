@@ -55,6 +55,7 @@ namespace DiagramDesigner
         {
 
             logger.Info("Inicio Diseñar Canvas");
+
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, Save_Executed));
