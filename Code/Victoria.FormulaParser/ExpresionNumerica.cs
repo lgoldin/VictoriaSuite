@@ -7,8 +7,6 @@ namespace Victoria.FormulaParser
     {
 
 
-        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
-
         private readonly string numero;
 
         public ExpresionNumerica(

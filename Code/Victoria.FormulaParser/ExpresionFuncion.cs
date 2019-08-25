@@ -36,7 +36,9 @@ namespace Victoria.FormulaParser
 
         public void AgregarArgumento(Expresion argumento)
         {
+            logger.Info("Inicio Agregar Argumento");
             this.argumentos.Add(argumento);
+            logger.Info("Fin Agregar Argumento");
         }
 
         public override double GetValor()
