@@ -186,6 +186,8 @@ namespace Victoria.DesktopApp
                         ((MainViewModel)this.DataContext).OpenSimulationCommand.Execute(openFileDialog.FileName);
                     }
                 }
+
+                logger.Info("Fin abrir Simulacion.");
             }
             catch (Exception ex)
             {
@@ -211,6 +213,8 @@ namespace Victoria.DesktopApp
                         }
                         break;
                 }
+
+                logger.Info("Fin agregar un escenario.");
             }
             catch (Exception ex)
             {
@@ -377,9 +381,11 @@ namespace Victoria.DesktopApp
 
         private void BtnAnalisisSensibilidad_OnClick(object sender, RoutedEventArgs e)
         {
+            logger.Info("Inicio Boton Analisis de Sensibilidad");
             var sensibilidadWindow = new AnalisisSensibilidadPopUp(((MainViewModel)this.DataContext).SimulationFile);
             sensibilidadWindow.ShowDialog();
             btnAnalisisSensibilidad.Focusable = false;
+            logger.Info("Fin Boton Analisis de Sensibilidad");
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)

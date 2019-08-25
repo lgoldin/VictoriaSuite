@@ -19,21 +19,21 @@ namespace Victoria.Shared
         {
             try
             {
-                logger.Info("Inicio Nodo Concicion");
+                logger.Info("Inicio Nodo Condicion");
                 var cultureInfo = new CultureInfo("en-US");
                 
                 string sentence = this.GetSentenceToEvaluate(variables, cultureInfo, this.Code);
 
                 var result = ExpressionResolver.ResolveBoolen(sentence);
 
-                logger.Info("Fin Nodo Concicion");
+                logger.Info("Fin Nodo Condicion");
                 return result ? this.ChildNodeFalse.Execute(variables) : this.ChilNodeTrue.Execute(variables);
             }
             catch (Exception exception)
             {
 
-                logger.Error("Error Nodo Concidicon:" + exception.Message);
-                throw new Exception("Nodo condicion", exception);
+                logger.Error("Error Nodo Condicon:" + exception.Message);
+                throw new Exception("Nodo Condicion", exception);
             }
         }
 

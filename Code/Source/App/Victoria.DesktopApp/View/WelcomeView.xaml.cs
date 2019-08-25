@@ -103,6 +103,7 @@ namespace Victoria.DesktopApp.View
             logger.Info("Inicio Boton Cerrar");
             this.Close();
             logger.Info("Fin Boton Cerrar");
+            logger.Info("FIN VICTORIA SUITE");
 
         }
 

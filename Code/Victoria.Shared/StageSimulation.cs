@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Victoria.Shared.Interfaces;
 
@@ -7,7 +8,7 @@ namespace Victoria.Shared
 
     public class StageSimulation : IStageSimulation
     {
-        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(System.AppDomain));
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         private ISimulation simulation { get; set; }
         private bool stopExecution { get; set; }
         private List<Diagram> diagrams { get; set; }
@@ -24,7 +25,7 @@ namespace Victoria.Shared
 
         public bool GetExecutionStatus()
         {
-            logger.Info("Inicio Obtener estado Ejeciucion");
+            logger.Info("Obtener estado Ejecucion");
             return this.stopExecution;
         }
 
@@ -37,7 +38,7 @@ namespace Victoria.Shared
 
         public bool CanContinue()
         {
-            logger.Info("Inicio Validacion puede continuar");
+            logger.Info("Validacion puede continuar");
             return this.stopExecution == false && this.simulation.CanContinue();
         }
 
@@ -48,7 +49,7 @@ namespace Victoria.Shared
 
         public Diagram GetMainDiagram()
         {
-            logger.Info("Inicio obtener diagrama principal");
+            logger.Info("Obtener diagrama principal");
             return this.diagrams.First(x => x.Name == "Principal"); 
         }
 
