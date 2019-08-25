@@ -22,6 +22,8 @@ using System.IO;
 using Microsoft.Win32;
 using Victoria.DesktopApp.DiagramDesigner;
 using System.Collections;
+using Victoria.Shared;
+
 
 namespace Victoria.DesktopApp.View
 {
@@ -41,12 +43,13 @@ namespace Victoria.DesktopApp.View
         private string LastGridObject { get; set; }
         private bool NewGridObject { get; set; }
 
+
+
         private const string AGREGAR_CONDICION = "[Agregar Condición]";
         private const string AGREGAR_ENCADENADOR = "[Agregar Encadenador]";
         private const string AGREGAR_VARIABLE_CONTROL = "[Agregar Variable de Control]";
         private const string AGREGAR_VARIABLE_ESTADO = "[Agregar Variable de Estado]";
         private const string AGREGAR_VARIABLE_RESULTADO = "[Agregar Variable de Resultado]";
-
 
         private const string AGREGAR_EVENTO = "[Agregar Evento]";
 
@@ -319,6 +322,12 @@ namespace Victoria.DesktopApp.View
         {
             GenerarDiagrama();
         }
+    
+        private void btnGenerarFDP_OnClick(object sender, RoutedEventArgs e)
+        {
+            GenerarFDP();
+        }
+
 
         private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -340,8 +349,27 @@ namespace Victoria.DesktopApp.View
         {
             var tipo = this.TipoSeleccionado(comboBox.SelectedItem);
             var tipoEaE = this.TipoEaESeleccionado(comboBox_EventosEaE.SelectedItem);
-            this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+            
+            if (this.AnalisisPrevio != null)
+            {
+                if(this.AnalisisPrevio.listFDP!= null)
+                {
+                    ObservableCollection<commonFDP.ResultadoAjuste> listaFdp = this.AnalisisPrevio.listFDP; 
+                    this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+                    this.AnalisisPrevio.listFDP = listaFdp;
+                }
+                else
+                {
+                    this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+                }
+                
+            }
 
+            else
+            {
+                this.AnalisisPrevio = new AnalisisPrevio(tipo, tipoEaE);
+            }
+               
             this.eventos.Visibility = tipo.Equals(AnalisisPrevio.Tipo.EaE) ? Visibility.Visible : Visibility.Hidden;
             this.eventosDeltaT.Visibility = tipo.Equals(AnalisisPrevio.Tipo.DeltaT) ? Visibility.Visible : Visibility.Hidden;
             this.nuevoEventoDeltaT.IsEnabled = tipo.Equals(AnalisisPrevio.Tipo.DeltaT);
@@ -526,6 +554,18 @@ namespace Victoria.DesktopApp.View
         {
             AutomaticDiagramGenerator.sharedInstance().analisisPrevio = AnalisisPrevio;  
             AutomaticDiagramGenerator.sharedInstance().generateDiagram(VentanaDiagramador);
+
+            ExpressionResolver.listFdpPreviusAnalisis = AnalisisPrevio.listFDP;
+            AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
+            diagramGenerator.generateDiagram(VentanaDiagramador);
+        }
+
+        private void GenerarFDP()
+        {
+            AddFDPPopUp FDPGenerator = new AddFDPPopUp();
+            FDPGenerator.FDPGenerator(this.AnalisisPrevio);
+
+            FDPGenerator.Show();
         }
 
         private void DarPDFAlUsuario()

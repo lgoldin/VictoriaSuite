@@ -1,0 +1,239 @@
+﻿<Window x:Class="Victoria.DesktopApp.View.AddFDPPopUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Victoria.DesktopApp.View"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Generar FDP" 
+        Background="Transparent"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"       
+        ResizeMode="CanResizeWithGrip"
+        Focusable="True" Height="764.275" Width="1028">
+    <Grid Margin="-250,-53,-187,-28" HorizontalAlignment="Right" Width="1465" Height="845" VerticalAlignment="Bottom" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border MouseLeftButtonDown="WindowMouseLeftButtonDown" CornerRadius="30" Background="{StaticResource SecondaryColor}"  Padding="0,0,0,0" HorizontalAlignment="Left" Margin="242,149,0,0" Width="1013" Grid.Column="1" Height="666" VerticalAlignment="Top">
+            <StackPanel Margin="0,0,0,-17">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" Name="btnMinimize"  Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" Click="BtnMinimize_OnClick">
+                        <Button.Content>
+                            <StackPanel>
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/minus.png" Height="18" Width="23" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="2" Name="btnClose" Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" Click="BtnClose_OnClick" Margin="0,0,10,0">
+                        <Button.Content>
+                            <StackPanel>
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/close.png" Height="18" Width="23" RenderTransformOrigin="0.513,-0.022" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Image Source="/Victoria.UI.SharedWPF;Component/resources/corona.png" Width="34" HorizontalAlignment="Center" Margin="0,0,880,0" RenderTransformOrigin="3.821,0.438" />
+                    <Label  Content="Generar FDP"  Foreground="White" FontSize="18" HorizontalAlignment="Center"  Width="137" Margin="197,0,155,0.581"/>
+                </Grid>
+                <Border  Background="White" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="550" MinHeight="350" Height="595" Width="1012" Margin="0,0,0.571,0" RenderTransformOrigin="0.376,0.652">
+
+                    <Grid Margin="0,0,2,-80">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="72*"/>
+                            <ColumnDefinition Width="187*"/>
+                            <ColumnDefinition Width="751*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label x:Name="label" Content="Origen de datos"  Margin="37,27,121.857,599.714" Grid.ColumnSpan="2"/>
+
+
+                        <ComboBox x:Name="comboBox"  RenderTransformOrigin="0.497,0.484" Margin="85,27,286.286,620.857" SelectionChanged="comboBox_SelectionChanged" Grid.Column="1" Grid.ColumnSpan="2">
+                            
+                        </ComboBox>
+
+                        <Grid x:Name="Archivo" Grid.ColumnSpan="3" Visibility="Hidden" Margin="0,0,0.286,-0.286">
+                            <Label x:Name="label_Copy" Content="Archivo" Margin="37,67,879,561"/>
+                            <TextBox x:Name="rutaFile"  Margin="160,67,288,584.143" TextChanged="RutaFile_TextChanged" />
+
+                            <Button x:Name="btnserch" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,65,158,576.143" Width="115"  Click="Btnserch_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                <Grid Height="30" Width="118">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="33*"/>
+                                        <ColumnDefinition Width="97*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Examinar" Height="28" HorizontalAlignment="Left" Width="105" Margin="10,0,0,2" Grid.ColumnSpan="2" />
+                                    <Image Source="/Victoria.UI.SharedWPF;Component/resources/openG.png" HorizontalAlignment="Right" Width="27" Margin="0,3,9.857,7" Grid.Column="1" RenderTransformOrigin="0.508,-0.053" />
+                                </Grid>
+                            </Button>
+
+                        </Grid>
+
+                        <Grid x:Name="pnlPosicion_datos" Grid.ColumnSpan="3" Visibility="Hidden" Margin="0,0,0.286,-0.286">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="73*"/>
+                                <RowDefinition Height="152*"/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="label_posicion_datos" Content="Indique la ubicación de los datos:" Margin="37,109,785,73.857"/>
+                            <Label x:Name="label_hoja" Content="Hoja" Margin="260,106,712,84.857" RenderTransformOrigin="0.46,-0.776"/>
+                            <Label x:Name="label_columna" Content="Columna" Margin="413,106,536,84.857"/>
+                            <Label x:Name="label_fila" Content="Fila Inicial" Margin="584,106,356,84.857"/>
+
+                            <TextBox x:Name="txtHoja" PreviewTextInput="NumberValidationTextBox" x:FieldModifier="private" Margin="330,110,639,85" Text="1" />
+                            <TextBox x:Name="txtCol" PreviewTextInput="NumberValidationTextBox"  x:FieldModifier="private" Margin="495,110,473,85" Text="1"/>
+                            <TextBox x:Name="txtFila" PreviewTextInput="NumberValidationTextBox"   x:FieldModifier="private" Margin="673,110,300,85" Text="1"/>
+
+                            <Button x:Name="btnimport" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,103,148,78.857" Width="123"  Click="Btnimport_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                <Grid Height="26" Width="130">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="79*"/>
+                                        <ColumnDefinition Width="51*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Importar Datos" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,0,0,-2" Grid.ColumnSpan="2" />
+                                    <Image Source="/Victoria.UI.SharedWPF;Component/resources/savev2.png" HorizontalAlignment="Right" Width="33" Margin="0,7,18.286,5" RenderTransformOrigin="1.184,0.618" Grid.ColumnSpan="2" />
+                                </Grid>
+                            </Button>
+                        </Grid>
+
+                        <Grid x:Name="pnlButtonsGrid" Grid.ColumnSpan="3" Visibility="Hidden" Margin="0,0,0.286,-0.286">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="73*"/>
+                                <RowDefinition Height="152*"/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="lblVista" Content="Vista" Margin="262,140,705,41" RenderTransformOrigin="0.46,-0.776"/>
+                            <RadioButton Margin="395,147,0,0" x:Name="rbIntervalos" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="15" Background="White" Foreground="Black" Checked="RbIntervalos_Checked" Content="Intervalos"/>
+                            <RadioButton Margin="316,147,0,0" x:Name="rbFecha" HorizontalAlignment="Left" VerticalAlignment="Top" Width="64" Height="15" Background="White" Foreground="Black" Checked="rbFecha_CheckedChanged" Content="Fecha"/>
+
+                            <DataGrid AutoGenerateColumns="True" x:Name="dgvDatosFdp" ColumnWidth="*" Visibility="visible" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding Source=dataGridRows}" Margin="271,178,489,104.143" SelectionChanged="DgvDatosFdp_SelectionChanged" Grid.RowSpan="2"/>
+
+                            <Grid x:Name="addRegisterGrid" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,178,786,428.143" Width="197" Grid.RowSpan="2">
+                                <Button x:Name="btnAddRegister" Height="69" Width="197" Background="Transparent" BorderThickness="0" Click="BtnAddRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                    <Label Content="Agregar registro" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="modifyRegisterGrid" Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,42,786,346.143" Width="197" Grid.Row="1">
+                                <Button x:Name="btnModifyRegister"  Height="68" Width="197" Background="Transparent" BorderThickness="0" Click="BtnModifyRegister_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  >
+                                    <Label Content="Modificar registro" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="deleteRegistersGrid" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,123,786,262.143" Width="197"  Grid.Row="1">
+                                <Button x:Name="btnDeleteRegisters" Height="71" Width="197" BorderThickness="0" Background="Transparent"  Click="BtnDeleteRegisters_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                    <Label Content="Borrar registros" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="selectAllGrid" Background="Gray" Cursor="Hand" HorizontalAlignment="Right" Margin="0,208,786,182.143" Width="197"  Grid.Row="1">
+                                <Button x:Name="btnSelectAll" Height="66" Width="197" Background="Transparent" BorderThickness="0"  Click="BtnSelectAll_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                    <Label Content="Seleccionar todo" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
+                                </Button>
+                            </Grid>
+                            <Grid x:Name="filterRegisterGrid" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,288,786,105.143" Width="197"  Grid.Row="1">
+                                <Button x:Name="btnFilter" Height="63" Width="197" Background="Transparent" BorderThickness="0"  Click="BtnFilterRegisters_onClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                    <Label Content="Filtrar registros" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="109" Height="30" Margin="44,20,44,22"  />
+                                </Button>
+                            </Grid>
+
+                        </Grid>
+
+                        <Button x:Name="btnCalculate" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,553,43.286,79.714" Width="135"  Click="btnCalcularFDP_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="2">
+                            <Grid Height="30" Width="130">
+                                <Label Content="Calcular" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,1,2,1" />
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/flowchart.png" HorizontalAlignment="Right" Width="33" Margin="-1,-1,0,1" />
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </Border>
+
+
+            </StackPanel>
+        </Border>
+        <Grid x:Name="pnlModificable" Grid.ColumnSpan="2" Visibility="Hidden" Margin="800,353,250.143,129">
+            <Border Background="White" BorderThickness="2" BorderBrush="Gray" CornerRadius="10" Height="300" VerticalAlignment="Top">
+                <Label x:Name="lblTituloAccion" Content="Agregar Registro" FontWeight="SemiBold" FontSize="15" Margin="9.4,7.4,240,257.6" RenderTransformOrigin="0.46,-0.776" />
+            </Border>
+            <ComboBox x:Name="comboBoxFilters" Margin="183,16,10.657,324.8" SelectionChanged="comboBoxFilters_SelectionChanged" Visibility="Visible">
+                <ComboBoxItem x:Name="FechaMayor" Content="Fecha mayor a" />
+                <ComboBoxItem x:Name="FechaMenor" Content="Fecha menor a" />
+                <ComboBoxItem x:Name="FechaEntre" Content="Fecha entre" />
+                <ComboBoxItem x:Name="HoraMayor" Content="Hora mayor a" />
+                <ComboBoxItem x:Name="HoraMenor" Content="Hora menor a" />
+                <ComboBoxItem x:Name="HoraEntre" Content="Hora entre" />
+            </ComboBox>
+            <Label x:Name="lbldtp1" Content="Fecha" FontWeight="Normal" FontSize="13" Margin="35,62,273.657,272.8" RenderTransformOrigin="0.46,-0.776" ></Label>
+            <RadioButton Margin="19,42,0,0" Name="rbAgregarPorFechaYHora" FontWeight="SemiBold"  Checked="rbFechaPNLM_CheckedChanged"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="93" Height="15" Background="White" Foreground="Black">
+                Fecha y hora
+            </RadioButton>
+            <xctk:DateTimePicker x:Name="dtp1"  Format="Custom" FormatString="yyyy-MM-dd" Value="{x:Static sys:DateTime.Now}" Height="24" HorizontalAlignment="Left" Margin="160,66,0,0"  VerticalAlignment="Top" Width="225" Visibility="Visible" />
+            <TextBox x:Name="txtInterv1" PreviewTextInput="NumberValidationTextBox" x:FieldModifier="private" Margin="161,67,28.657,-3" Height="21" VerticalAlignment="Top" Text="0" Visibility="Hidden"/>
+            <xctk:DateTimePicker  x:Name="dtp2"  Format="Custom" FormatString="HH:mm:ss" Value="00:00:00" Margin="161,106,29.657,234.8" Visibility="Visible" />
+            <TextBox x:Name="txtInterv2" PreviewTextInput="NumberValidationTextBox" x:FieldModifier="private" Margin="161,108,28.657,0" Height="20" VerticalAlignment="Top" Width="225" Text="0" Visibility="Hidden"/>
+
+            <RadioButton Margin="19,146,0,0" Name="rbAgregarPorIntervalo" FontWeight="SemiBold" Checked="rbIntervalPNLM_CheckedChanged" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Height="15" Background="White" Foreground="Black">
+                Intervalo
+            </RadioButton>
+            <xctk:SingleUpDown x:Name="nudAgregarPorIntervalo" Value="0" Margin="44,166,303,170.143" />
+            <ComboBox x:Name="cbAgregarPorIntervalo"  RenderTransformOrigin="0.497,0.484" Margin="193,166,56,170.143" SelectionChanged="comboBoxIntervalo_SelectionChanged">
+                <ComboBoxItem x:Name="Segundos" Content="Segundos" />
+                <ComboBoxItem x:Name="Minutos" Content="Minutos" />
+                <ComboBoxItem x:Name="Horas" Content="Horas" />
+                <ComboBoxItem x:Name="Dias" Content="Dias" />
+            </ComboBox>
+            <xctk:CheckListBox Name="CheckListBoxFiltros" Margin="33,234,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="51" Width="249" />
+            <Label x:Name="lblFiltrosAplicados" Content="Filtros aplicados" FontWeight="Semibold" FontSize="15" Margin="10,199,273,134.143" RenderTransformOrigin="0.46,-0.776" ></Label>
+
+            <Button x:Name="btnAcept" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,199,9.657,131.8" Width="109"  Click="BtnAcept_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Grid Height="30" Width="130">
+                    <Label Content="Aceptar" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,-1,0,3" />
+                    <Image Source="/Victoria.UI.SharedWPF;Component/resources/openG.png" HorizontalAlignment="Right" Width="33" Margin="-1,-1,34,1" />
+                </Grid>
+            </Button>
+            <Button x:Name="btnClean" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,257,10,77.143" Width="109"  Click="BtnAcept_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Grid Height="30" Width="130">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Limpiar" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,1" />
+                    <Image Source="/Victoria.UI.SharedWPF;Component/resources/openG.png" HorizontalAlignment="Right" Width="33" Margin="0,-1,33.6,1" />
+                </Grid>
+            </Button>
+            <Label x:Name="lbldtp2" Content="Hora" FontWeight="Normal" FontSize="13" Margin="35,103,273.657,232.8" RenderTransformOrigin="0.46,-0.776" />
+
+
+
+        </Grid>
+
+        <Grid x:Name="pnlMetodologia" Grid.ColumnSpan="2" Visibility="Hidden" Margin="800,659,250.143,109">
+            <Border Background="White" BorderThickness="2" BorderBrush="Gray" CornerRadius="10" Height="67" VerticalAlignment="Top" Margin="0,10,0,0"/>
+            <Label x:Name="lblMetodologia" Content="Metodología" FontWeight="SemiBold" FontSize="15" Margin="10,13,273,35.143" RenderTransformOrigin="0.46,-0.776" ></Label>
+            <RadioButton Margin="250,20,0,0" Name="rbDtConstante" HorizontalAlignment="Left" VerticalAlignment="Top" Width="92" Height="15" Background="White" Foreground="Black"  Checked="rbDtConstante_Checked"  >
+                Δt constante
+            </RadioButton>
+            <RadioButton Margin="140,20,0,0" Name="rbEventoAEvento" HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="15" Background="White" Foreground="Black"  Checked="rbDtConstante_Checked">
+                Evento a evento
+            </RadioButton>
+            <Grid x:Name="pnlSegmentacion" Visibility="Hidden" Margin="19,42,21,10.143">
+                <RadioButton Margin="120,4,0,0" Name="rbDia" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="15" Background="White" Foreground="Black">
+                    dia
+                </RadioButton>
+                <RadioButton Margin="172,4,0,0" Name="rbHora" HorizontalAlignment="Left" VerticalAlignment="Top" Width="59" Height="15" Background="White" Foreground="Black" RenderTransformOrigin="0.107,0.533">
+                    Hora
+                </RadioButton>
+                <RadioButton Margin="230,4,0,0" Name="rbMinuto" HorizontalAlignment="Left" VerticalAlignment="Top" Width="59" Height="15" Background="White" Foreground="Black" RenderTransformOrigin="0.107,0.533">
+                    Minuto
+                </RadioButton>
+                <RadioButton Margin="300,4,0,0" Name="rbSegundo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="71" Height="15" Background="White" Foreground="Black" RenderTransformOrigin="0.107,0.533">
+                    Segundo
+                </RadioButton>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Window>

@@ -57,15 +57,18 @@ namespace DiagramDesigner
         public DataGrid dataGridVariablesSimulation { get; internal set; }
         public Button Continue_btn { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
+
         public GroupBox groupBoxVariablesSimulation { get; internal set; }
         public List<Button> debugButtonList { get; internal set; }
-        public String previous_node_id { get; internal set; }
+        public String previous_node_id { get; internal set; } 
+        public AnalisisPrevio analisisPrevio { get; set; }
+        
 
         static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
         private MainWindow mainWindow;
 
-        public DesignerCanvas()
+    public DesignerCanvas()
         {
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
@@ -402,6 +405,8 @@ namespace DiagramDesigner
         }
 
         #endregion
+
+    
 
         #region BringForward Command
 

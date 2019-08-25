@@ -9,21 +9,25 @@ using System.Windows.Controls;
 using System.Collections.Generic;
 using Victoria.DesktopApp.View;
 
+
 namespace DiagramDesigner
 {
     public partial class Window1 : Window
     {
-        // Inicializa los componentes en la venta Diagrama, si creo uno nuevo debo ponerlo aca
         public Window1()
         {
             InitializeComponent();
             Closing += HideWindow;
             this.diagrama().dataGridVariables = this.dataGridVariables;
             this.diagrama().dimensiones = this.dimensiones;
+
             this.diagrama().dataGridVariablesSimulation = this.dataGridVariablesSimulation;            
             this.diagrama().groupBoxVariablesSimulation = this.groupBoxVariablesSimulation; //Solo inicializo este porque necesito el Setter            
             this.diagrama().debugButtonList = this.getListButtonDebug();
+
         }
+
+
 
         public DialogResult Result { get; set; }
 
@@ -104,6 +108,7 @@ namespace DiagramDesigner
             }
             this.Close();
         }
+
 
         private void BtnClose_OnClick(object sender, RoutedEventArgs e)
         {

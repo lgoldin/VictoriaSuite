@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 
 namespace Victoria.Shared
 {
     public static class ExpressionResolver
     {
-        public static void Resolve(StageVariable variable, string expression)
+        public static ObservableCollection<commonFDP.ResultadoAjuste> listFdpPreviusAnalisis { get; set; } = null;
+
+
+        //el parametro R se utiliza unicamente en casos en los que se  haya definido una FDP para el dato que se va a ejecutar ya que se calcula a partir del objeto y no por el parser
+        public static void Resolve(StageVariable variable, string expression, double R=1)
         {
+
+            expression = expression.Replace(',','.');
             var formulaParser = new FormulaParser.FormulaParser(expression);
 
-            variable.ActualValue = formulaParser.GetValor();
+            variable.ActualValue = formulaParser.GetValor(); 
+            
         }
 
         public static bool ResolveBoolen(string expression)
