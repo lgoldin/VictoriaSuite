@@ -21,18 +21,28 @@ namespace Victoria.FormulaParser
 
         public static ElementoFuncion GetFuncion(string funcion)
         {
+
+            logger.Info("Inicio Obtener Funcion");
             if (!matrizDeInstancias.ContainsKey(funcion))
             {
+
+                logger.Error("Error: No se encontró la funcion '" + funcion );
                 throw new InvalidOperationException("No se encontró la funcion '" + funcion + "'.");
             }
 
+
+            logger.Info("Fin Obtener Funcion");
             return matrizDeInstancias[funcion];
         }
 
         public double Operar(List<double> argumentos)
         {
+
+            logger.Info("Inicio Operar");
             double resultado = this.OperarInterno(argumentos);
 
+
+            logger.Info("Fin Operar");
             return this.EvaluacionNaN(resultado);
         }
 

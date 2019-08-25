@@ -24,7 +24,7 @@ namespace Victoria.Shared.Actors
 
             Receive<Diagram>(diagram => this.Execute(diagram));
             Receive<Node>(node => this.Execute(node));
-            log.Info("Fin nodo Actor");
+            log.Info("Fin Nodo Actor");
         }
 
         public static Props Props(IStageSimulation stageSimulation)
@@ -36,7 +36,7 @@ namespace Victoria.Shared.Actors
         {
             get
             {
-                log.Info("Inicio Obtener Actor principal de simulacion");
+                log.Info("Inicio Obtener Actor principal de Simulacion");
                 if (this.mainSimulationActor == null)
                 {
                     var akkaConfiguration = ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig;
@@ -44,14 +44,16 @@ namespace Victoria.Shared.Actors
 
                     this.mainSimulationActor = system.ActorOf<MainSimulationActor>("mainSimulationActor");
                 }
-                log.Info("Fin Obtener Actor Principal de simulacion");
+                log.Info("Fin Obtener Actor Principal de Simulacion");
                 return this.mainSimulationActor;
             }
 
             set
             {
                 this.mainSimulationActor = value;
+
             }
+
         }
 
         private void Execute(Diagram diagram)

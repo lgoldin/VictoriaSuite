@@ -23,7 +23,6 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("No Dimensionable");
                 return this.vector == false;
             }
         }

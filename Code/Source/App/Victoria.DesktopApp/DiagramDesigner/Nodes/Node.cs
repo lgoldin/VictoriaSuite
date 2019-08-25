@@ -19,12 +19,12 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public Node() 
         {
-            logger.Info("Inicio set propiedades Nodo");
+            logger.Info("Inicio Set propiedades Nodo");
             this.guid = Guid.NewGuid();
             this.designerItem = new DesignerItem(this.guid);
             this.designerItem.ParentID = new Guid("00000000-0000-0000-0000-000000000000");
             this.designerItem.IsGroup = false;
-            logger.Info("Fin set propiedades Nodo");
+            logger.Info("Fin Set propiedades Nodo");
         }
 
         public void setItemText(string text)

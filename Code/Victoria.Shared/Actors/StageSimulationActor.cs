@@ -12,8 +12,9 @@ namespace Victoria.Shared.Actors
         public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public StageSimulationActor()
         {
-            logger.Info("Actor de Simulacion de Escenario");
+            logger.Info("Inicio Actor de Simulacion de Escenario");
             Receive<IStageSimulation>(stageSimulation => this.Execute(stageSimulation));
+            logger.Info("Fin Actor de Simulacion de Escenario");
         }
 
         private void Execute(IStageSimulation stageSimulation)

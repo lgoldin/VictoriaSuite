@@ -16,6 +16,7 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
         {
             logger.Info("Inicio Iterador");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
+            logger.Info("Fin Iterador");
         }
 
         public Iterator(string itemText)

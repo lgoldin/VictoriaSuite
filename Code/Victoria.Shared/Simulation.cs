@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Victoria.Shared.EventArgs;
@@ -9,7 +10,7 @@ namespace Victoria.Shared
     public class Simulation : ISimulation
     {
 
-        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(System.AppDomain));
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         private bool stopExecution { get; set; }
 
         private List<Diagram> diagrams { get; set; }
@@ -47,14 +48,16 @@ namespace Victoria.Shared
 
         public void ChangeStatus(SimulationStatus status)
         {
-            logger.Info("Cambiar de estado");
+            logger.Info("Inicio Cambiar de estado");
             this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
+            logger.Info("Fin Cambiar de estado");
         }
 
         public void StopExecution(bool value)
         {
             logger.Info("Inicio Parar Execucion");
             this.stopExecution = value;
+            logger.Info("Fin Parar Execucion");
         }
 
         public bool CanContinue()
@@ -99,7 +102,7 @@ namespace Victoria.Shared
 
         public List<Variable> GetVariables()
         {
-            logger.Info("Inicio Obtener Variables");
+            logger.Info("Obtener Variables");
             return this.variables;
         }
 

@@ -10,7 +10,7 @@ namespace Victoria.Shared
         {
             logger.Info("Inicio Resolver");
             var formulaParser = new FormulaParser.FormulaParser(expression);
-
+            
             variable.ActualValue = formulaParser.GetValor();
             logger.Info("Fin Resolver");
         }
@@ -25,7 +25,7 @@ namespace Victoria.Shared
                 return formulaParser.GetValorAsBool();
             }
             catch (Exception exception)
-            {
+            {   
                 logger.Error("Error Resolver Boolean:" + exception.Message);
                 throw exception;
             }

@@ -53,6 +53,8 @@ namespace DiagramDesigner
 
         public DesignerCanvas()
         {
+
+            logger.Info("Inicio Diseñar Canvas");
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, Save_Executed));
@@ -82,18 +84,27 @@ namespace DiagramDesigner
 
             this.AllowDrop = true;
             Clipboard.Clear();
+
+            logger.Info("Fin Diseñar Canvas");
         }
 
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+
+            logger.Info("Inicio Imprimir");
             ScrollViewer scroll = (ScrollViewer)this.Parent;
             scroll.ScrollToTop();
             ImprimirDiagrama();
+            logger.Info("Fin Imprimir");
         }
 
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+
+            logger.Info("Inicio Ejecucion Ayuda");
             DarPDFAlUsuario();
+
+            logger.Info("Fin Ejecucion Ayuda");
         }
 
         #region New Command
@@ -1188,6 +1199,7 @@ namespace DiagramDesigner
 
         private XElement GenerarVicXmlDelDiagrama()
         {
+            logger.Info("Inicio Generar Vic XML del diagrama");
             var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
 
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
@@ -1201,6 +1213,7 @@ namespace DiagramDesigner
             root.Add(modelo);
             listaDesignerItemsXML.ForEach(root.Add);
 
+            logger.Info("Fin Generar Vic XML del diagrama");
             return root;
         }
 

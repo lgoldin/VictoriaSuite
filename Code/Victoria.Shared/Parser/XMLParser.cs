@@ -18,6 +18,8 @@ namespace Victoria.Shared
         {
             try
             {
+
+                logger.Info("Inicio Obtener Simulacion");
                 var doc = XElement.Parse(xmlString);
 
                 var diagramasPreProcesados = doc.Descendants("Diagrama").Where(diag => diag.Attribute("Name").Value != "ModeloAnalisisSensibilidad").Select(diag => new PreParsedDiagram
@@ -61,12 +63,15 @@ namespace Victoria.Shared
                     stages = new List<Stage>();
                 }
 
+                logger.Info("Fin Obtener Simulacion");
                 return new Simulation(diagramas, variables, stages);
             }
             catch (Exception e)
-            {                
+            {
+                logger.Error("Error al parsear la simulacion: "+e.Message);
                 throw new ParsingException("Error al parsear la simulacion", e);
             }
+
         }
 
         static Dictionary<string, PreParsedNode> parseNodes(IEnumerable<XElement> XmlNodes)

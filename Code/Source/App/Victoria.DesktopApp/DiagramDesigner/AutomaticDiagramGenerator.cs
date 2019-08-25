@@ -40,8 +40,10 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         public AutomaticDiagramGenerator(AnalisisPrevio analisisPrevio)
         {
-            logger.Info("Generador Automatico de Diagrama");
+            logger.Info("Inicio Generador Automatico de Diagrama");
             this.analisisPrevio = analisisPrevio;
+            logger.Info("Fin Generador Automatico de Diagrama");
+
         }
 
 

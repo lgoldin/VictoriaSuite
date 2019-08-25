@@ -8,7 +8,9 @@ namespace Victoria.FormulaParser
 
         public ElementoAgrupador(string agrupador)
         {
+            logger.Info("Inicio Elemento Agrupador");
             this.agrupador = agrupador;
+            logger.Info("Fin Elemento Agrupador");
         }
 
         public override bool EsNumerico()
