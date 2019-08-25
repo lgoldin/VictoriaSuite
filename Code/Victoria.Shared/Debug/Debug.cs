@@ -158,7 +158,8 @@ namespace Victoria.Shared.Debug
                     }
                     else
                     {
-                        if (this.executingNode.NextNode == null)
+                        //if (this.executingNode.NextNode == null) 
+                       if(this.executingNode.GetType().ToString() == "Victoria.Shared.Node")
                         {
                             this.subDiagramHasStarted = false;
                             this.jumpToNextNode = false;
