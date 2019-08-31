@@ -1153,8 +1153,7 @@ namespace DiagramDesigner
                 logger.Info("Inicio Validar y Lanzar Simulador");
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
-                var mainWindow = new MainWindow(root.ToString(), true);
-                mainWindow.Show();
+                this.mainWindow = new MainWindow(root.ToString(), true);
                 logger.Info("Fin Validar y Lanzar Simulador");
             }
             catch (DiagramValidationException ex)

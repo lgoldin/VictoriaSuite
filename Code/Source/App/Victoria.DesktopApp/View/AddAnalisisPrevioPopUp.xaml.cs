@@ -617,7 +617,7 @@ namespace Victoria.DesktopApp.View
         {
             AutomaticDiagramGenerator.sharedInstance().analisisPrevio = AnalisisPrevio;  
             AutomaticDiagramGenerator.sharedInstance().generateDiagram(VentanaDiagramador);
-
+                
             ExpressionResolver.listFdpPreviusAnalisis = AnalisisPrevio.listFDP;
 
             logger.Info("Inicio Generar Diagrama");

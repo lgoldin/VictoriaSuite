@@ -9,20 +9,18 @@ namespace Victoria.Shared
 {
     public static class ExpressionResolver
     {
-<<<<<<< HEAD
         public static ObservableCollection<commonFDP.ResultadoAjuste> listFdpPreviusAnalisis { get; set; } = null;
 
 
         //el parametro R se utiliza unicamente en casos en los que se  haya definido una FDP para el dato que se va a ejecutar ya que se calcula a partir del objeto y no por el parser
-        public static void Resolve(StageVariable variable, string expression, double R=1)
+        public static void Resolve(StageVariable variable, string expression, double R = 1)
         {
 
-            expression = expression.Replace(',','.');
+            expression = expression.Replace(',', '.');
             var formulaParser = new FormulaParser.FormulaParser(expression);
 
-            variable.ActualValue = formulaParser.GetValor(); 
-            
-
+            variable.ActualValue = formulaParser.GetValor();
+        }
 
         public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public static void Resolve(StageVariable variable, string expression)

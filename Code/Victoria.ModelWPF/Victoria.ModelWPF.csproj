@@ -52,6 +52,10 @@
     <Compile Include="Variable.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Victoria.Shared\Victoria.Shared.csproj">
+      <Project>{04c5cefb-ad91-42a7-a493-20b2eea918dc}</Project>
+      <Name>Victoria.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Victoria.UI.SharedWPF\Victoria.UI.SharedWPF.csproj">
       <Project>{e010ce95-aaa0-415c-a1d2-30493163b806}</Project>
       <Name>Victoria.UI.SharedWPF</Name>

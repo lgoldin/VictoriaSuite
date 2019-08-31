@@ -69,6 +69,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Victoria.Shared\Victoria.Shared.csproj">
+      <Project>{04c5cefb-ad91-42a7-a493-20b2eea918dc}</Project>
+      <Name>Victoria.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
