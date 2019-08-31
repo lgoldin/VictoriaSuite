@@ -14,7 +14,10 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public PrintResults()
         {
+            logger.Info("Inicio Imprimir Resultados");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
+
+            logger.Info("Fin Imprimir Resultados");
         }
 
         public PrintResults(string itemText)

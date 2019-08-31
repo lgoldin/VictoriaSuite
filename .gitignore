@@ -20,4 +20,4 @@ Code/UpgradeLog*
 /Plan de Pruebas
 /Kairos/.vs/Kairos/v15/Server/sqlite3
 /Code/packages
-
+*.log*

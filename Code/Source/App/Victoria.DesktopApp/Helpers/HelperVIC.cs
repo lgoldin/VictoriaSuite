@@ -21,9 +21,10 @@ namespace Victoria.DesktopApp.Helpers
 {
     public class HelperVIC : Canvas
     {
-
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         public XDocument CreateVic(string simulationFile, List<Shared.Variable> variables, IList<StageViewModelBase> stagesList)
         {
+            logger.Info("Inicio Crear Vic");
             XDocument xmlSimulation = XDocument.Parse(simulationFile);
             // Conservo el modelo y borro todo el resto del vic original
             XElement modelo = xmlSimulation.Descendants("Modelo").First();
@@ -44,11 +45,13 @@ namespace Victoria.DesktopApp.Helpers
             XElement newStage = serializarVicNuevoStage(stagesList);
             xmlSimulation.Root.Add(newStage);
 
+            logger.Info("Fin Crear Vic");
             return xmlSimulation;
         }
 
         private XElement serializarVicNuevoStage(IList<StageViewModelBase> stagesList)
         {
+            logger.Info("Inicio Vic Serializar Nuevo Escenario");
             var stages = (stagesList.Cast<StageViewModel>()).Select(st =>
 
                 new XElement("Stage",
@@ -81,11 +84,13 @@ namespace Victoria.DesktopApp.Helpers
                     )
 
                 ).ToArray();
+            logger.Info("Fin Vic Serializar Nuevo Escenario");
             return new XElement("Stages", stages);
         }
 
         private IList<Connection> deserializarConnections(XDocument xmlSimulation, IList<DesignerItem> designerItems)
         {
+            logger.Info("Inicio Deserializar Conexiones");
             IList<Connection> connections = new ObservableCollection<Connection>();
             IEnumerable<XElement> connectionsXML = xmlSimulation.Descendants("Modelo").Elements("Connections").Elements("Connection");
             foreach (XElement connectionXML in connectionsXML)
@@ -105,11 +110,13 @@ namespace Victoria.DesktopApp.Helpers
                 Connection connection = new Connection(sourceConnector, sinkConnector);
                 connections.Add(connection);
             }
+            logger.Info("Fin Deserializar Conexiones");
             return connections;
         }
 
         private IList<DesignerItem> deserializarDesignerItems(XDocument xmlSimulation)
         {
+            logger.Info("Inicio Deserializar Diseñador Items");
             IList<DesignerItem> designerItems = new ObservableCollection<DesignerItem>();
             IEnumerable<XElement> itemsXML = xmlSimulation.Descendants("Modelo").Elements("Diagrama").Elements("Flowchart").Elements("DesignerItem");
             foreach (XElement itemXML in itemsXML)
@@ -120,11 +127,13 @@ namespace Victoria.DesktopApp.Helpers
                 DesignerItem item = DeserializarDesignerItem(itemXML, id, 0, 0, tag, uid);
                 designerItems.Add(item);
             }
+            logger.Info("Fin Deserializar Diseñador Items");
             return designerItems;
         }
 
         public List<XElement> SerializeVic(IEnumerable<DesignerItem> designerItems, IEnumerable<Connection> connections, List<VariableAP> variables) //antes devolvia un XElement ahora devuelve una lista de XElements
         {
+            logger.Info("Inicio Serializar Vic");
             XElement serializedItems = null;
             List<XElement> serializedItemsAccum = new List<XElement>();
             List<Guid> listaAncestros = new List<Guid>();
@@ -214,11 +223,13 @@ namespace Victoria.DesktopApp.Helpers
                 }
             }
             serializedItemsAccum.Add(generarTagDeVariables(variables));
+            logger.Info("Fin Serializar Vic");
             return serializedItemsAccum;
         }
 
         public static DesignerItem DeserializarDesignerItem(XElement itemXML, Guid id, double OffsetX, double OffsetY, string tag, string uid)
         {
+            logger.Info("Inicio Deserializar Diseñador Item");
             DesignerItem item = new DesignerItem(id, tag, uid);
             item.Width = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture);
             item.Height = Double.Parse(itemXML.Element("Height").Value, CultureInfo.InvariantCulture);
@@ -229,6 +240,7 @@ namespace Victoria.DesktopApp.Helpers
             Canvas.SetZIndex(item, Int32.Parse(itemXML.Element("zIndex").Value));
             Object content = XamlReader.Load(XmlReader.Create(new StringReader(itemXML.Element("Content").Value)));
             item.Content = content;
+            logger.Info("Fin Deserializar Diseñador Item");
             return item;
         }
 
@@ -251,6 +263,7 @@ namespace Victoria.DesktopApp.Helpers
 
         public Connector GetConnector(Guid itemID, String connectorName, IList<DesignerItem> designerItems, ConnectorOrientation orientation)
         {
+            logger.Info("Inicio Obtener Conector");
             DesignerItem designerItem = (from item in designerItems
                                          where item.ID == itemID
                                          select item).FirstOrDefault();
@@ -258,11 +271,13 @@ namespace Victoria.DesktopApp.Helpers
             result.Name = connectorName;
             result.ParentDesignerItem = designerItem;
             result.Orientation = orientation;
+            logger.Info("Fin Obtener Conector");
             return result;
         }
 
         private IEnumerable<DesignerItem> TraeNodosHijos(Guid itemId, IEnumerable<Connection> connections, List<Guid> listaAncestros)
         {
+            logger.Info("Inicio Trae Nodos Hijos");
             listaAncestros.Add(itemId);
 
             var nodosHijos = from connection in connections where (connection.Source.ParentDesignerItem.ID == itemId) select connection.Sink.ParentDesignerItem;
@@ -274,22 +289,25 @@ namespace Victoria.DesktopApp.Helpers
                     nodosHijos = nodosHijos.Union(nodosHijos2.Where(x => (x.Tag == null || x.Tag.ToString() != "DIAG")));
                 }
             }
-
+            logger.Info("Fin Trae Nodos Hijos");
             return nodosHijos;
         }
 
         private List<VariableAP> transformVariables(List<Shared.Variable> variables)
         {
+            logger.Info("Inicio Transformar Variables");
             List<VariableAP> result = new List<VariableAP>();
             foreach (Shared.Variable variable in variables)
             {
                 result.Add(transformVariable(variable));
             }
+            logger.Info("Fin Transformar Variables");
             return result;
         }
 
         private VariableAP transformVariable(Shared.Variable variable)
         {
+            logger.Info("Inicio Transformar Variable");
             VariableAP dest = new VariableAP();
             dest.nombre = variable.Name;
             dest.valor = variable.InitialValue;
@@ -304,16 +322,19 @@ namespace Victoria.DesktopApp.Helpers
                 dest.dimension = variableArray.Dimension;
                 dest.i = 1;
             }
+            logger.Info("Fin Transformar Variable");
             return dest;
         }
 
         public XElement CreateInitializaionDiagram(List<VariableAP> variables)
         {
+            logger.Info("Inicio Crear Inicializacion Diagrama");
             int i = 1;
             var vectores = (from variable in variables
                             where (variable.vector == true)
                             select variable);
             int cantVec = vectores.Count();
+            logger.Info("Fin Crear Inicializacion Diagrama");
             return new XElement("Diagrama",
                 new XAttribute("Name", "Inicializar"),
                     new XElement("flowchart",
@@ -349,6 +370,8 @@ namespace Victoria.DesktopApp.Helpers
                         new XAttribute("id", "Inicializar" + (variables.Count() + cantVec + 1).ToString()),
                         new XAttribute("caption", ""),
                         new XAttribute("type", "nodo_fin"))));
+
+            
         }
 
         public string SetItToVector(VariableAP variable, double i)
@@ -358,7 +381,7 @@ namespace Victoria.DesktopApp.Helpers
         }
 
         public string GetCaption(string tipo4, string text, List<VariableAP> variables)
-        {
+        {   
             string caption = text ?? string.Empty;
 
             if (tipo4 == "nodo_iterador")
@@ -372,7 +395,9 @@ namespace Victoria.DesktopApp.Helpers
 
         public XElement generarTagDeVariables(List<VariableAP> variables)
         {
+            logger.Info("Inicio Generar Tag de Variables");
             string aux = JsonConvert.SerializeObject(variables);
+            logger.Info("Fin Generar Tag de Variables");
             return new XElement("variables",
                @" { ""variables"":" + aux + @"}");
         }

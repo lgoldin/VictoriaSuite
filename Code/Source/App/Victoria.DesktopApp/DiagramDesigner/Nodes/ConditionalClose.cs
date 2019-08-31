@@ -13,8 +13,11 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
         private const double LEFT_TO_INIT_PRINCIPAL = 44.5;
         public ConditionalClose()
         {
+            logger.Info("Inicio Cierre Condicional");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
+            logger.Info("Fin Cierre Condicional");
         }
+
 
         public ConditionalClose(string itemText)
             : this()

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
+
 namespace Victoria.Shared
 {
     public class Diagram
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public ObservableCollection<Node> Nodes { get; set; }
 
         public string Name { get; set; }
@@ -20,7 +23,7 @@ namespace Victoria.Shared
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error mientras ejecutaba nodo:" + ex.Message);
+                logger.Error("Error Execute: " + ex.Message);
                 throw ex;
 
             }

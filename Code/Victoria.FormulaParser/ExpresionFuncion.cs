@@ -11,8 +11,10 @@ namespace Victoria.FormulaParser
             Expresion expresionMadre,
             ElementoFuncion funcion) : base(expresionMadre)
         {
+            logger.Info("Inicio Expresion Funcion");
             this.Funcion = funcion;
             this.argumentos = new List<Expresion>();
+            logger.Info("Fin Expresion Funcion");
     }
 
     public ElementoFuncion Funcion { get; set; }
@@ -34,7 +36,9 @@ namespace Victoria.FormulaParser
 
         public void AgregarArgumento(Expresion argumento)
         {
+            logger.Info("Inicio Agregar Argumento");
             this.argumentos.Add(argumento);
+            logger.Info("Fin Agregar Argumento");
         }
 
         public override double GetValor()

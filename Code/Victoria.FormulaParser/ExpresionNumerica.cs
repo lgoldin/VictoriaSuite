@@ -5,6 +5,8 @@ namespace Victoria.FormulaParser
 {
     public class ExpresionNumerica : Expresion
     {
+
+
         private readonly string numero;
 
         public ExpresionNumerica(
@@ -43,7 +45,8 @@ namespace Victoria.FormulaParser
             }
             else
             {
-                throw new InvalidOperationException("No se pudo convertir a Double el string '" + this.numero + "'");
+                logger.Error("No se pudo convertir a Double el string: "+ this.numero );
+                throw new InvalidOperationException("No se pudo convertir a Double el string");
             }
         }
     }

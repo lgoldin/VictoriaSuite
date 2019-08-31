@@ -17,6 +17,8 @@ namespace Victoria.Shared
         public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
+            logger.Info("Ejecutar");
+
             return this.NextNode;
         }
     }
