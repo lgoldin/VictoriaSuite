@@ -214,7 +214,23 @@ namespace DiagramDesigner
 
         private void Debuger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(this.mainWindow != null && Debug.instance().debugModeOn)
+            if (DesignerItem.ifAnyNodeHasBreakpoint())
+            {
+                this.startDebug();
+            }
+            else
+            {
+                StartDebugPopUp debugPopup = new StartDebugPopUp();
+                debugPopup.ShowDialog();
+                if (debugPopup.Result == DialogResult.Accept)
+                    this.startDebug();
+            }
+              
+        }
+
+        private void startDebug()
+        {
+            if (this.mainWindow != null && Debug.instance().debugModeOn)
                 this.mainWindow.stopDebug();
 
             // Creo la  ventan de simulacion y NO la muestro
@@ -228,7 +244,8 @@ namespace DiagramDesigner
                 // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
                 dataGridVariablesSimulation.Items.Clear();
                 ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
-                foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
+                foreach (Victoria.ModelWPF.Variable variable in simulationVariables)
+                {
                     dataGridVariablesSimulation.Items.Add(variable);
                 }
 
@@ -247,12 +264,11 @@ namespace DiagramDesigner
                     manualResetEvent.WaitOne();
 
                     //Cambio el color del primer nodo con breakpoint
-                    DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );
+                    DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
                 }
 
             }
         }
-
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
