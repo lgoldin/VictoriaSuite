@@ -1099,7 +1099,7 @@ namespace DiagramDesigner
         private void ValidarYLanzarSimulador(Boolean showWindow)
         {
             this.createSimulationWindow();
-            if (showWindow)
+            if (showWindow && this.mainWindow != null)
                 this.mainWindow.Show();            
         }
 
