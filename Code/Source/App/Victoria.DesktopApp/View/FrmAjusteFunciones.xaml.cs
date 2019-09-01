@@ -407,14 +407,23 @@ namespace Victoria.DesktopApp.View
             ((LineSeries)chart2.Series[0]).ItemsSource = lGenerados;
             
 
-
         }
 
         private void GraficarLineaFDP(commonFDP.FuncionDensidadProbabilidad fdp)
         {
-            Dictionary<double, double> lGenerados = fdp.ObtenerDensidad(eventosSimplificados.ToDictionary(x => Convert.ToDouble(x.Key), x => x.Value)); 
-            ((LineSeries)chart1.Series[0]).ItemsSource = lGenerados;
-         
+            Dictionary<double, double> lGenerados;
+            try
+            {
+                lGenerados = fdp.ObtenerDensidad(eventosSimplificados.ToDictionary(x => Convert.ToDouble(x.Key), x => x.Value));
+
+            }
+            catch (Exception)
+            {
+                lGenerados = null;
+            }
+
+            ((ColumnSeries)chart1.Series[0]).ItemsSource = lGenerados;
+            ((LineSeries)chart1.Series[1]).ItemsSource = lGenerados;
 
         } 
 
