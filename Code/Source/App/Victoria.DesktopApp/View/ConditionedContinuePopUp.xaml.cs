@@ -31,7 +31,11 @@ namespace Victoria.DesktopApp.View
         private void btnAccept_OnClick(object sender, RoutedEventArgs e)
         {
             this.Result = UI.SharedWPF.DialogResult.Accept;
-            this.Close();
+            if (!this.textboxIsWrong())
+            {
+                this.Close();
+            }
+            
         }
 
         private void btnCancel_OnClick(object sender, RoutedEventArgs e)
@@ -43,6 +47,19 @@ namespace Victoria.DesktopApp.View
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private bool textboxIsWrong()
+        {
+            if (string.IsNullOrEmpty(this.conditionTextBox.Text) || 
+                string.IsNullOrWhiteSpace(this.conditionTextBox.Text)
+               )
+            {
+                this.conditionTextBox.BorderBrush = Brushes.Red;
+                return true;
+            }
+
+            return false;
         }
     }
 }
