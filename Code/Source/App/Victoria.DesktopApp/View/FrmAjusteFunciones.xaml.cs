@@ -17,7 +17,9 @@ using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using System.Data;
-using System.Windows.Controls.DataVisualization;
+using System.Windows.Controls.DataVisualization.Charting;
+
+
 
 
 namespace Victoria.DesktopApp.View
@@ -91,7 +93,7 @@ namespace Victoria.DesktopApp.View
             CalcularEventosSimplificados();
             CalcularYOrdenarFunciones();
             OrdenarFuncionesEnVista();
-            // SetupGraficoFuncion();
+            SetupGraficoFuncion();
         }
 
         private void CalcularEventosSimplificados()
@@ -301,8 +303,8 @@ namespace Victoria.DesktopApp.View
 
             CambiarLblGraficoFuncion(nombreFuncion);
             CambiarRepresentacionFuncionEInversa(funcion);
-            //GraficarLineaFDP(funcion.FDP);
-            //GraficarLineaInversa(funcion.FDP);
+            GraficarLineaFDP(funcion.FDP);
+            GraficarLineaInversa(funcion.FDP);
             resultadoSeleccionado = funcion;
             //lbxGenerados.Items.Clear();
             if (nombreFuncion.Contains("Poisson") || nombreFuncion.Contains("Binomial"))
@@ -338,14 +340,18 @@ namespace Victoria.DesktopApp.View
         {
 
         }
-
-        /* private void SetupGraficoFuncion()
+         
+         private void SetupGraficoFuncion()
          {
              try
              {
+                /*LoadAreaChartData();
+                
                  this.chrtFuncion.Series.Clear();
-                 this.chrtFuncion.Palette = ChartColorPalette.None;
-                 this.chrtFuncion.ChartAreas.First().AxisY2.Enabled = AxisEnabled.False;
+                
+
+                 //this.chrtFuncion.Palette = ChartColorPalette;
+                 //this.chrtFuncion.ChartAreas.First().AxisY2.Enabled = AxisEnabled.False;
                  Series series = this.chrtFuncion.Series.Add("Eventos");
                  series.XValueType = ChartValueType.Double;
                  series.XAxisType = AxisType.Primary;
@@ -357,15 +363,19 @@ namespace Victoria.DesktopApp.View
                  foreach (var item in eventosSimplificados.OrderBy(x => Convert.ToDouble(x.Key)))
                  {
                      series.Points.AddXY(Convert.ToDouble(item.Key), item.Value);
-                 }
+                    series.
+                 } */
              }
              catch
              {
-                 mostrarMensaje("Error al graficar los eventos", Color.FromArgb(255, 89, 89));
+                createAlertPopUp("Error al graficar los eventos");
+               
              }
-         } 
+         }
 
-         private void GraficarLineaFDP(commonFDP.FuncionDensidadProbabilidad fdp)
+
+
+        /* private void GraficarLineaFDP(commonFDP.FuncionDensidadProbabilidad fdp)
          {
              try
              {
@@ -390,6 +400,23 @@ namespace Victoria.DesktopApp.View
                  //mostrarMensaje("Error al graficar la función: " + e.Message, Color.FromArgb(255, 89, 89));
              }
          }*/
+
+        private void GraficarLineaInversa(commonFDP.FuncionDensidadProbabilidad fdp)
+        {
+            Dictionary<double, double> lGenerados = fdp.ObtenerDensidadInversa(50);
+            ((LineSeries)chart2.Series[0]).ItemsSource = lGenerados;
+            
+
+
+        }
+
+        private void GraficarLineaFDP(commonFDP.FuncionDensidadProbabilidad fdp)
+        {
+            Dictionary<double, double> lGenerados = fdp.ObtenerDensidad(eventosSimplificados.ToDictionary(x => Convert.ToDouble(x.Key), x => x.Value)); 
+            ((LineSeries)chart1.Series[0]).ItemsSource = lGenerados;
+         
+
+        } 
 
     }
 
