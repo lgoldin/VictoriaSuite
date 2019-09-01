@@ -69,7 +69,7 @@ namespace DiagramDesigner
 
         private MainWindow mainWindow;
 
-    public DesignerCanvas()
+        public DesignerCanvas()
         {
 
             //logger.Info("Inicio Diseñar Canvas");
