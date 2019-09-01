@@ -28,7 +28,7 @@ namespace Victoria.DesktopApp.Helpers
              corridas del análisis de sensibilidad. 
              La primera fila (fila de títulos) debe contener el nombre de cada variable.
             */
-            logger.Info("Inicio Imprimir Excel");
+            //logger.Info("Inicio Imprimir Excel");
             List<DataTable> resultsTable = createResultsTables(stages);
             XLWorkbook oWB = new XLWorkbook();
             var ws = oWB.Worksheets.Add("Resultados");
@@ -102,7 +102,7 @@ namespace Victoria.DesktopApp.Helpers
             ws.Columns().AdjustToContents(5.0, 100.0);
 
             oWB.SaveAs(simulationPath + "\\" + fileName);
-            logger.Info("Fin Imprimir Excel");
+            //logger.Info("Fin Imprimir Excel");
         }
     }
 }

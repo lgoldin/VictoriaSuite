@@ -11,11 +11,11 @@ namespace Victoria.Shared.EventArgs
         public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public VariableValueChangeEventArgs(Variable variable, double oldValue, double newValue)
         {
-            logger.Info("Inicio Args de evento de valor de variable cambiado");
+            //logger.Info("Inicio Args de evento de valor de variable cambiado");
             this.Variable = variable;
             this.OldValue = oldValue;
             this.NewValue = newValue;
-            logger.Info("Fin Args de evento de valor de variable cambiado");
+            //logger.Info("Fin Args de evento de valor de variable cambiado");
         }
 
         /// <summary>

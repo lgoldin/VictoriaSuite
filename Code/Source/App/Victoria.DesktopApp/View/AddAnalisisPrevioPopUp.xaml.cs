@@ -57,7 +57,7 @@ namespace Victoria.DesktopApp.View
 
         public AddAnalisisPrevioPopUp(Window1 diagramador)
         {
-            logger.Info("Inicio Agregar Analisis Previo");
+            //logger.Info("Inicio Agregar Analisis Previo");
             this.InitializeComponent();
             this.VentanaDiagramador = diagramador;
             this.comboBox.SelectedItem = EaE;
@@ -65,12 +65,12 @@ namespace Victoria.DesktopApp.View
             this.InicializarMetodologia();
             this.InitializeCollections();
             this.eventos.Visibility = Visibility.Visible;
-            logger.Info("Fin Agregar Analisis Previo");
+            //logger.Info("Fin Agregar Analisis Previo");
         }
 
         public void InitializeCollections()
         {
-            logger.Info("Inicio Inicializar Colecciones");
+            //logger.Info("Inicio Inicializar Colecciones");
             this.inicializarORecargarDatos();
             this.inicializarORecargarVariablesControl();
             this.inicializarORecargarVariablesEstado();
@@ -95,13 +95,13 @@ namespace Victoria.DesktopApp.View
             BindingOperations.EnableCollectionSynchronization(AnalisisPrevio.Tefs, syncLock);
             BindingOperations.EnableCollectionSynchronization(Conditions, syncLock);
 
-            logger.Info("Fin Inicializar Colecciones");
+            //logger.Info("Fin Inicializar Colecciones");
         }
 
         private void inicializarCondiciones()
         {
 
-            logger.Info("Inicio Inicializar Condiciones");
+            //logger.Info("Inicio Inicializar Condiciones");
             this.Conditions = new ObservableCollection<string>();
             if (this.AnalisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
             {
@@ -116,13 +116,13 @@ namespace Victoria.DesktopApp.View
                 }
             }
 
-            logger.Info("Fin Inicializar Condiciones");
+            //logger.Info("Fin Inicializar Condiciones");
         }
 
         private void inicializarORecargarVariablesResultado()
         {
 
-            logger.Info("Inicio Inicializar o Recargar Variables de Resultado");
+            //logger.Info("Inicio Inicializar o Recargar Variables de Resultado");
             var itemsSource = new ArrayList();
             foreach(VariableAP variableResultado in this.AnalisisPrevio.VariablesResultado)
             {
@@ -131,13 +131,13 @@ namespace Victoria.DesktopApp.View
             itemsSource.Add(AGREGAR_VARIABLE_RESULTADO);
             this.variablesResultado.ItemsSource = itemsSource;
 
-            logger.Info("Fin Inicializar o Recargar Variables de Resultado");
+            //logger.Info("Fin Inicializar o Recargar Variables de Resultado");
         }
 
         private void inicializarORecargarVariablesEstado()
         {
 
-            logger.Info("Inicio Inicializar o Recargar Variables de Estado");
+            //logger.Info("Inicio Inicializar o Recargar Variables de Estado");
             var itemsSource = new ArrayList();
             foreach (VariableAP variableEstado in this.AnalisisPrevio.VariablesEstado)
             {
@@ -146,19 +146,19 @@ namespace Victoria.DesktopApp.View
             itemsSource.Add(AGREGAR_VARIABLE_ESTADO);
             this.variablesEstado.ItemsSource = itemsSource;
 
-            logger.Info("Fin Inicializar o Recargar Variables de Estado");
+            //logger.Info("Fin Inicializar o Recargar Variables de Estado");
         }
 
         private void inicializarORecargarVariablesControl()
         {
 
-            logger.Info("Inicio Inicializar o Recargar Variables de Control");
+            //logger.Info("Inicio Inicializar o Recargar Variables de Control");
             var itemsSource = this.AnalisisPrevio.VariablesDeControl.ToList();
             itemsSource.Add(AGREGAR_VARIABLE_CONTROL);
             this.variablesControl.ItemsSource = itemsSource;
             this.reloadTables();
 
-            logger.Info("Fin Inicializar o Recargar Variables de Control");
+            //logger.Info("Fin Inicializar o Recargar Variables de Control");
         }
 
         private void reloadTables()
@@ -169,11 +169,11 @@ namespace Victoria.DesktopApp.View
 
         private void inicializarORecargarDatos()
         {
-            logger.Info("Inicio Inicializar o Recargar Datos");
+            //logger.Info("Inicio Inicializar o Recargar Datos");
             var itemsSource = this.AnalisisPrevio.Datos.ToList();
             itemsSource.Add(AGREGAR_ENCADENADOR);
             this.datos.ItemsSource = itemsSource;
-            logger.Info("Fin Inicializar o Recargar Datos");
+            //logger.Info("Fin Inicializar o Recargar Datos");
         }
 
         #region Window Elements Bindings
@@ -201,11 +201,11 @@ namespace Victoria.DesktopApp.View
 
         private void agregarDato()
         {
-            logger.Info("Inicio Agregar Dato");
+            //logger.Info("Inicio Agregar Dato");
             this.Agregar(AnalisisPrevio.Datos);
             dataGridEventosIndependientes.Items.Refresh();
             this.inicializarORecargarDatos();
-            logger.Info("Fin Agregar Dato");
+            //logger.Info("Fin Agregar Dato");
         }
 
         private void MenuItem_Click_Control(object sender, RoutedEventArgs e)
@@ -216,10 +216,10 @@ namespace Victoria.DesktopApp.View
         private void agregarVariableControl()
         {
 
-            logger.Info("Inicio Agregar Variable de Control");
+            //logger.Info("Inicio Agregar Variable de Control");
             this.Agregar(AnalisisPrevio.VariablesDeControl);
             this.inicializarORecargarVariablesControl();
-            logger.Info("Fin Agregar Variable de Control");
+            //logger.Info("Fin Agregar Variable de Control");
         }
 
         private void MenuItem_Click_Estado(object sender, RoutedEventArgs e)
@@ -230,10 +230,10 @@ namespace Victoria.DesktopApp.View
         private void agregarVariableEstado()
         {
 
-            logger.Info("Inicio Agregar Variable de Estado");
+            //logger.Info("Inicio Agregar Variable de Estado");
             this.AgregarVariableVectorAP(AnalisisPrevio.VariablesEstado, VariableType.State);
             this.inicializarORecargarVariablesEstado();
-            logger.Info("Fin Agregar Variable de Estado");
+            //logger.Info("Fin Agregar Variable de Estado");
         }
 
         private void MenuItem_Click_Resultado(object sender, RoutedEventArgs e)
@@ -243,10 +243,10 @@ namespace Victoria.DesktopApp.View
 
         private void agregarVariableResultado()
         {
-            logger.Info("Inicio Agregar Variable de Resultado");
+            //logger.Info("Inicio Agregar Variable de Resultado");
             this.AgregarVariableVectorAP(AnalisisPrevio.VariablesResultado, VariableType.Result);
             this.inicializarORecargarVariablesResultado();
-            logger.Info("Fin Agregar Variable de Resultado");
+            //logger.Info("Fin Agregar Variable de Resultado");
         }
 
         private void MenuItem_Click_EliminarDato(object sender, RoutedEventArgs e)
@@ -259,11 +259,11 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
-                logger.Info("Inicio Eliminar Dato");
+                //logger.Info("Inicio Eliminar Dato");
                 this.Eliminar(AnalisisPrevio.Datos, true, "los Datos");
                 this.inicializarORecargarDatos();
                 this.dataGridEventosIndependientes.Items.Refresh();
-                logger.Info("Fin Eliminar Dato ");
+                //logger.Info("Fin Eliminar Dato ");
             }
             catch (Exception ex)
             {
@@ -279,10 +279,10 @@ namespace Victoria.DesktopApp.View
 
         private void eliminarVariableControl()
         {
-            logger.Info("Inicio Eliminar Variable de Control");
+            //logger.Info("Inicio Eliminar Variable de Control");
             this.Eliminar(AnalisisPrevio.VariablesDeControl, false, "las Variables de Control");
             this.inicializarORecargarVariablesControl();
-            logger.Info("Fin Eliminar Variable de Control");
+            //logger.Info("Fin Eliminar Variable de Control");
         }
 
         private void MenuItem_Click_EliminarVarEstado(object sender, RoutedEventArgs e)
@@ -292,10 +292,10 @@ namespace Victoria.DesktopApp.View
 
         private void eliminarVariableEstado()
         {
-            logger.Info("Inicio Eliminar Variable de Estado");
+            //logger.Info("Inicio Eliminar Variable de Estado");
             this.Eliminar(AnalisisPrevio.VariablesEstado, false, "las Variables de Estado");
             this.inicializarORecargarVariablesEstado();
-            logger.Info("Fin Eliminar Variable de Estado");
+            //logger.Info("Fin Eliminar Variable de Estado");
         }
 
         private void MenuItem_Click_EliminarVarResultado(object sender, RoutedEventArgs e)
@@ -305,10 +305,10 @@ namespace Victoria.DesktopApp.View
 
         private void eliminarVariableResultado()
         {
-            logger.Info("Inicio Eliminar Variable de Resultado");
+            //logger.Info("Inicio Eliminar Variable de Resultado");
             this.Eliminar(AnalisisPrevio.VariablesResultado, false, "las Variables de Resultado");
             this.inicializarORecargarVariablesResultado();
-            logger.Info("Fin Eliminar Variable de Resultado");
+            //logger.Info("Fin Eliminar Variable de Resultado");
         }
 
         private void btnDeleteEvento_OnClick(object sender, RoutedEventArgs e)
@@ -390,7 +390,7 @@ namespace Victoria.DesktopApp.View
 
         private void InicializarMetodologia()
         {
-            logger.Info("Inicio Inicializar Metodologia");
+            //logger.Info("Inicio Inicializar Metodologia");
             var tipo = this.TipoSeleccionado(comboBox.SelectedItem);
             var tipoEaE = this.TipoEaESeleccionado(comboBox_EventosEaE.SelectedItem);
             
@@ -421,12 +421,12 @@ namespace Victoria.DesktopApp.View
             this.nuevaCondicion.IsEnabled = tipo.Equals(AnalisisPrevio.Tipo.EaE);
 
             this.InitializeCollections();
-            logger.Info("Fin Inicializar Metodologia");
+            //logger.Info("Fin Inicializar Metodologia");
         }
 
         private void Agregar(ObservableCollection<string> collection)
         {
-            logger.Info("Inicio Agregar Variable");
+            //logger.Info("Inicio Agregar Variable");
             var popUp = new AddSimpleVariablePopUp();
             popUp.ShowDialog();
 
@@ -450,7 +450,7 @@ namespace Victoria.DesktopApp.View
                 {
                     collection.Add(variable);
                     new InformationPopUp("Variable creada con éxito.").ShowDialog();
-                    logger.Info("Variable creada con éxito");
+                    //logger.Info("Variable creada con éxito");
                     return;
                 }
                 else
@@ -460,12 +460,12 @@ namespace Victoria.DesktopApp.View
                     return;
                 }
             }
-            logger.Info("Fin Agregar Variable");
+            //logger.Info("Fin Agregar Variable");
         }
 
         private void AgregarVariableVectorAP(ObservableCollection<VariableAP> collection, VariableType type)
         {
-            logger.Info("Inicio Agregar Variable a Vector");
+            //logger.Info("Inicio Agregar Variable a Vector");
             var popUp = new AddVectorVariablePopUp();
             popUp.ShowDialog();
 
@@ -485,7 +485,7 @@ namespace Victoria.DesktopApp.View
                 {
                     collection.Add(new VariableAP() { nombre = variable, valor = 0, vector = (bool)popUp.vector.IsChecked, i = index, type = type });
                     new InformationPopUp("Variable creada con éxito.").ShowDialog();
-                    logger.Info("Variable creada con éxito");
+                    //logger.Info("Variable creada con éxito");
                     return;
                 }
                 else
@@ -495,7 +495,7 @@ namespace Victoria.DesktopApp.View
                     return;
                 }
             }
-            logger.Info("Fin Agregar Variable a Vector");
+            //logger.Info("Fin Agregar Variable a Vector");
         }
 
         private void EliminarEvento()
@@ -512,7 +512,7 @@ namespace Victoria.DesktopApp.View
 
         private void eliminarEventoTEventos()
         {
-            logger.Info("Inicio Eliminar Evento");
+            //logger.Info("Inicio Eliminar Evento");
             var selected = dataGridEventos.SelectedItem as EventoAP;
 
             if (selected != null)
@@ -530,12 +530,12 @@ namespace Victoria.DesktopApp.View
 
                 new InformationPopUp("Evento eliminado con éxito.").ShowDialog();
             }
-            logger.Info("Fin Eliminar Evento");
+            //logger.Info("Fin Eliminar Evento");
         }
 
         private void eliminarEventoIndependiente()
         {
-            logger.Info("Inicio Eliminar Evento Independiete");
+            //logger.Info("Inicio Eliminar Evento Independiete");
             var selected = dataGridEventosIndependientes.SelectedItem as EventoAP;
 
             if (selected != null)
@@ -552,7 +552,7 @@ namespace Victoria.DesktopApp.View
 
                 new InformationPopUp("Evento eliminado con éxito.").ShowDialog();
             }
-            logger.Info("Fin Eliminar Evento Independiente");
+            //logger.Info("Fin Eliminar Evento Independiente");
         }
 
         private void Eliminar<T>(ObservableCollection<T> collection, bool isDatos, string title)
@@ -588,7 +588,7 @@ namespace Victoria.DesktopApp.View
 
         private void AgregarCondicion()
         {
-            logger.Info("Inicio Agregar Condicion");
+            //logger.Info("Inicio Agregar Condicion");
             var popUp = new AddNewConditionPopUp();
             popUp.ShowDialog();
 
@@ -600,7 +600,7 @@ namespace Victoria.DesktopApp.View
                 {
                     this.Conditions.Add(condicion);
                     new InformationPopUp("Condición creada con éxito.").ShowDialog();
-                    logger.Info("Condicion creada con éxito.");
+                    //logger.Info("Condicion creada con éxito.");
                     return;
                 }
                 else
@@ -610,7 +610,7 @@ namespace Victoria.DesktopApp.View
                     return;
                 }
             }
-            logger.Info("Fin Agregar Condicion");
+            //logger.Info("Fin Agregar Condicion");
         }
 
         private void GenerarDiagrama()
@@ -620,10 +620,10 @@ namespace Victoria.DesktopApp.View
                 
             ExpressionResolver.listFdpPreviusAnalisis = AnalisisPrevio.listFDP;
 
-            logger.Info("Inicio Generar Diagrama");
+            //logger.Info("Inicio Generar Diagrama");
             AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
             diagramGenerator.generateDiagram(VentanaDiagramador);
-            logger.Info("Fin Generar Diagrama");
+            //logger.Info("Fin Generar Diagrama");
         }
 
         private void GenerarFDP()
@@ -775,7 +775,7 @@ namespace Victoria.DesktopApp.View
 
         private void validateEventName(string actualEventName)
         {
-            logger.Info("Inicio Validar Nombre Evento");
+            //logger.Info("Inicio Validar Nombre Evento");
             if (this.AnalisisPrevio.EventosEaE.Any(item => item.Nombre == actualEventName))
             {
                 logger.Error("Error. Ya existe un evento con el nombre Especificado");
@@ -787,7 +787,7 @@ namespace Victoria.DesktopApp.View
                 logger.Error("No se puede crear el Evento. El campo Nombre es obligatorio.");
                 throw new ValidationException("No se puede crear el Evento. El campo Nombre es obligatorio.");
             }
-            logger.Info("Fin Validar Nombre Evento");
+            //logger.Info("Fin Validar Nombre Evento");
 
         }
 

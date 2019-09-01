@@ -57,16 +57,16 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         public AutomaticDiagramGenerator(AnalisisPrevio analisisPrevio)
         {
-            logger.Info("Inicio Generador Automatico de Diagrama");
+            //logger.Info("Inicio Generador Automatico de Diagrama");
             this.analisisPrevio = analisisPrevio;
-            logger.Info("Fin Generador Automatico de Diagrama");
+            //logger.Info("Fin Generador Automatico de Diagrama");
 
         }
 
         public void generateDiagram(Window1 diagramWindow)
         {
 
-            logger.Info("Inicio Generar Diagrama");
+            //logger.Info("Inicio Generar Diagrama");
             if (analisisPrevio.TipoDeEjercicio.Equals(AnalisisPrevio.Tipo.EaE))
             {
                 generateEaEDiagram(diagramWindow);
@@ -76,14 +76,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 generateDeltaTDiagram(diagramWindow);
             }
         
-            logger.Info("Fin Generar Diagrama");
+            //logger.Info("Fin Generar Diagrama");
 
             setupAndShowDiagramWindow(diagramWindow, this.analisisPrevio);
         }
 
         private void generateDeltaTDiagram(Window1 diagramWindow)
         {
-            logger.Info("Inicio Generar Diagrama Delta T");
+            //logger.Info("Inicio Generar Diagrama Delta T");
             initialSetupForDeltaT(diagramWindow);
             generateInitNode();
 
@@ -242,12 +242,12 @@ namespace Victoria.DesktopApp.DiagramDesigner
             actualPosition = generateDeltaTComprometidosAnteriorSubdiagrams(actualPosition);
             actualPosition = generateDeltaTComprometidosFuturoSubdiagrams(actualPosition);
             actualPosition = generateDeltaTCalcularResultadosSubdiagram(actualPosition);
-            logger.Info("Fin Generar Diagrama Delta T");
+            //logger.Info("Fin Generar Diagrama Delta T");
         }
 
         private double generateDeltaTCalcularResultadosSubdiagram(double nextTopPosition)
         {
-            logger.Info("Inicio Generar Delta T Calcular Resultados Subdiagrama");
+            //logger.Info("Inicio Generar Delta T Calcular Resultados Subdiagrama");
             double actualPosition = nextTopPosition;
             actualPosition = nextTopPosition;
 
@@ -263,14 +263,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
             lastCenterNode = close;
             actualPosition += topHeightStep;
 
-            logger.Info("Fin Generar Delta T Calcular Resultados Subdiagrama");
+            //logger.Info("Fin Generar Delta T Calcular Resultados Subdiagrama");
             return actualPosition;
         }
 
         private double generateDeltaTPropiosSubdiagrams(double nextTopPosition)
         {
 
-            logger.Info("Inicio Generar Delta T Propios Subdiagrama");
+            //logger.Info("Inicio Generar Delta T Propios Subdiagrama");
             double actualPosition = nextTopPosition;
             int i;
             for (i = 0; i < analisisPrevio.Propios.Count; i++)
@@ -291,13 +291,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
             }
 
 
-            logger.Info("Fin Generar Delta T Propios Subdiagrama");
+            //logger.Info("Fin Generar Delta T Propios Subdiagrama");
             return actualPosition;
         }
 
         private double generateDeltaTEventoComprometidoSubdiagrams(double nextTopPosition)
         {
-            logger.Info("Inicio Generar Delta T Evento Comprometido Subdiagramas");
+            //logger.Info("Inicio Generar Delta T Evento Comprometido Subdiagramas");
             double actualPosition = nextTopPosition;
             int i;
             for (i = 0; i < analisisPrevio.Tefs.Count; i++)
@@ -318,14 +318,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
             }
 
 
-            logger.Info("Fin Generar Delta T Evento Comprometido Subdiagramas");
+            //logger.Info("Fin Generar Delta T Evento Comprometido Subdiagramas");
             return actualPosition;
         }
 
 
         private double generateDeltaTComprometidosFuturoSubdiagrams(double nextTopPosition)
         {
-            logger.Info("Inicio Generar Delta T Comprometidos Futuros Subdiagramas");
+            //logger.Info("Inicio Generar Delta T Comprometidos Futuros Subdiagramas");
             double actualPosition = nextTopPosition;
             int i;
             for (i = 0; i < analisisPrevio.ComprometidosFuturos.Count; i++)
@@ -345,14 +345,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 actualPosition += topHeightStep;
             }
 
-            logger.Info("Fin Generar Delta T Comprometidos Futuros Subdiagramas");
+            //logger.Info("Fin Generar Delta T Comprometidos Futuros Subdiagramas");
             return actualPosition;
         }
 
         private double generateDeltaTComprometidosAnteriorSubdiagrams(double nextTopPosition)
         {
 
-            logger.Info("Inicio Generar Delta T Comprometidos Anterior Subdiagramas");
+            //logger.Info("Inicio Generar Delta T Comprometidos Anterior Subdiagramas");
             double actualPosition = nextTopPosition;
             int i;
             for (i = 0; i < analisisPrevio.ComprometidosAnterior.Count; i++)
@@ -372,25 +372,25 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 actualPosition += topHeightStep;
             }
 
-            logger.Info("Fin Generar Delta T Comprometidos Anterior Subdiagramas");
+            //logger.Info("Fin Generar Delta T Comprometidos Anterior Subdiagramas");
             return actualPosition;
         }
 
 
         private XElement loadXMLTemplate(TemplateManager templateManager, AnalisisPrevio analisisPrevio)
         {
-            logger.Info("Inicio Carga Template XML");
+            //logger.Info("Inicio Carga Template XML");
             var parentFolder = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var absolutePath = System.IO.Path.Combine(parentFolder, @"templates");
             var fileName = templateManager.obtenerTemplate(this.analisisPrevio);
             XElement xml = XElement.Load(System.IO.Path.Combine(absolutePath, fileName));
-            logger.Info("Fin Carga Template XML");
+            //logger.Info("Fin Carga Template XML");
             return xml;
         }
 
         private void generateEaEDiagram(Window1 diagramWindow)
         {
-            logger.Info("Inicio Generar Diagrama EaE");
+            //logger.Info("Inicio Generar Diagrama EaE");
             initialSetupForEaE(diagramWindow);
 
             generateInitNode();
@@ -455,12 +455,12 @@ namespace Victoria.DesktopApp.DiagramDesigner
             {
                 nextTopPosition = generateVectorSubDiagrams(nextTopPosition);
             }
-            logger.Info("Fin Generar Diagrama EaE");
+            //logger.Info("Fin Generar Diagrama EaE");
         }
 
         private double generateVectorSubDiagrams(double nextTopPosition)
         {
-            logger.Info("Inicio Generar Vector Subdiagramas");
+            //logger.Info("Inicio Generar Vector Subdiagramas");
             double actualPosition = nextTopPosition;
             var vectorEvents = analisisPrevio.EventosEaE.Where(evento => evento.Vector);
             for (int i = 0; i < vectorEvents.Count(); i++)
@@ -524,7 +524,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 lastCenterNode = close;
                 actualPosition += topHeightStep;
             }
-            logger.Info("Fin Generar Vector Subdiagramas");
+            //logger.Info("Fin Generar Vector Subdiagramas");
             return actualPosition;
         }
 
@@ -535,7 +535,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         private double generateDataAndResultsSubDiagrams(double nextTopPosition)
         {
-            logger.Info("Inicio Generar Datos y Resultados Subdiagramas");
+            //logger.Info("Inicio Generar Datos y Resultados Subdiagramas");
             double actualPosition = nextTopPosition;
             int i;
             for (i = 0; i < analisisPrevio.Datos.Count; i++)
@@ -587,13 +587,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
             connectNodes(lastCenterNode, BOTTOM, resultsClose, TOP);
             lastCenterNode = resultsClose;
 
-            logger.Info("Fin Generar Datos y Resultados Subdiagramas");
+            //logger.Info("Fin Generar Datos y Resultados Subdiagramas");
             return actualPosition;
         }
 
         private double generateEventSubdiagrams(double topPosition)
         {
-            logger.Info("Inicio Generar Evento Subdiagrama");
+            //logger.Info("Inicio Generar Evento Subdiagrama");
             double nextTopPosition = topPosition;
             double maxTopPosition = 0;
             for (int i = 0; i < analisisPrevio.EventosEaE.Count; i++) 
@@ -615,7 +615,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 setElementIntoCanvas(subDiagramExit, getLeftPositionForBranch(i), actualTopPosition);
                 connectNodes(branchInfo.Item3, BOTTOM, subDiagramExit, TOP);
             }
-            logger.Info("Fin Generar Evento Subdiagrama");
+            //logger.Info("Fin Generar Evento Subdiagrama");
             return maxTopPosition + topHeightStep;
         }
 
@@ -626,7 +626,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         private void initialSetupForEaE(Window1 diagramWindow)
         {
-            logger.Info("Inicio Setup para EaE");
+            //logger.Info("Inicio Setup para EaE");
             this.canvas = diagramWindow.diagrama();
             this.canvas.Children.Clear();
 
@@ -634,11 +634,11 @@ namespace Victoria.DesktopApp.DiagramDesigner
             this.branchCount = Math.Pow(2, (this.eventsCount - 1));
             this.ifCount = branchCount - 1;
             this.ifSteps = this.analisisPrevio.EventosEaE.Count - 1;
-            logger.Info("Fin Setup para EaE");
+            //logger.Info("Fin Setup para EaE");
         }
         private void initialSetupForDeltaT(Window1 diagramWindow)
         {
-            logger.Info("Inicio Setup para Delta T");
+            //logger.Info("Inicio Setup para Delta T");
             this.canvas = diagramWindow.diagrama();
             this.canvas.Children.Clear();
 
@@ -646,14 +646,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
             this.branchCount = Math.Pow(2, (this.eventsCount - 1));
             this.ifCount = branchCount - 1;
             this.ifSteps = this.analisisPrevio.EventosEaE.Count - 1;
-            logger.Info("Fin Setup para Delta T");
+            //logger.Info("Fin Setup para Delta T");
 
         }
 
 
         private List<Tuple<double, Node, Node>> generateEventBranches()
         {
-            logger.Info("Inicio Generar Rama de Evento");
+            //logger.Info("Inicio Generar Rama de Evento");
             var branchesInfo = new List<Tuple<double, Node, Node>>();
 
             int eventsCount = analisisPrevio.EventosEaE.Count();
@@ -668,13 +668,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 branchesInfo = generateBranchesManually();
             }
 
-            logger.Info("Fin Generar Rama de Evento");
+            //logger.Info("Fin Generar Rama de Evento");
             return branchesInfo;
         }
 
         private List<Tuple<double, Node, Node>> generateBranchesManually()
         {
-            logger.Info("Inicio Generar Rama Manualmente");
+            //logger.Info("Inicio Generar Rama Manualmente");
             var tef = analisisPrevio.EventosEaE.Select(item => item).ToArray();
             string tefVar1 = getTEFVariableName(tef[0].TEF);
             var createdBranchesInfo = new List<Tuple<double,Node,Node>>();
@@ -722,13 +722,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
                     connectNodes(subConditional2, LEFT, branchInfo.Item2, TOP);
                 }
             }
-            logger.Info("Fin Generar Rama Manualmente");
+            //logger.Info("Fin Generar Rama Manualmente");
             return createdBranchesInfo;
         }
 
         private Tuple<double, Node, Node> generateBranch(EventoAP evento, double leftPosition, double topPosition, Node lastConnectedNode, string lastConnectedNodePosition)
         {
-            logger.Info("Inicio Generar Rama");
+            //logger.Info("Inicio Generar Rama");
             double actualTopPosition = topPosition;
             Node lastConnectedSubNode;
 
@@ -809,13 +809,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 lastConnectedSubNode = branchInfo.Item2;
             }
 
-            logger.Info("Fin Generar Rama");
+            //logger.Info("Fin Generar Rama");
             return Tuple.Create(actualTopPosition, (Node)sentence, (Node)lastConnectedSubNode);
         }
 
         private Tuple<double, Node> generateConditionBranchesWithDistinctConditions(EventoAP evento, string efc, double leftPosition, double topPosition, Node lastConnectedSubNode)
         {
-            logger.Info("Inicio Generar Ramas con Distintas Condiciones");
+            //logger.Info("Inicio Generar Ramas con Distintas Condiciones");
             double actualTopPosition = topPosition;
 
             Conditional conditionInIf = new Conditional(evento.Condiciones.ElementAt(evento.EventosCondicionados.IndexOf(efc)));
@@ -851,14 +851,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
             lastConnectedSubNode = closeCondition;
 
 
-            logger.Info("Fin Generar Ramas con Distintas Condiciones");
+            //logger.Info("Fin Generar Ramas con Distintas Condiciones");
             return Tuple.Create(actualTopPosition, lastConnectedSubNode);
         }
 
 
         private Tuple<double, Node> generateConditionBranches(EventoAP evento, double leftPosition, double topPosition, Node lastConnectedSubNode)
         {
-            logger.Info("Inicio Generar Condicion de Ramas");
+            //logger.Info("Inicio Generar Condicion de Ramas");
             double actualTopPosition = topPosition;
             Node ifBranchLastNode = lastConnectedSubNode;
 
@@ -897,7 +897,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
             actualTopPosition += topHeightStep;
             ifBranchLastNode = closeCondition;
 
-            logger.Info("Fin Generar Condición de Ramas");
+            //logger.Info("Fin Generar Condición de Ramas");
             return Tuple.Create(actualTopPosition, ifBranchLastNode);
         }
 
@@ -1018,7 +1018,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         private List<SubdiagramCall> generateVectorSubDiagramCalls()
         {
-            logger.Info("Inicio Generar Vector llamadas Subdiagrama");
+            //logger.Info("Inicio Generar Vector llamadas Subdiagrama");
             var tefReferenceNodes = new List<SubdiagramCall>();
             var vectorEvents = analisisPrevio.EventosEaE.Where(item => item.Vector == true).ToArray();
             if(vectorEvents.Length > 0)
@@ -1040,19 +1040,19 @@ namespace Victoria.DesktopApp.DiagramDesigner
                     firstNode = (firstNode == null) ? referenceNode : firstNode; 
                 }
             }
-            logger.Info("Fin Generar Vector llamadas Subdiagrama");
+            //logger.Info("Fin Generar Vector llamadas Subdiagrama");
 
             return tefReferenceNodes;
         }
 
         private InitPrincipal generateInitNode()
         {
-            logger.Info("Inicio Generar Nodo Inicial");
+            //logger.Info("Inicio Generar Nodo Inicial");
             InitPrincipal init = new InitPrincipal("Diagrama Principal");
             setElementIntoCanvas(init, getCenterPositionForCentralBranch(), getHeightAndIncrement());
 
             this.lastCenterNode = init;
-            logger.Info("Fin Generar Nodo Inicial");
+            //logger.Info("Fin Generar Nodo Inicial");
             return init;
         }
 
@@ -1067,7 +1067,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         private void setupAndShowDiagramWindow(Window1 VentanaDiagramador, AnalisisPrevio AnalisisPrevio)
         {
-            logger.Info("Inicio Configurar y Mostrar Diagrama");
+            //logger.Info("Inicio Configurar y Mostrar Diagrama");
             this.canvas.InvalidateVisual();
 
             VentanaDiagramador.Height = 650;
@@ -1076,12 +1076,12 @@ namespace Victoria.DesktopApp.DiagramDesigner
             VentanaDiagramador.dataGridVariables.ItemsSource = vars;
             VentanaDiagramador.dimensiones.ItemsSource = vars.Where(x => x.type == VariableType.Control);
             VentanaDiagramador.Show();
-            logger.Info("Fin Configurar y Mostrar Diagrama");
+            //logger.Info("Fin Configurar y Mostrar Diagrama");
         }
 
         private void addFinalVars(List<VariableAP> vars)
         {
-            logger.Info("Inicio Agregar Variables Final");
+            //logger.Info("Inicio Agregar Variables Final");
             vars.Add(new VariableAP() { nombre = "TF", valor = 50000.0, vector = false, i = 0, type = VariableType.Other });
             vars.Add(new VariableAP() { nombre = "HV", valor = 99999999.0, vector = false, i = 0, type = VariableType.Other });
             if (analisisPrevio.EventosEaE.Any(evento => evento.Vector))
@@ -1109,7 +1109,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
                     vars.Add(new VariableAP() { nombre = "Max" + estado.nombre, valor = 0, vector = estado.vector, i = 0, type = VariableType.Other });
                 }
             }
-            logger.Info("Fin Agregar Variables Final");
+            //logger.Info("Fin Agregar Variables Final");
         }
 
         private double getHeightAndIncrement()

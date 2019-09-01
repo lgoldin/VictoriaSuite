@@ -21,7 +21,7 @@ namespace Victoria.ViewModelWPF.HelperExport
             
             try
             {
-                logger.Info("Inicio Exportar a Excel");
+                //logger.Info("Inicio Exportar a Excel");
                 OfficeOpenXml.ExcelPackage pck = new OfficeOpenXml.ExcelPackage();
 
                 foreach (StageViewModel s in stages)
@@ -103,7 +103,7 @@ namespace Victoria.ViewModelWPF.HelperExport
                 }
 
                 pck.SaveAs(new FileInfo(simulacionFileName));
-                logger.Info("Fin Exportar a Excel");
+                //logger.Info("Fin Exportar a Excel");
             }
             catch (Exception e)
             {
@@ -114,7 +114,7 @@ namespace Victoria.ViewModelWPF.HelperExport
 
         public static void ExportStagesToPDF(IList<StageViewModelBase> stages, string simulacionFileName)
         {
-            logger.Info("Inicio Exportar a PDF");
+            //logger.Info("Inicio Exportar a PDF");
             Document doc = null;
             iTextSharp.text.pdf.PdfWriter writer = null;
             try
@@ -195,7 +195,7 @@ namespace Victoria.ViewModelWPF.HelperExport
                     }
 
                     doc.NewPage();
-                    logger.Info("Fin Exportar a PDF");
+                    //logger.Info("Fin Exportar a PDF");
                 }
             }
             catch (Exception e)

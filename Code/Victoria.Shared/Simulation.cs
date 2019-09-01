@@ -31,14 +31,14 @@ namespace Victoria.Shared
         {
             this.stopDebugExecution = this.debugginMode ? true : false;
 
-            logger.Info("Inicio Simulacion");
+            //logger.Info("Inicio Simulacion");
             this.diagrams = diagrams.ToList();
             this.variables = variables.Values.ToList();
             if (!this.variables.Any(v => "T".Equals(v.Name)))
             {
                 this.variables.Insert(0, new Variable() { ActualValue = 0, InitialValue = 0, Name = "T" });
             }
-            logger.Info("Fin Simulacion");
+            //logger.Info("Fin Simulacion");
         }
 
 		public Simulation(List<Diagram> diagramas, Dictionary<string, Variable> variables, List<Stage> stages) : this(diagramas, variables)
@@ -49,15 +49,15 @@ namespace Victoria.Shared
 
         public bool HasStatusChanged()
         {
-            logger.Info("Validacion de cambio de estado");
+            //logger.Info("Validacion de cambio de estado");
             return this.SimulationStatusChanged != null;
         }
 
         public void ChangeStatus(SimulationStatus status)
         {
-            logger.Info("Inicio Cambiar de estado");
+            //logger.Info("Inicio Cambiar de estado");
             this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
-            logger.Info("Fin Cambiar de estado");
+            //logger.Info("Fin Cambiar de estado");
         }
 
         // Activa y desactiva el modo debugs
@@ -72,9 +72,9 @@ namespace Victoria.Shared
 
         public void StopExecution(bool value)
         {
-            logger.Info("Inicio Parar Execucion");
+            //logger.Info("Inicio Parar Execucion");
             this.stopExecution = value;
-            logger.Info("Fin Parar Execucion");
+            //logger.Info("Fin Parar Execucion");
         }
 
         public void StopDebugExecution(bool value)
@@ -90,7 +90,7 @@ namespace Victoria.Shared
 
         public void Update(IStageSimulation stageSimulation)
         {
-            logger.Info("Inicio Actualizar");
+            //logger.Info("Inicio Actualizar");
             foreach (var variable in stageSimulation.GetVariables())
             {
                 if (variable is StageVariableArray)
@@ -114,18 +114,18 @@ namespace Victoria.Shared
             {
                 this.ChangeStatus(SimulationStatus.Stoped);
             }
-            logger.Info("Fin Actualizar");
+            //logger.Info("Fin Actualizar");
         }
 
         public List<Diagram> GetDiagrams()
         {
-            logger.Info("Obtener Diagramas");
+            //logger.Info("Obtener Diagramas");
             return this.diagrams;
         }
 
         public List<Variable> GetVariables()
         {
-            logger.Info("Obtener Variables");
+            //logger.Info("Obtener Variables");
             return this.variables;
         }
 
@@ -136,7 +136,7 @@ namespace Victoria.Shared
 
         public double GetVariableValue(string name)
         {
-            logger.Info("Inicio obtener valor variable");
+            //logger.Info("Inicio obtener valor variable");
             var regex = new Regex(@"[A-Z0-9a-z]+[(][0-9]+[)]");
             if (regex.IsMatch(name))
             {
@@ -152,7 +152,7 @@ namespace Victoria.Shared
                     }
                 }
             }
-            logger.Info("Fin obtener valor variable");
+            //logger.Info("Fin obtener valor variable");
             return this.GetVariables().First(x => x.Name == name).ActualValue;
         }
     }

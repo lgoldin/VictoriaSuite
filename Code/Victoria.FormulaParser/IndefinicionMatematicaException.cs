@@ -14,10 +14,10 @@ namespace Victoria.FormulaParser
         public IndefinicionMatematicaException(string mensaje, string operador, double valorNoNumerico) : base(mensaje)
         {
 
-            logger.Info("Inicio Indefinicion Matematica");
+            //logger.Info("Inicio Indefinicion Matematica");
             this.Operador = operador;
             this.ValorNoNumerico = valorNoNumerico;
-            logger.Info("Fin Indefinicion Matematica");
+            //logger.Info("Fin Indefinicion Matematica");
         }
 
         public IndefinicionMatematicaException(string operador, double valorNoNumerico)

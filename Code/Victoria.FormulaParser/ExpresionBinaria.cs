@@ -8,11 +8,11 @@
             ElementoOperador operador,
             Expresion terminoDerecho) : base(expresionMadre)
         {
-            logger.Info("Inicio Expresion Binaria");
+            //logger.Info("Inicio Expresion Binaria");
             this.TerminoIzquierdo = terminoIzquierdo;
             this.Operador = operador;
             this.TerminoDerecho = terminoDerecho;
-            logger.Info("Fin Expresion Binaria");
+            //logger.Info("Fin Expresion Binaria");
         }
 
         public Expresion TerminoIzquierdo { get; set; }

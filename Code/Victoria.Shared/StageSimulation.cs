@@ -16,11 +16,11 @@ namespace Victoria.Shared
         
         public StageSimulation(ISimulation simulation)
         {
-            logger.Info("Inicio Escenario Simulacion");
+            //logger.Info("Inicio Escenario Simulacion");
             this.simulation = simulation;
             this.diagrams = simulation.GetDiagrams().ToList();
             this.Initilize(simulation.GetVariables());
-            logger.Info("Fin Escenario Simulacion");
+            //logger.Info("Fin Escenario Simulacion");
         }
 
         public bool DebugginMode()
@@ -30,15 +30,15 @@ namespace Victoria.Shared
 
         public bool GetExecutionStatus()
         {
-            logger.Info("Obtener estado Ejecucion");
+            //logger.Info("Obtener estado Ejecucion");
             return this.stopExecution;
         }
 
         public void StopExecution(bool value)
         {
-            logger.Info("Inicio Parar Ejecucion");
+            //logger.Info("Inicio Parar Ejecucion");
             this.stopExecution = value;
-            logger.Info("Fin Parar Ejecucion");
+            //logger.Info("Fin Parar Ejecucion");
         }
 
         public void StopDebugExecution(bool value)
@@ -49,7 +49,7 @@ namespace Victoria.Shared
         public bool CanContinue()
         {
             return this.simulation.DebugginMode() ? this.simulation.CanContinue() : (!this.stopExecution && this.simulation.CanContinue());
-            logger.Info("Validacion puede continuar");
+            //logger.Info("Validacion puede continuar");
             
         }
 
@@ -60,7 +60,7 @@ namespace Victoria.Shared
 
         public Diagram GetMainDiagram()
         {
-            logger.Info("Obtener diagrama principal");
+            //logger.Info("Obtener diagrama principal");
             return this.diagrams.First(x => x.Name == "Principal"); 
         }
 
@@ -78,7 +78,7 @@ namespace Victoria.Shared
 
         private void Initilize(List<Variable> variables)
         {
-            logger.Info("Inicio Inicializar");
+            //logger.Info("Inicio Inicializar");
             this.stageVariables = new List<StageVariable>();
 
             foreach (var variable in variables)
@@ -105,7 +105,7 @@ namespace Victoria.Shared
                     });
                 }
             }
-            logger.Info("Fin Inicializar");
+            //logger.Info("Fin Inicializar");
         }
 
         private List<StageVariable> Map(List<Variable> variables)

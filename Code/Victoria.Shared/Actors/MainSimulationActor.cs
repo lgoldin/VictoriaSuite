@@ -15,11 +15,11 @@ namespace Victoria.Shared.Actors
 
         public MainSimulationActor()
         {
-            logger.Info("Inicio actor principal de simulación");
+            //logger.Info("Inicio actor principal de simulación");
 
             Receive<ISimulation>(simulation => this.Execute(simulation));
             Receive<IStageSimulation>(simulationStage => this.UpdateSimulation(simulationStage));
-            logger.Info("Fin actor principal de simulación");
+            //logger.Info("Fin actor principal de simulación");
         }
 
         public IActorRef StageSimulationActor
@@ -27,7 +27,7 @@ namespace Victoria.Shared.Actors
 
             get
             {
-                logger.Info("Inicio Actor de simulación de escenario");
+                //logger.Info("Inicio Actor de simulación de escenario");
                 if (this.stageSimulationActor == null)
                 {
                     var akkaConfiguration = ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig;
@@ -36,7 +36,7 @@ namespace Victoria.Shared.Actors
                     this.stageSimulationActor = system.ActorOf<StageSimulationActor>("stageSimulationActor");
                 }
 
-                logger.Info("Fin Actor de simulación de escenario");
+                //logger.Info("Fin Actor de simulación de escenario");
                 return this.stageSimulationActor;
             }
 
@@ -48,17 +48,17 @@ namespace Victoria.Shared.Actors
         
         private void Execute(ISimulation simulation)
         {
-            logger.Info("Inicio Ejecutar");
+            //logger.Info("Inicio Ejecutar");
             var simulationStage = new StageSimulation(simulation);
             this.StageSimulationActor.Tell(simulationStage);
-            logger.Info("Fin Ejecutar");
+            //logger.Info("Fin Ejecutar");
         }
 
         private void UpdateSimulation(IStageSimulation stageSimulation)
         {
-            logger.Info("Inicio Actualizar Simulacion");
+            //logger.Info("Inicio Actualizar Simulacion");
             stageSimulation.GetSimulation().Update(stageSimulation);
-            logger.Info("Fin Actualizar Simulacion");
+            //logger.Info("Fin Actualizar Simulacion");
         }
     }
 }

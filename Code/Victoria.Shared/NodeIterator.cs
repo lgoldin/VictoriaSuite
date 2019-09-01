@@ -27,7 +27,7 @@ namespace Victoria.Shared
         {
             Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
             
-            logger.Info("Inicio Ejecutar Nodo");
+            //logger.Info("Inicio Ejecutar Nodo");
             if (this.variableIteradora == null)
                     InicializarVariableIteradora(variables);
 
@@ -37,7 +37,7 @@ namespace Victoria.Shared
                 variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
 
                 return this.IterationNode.Execute(variables, NotifyUIMethod);
-                logger.Info("Fin Ejecutar Nodo");
+                //logger.Info("Fin Ejecutar Nodo");
             }
             else
             {
@@ -45,13 +45,13 @@ namespace Victoria.Shared
                 variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
 
                 return base.Execute(variables, NotifyUIMethod);
-                logger.Info("Fin Ejecutar Nodo");
+                //logger.Info("Fin Ejecutar Nodo");
             }
         }
 
         private void InicializarVariableIteradora(IList<StageVariable> variables)
         {
-            logger.Info("Inicio Inicializar Variable Iteradora");
+            //logger.Info("Inicio Inicializar Variable Iteradora");
             var variable = variables.FirstOrDefault(v => v.Name == this.VariableName);
             if (!string.IsNullOrEmpty(this.VariableName) && variable != null)
             {
@@ -65,7 +65,7 @@ namespace Victoria.Shared
 
             this.variableIteradora.InitialValue = this.ValorInicial;
             this.variableIteradora.ActualValue = this.ValorInicial;
-            logger.Info("Fin Incializar Variable Iteradora");
+            //logger.Info("Fin Incializar Variable Iteradora");
         }
     }
 }

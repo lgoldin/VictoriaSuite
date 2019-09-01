@@ -9,10 +9,10 @@ namespace Victoria.FormulaParser
             Expresion termino,
             ElementoOperador operador) : base(expresionMadre)
         {
-            logger.Info("Inicio Expresion Unaria");
+            //logger.Info("Inicio Expresion Unaria");
             this.Termino = termino;
             this.Operador = operador;
-            logger.Info("Fin Expresion Unaria");
+            //logger.Info("Fin Expresion Unaria");
 
         }
 

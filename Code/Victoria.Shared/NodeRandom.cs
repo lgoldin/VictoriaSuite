@@ -18,7 +18,7 @@ namespace Victoria.Shared
             Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
             return base.Execute(variables, NotifyUIMethod);
 
-            logger.Info("Ejecutar");
+            //logger.Info("Ejecutar");
         }
     }
 }

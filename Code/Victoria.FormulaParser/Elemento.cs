@@ -26,7 +26,7 @@ namespace Victoria.FormulaParser
 
         protected double EvaluacionNaN(double resultado)
         {
-            logger.Info("Inicio Evaluacion Numero a Numero");
+            //logger.Info("Inicio Evaluacion Numero a Numero");
             if (double.IsNaN(resultado) ||
                 double.IsInfinity(resultado) ||
                 double.IsNegativeInfinity(resultado) ||
@@ -35,7 +35,7 @@ namespace Victoria.FormulaParser
                 logger.Error("Error: Evaluacion Numero a Numero");
                 throw new IndefinicionMatematicaException(this.Valor(), resultado);
             }
-            logger.Info("Fin Evaluacion Numero a Numero");
+            //logger.Info("Fin Evaluacion Numero a Numero");
             return resultado;
         }
     }

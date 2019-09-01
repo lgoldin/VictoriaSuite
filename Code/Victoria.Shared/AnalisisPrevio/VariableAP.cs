@@ -31,7 +31,7 @@ namespace Victoria.Shared.AnalisisPrevio
 
         public string GetNameForDesigner() 
         {
-            logger.Info("Obtener Nombre para Diseñador");
+            //logger.Info("Obtener Nombre para Diseñador");
             return this.vector ? this.nombre.Split('(')[0] + "(I)" : this.nombre;
         }
 

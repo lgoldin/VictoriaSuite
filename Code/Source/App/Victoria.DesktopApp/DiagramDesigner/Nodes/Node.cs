@@ -20,19 +20,19 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public Node() 
         {
-            logger.Info("Inicio Set propiedades Nodo");
+            //logger.Info("Inicio Set propiedades Nodo");
             this.guid = Guid.NewGuid();
             this.designerItem = new DesignerItem(this.guid);
             this.designerItem.ParentID = new Guid("00000000-0000-0000-0000-000000000000");
             this.designerItem.IsGroup = false;
-            logger.Info("Fin Set propiedades Nodo");
+            //logger.Info("Fin Set propiedades Nodo");
 
         }
 
 
         public void setItemText(string text)
         {
-            logger.Info("Inicio set Item Nodo");
+            //logger.Info("Inicio set Item Nodo");
             if (this.designerItem.Content is Grid)
             {
                 Grid hijo = (Grid)this.designerItem.Content;
@@ -45,7 +45,7 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
                 (this.designerItem.Content as Grid).Children.OfType<TextBox>().First().Text = text;
             }
 
-            logger.Info("Fin set Item Nodo");
+            //logger.Info("Fin set Item Nodo");
         }
 
         abstract public double getLeftReference();

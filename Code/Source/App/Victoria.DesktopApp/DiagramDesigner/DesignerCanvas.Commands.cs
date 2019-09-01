@@ -72,7 +72,7 @@ namespace DiagramDesigner
     public DesignerCanvas()
         {
 
-            logger.Info("Inicio Diseñar Canvas");
+            //logger.Info("Inicio Diseñar Canvas");
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
@@ -116,7 +116,7 @@ namespace DiagramDesigner
             this.AllowDrop = true;
             Clipboard.Clear();
 
-            logger.Info("Fin Diseñar Canvas");
+            //logger.Info("Fin Diseñar Canvas");
         }
 
 
@@ -284,20 +284,20 @@ namespace DiagramDesigner
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
-            logger.Info("Inicio Imprimir");
+            //logger.Info("Inicio Imprimir");
             ScrollViewer scroll = (ScrollViewer)this.Parent;
             scroll.ScrollToTop();
             ImprimirDiagrama();
-            logger.Info("Fin Imprimir");
+            //logger.Info("Fin Imprimir");
         }
 
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
-            logger.Info("Inicio Ejecucion Ayuda");
+            //logger.Info("Inicio Ejecucion Ayuda");
             DarPDFAlUsuario();
 
-            logger.Info("Fin Ejecucion Ayuda");
+            //logger.Info("Fin Ejecucion Ayuda");
         }
 
         #region New Command
@@ -831,7 +831,7 @@ namespace DiagramDesigner
 
         private XElement SerializarDesignerItems(IEnumerable<DesignerItem> designerItems)
         {
-            logger.Info("Inicio Serializar Diseñador Items");
+            //logger.Info("Inicio Serializar Diseñador Items");
             List<Connector> connectors2 = new List<Connector>();
             List<Connection> connectors3 = new List<Connection>();
 
@@ -862,14 +862,14 @@ namespace DiagramDesigner
 
                                               )
                                    ));
-            logger.Info("Fin Serializar Diseñador Items");
+            //logger.Info("Fin Serializar Diseñador Items");
             return serializedItems;
         }
 
         private XElement SerializarConnections(IEnumerable<Connection> connections)
         {
 
-            logger.Info("Inicio Serializar Conexeiones");
+            //logger.Info("Inicio Serializar Conexeiones");
             var serializedConnections = new XElement("Connections",
                            from connection in connections
                            select new XElement("Connection",
@@ -885,13 +885,13 @@ namespace DiagramDesigner
                                      )
                                   );
 
-            logger.Info("Fin Serializar Conexiones");
+            //logger.Info("Fin Serializar Conexiones");
             return serializedConnections;
         }
 
         public static DesignerItem DeserializarDesignerItem(XElement itemXML, Guid id, double OffsetX, double OffsetY)
         {
-            logger.Info("Inicio Deserializar Diseñador Item");
+            //logger.Info("Inicio Deserializar Diseñador Item");
             DesignerItem item = new DesignerItem(id);
             item.Width = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture);
             item.Height = Double.Parse(itemXML.Element("Height").Value, CultureInfo.InvariantCulture);
@@ -902,13 +902,13 @@ namespace DiagramDesigner
             Canvas.SetZIndex(item, Int32.Parse(itemXML.Element("zIndex").Value));
             Object content = XamlReader.Load(XmlReader.Create(new StringReader(itemXML.Element("Content").Value)));
             item.Content = content;
-            logger.Info("Fin Deserializar Diseñador Item");
+            //logger.Info("Fin Deserializar Diseñador Item");
             return item;
         }
 
         private void UpdateZIndex()
         {
-            logger.Info("Inicio Actualizar Indice");
+            //logger.Info("Inicio Actualizar Indice");
             List<UIElement> ordered = (from UIElement item in this.Children
                                        orderby Canvas.GetZIndex(item as UIElement)
                                        select item as UIElement).ToList();
@@ -917,7 +917,7 @@ namespace DiagramDesigner
             {
                 Canvas.SetZIndex(ordered[i], i);
             }
-            logger.Info("Fin Actualizar Indice");
+            //logger.Info("Fin Actualizar Indice");
         }
 
         private static Rect GetBoundingRectangle(IEnumerable<DesignerItem> items)
@@ -941,7 +941,7 @@ namespace DiagramDesigner
 
         private void GetConnectors(DependencyObject parent, List<Connector> connectors)
         {
-            logger.Info("Inicio Obtener Conectores");
+            //logger.Info("Inicio Obtener Conectores");
             int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childrenCount; i++)
             {
@@ -953,20 +953,20 @@ namespace DiagramDesigner
                 else
                     GetConnectors(child, connectors);
             }
-            logger.Info("Fin Obtener Conectores");
+            //logger.Info("Fin Obtener Conectores");
 
         }
 
         public Connector GetConnector(Guid itemID, String connectorName)
         {
-            logger.Info("Inicio Obtener Conector");
+            //logger.Info("Inicio Obtener Conector");
             DesignerItem designerItem = (from item in this.Children.OfType<DesignerItem>()
                                          where item.ID == itemID
                                          select item).FirstOrDefault();
 
             Control connectorDecorator = designerItem.Template.FindName("PART_ConnectorDecorator", designerItem) as Control;
             connectorDecorator.ApplyTemplate();
-            logger.Info("Fin Obtener Conector");
+            //logger.Info("Fin Obtener Conector");
             return connectorDecorator.Template.FindName(connectorName, connectorDecorator) as Connector;
         }
 
@@ -980,17 +980,17 @@ namespace DiagramDesigner
 
         private void ImprimirDiagrama()
         {
-            logger.Info("Inicio Imprimir Diagrama");
+            //logger.Info("Inicio Imprimir Diagrama");
             SelectionService.ClearSelection();
             PrintDialog printDialog = new PrintDialog();
             if (true == printDialog.ShowDialog()) printDialog.PrintVisual(this, "Diagrama");
-            logger.Info("Fin Imprimir Diagrama");
+            //logger.Info("Fin Imprimir Diagrama");
         }
 
         private void DarPDFAlUsuario()
         {
 
-            logger.Info("Inicio dar PDF Al Usuario");
+            //logger.Info("Inicio dar PDF Al Usuario");
             var parentFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var sourcePath = Path.Combine(parentFolder, @"Manual de usuario\Manual de usuario Victoria.pdf");
 
@@ -1010,7 +1010,7 @@ namespace DiagramDesigner
                 }
             }
 
-            logger.Info("Fin dar PDF Al Usuario");
+            //logger.Info("Fin dar PDF Al Usuario");
         }
 
         public void AbrirDiagrama()
@@ -1018,7 +1018,7 @@ namespace DiagramDesigner
             try
             {
 
-                logger.Info("Inicio Abrir Diagrama");
+                //logger.Info("Inicio Abrir Diagrama");
                 XElement root = LoadSerializedDataFromFile();
 
                 if (root == null)
@@ -1060,7 +1060,7 @@ namespace DiagramDesigner
                     this.Children.Add(connection);
                 }
 
-                logger.Info("Fin Abrir Diagrama");
+                //logger.Info("Fin Abrir Diagrama");
             }
             catch (Exception ex)
             {
@@ -1074,11 +1074,11 @@ namespace DiagramDesigner
         private void BorrarDiagrama()
         {
 
-            logger.Info("Inicio Borrar Diagrama");
+            //logger.Info("Inicio Borrar Diagrama");
             this.Children.Clear();
             this.SelectionService.ClearSelection();
 
-            logger.Info("Fin Guardar Diagrama");
+            //logger.Info("Fin Guardar Diagrama");
             /*var viewDeleteDiagram = new DeleteDiagramPopUp();
             viewDeleteDiagram.ShowDialog();
 
@@ -1097,7 +1097,7 @@ namespace DiagramDesigner
         private void GuardarDiagrama()
         {
 
-            logger.Info("Inicio Guardar Diagrama");
+            //logger.Info("Inicio Guardar Diagrama");
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
             IEnumerable<Connection> connections = this.Children.OfType<Connection>();
 
@@ -1113,12 +1113,12 @@ namespace DiagramDesigner
 
             GuardarArchivoDialog(root);
 
-            logger.Info("Fin Guardar Diagrama");
+            //logger.Info("Fin Guardar Diagrama");
         }
 
         void GuardarArchivoDialog(XElement xElement)
         {
-            logger.Info("Inicio Guardar Archivo");
+            //logger.Info("Inicio Guardar Archivo");
             SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.Filter = "Files (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFile.ShowDialog() == true)
@@ -1133,7 +1133,7 @@ namespace DiagramDesigner
                     logger.Error("Error al Guardar Archivo: "+ ex.Message);
                 }
             }
-            logger.Info("Fin Guardar Archivo");
+            //logger.Info("Fin Guardar Archivo");
         }
 
         private XElement LoadSerializedDataFromFile()
@@ -1161,11 +1161,11 @@ namespace DiagramDesigner
             
             try
             {
-                logger.Info("Inicio Validar y Lanzar Simulador");
+                //logger.Info("Inicio Validar y Lanzar Simulador");
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
                 this.mainWindow = new MainWindow(root.ToString(), true);
-                logger.Info("Fin Validar y Lanzar Simulador");
+                //logger.Info("Fin Validar y Lanzar Simulador");
             }
             catch (DiagramValidationException ex)
             {
@@ -1187,19 +1187,19 @@ namespace DiagramDesigner
         private void ValidarDiagrama()
         {
 
-            logger.Info("Inicio Validar Diagrama");
+            //logger.Info("Inicio Validar Diagrama");
             var errorList = ValidateUseOfCorrectVariables().Concat(ValidateFinDiagrama());
             if (errorList.Any())
             {
                 throw new DiagramValidationException(String.Join("\n", errorList.ToArray()));
             }
-            logger.Info("Fin Validar Diagrama");
+            //logger.Info("Fin Validar Diagrama");
         }
 
         private HashSet<string> ValidateUseOfCorrectVariables()
         {
 
-            logger.Info("Inicio Validar Uso Correcto de Variables");
+            //logger.Info("Inicio Validar Uso Correcto de Variables");
             var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
 
             foreach (var variable in variables)
@@ -1263,13 +1263,13 @@ namespace DiagramDesigner
             ValidateReferences(errorList, referencesList);
 
 
-            logger.Info("Fin Validar Uso Correcto de Variables");
+            //logger.Info("Fin Validar Uso Correcto de Variables");
             return errorList;
         }
 
         private void ValidateReferences(HashSet<string> errorLIst, List<string> referencesList)
         {
-            logger.Info("Inicio Validar Referencias");
+            //logger.Info("Inicio Validar Referencias");
             var masDeDosReferencias = referencesList.GroupBy(x => x)
                         .Where(group => group.Count() > 2)
                         .Select(group => group.Key);
@@ -1294,13 +1294,13 @@ namespace DiagramDesigner
                 }
             }
 
-            logger.Info("Fin Validar Referencias");
+            //logger.Info("Fin Validar Referencias");
         }
 
         private HashSet<string> ValidateFinDiagrama()
         {
 
-            logger.Info("Inicio Validar Fin Diagrama");
+            //logger.Info("Inicio Validar Fin Diagrama");
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
             IEnumerable<Connection> connections = this.Children.OfType<Connection>();
             var cantidadNodosFin = 0;
@@ -1338,14 +1338,14 @@ namespace DiagramDesigner
                 errorList.Add("-Tenes " + cantidadDiagramas + " diagrama/s y " + cantidadNodosFin + " nodo/s de cierre. Deben coincidir.");
             }
 
-            logger.Info("Fin Validar Fin Diagrama");
+            //logger.Info("Fin Validar Fin Diagrama");
             return errorList;
         }
         
         private void ValidateUseOfCorrectVariablesInTextBox(HashSet<string> errorLIst, string textBoxText, List<string> variableNames)
         {
 
-            logger.Info("Inicio Validar Uso Correcto de Variables");
+            //logger.Info("Inicio Validar Uso Correcto de Variables");
             var regex = "[a-zA-Z0-9]+";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1362,13 +1362,13 @@ namespace DiagramDesigner
                 }
             }
 
-            logger.Info("Fin Validar Uso Correcto de Variables");
+            //logger.Info("Fin Validar Uso Correcto de Variables");
         }
 
         private void ValidateUseOfCorrectCharacters(HashSet<string> errorLIst, string textBoxText)
         {
 
-            logger.Info("Inicio Validar Uso corecto de Caracteres");
+            //logger.Info("Inicio Validar Uso corecto de Caracteres");
             var regex = @"(?![a-zA-Z0-9\!\&\|\ \<\>\%\^\+\=\-\*\/\(\)\,]+).";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1376,12 +1376,12 @@ namespace DiagramDesigner
             {
                 errorLIst.Add("-Estas utilizando un caracter desconocido " + '"' + match + '"' + ".");
             }
-            logger.Info("Fin Validar Uso correcto de Caracteres");
+            //logger.Info("Fin Validar Uso correcto de Caracteres");
         }
 
         private void ValidateUseOfValidConditionOperators(HashSet<string> errorLIst, string textBoxText)
         {
-            logger.Info("Inicio Validar Condiciones y Operadores");
+            //logger.Info("Inicio Validar Condiciones y Operadores");
             var regex = @"[^a-zA-Z0-9\ ]+";
             var operatorsUsed = Regex.Matches(textBoxText, regex);
 
@@ -1397,12 +1397,12 @@ namespace DiagramDesigner
                 }
             }
 
-            logger.Info("Fin Validar Condiciones y Operadores");
+            //logger.Info("Fin Validar Condiciones y Operadores");
         }
 
         private XElement GenerarVicXmlDelDiagrama()
         {
-            logger.Info("Inicio Generar Vic XML del diagrama");
+            //logger.Info("Inicio Generar Vic XML del diagrama");
             var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
 
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
@@ -1416,13 +1416,13 @@ namespace DiagramDesigner
             root.Add(modelo);
             listaDesignerItemsXML.ForEach(root.Add);
 
-            logger.Info("Fin Generar Vic XML del diagrama");
+            //logger.Info("Fin Generar Vic XML del diagrama");
             return root;
         }
 
         private XElement serializarModelo(IEnumerable<DesignerItem> designerItems, IEnumerable<Connection> connections)
         {
-            logger.Info("Inicio Sereliazar Modelo");
+            //logger.Info("Inicio Sereliazar Modelo");
             XElement modelo = new XElement("Modelo");
             XElement designerItemsXML = SerializarDesignerItems(designerItems);
             XName name = "Name";
@@ -1431,14 +1431,14 @@ namespace DiagramDesigner
             connectionsXML.SetAttributeValue(name, "ModeloAnalisisSensibilidad");
             modelo.Add(designerItemsXML);
             modelo.Add(connectionsXML);
-            logger.Info("Fin Serializar Modelo");
+            //logger.Info("Fin Serializar Modelo");
             return modelo;
 
         }
 
         private void CopiarSeleccionDiagrama()
         {
-            logger.Info("Inicio Copiar Seleccion Diagrama");
+            //logger.Info("Inicio Copiar Seleccion Diagrama");
             IEnumerable<DesignerItem> selectedDesignerItems =
                 this.SelectionService.CurrentSelection.OfType<DesignerItem>();
 
@@ -1479,12 +1479,12 @@ namespace DiagramDesigner
 
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Xaml, root);
-            logger.Info("Fin Copiar Seleccion Diagrama");
+            //logger.Info("Fin Copiar Seleccion Diagrama");
         }
 
         private void PegarSeleccionDiagrama()
         {
-            logger.Info("Inicio Pegar Seleccion Diagrama");
+            //logger.Info("Inicio Pegar Seleccion Diagrama");
             XElement root = LoadSerializedDataFromClipBoard();
 
             if (root == null)
@@ -1559,12 +1559,12 @@ namespace DiagramDesigner
             root.Attribute("OffsetY").Value = (offsetY + 10).ToString();
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Xaml, root);
-            logger.Info("Fin Pegar Seleccion Diagrama");
+            //logger.Info("Fin Pegar Seleccion Diagrama");
         }
 
         private void BorrarSeleccionDiagrama()
         {
-            logger.Info("Inicio Borrar Seleccion Diagrama");
+            //logger.Info("Inicio Borrar Seleccion Diagrama");
             foreach (Connection connection in SelectionService.CurrentSelection.OfType<Connection>())
             {
                 this.Children.Remove(connection);
@@ -1589,7 +1589,7 @@ namespace DiagramDesigner
 
             SelectionService.ClearSelection();
             UpdateZIndex();
-            logger.Info("Fin Borrar Seleccion Diagrama");
+            //logger.Info("Fin Borrar Seleccion Diagrama");
         }
 
         private XElement LoadSerializedDataFromClipBoard()
@@ -1614,7 +1614,7 @@ namespace DiagramDesigner
 
         private void AgruparSeleccionDiagrama()
         {
-            logger.Info("Inicio Agrupar Seleccion Diagrama");
+            //logger.Info("Inicio Agrupar Seleccion Diagrama");
             var items = from item in this.SelectionService.CurrentSelection.OfType<DesignerItem>()
                         where item.ParentID == Guid.Empty
                         select item;
@@ -1636,12 +1636,12 @@ namespace DiagramDesigner
                 item.ParentID = groupItem.ID;
 
             this.SelectionService.SelectItem(groupItem);
-            logger.Info("Fin Agrupar Seleccion Diagrama");
+            //logger.Info("Fin Agrupar Seleccion Diagrama");
         }
 
         private void DesagruparSeleccionDiagrama()
         {
-            logger.Info("Inicio Desagrupar Seleccion Diagrama");
+            //logger.Info("Inicio Desagrupar Seleccion Diagrama");
             var groups = (from item in SelectionService.CurrentSelection.OfType<DesignerItem>()
                           where item.IsGroup && item.ParentID == Guid.Empty
                           select item).ToArray();
@@ -1659,7 +1659,7 @@ namespace DiagramDesigner
                 this.Children.Remove(groupRoot);
                 UpdateZIndex();
             }
-            logger.Info("Fin Desagrupar Seleccion Diagrama");
+            //logger.Info("Fin Desagrupar Seleccion Diagrama");
 
         }
 

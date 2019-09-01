@@ -22,7 +22,7 @@ namespace Victoria.FormulaParser
         public static ElementoFuncion GetFuncion(string funcion)
         {
 
-            logger.Info("Inicio Obtener Funcion");
+            //logger.Info("Inicio Obtener Funcion");
             if (!matrizDeInstancias.ContainsKey(funcion))
             {
 
@@ -31,18 +31,18 @@ namespace Victoria.FormulaParser
             }
 
 
-            logger.Info("Fin Obtener Funcion");
+            //logger.Info("Fin Obtener Funcion");
             return matrizDeInstancias[funcion];
         }
 
         public double Operar(List<double> argumentos)
         {
 
-            logger.Info("Inicio Operar");
+            //logger.Info("Inicio Operar");
             double resultado = this.OperarInterno(argumentos);
 
 
-            logger.Info("Fin Operar");
+            //logger.Info("Fin Operar");
             return this.EvaluacionNaN(resultado);
         }
 

@@ -24,7 +24,7 @@ namespace Victoria.FormulaParser
 
         public FormulaParser(string formula)
         {
-            logger.Info("Inicio Formula Parser");
+            //logger.Info("Inicio Formula Parser");
             this.formula = Regex.Replace(formula, @"\s+", "").ToLower();
 
             this.indice = 0;
@@ -33,7 +33,7 @@ namespace Victoria.FormulaParser
             this.expresionRaiz = this.ConstruirExpresion();
 
 
-            logger.Info("Fin Formula Parser");
+            //logger.Info("Fin Formula Parser");
         }
 
 
@@ -55,7 +55,7 @@ namespace Victoria.FormulaParser
         public Elemento ProximoElemento()
         {
 
-            logger.Info("Inicio Proximo Elemento");
+            //logger.Info("Inicio Proximo Elemento");
             Elemento elemento = null;
 
             string token = string.Empty;
@@ -169,36 +169,36 @@ namespace Victoria.FormulaParser
 
 
 
-            logger.Info("Fin Proximo Elemento");
+            //logger.Info("Fin Proximo Elemento");
             return elemento;
         }
 
         public Elemento VerProximoElemento()
         {
 
-            logger.Info("Inicio Ver Proximo Elemento");
+            //logger.Info("Inicio Ver Proximo Elemento");
             int indiceOriginal = this.indice;
 
             Elemento elemento = this.ProximoElemento();
 
             this.indice = indiceOriginal;
             
-            logger.Info("Fin Ver Proximo Elemento");
+            //logger.Info("Fin Ver Proximo Elemento");
             return elemento;
         }
 
         public void RetrocedecerElemento()
         {
 
-            logger.Info("Inicio Retroceder Elemento");
+            //logger.Info("Inicio Retroceder Elemento");
             this.indice = this.indiceAnterior;
-            logger.Info("Fin Retroceder Elemento");
+            //logger.Info("Fin Retroceder Elemento");
         }
 
         private Expresion ConstruirExpresion()
         {
 
-            logger.Info("Construir Expresion");
+            //logger.Info("Construir Expresion");
             return this.ConstruirExpresion(false);
             
         }
@@ -206,14 +206,14 @@ namespace Victoria.FormulaParser
         private Expresion ConstruirExpresion(bool unaria)
         {
 
-            logger.Info("Construir Expresion");
+            //logger.Info("Construir Expresion");
             return this.ConstruirExpresion(unaria, false);
         }
 
         private Expresion ConstruirExpresion(bool unaria, bool argumento)
         {
 
-            logger.Info("Inicio Construir Expresion");
+            //logger.Info("Inicio Construir Expresion");
             Elemento elemento;
 
             Expresion expresionMadre = null;
@@ -470,7 +470,7 @@ namespace Victoria.FormulaParser
                 return null;
             }
 
-            logger.Info("Fin Construir Expresion");
+            //logger.Info("Fin Construir Expresion");
             return expresionActual.PrimeraExpresion();
         }
     }

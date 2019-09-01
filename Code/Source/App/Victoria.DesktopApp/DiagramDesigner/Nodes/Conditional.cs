@@ -14,9 +14,9 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public Conditional()
         {
-            logger.Info("Inicio Condicional");
+            //logger.Info("Inicio Condicional");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
-            logger.Info("Fin Condicional");
+            //logger.Info("Fin Condicional");
         }
 
         public Conditional(string itemText)

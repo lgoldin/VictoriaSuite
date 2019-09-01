@@ -25,14 +25,14 @@ namespace Victoria.Shared
 
         public virtual Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {   
-            logger.Info("Inicio Ejecutar Nodo");
+            //logger.Info("Inicio Ejecutar Nodo");
             if (this.NextNode != null)
             {
-                logger.Info("Fin Ejecutar Nodo");
+                //logger.Info("Fin Ejecutar Nodo");
 
                     return this.NextNode.Execute(variables, NotifyUIMethod);
             }
-            logger.Info("Fin Ejecutar Nodo null");
+            //logger.Info("Fin Ejecutar Nodo null");
 
 
             Debug.Debug.instance().execute(this, NotifyUIMethod,variables);

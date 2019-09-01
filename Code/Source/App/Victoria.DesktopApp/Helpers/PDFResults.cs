@@ -26,7 +26,7 @@ namespace Victoria.DesktopApp.Helpers
 
         public void Print()
         {
-            logger.Info("Inicio Imprimir Resultados");
+            //logger.Info("Inicio Imprimir Resultados");
             List<DataTable> resultsTable = createResultsTables(stages);
 
             //var fileName = simulationPath + "\\resultados.pdf";
@@ -106,7 +106,7 @@ namespace Victoria.DesktopApp.Helpers
             document.Close();
             writer.Close();
             fs.Close();
-            logger.Info("Fin Imprimir Resultados");
+            //logger.Info("Fin Imprimir Resultados");
         }
     }
 }

@@ -25,11 +25,11 @@ namespace Victoria.DesktopApp.Control
         //private Storyboard s;
         public AnimationWindow(IEnumerable<Variable> variables)
         {
-            logger.Info("Inicio Ventana Animación");
+            //logger.Info("Inicio Ventana Animación");
             InitializeComponent();
 
             DoAnimation(variables);
-            logger.Info("Fin Ventana Animación");
+            //logger.Info("Fin Ventana Animación");
         }
 
 
@@ -42,7 +42,7 @@ namespace Victoria.DesktopApp.Control
 
         private void QueueAnimation(object sender, EventArgs e, int i, List<double> valuesList, bool previousLeaveQueue)
         {
-            logger.Info("Inicio Animación Cola");
+            //logger.Info("Inicio Animación Cola");
             if (previousLeaveQueue)
             {
                 canvastest.Children.RemoveAt(0);
@@ -106,19 +106,19 @@ namespace Victoria.DesktopApp.Control
             {
                 trans.BeginAnimation(TranslateTransform.YProperty, anim, HandoffBehavior.Compose);
             }
-            logger.Info("Fin Animación cola");
+            //logger.Info("Fin Animación cola");
         }
 
         //Aca solo se entra si se sumo alguien a la cola
         private Rectangle CreatePerson()
         {
-            logger.Info("Inicio Crear Persona");
+            //logger.Info("Inicio Crear Persona");
             var newPerson = new Rectangle { Width = 10, Height = 10 };
             newPerson.Fill = new SolidColorBrush(Colors.Red);
 
             canvastest.Children.Add(newPerson);
             Canvas.SetLeft(newPerson, LeftValueForNewPerson());
-            logger.Info("Fin Crear Persona");
+            //logger.Info("Fin Crear Persona");
             return newPerson;
         }
 
@@ -143,7 +143,7 @@ namespace Victoria.DesktopApp.Control
 
         private void MoveOnUnitToLeft(Rectangle person)
         {
-            logger.Info("Incio mover en la unidad a la izquierda");
+            //logger.Info("Incio mover en la unidad a la izquierda");
             TranslateTransform trans = new TranslateTransform();
             var anim = new DoubleAnimation();
 
@@ -159,7 +159,7 @@ namespace Victoria.DesktopApp.Control
 
             trans.BeginAnimation(TranslateTransform.XProperty, anim, HandoffBehavior.Compose);
 
-            logger.Info("Fin mover en la unidad a la izquierda");
+            //logger.Info("Fin mover en la unidad a la izquierda");
         }
 
 

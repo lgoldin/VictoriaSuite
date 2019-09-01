@@ -26,7 +26,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Agregar gráfico");
+                //logger.Info("Inicio Agregar gráfico");
                 List<object> parameters = new List<object>();
 
                 var addChartPopUp = new AddChartPopUp();
@@ -46,7 +46,7 @@ namespace Victoria.DesktopApp.Control
                         }
                         break;
                 }
-                logger.Info("Fin Agregar gráfico");
+                //logger.Info("Fin Agregar gráfico");
             }
             catch
             {
@@ -60,7 +60,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Exportar Escenario");
+                //logger.Info("Inicio Exportar Escenario");
                 using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|PDF files (*.pdf)|*.pdf";
@@ -70,7 +70,7 @@ namespace Victoria.DesktopApp.Control
                     if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         ((StageViewModel)this.DataContext).ExportStageCommand.Execute(saveFileDialog.FileName);
                 }
-                logger.Info("Fin Exportar Escenario");
+                //logger.Info("Fin Exportar Escenario");
             }
             catch (Exception ex)
             {
@@ -84,9 +84,9 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Eliminar Gráfico");
+                //logger.Info("Inicio Eliminar Gráfico");
                 ((StageViewModel)this.DataContext).DeleteChartCommand.Execute(null);
-                logger.Info("Fin Eliminar Grafico");
+                //logger.Info("Fin Eliminar Grafico");
             }
             catch
             {
@@ -100,9 +100,9 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio ejecutar Escenario");
+                //logger.Info("Inicio ejecutar Escenario");
                 ((StageViewModel)this.DataContext).StopExecutionStageCommand.Execute(null);
-                logger.Info("Fin Ejecutar Escenario");
+                //logger.Info("Fin Ejecutar Escenario");
             }
             catch
             {
@@ -116,7 +116,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Agregar Animación");
+                //logger.Info("Inicio Agregar Animación");
                 if (!((StageViewModel)this.DataContext).DllConfigurations.Any())
                 {
                     logger.Error("No se encontraron animaciones disponbles. Revise la configuración de Victoria");
@@ -148,7 +148,7 @@ namespace Victoria.DesktopApp.Control
                         }
                         break;
                 }
-                logger.Info("Fin Agregar Animación");
+                //logger.Info("Fin Agregar Animación");
             }
             catch
             {
@@ -160,7 +160,7 @@ namespace Victoria.DesktopApp.Control
 
         private void BtnExecute_Animations(object sender, RoutedEventArgs e)
         {
-            logger.Info("Inicio Ejecutar Animaciones");
+            //logger.Info("Inicio Ejecutar Animaciones");
             var hasVectorVariable = (((StageViewModel)this.DataContext).Variables.Any(v => v.Name.Contains("(")));
             if ((((StageViewModel)this.DataContext).Variables.First(v => v.Name == "T").Values.Any() && 
                 ((StageViewModel)this.DataContext).Animations.Any()) || (hasVectorVariable && ((StageViewModel)this.DataContext).Animations.Any()))
@@ -188,7 +188,7 @@ namespace Victoria.DesktopApp.Control
                 var viewException = new AlertPopUp("No se puede abrir la ventana de animaciones si no se ha ejecutado la simulación o no se han creado animaciones.");
                 viewException.ShowDialog();
             }
-            logger.Info("Fin Ejecutar Animaciones");
+            //logger.Info("Fin Ejecutar Animaciones");
         }
 
         private ObservableCollection<AnimationViewModel> CreateAnimationsClones(ObservableCollection<AnimationViewModel> animations)
@@ -210,7 +210,7 @@ namespace Victoria.DesktopApp.Control
 
         private void BtnInformation_Animations(object sender, RoutedEventArgs e)
         {
-            logger.Info("Información Animaciones");
+            //logger.Info("Información Animaciones");
             var animationInformationPopUp = new AnimationInformationPopup();
             animationInformationPopUp.Show();
         }

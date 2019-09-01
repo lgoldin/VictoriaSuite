@@ -15,9 +15,9 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public CloseDiagram()
         {
-            logger.Info("Inicio Cerrar Diagrama");
+            //logger.Info("Inicio Cerrar Diagrama");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
-            logger.Info("Fin Cerrar Diagrama");
+            //logger.Info("Fin Cerrar Diagrama");
         }
 
         public CloseDiagram(string itemText)

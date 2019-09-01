@@ -12,19 +12,19 @@ namespace Victoria.Shared.AnalisisPrevio
         public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public String obtenerContent(AnalisisPrevio analisisPrevio, string s)
         {
-            logger.Info("Inicio obtener contenido");
+            //logger.Info("Inicio obtener contenido");
             foreach(var item in obtenerPlaceholders(analisisPrevio))
             {
                 s = s.Replace(item.Key, item.Value);
             }
-            logger.Info("Fin obtener contenido");
+            //logger.Info("Fin obtener contenido");
             return s;
 
         }
 
         public string obtenerTemplate(AnalisisPrevio analisisPrevio)
         {
-            logger.Info("Inicio Obtener template");
+            //logger.Info("Inicio Obtener template");
             var template = (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.DeltaT ? @"diagramadT.xml" : @"diagramaEaE.xml");
             if(analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE) { 
                 ObservableCollection<EventoAP> eventos = analisisPrevio.EventosEaE;
@@ -47,13 +47,13 @@ namespace Victoria.Shared.AnalisisPrevio
                 template = !analisisPrevio.Tefs.Contains("TPLL".ToUpper()) && !analisisPrevio.ComprometidosAnterior.Contains("Llegada".ToUpper()) ? @"diagramadTSinLlegadaSinTPLL.xml" : template;
             }
 
-            logger.Info("Fin obtener Template");
+            //logger.Info("Fin obtener Template");
             return template;
         }
 
         public Dictionary<string, string> obtenerPlaceholders(AnalisisPrevio analisisPrevio) 
         {
-            logger.Info("Inicio Obtener Marcadores de Posicion");
+            //logger.Info("Inicio Obtener Marcadores de Posicion");
             var map = new Dictionary<string, string>();
             if(analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE) {
                 EventoAP eventoLlegada = analisisPrevio.ObtenerEventoAP("Llegada");
@@ -66,20 +66,20 @@ namespace Victoria.Shared.AnalisisPrevio
                 map.Add("encadenadorSalida", eventoSalida == null || eventoSalida.Encadenador == null ? "???" : eventoSalida.Encadenador);
             }
             map.Add("resultados", generarResultadosParaPlaceholder(analisisPrevio.VariablesResultado));
-            logger.Info("Fin Obtener Marcadores de Posicion");
+            //logger.Info("Fin Obtener Marcadores de Posicion");
             return map;
         }
 
         private string generarResultadosParaPlaceholder(ObservableCollection<VariableAP> variablesResultado)
         {
-            logger.Info("Inicio generar resultados para marcadores de posicion");
+            //logger.Info("Inicio generar resultados para marcadores de posicion");
             var resultadoStr = "";
             foreach (var resultado in variablesResultado)
             {
                 resultadoStr = resultadoStr + resultado + ": ";
             }
 
-            logger.Info("Fin generar resultados para marcadores de posicion");
+            //logger.Info("Fin generar resultados para marcadores de posicion");
             return resultadoStr;
         }
     }

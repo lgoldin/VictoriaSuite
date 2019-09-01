@@ -38,13 +38,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Nombre");
+                //logger.Info("Obtener Nombre");
                 return _nombre;
             }
 
             set
             {
-                logger.Info("Setear Nombre");
+                //logger.Info("Setear Nombre");
                 _nombre = value;
             }
         }
@@ -55,13 +55,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Vector");
+                //logger.Info("Obtener Vector");
                 return _vector;
             }
 
             set
             {
-                logger.Info("Setear Vector");
+                //logger.Info("Setear Vector");
                 _vector = value;
             }
         }
@@ -70,13 +70,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Eventos No Condicionados");
+                //logger.Info("Obtener Eventos No Condicionados");
                 return _eventosNoCondicionados;
             }
 
             set
             {
-                logger.Info("Setear Eventos No Condicionados");
+                //logger.Info("Setear Eventos No Condicionados");
                 _eventosNoCondicionados = value;
             }
         }
@@ -85,13 +85,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Eventos Condicionados");
+                //logger.Info("Obtener Eventos Condicionados");
                 return _eventosCondicionados;
             }
 
             set
             {
-                logger.Info("Setear Eventos Condicionados");
+                //logger.Info("Setear Eventos Condicionados");
                 _eventosCondicionados = value;
             }
         }
@@ -100,13 +100,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Condiciones");
+                //logger.Info("Obtener Condiciones");
                 return _condiciones;
             }
 
             set
             {
-                logger.Info("Setear Condiciones");
+                //logger.Info("Setear Condiciones");
                 _condiciones = value;
             }
         }
@@ -115,13 +115,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Encadenador");    
+                //logger.Info("Obtener Encadenador");    
                 return _encadenador;
             }
 
             set
             {
-                logger.Info("Setear Encadenador");
+                //logger.Info("Setear Encadenador");
                 _encadenador = value;
             }
         }
@@ -129,13 +129,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener TEF");
+                //logger.Info("Obtener TEF");
                 return _tef;
             }
 
             set
             {
-                logger.Info("Setear TEF");
+                //logger.Info("Setear TEF");
                 _tef = value;
             }
         }
@@ -143,13 +143,13 @@ namespace Victoria.Shared.AnalisisPrevio
         public string Dimension
         {
             get
-            {   logger.Info("Obtener Dimension");
+            {   //logger.Info("Obtener Dimension");
                 return _dimension;
             }
 
             set
             {
-                logger.Info("Setear Dimension");
+                //logger.Info("Setear Dimension");
                 _dimension = value;
             }
         }
@@ -158,13 +158,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Arrepentimiento");
+                //logger.Info("Obtener Arrepentimiento");
                 return _arrepentimiento;
             }
 
             set
             {
-                logger.Info("Setear Arrepentimiento");
+                //logger.Info("Setear Arrepentimiento");
                 _arrepentimiento = value;
             }
         }
@@ -173,13 +173,13 @@ namespace Victoria.Shared.AnalisisPrevio
         {
             get
             {
-                logger.Info("Obtener Arrepentimiento Str");
+                //logger.Info("Obtener Arrepentimiento Str");
                 return _arrepentimiento ? "Sí" : "No";
             }
 
             set
             {
-                logger.Info("Setear Obtener Arrepentimiento");
+                //logger.Info("Setear Obtener Arrepentimiento");
                 _arrepentimientoStr = value;
             }
         }

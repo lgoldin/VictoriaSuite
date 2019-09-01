@@ -14,9 +14,9 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public RandomNode()
         {
-            logger.Info("Inicio Nodo Aleatorio");
+            //logger.Info("Inicio Nodo Aleatorio");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
-            logger.Info("Fin Nodo Aleatorio");
+            //logger.Info("Fin Nodo Aleatorio");
 
         }
 
