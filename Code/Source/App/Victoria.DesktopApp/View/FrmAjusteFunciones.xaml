@@ -117,14 +117,29 @@
 
                             <Label x:Name="lblTituloFuncion" Content="Funcion" FontWeight="Bold" HorizontalAlignment="Center" FontSize="15" Margin="260,20,250,170" RenderTransformOrigin="0.46,-0.776" />
                             <Label x:Name="lblFuncion" Content="Funcion" FontWeight="SemiBold" HorizontalAlignment="Center" FontSize="15" Margin="260,50,250,140" RenderTransformOrigin="0.46,-0.776" />
-                            <DVC:Chart Name="chart1" Width="500" Background="Gray" Margin="258,87,252,404.857" Grid.RowSpan="2"/>
+                            <DVC:Chart Name="chart1" Width="500" Background="Gray" Margin="258,87,252,404.857" Grid.RowSpan="2">
+                                <DVC:LineSeries                                  
+                                     IndependentValuePath="Key"  
+                                     DependentValuePath="Value">
+                                </DVC:LineSeries>
+
+                            </DVC:Chart>
                             <Label x:Name="lblTituloFuncionInversa" Content="Funcion Inversa" FontWeight="Bold" HorizontalAlignment="Center" FontSize="15" Margin="260,280,250,-90" RenderTransformOrigin="0.46,-0.776" />
                             <Label x:Name="lblFuncionInversa" Content="Funcion" FontWeight="SemiBold" HorizontalAlignment="Center" FontSize="15" Margin="260,310,250,-120" RenderTransformOrigin="0.46,-0.776" />
-                            <DVC:Chart Name="chart2" Width="500" Background="Gray" Margin="258,119.8,251.314,153.2" Grid.Row="1"/>
+
+
+                            <DVC:Chart Canvas.Top="100" Canvas.Left="10" Name="chart2" Background="Gray" Margin="258,120.143,102,152.857" Grid.Row="1">
+                               
+                                    <DVC:LineSeries                                  
+                                     IndependentValuePath="Key"  
+                                     DependentValuePath="Value">
+                                    </DVC:LineSeries>
+                                
+                            </DVC:Chart>
 
                             <Label x:Name="lblTituloDato" Content="Seleccione dato a asociar " FontWeight="Bold" HorizontalAlignment="Center" FontSize="15" Margin="790,40,20,150" RenderTransformOrigin="0.46,-0.776" />
                             <ComboBox x:Name="comboBox"  RenderTransformOrigin="0.497,0.484" Margin="790,87,20,110" SelectionChanged="comboBox_SelectionChanged" Grid.Column="1">
-         
+
                             </ComboBox>
                         </Grid>
 
