@@ -420,6 +420,8 @@ namespace Victoria.DesktopApp.View
             catch (Exception)
             {
                 lGenerados = null;
+                createAlertPopUp("No se pudo graficar la F(x) para el set de datos utilizado");
+
             }
 
             ((ColumnSeries)chart1.Series[0]).ItemsSource = lGenerados;
