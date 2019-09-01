@@ -13,6 +13,8 @@ namespace Victoria.FormulaParser
             EsperandoTerminoDerecho,
         };
 
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
+
         private readonly string formula;
 
         private readonly Expresion expresionRaiz;
@@ -22,13 +24,18 @@ namespace Victoria.FormulaParser
 
         public FormulaParser(string formula)
         {
+            //logger.Info("Inicio Formula Parser");
             this.formula = Regex.Replace(formula, @"\s+", "").ToLower();
 
             this.indice = 0;
             this.indiceAnterior = 0;
 
             this.expresionRaiz = this.ConstruirExpresion();
+
+
+            //logger.Info("Fin Formula Parser");
         }
+
 
         public override string ToString()
         {
@@ -47,6 +54,8 @@ namespace Victoria.FormulaParser
 
         public Elemento ProximoElemento()
         {
+
+            //logger.Info("Inicio Proximo Elemento");
             Elemento elemento = null;
 
             string token = string.Empty;
@@ -153,41 +162,58 @@ namespace Victoria.FormulaParser
                 elemento = new ElementoSeparador(token);
             }
             else
-            {
+            {   
+                //logger.Error("Caracter no esperado: '" + caracter + "'");
                 throw new InvalidOperationException("Caracter no esperado: '" + caracter + "'");
             }
 
+
+
+            //logger.Info("Fin Proximo Elemento");
             return elemento;
         }
 
         public Elemento VerProximoElemento()
         {
+
+            //logger.Info("Inicio Ver Proximo Elemento");
             int indiceOriginal = this.indice;
 
             Elemento elemento = this.ProximoElemento();
 
             this.indice = indiceOriginal;
-
+            
+            //logger.Info("Fin Ver Proximo Elemento");
             return elemento;
         }
 
         public void RetrocedecerElemento()
         {
+
+            //logger.Info("Inicio Retroceder Elemento");
             this.indice = this.indiceAnterior;
+            //logger.Info("Fin Retroceder Elemento");
         }
 
         private Expresion ConstruirExpresion()
         {
+
+            //logger.Info("Construir Expresion");
             return this.ConstruirExpresion(false);
+            
         }
 
         private Expresion ConstruirExpresion(bool unaria)
         {
+
+            //logger.Info("Construir Expresion");
             return this.ConstruirExpresion(unaria, false);
         }
 
         private Expresion ConstruirExpresion(bool unaria, bool argumento)
         {
+
+            //logger.Info("Inicio Construir Expresion");
             Elemento elemento;
 
             Expresion expresionMadre = null;
@@ -228,6 +254,7 @@ namespace Victoria.FormulaParser
                         elemento = this.ProximoElemento();
                         if (!elemento.EsInicioDeAgrupacion())
                         {
+                            //logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
                             throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
                         }
 
@@ -262,6 +289,8 @@ namespace Victoria.FormulaParser
                                 }
                                 else
                                 {
+                                    //logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+          
                                     throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba fin de agrupación o separador.");
                                 }
                             }
@@ -275,6 +304,7 @@ namespace Victoria.FormulaParser
                     }
                     else
                     {
+                        //logger.Error("Estado EsperandoTerminoIzquierdo => Se esperaba inicio de agrupación, signo o valor numérico.");  
                         throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Se esperaba inicio de agrupación, signo o valor numérico.");
                     }
 
@@ -355,6 +385,7 @@ namespace Victoria.FormulaParser
                     }
                     else
                     {
+                        //logger.Error("Estado EsperandoOperador => Se esperaba un elemento fin de agrupacion u operador.");
                         throw new InvalidOperationException("Estado EsperandoOperador => Se esperaba un elemento fin de agrupacion u operador.");
                     }
                 }
@@ -379,6 +410,7 @@ namespace Victoria.FormulaParser
                         elemento = this.ProximoElemento();
                         if (!elemento.EsInicioDeAgrupacion())
                         {
+                            //logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
                             throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
                         }
 
@@ -413,6 +445,7 @@ namespace Victoria.FormulaParser
                                 }
                                 else
                                 {
+                                    //logger.Error("Estado EsperandoTerminoDerecho => Elemento Funcion => Se esperaba fin de agrupación o separador.");
                                     throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Elemento Funcion => Se esperaba fin de agrupación o separador.");
                                 }
                             }
@@ -422,6 +455,7 @@ namespace Victoria.FormulaParser
                     }
                     else
                     {
+                        //logger.Error("Estado EsperandoTerminoDerecho => Se esperaba inicio de agrupación o valor numérico.");
                         throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Se esperaba inicio de agrupación o valor numérico.");
                     }
 
@@ -436,6 +470,7 @@ namespace Victoria.FormulaParser
                 return null;
             }
 
+            //logger.Info("Fin Construir Expresion");
             return expresionActual.PrimeraExpresion();
         }
     }

@@ -18,6 +18,7 @@ using Victoria.Shared.Actors;
 using Victoria.Shared.EventArgs;
 using Victoria.ViewModelWPF.Actors;
 using Variable = Victoria.ModelWPF.Variable;
+using System.Threading.Tasks;
 
 namespace Victoria.ViewModelWPF
 {
@@ -29,6 +30,7 @@ namespace Victoria.ViewModelWPF
         protected new DelegateCommand deleteChartCommand;
         protected new DelegateCommand executeStageCommand;
         protected new DelegateCommand stopExecutionStageCommand;
+        protected new DelegateCommand stopDebugStageCommand;
         protected new DelegateCommand exportStageCommand;
         protected new DelegateCommand addAnimationToCanvasCommand;
         private ObservableCollection<Variable> variables;
@@ -47,6 +49,7 @@ namespace Victoria.ViewModelWPF
         #endregion
 
         #region Properties
+
 
         public List<AnimationConfigurationBase> DllConfigurations 
         {
@@ -88,6 +91,12 @@ namespace Victoria.ViewModelWPF
             }
         }
 
+        // Asi puedo acceder de mainWindows a las variables sin crear una lista nueva
+        public ObservableCollection<Variable> getVariables
+        {
+            get { return variables; }
+        } 
+
         public new List<Variable> FilteredVariables
         {
             get
@@ -128,7 +137,7 @@ namespace Victoria.ViewModelWPF
 
         public ActorSystem SystemActor
         {
-            get { return this.systemActor ?? (this.systemActor = ActorSystem.Create("MySystem", ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig)); }
+            get { return this.systemActor; }
 
             set
             {
@@ -140,7 +149,7 @@ namespace Victoria.ViewModelWPF
         {
             get
             {
-                return this.mainSimulationActor ?? (this.mainSimulationActor = this.SystemActor.ActorOf<MainSimulationActor>("mainSimulationActor"));
+                return this.mainSimulationActor ;
             }
 
             set
@@ -197,6 +206,17 @@ namespace Victoria.ViewModelWPF
             }
         }
 
+        /// <summary>
+        /// Gets StopExecutionSimulationCommand.
+        /// </summary>
+        public new ICommand StopDebugStageCommand
+        {
+            get
+            {
+                return this.stopDebugStageCommand;
+            }
+        }
+        
         /// <summary>
         /// Gets ExportStageCommand.
         /// </summary>
@@ -287,6 +307,8 @@ namespace Victoria.ViewModelWPF
             this.deleteChartCommand = new DelegateCommand(this.DeleteChart);
             this.exportStageCommand = new DelegateCommand(this.ExportStage);
             this.executeStageCommand = new DelegateCommand(this.ExecuteStage);
+            this.debugStageCommand = new DelegateCommand(this.DebugStage);
+            this.stopDebugStageCommand = new DelegateCommand(this.DebugStopExecution);
             this.stopExecutionStageCommand = new DelegateCommand(this.StopExecution);
             this.addAnimationToCanvasCommand = new DelegateCommand(this.AddAnimationToCanvas);
         }
@@ -318,6 +340,8 @@ namespace Victoria.ViewModelWPF
             this.deleteChartCommand = new DelegateCommand(this.DeleteChart);
             this.exportStageCommand = new DelegateCommand(this.ExportStage);
             this.executeStageCommand = new DelegateCommand(this.ExecuteStage);
+            this.debugStageCommand = new DelegateCommand(this.DebugStage);
+            this.stopDebugStageCommand = new DelegateCommand(this.DebugStopExecution);
             this.stopExecutionStageCommand = new DelegateCommand(this.StopExecution);
             this.addAnimationToCanvasCommand = new DelegateCommand(this.AddAnimationToCanvas);
         }
@@ -382,6 +406,11 @@ namespace Victoria.ViewModelWPF
         {
             if (!this.Executing)
             {
+                //Actors
+                this.systemActor = ActorSystem.Create("MySystem", ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig);
+                this.mainSimulationActor = this.systemActor.ActorOf<MainSimulationActor>("mainSimulationActor");
+               
+
                 //Charts
                 foreach (var chart in Charts)
                 {
@@ -389,7 +418,7 @@ namespace Victoria.ViewModelWPF
                 }
 
                 //Animations
-                this.animationRealTimeActor = this.SystemActor.ActorOf<AnimationRealTimeActor>("animationRealTimeActor_" + Guid.NewGuid());
+                this.animationRealTimeActor = this.systemActor.ActorOf<AnimationRealTimeActor>("animationRealTimeActor_" + Guid.NewGuid());
                 var animationsToExecute = this.GetAnimationsToExecute();
                 this.animationRealTimeActor.Tell(new AnimationRealTimeExecution(this.Simulation, this.Variables, animationsToExecute));
                                 
@@ -397,7 +426,33 @@ namespace Victoria.ViewModelWPF
                 this.Simulation.StopExecution(false);
                 this.Simulation.ChangeStatus(SimulationStatus.Started);
                 this.MainSimulationActor.Tell(this.Simulation);
+
+                
             }
+        }
+
+        private void DebugStage()
+        {
+            this.Simulation.SetDebugMode(true);
+            this.ExecuteStage();
+            //this.StopExecution();
+            //if (!this.Executing)
+            //{
+            //    this.Simulation.SetDebugMode(true);
+            //
+            //    this.Simulation.StopExecution(false);
+            //    this.Simulation.ChangeStatus(SimulationStatus.Started);
+            //    this.MainSimulationActor.Tell(this.Simulation);
+            //}
+        }
+
+        private void DebugStopExecution()
+        {
+            this.StopExecution();
+            this.Simulation.StopDebugExecution(true);
+            this.MainSimulationActor.Tell(PoisonPill.Instance);
+            Task shutdownTask = CoordinatedShutdown.Get(this.systemActor).Run(CoordinatedShutdown.PhaseActorSystemTerminate);
+            shutdownTask.Wait();
         }
 
         private void StopExecution()

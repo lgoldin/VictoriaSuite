@@ -22,24 +22,32 @@ namespace Victoria.DesktopApp.Control
     /// </summary>
     public partial class AnimationExecutionWindow : Window
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
+
         public AnimationExecutionWindow(ObservableCollection<AnimationViewModel> animations)
         {
+            //logger.Info("Inicio Ejecución de Animación");
             InitializeComponent();
             ((AnimationExecutionViewModel)this.DataContext).ExecuteButtonEnabled = true;
             Closing += ((AnimationExecutionViewModel)this.DataContext).OnWindowClosing;
             ((AnimationExecutionViewModel)this.DataContext).Animations = animations;
             var variables = CreateVariablesClone(animations[0].AnimationConfig.Variables);
             ((AnimationExecutionViewModel)this.DataContext).Variables = variables;
+            //logger.Info("Fin Ejecución de Animación");
+
         }
 
         private ObservableCollection<ModelWPF.Variable> CreateVariablesClone(IEnumerable<ModelWPF.Variable> variables)
         {
+            //logger.Info("Inicio Crear Vairables Clon");
             var variablesClones = new ObservableCollection<ModelWPF.Variable>();
             foreach(var variable in variables)
             {
                 variablesClones.Add(CreateCopyOfVariable(variable));
             }
 
+            //logger.Info("Fin Crear Vairables Clon");
             return variablesClones;
         }
 
@@ -50,6 +58,7 @@ namespace Victoria.DesktopApp.Control
 
         private ModelWPF.Variable CreateCopyOfVariable(ModelWPF.Variable variable)
         {
+            //logger.Info("Inicio Crear copia de variable");
             var variableClone = new ModelWPF.Variable
             {
                 VariableComponent = new Shared.Variable(),
@@ -65,6 +74,8 @@ namespace Victoria.DesktopApp.Control
 
             variableClone.ActualValue = 0;
 
+
+            //logger.Info("Fin Crear copia de variable");
             return variableClone;
         }
 
@@ -72,24 +83,29 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
+                //logger.Info("Inicio Ejecutar Animaciones");
                 ((AnimationExecutionViewModel)this.DataContext).ExecuteButtonEnabled = false;
-                ((AnimationExecutionViewModel)this.DataContext).ExecuteAnimationsCommand.Execute(null);      
+                ((AnimationExecutionViewModel)this.DataContext).ExecuteAnimationsCommand.Execute(null);
+                //logger.Info("Fin Crear copia de variable");
             }
             catch (Exception ex)
-            {
+            {   
                 var viewException = new AlertPopUp("Se produjo un error al intentar ejecutar las animaciones. Por favor revisa la configuración de las mismas.");
+                //logger.Error("Se produjo un error al intentar ejecutar las animaciones:" + ex.Message);
                 viewException.ShowDialog();
             }
         }
 
         private void BtnStop_Animations(object sender, RoutedEventArgs e)
         {
+            //logger.Info("Inicio Parar Animaciones");
             ((AnimationExecutionViewModel)this.DataContext).ExecuteButtonEnabled = true;
             ((AnimationExecutionViewModel)this.DataContext).StopAnimationsCommand.Execute(null);
+            //logger.Info("Fin Parar Animaciones");
         }
 
         private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
+        {   
             DragMove();
         }
 

@@ -12,7 +12,7 @@ namespace Victoria.DesktopApp.Helpers
 {
     class ExcelResults : Results, IResults
     {
-
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         public ExcelResults(String _simulationPath, String _fileName, IList<StageViewModelBase> _stages, TimeSpan _simulationTotalTime) 
             : base(_simulationPath, _fileName, _stages, _simulationTotalTime)
         {
@@ -28,7 +28,7 @@ namespace Victoria.DesktopApp.Helpers
              corridas del análisis de sensibilidad. 
              La primera fila (fila de títulos) debe contener el nombre de cada variable.
             */
-
+            //logger.Info("Inicio Imprimir Excel");
             List<DataTable> resultsTable = createResultsTables(stages);
             XLWorkbook oWB = new XLWorkbook();
             var ws = oWB.Worksheets.Add("Resultados");
@@ -102,6 +102,7 @@ namespace Victoria.DesktopApp.Helpers
             ws.Columns().AdjustToContents(5.0, 100.0);
 
             oWB.SaveAs(simulationPath + "\\" + fileName);
+            //logger.Info("Fin Imprimir Excel");
         }
     }
 }

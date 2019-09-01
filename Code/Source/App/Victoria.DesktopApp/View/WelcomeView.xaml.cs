@@ -17,6 +17,7 @@ namespace Victoria.DesktopApp.View
         private Window1 diagramWindow;
 
         public string SimulationXML { get; set; } //acá pone una url relativa a la pc donde esta el .vic
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
 
         public Window1 DiagramWindow 
         {
@@ -56,6 +57,7 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
+                //logger.Info("Abrir Simulacion");
                 using (var openFileDialog = new OpenFileDialog())
                 {
                     openFileDialog.Filter = "Vic files (*.vic)|*.vic";
@@ -68,41 +70,54 @@ namespace Victoria.DesktopApp.View
                         mainWindow.Show();
                     }
                 }
+                //logger.Info("Fin Abrir Simulacion");
+
             }
             catch (Exception ex)
             {
                 var viewExpection = new AlertPopUp("Se produjo un error al abrir la silumación. Para ver detalles, despliegue el control correspondiente.");
                 viewExpection.ShowDialog();
+                //logger.Error("Se produjo un error al abrir la silumación: "+ex.Message);
             }
         }
 
         private void btnAnalisisPrevio_OnClick(object sender, RoutedEventArgs e)
         {
-            
-                var addExercisePopUp = new AddAnalisisPrevioPopUp(DiagramWindow);
+            //logger.Info("Inicio Analisis Previo");
+            var addExercisePopUp = new AddAnalisisPrevioPopUp(DiagramWindow);
                 addExercisePopUp.ShowDialog();
-        
+            //logger.Info("Fin Analisis Previo");
+
         }
 
         private void BtnMinimize_OnClick(object sender, RoutedEventArgs e)
         {
+            //logger.Info("Inicio Boton Minimizar");
             this.WindowState = WindowState.Minimized;
+            //logger.Info("Fin Boton Minimizar");
+
         }
 
         private void BtnClose_OnClick(object sender, RoutedEventArgs e)
         {
+            //logger.Info("Inicio Boton Cerrar");
             this.Close();
+            //logger.Info("Fin Boton Cerrar");
+            //logger.Info("FIN VICTORIA SUITE");
+
         }
 
         private void BtnNew_Exercise_OnClick(object sender, RoutedEventArgs e)
         {
+            //logger.Info("Inicio Nuevo Ejercicio");
             DiagramWindow.diagrama().Children.Clear();
             DiagramWindow.diagrama().AbrirDiagrama();
             if (DiagramWindow.diagrama().Children.Count > 0)
             {
                 DiagramWindow.Height = 650;
                 DiagramWindow.ShowDialog();
-            }            
+            }
+            //logger.Info("Fin Nuevo Ejercicio");
         }
     }
 }

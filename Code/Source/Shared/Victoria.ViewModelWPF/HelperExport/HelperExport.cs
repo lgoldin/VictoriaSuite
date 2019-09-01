@@ -13,10 +13,15 @@ namespace Victoria.ViewModelWPF.HelperExport
 {
     public static class HelperExport
     {
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
+
+
         public static void ExportStagesToExcel(IList<StageViewModelBase> stages, string simulacionFileName)
         {
+            
             try
             {
+                //logger.Info("Inicio Exportar a Excel");
                 OfficeOpenXml.ExcelPackage pck = new OfficeOpenXml.ExcelPackage();
 
                 foreach (StageViewModel s in stages)
@@ -98,15 +103,18 @@ namespace Victoria.ViewModelWPF.HelperExport
                 }
 
                 pck.SaveAs(new FileInfo(simulacionFileName));
+                //logger.Info("Fin Exportar a Excel");
             }
             catch (Exception e)
             {
+                //logger.Error("Error Exportar a Excel:"+e.Message);
                 throw e;
             }
         }
 
         public static void ExportStagesToPDF(IList<StageViewModelBase> stages, string simulacionFileName)
         {
+            //logger.Info("Inicio Exportar a PDF");
             Document doc = null;
             iTextSharp.text.pdf.PdfWriter writer = null;
             try
@@ -187,10 +195,12 @@ namespace Victoria.ViewModelWPF.HelperExport
                     }
 
                     doc.NewPage();
+                    //logger.Info("Fin Exportar a PDF");
                 }
             }
             catch (Exception e)
             {
+                //logger.Error("Error Exportar a PDF:" + e.Message);
                 throw e;
             }
             finally

@@ -11,7 +11,11 @@ namespace Victoria.Shared.Interfaces
 
         void StopExecution(bool value);
 
+        void StopDebugExecution(bool value);
+
         bool CanContinue();
+
+        bool DebugginMode();
 
         void Update(IStageSimulation simulation);
 

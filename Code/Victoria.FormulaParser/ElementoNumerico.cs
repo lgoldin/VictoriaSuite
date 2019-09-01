@@ -8,7 +8,9 @@ namespace Victoria.FormulaParser
 
         public ElementoNumerico(string numero)
         {
+            //logger.Info("Inicio Elemento Numerico");
             this.numero = numero;
+            //logger.Info("Fin Elemento Numerico");
         }
 
         public override bool EsNumerico()

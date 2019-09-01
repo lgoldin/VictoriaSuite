@@ -9,15 +9,23 @@ using Victoria.Shared.Parser;
 using Victoria.Shared.AnalisisPrevio;
 
 
+
 namespace Victoria.Shared
 {
     public static class XMLParser
     {
+        
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
+
         public static Simulation GetSimulation(string xmlString)
         {
             try
             {
+
+                //logger.Info("Inicio Obtener Simulacion");
                 var doc = XElement.Parse(xmlString);
+
+                Dictionary<string,bool> nodosBreakPoint = NodosBreakPoint(doc.Descendants("DesignerItem"));                
 
                 var diagramasPreProcesados = doc.Descendants("Diagrama").Where(diag => diag.Attribute("Name").Value != "ModeloAnalisisSensibilidad").Select(diag => new PreParsedDiagram
                 {
@@ -26,7 +34,7 @@ namespace Victoria.Shared
                     {
                         Name = diag.Attribute("Name").Value
                     },
-                    nodos = parseNodes(diag.Descendants("flowchart").Descendants("block"))
+                    nodos = parseNodes(diag.Descendants("flowchart").Descendants("block"), nodosBreakPoint)
                 });
 
                 var variables = parseVariables(doc.Descendants("variables").First());
@@ -60,37 +68,59 @@ namespace Victoria.Shared
                     stages = new List<Stage>();
                 }
 
+                //logger.Info("Fin Obtener Simulacion");
                 return new Simulation(diagramas, variables, stages);
             }
             catch (Exception e)
-            {                
+            {
+                //logger.Error("Error al parsear la simulacion: "+e.Message);
                 throw new ParsingException("Error al parsear la simulacion", e);
             }
+
         }
 
-        static Dictionary<string, PreParsedNode> parseNodes(IEnumerable<XElement> XmlNodes)
+        static Dictionary<string,bool> NodosBreakPoint(IEnumerable<XElement> designerItems)
         {
-            return XmlNodes.Select(node => parseBlock(node)).ToDictionary(node => node.name);
+            Dictionary<string, bool> dict = new Dictionary<string, bool>();
+
+            foreach (XElement e in designerItems)
+            {
+                var nodo_id = e.Elements().Where(n => n.Name.LocalName.Equals("ID")).Select(n => n.Value).First();
+                var nodo_has_bp = e.Elements().Where(n => n.Name.LocalName.Equals("Content")).Select(n => n.Value.Contains("BreakPoint")).First();
+
+                dict.Add(nodo_id, nodo_has_bp);
+            }
+
+            return dict;
         }
 
-        static PreParsedNode parseBlock(XElement node)
+        static Dictionary<string, PreParsedNode> parseNodes(IEnumerable<XElement> XmlNodes,Dictionary<string,bool> nodosBreakPoint)
         {
+            return XmlNodes.Select(node => parseBlock(node, nodosBreakPoint)).ToDictionary(node => node.name);
+        }
+
+        static PreParsedNode parseBlock(XElement node, Dictionary<string, bool> nodosBreakPoint)
+        {
+            bool hasBreakPoint;
+
+            nodosBreakPoint.TryGetValue(node.Attribute("id").Value.ToString(),out hasBreakPoint);
+
             switch (node.Attribute("type").Value)
             {
                 case "nodo_titulo_inicializador":
                     return parseNodoInicializador(node);
                 case "nodo_sentencia":
-                    return parseNodoSentencia(node);
+                    return parseNodoSentencia(node,hasBreakPoint);
                 case "nodo_iterador":
                     return parseNodoIterador(node);
                 case "nodo_fin":
                     return parseNodoFin(node);
                 case "nodo_condicion":
-                    return parseNodoCondicion(node);
+                    return parseNodoCondicion(node,hasBreakPoint);
                 case "nodo_inicializador":
-                    return parseNodoDiagrama(node, true);
+                    return parseNodoDiagrama(node, true, false);
                 case "nodo_diagrama":
-                    return parseNodoDiagrama(node, false);
+                    return parseNodoDiagrama(node, false, hasBreakPoint);
                 case "nodo_condicion_cierre":
                     return parseNodoCondicionCierre(node);
                 case "nodo_referencia":
@@ -108,6 +138,7 @@ namespace Victoria.Shared
 
         static Dictionary<string, Variable> parseVariables(XElement node)
         {
+            //logger.Info("Inicio parse Variables");
             JObject vars = JObject.Parse(node.Value);
             var result = new Dictionary<string, Variable>();
             foreach (var variable in vars["variables"])
@@ -158,6 +189,7 @@ namespace Victoria.Shared
                 }
             }
 
+            //logger.Info("Fin parse Variables");
             return result;
         }
 
@@ -168,6 +200,8 @@ namespace Victoria.Shared
 
         private static PreParsedNode parseNodoIterador(XElement node)
         {
+
+            //logger.Info("Inicio parse nodo Iterador");
             var ns = new NodeIterator();
             var code = node.Attribute("caption").Value.Trim();
             code = code.Replace(" ", string.Empty);
@@ -177,6 +211,8 @@ namespace Victoria.Shared
             ns.ValorFinal = Convert.ToInt32(parametros[1]);
             ns.Incremento = Convert.ToInt32(parametros[2]);
             ns.VariableName = (parametros.Count() > 3) ? parametros[3] : string.Empty;
+
+            //logger.Info("Fin parse nodo Iterador");
             return new PreParsedNodeIterator()
             {
                 name = ns.Name,
@@ -185,11 +221,15 @@ namespace Victoria.Shared
             };
         }
 
-        static PreParsedNode parseNodoSentencia(XElement node)
+        static PreParsedNode parseNodoSentencia(XElement node, bool hasBreakPoint)
         {
+            //logger.Info("Inicio Parse Nodo Sentencia");
             var ns = new NodeSentence();
             ns.Code = node.Attribute("caption").Value;
             ns.Name = node.Attribute("id").Value;
+            ns.HasBreakPoint = hasBreakPoint;
+            //logger.Info("Fin Parse Nodo Sentencia");
+
             return new PreParsedNode
             {
                 name = ns.Name,
@@ -200,10 +240,13 @@ namespace Victoria.Shared
 
         static PreParsedNode parseNodoInicializador(XElement node)
         {
+            //logger.Info("Inicio Parse Nodo Inicializador");
             var ns = new Node
             {
                 Name = node.Attribute("id").Value,
             };
+
+            //logger.Info("Fin Parse Nodo Inicializador");
             return new PreParsedNode
             {
                 name = node.Attribute("id").Value,
@@ -214,10 +257,12 @@ namespace Victoria.Shared
 
         static PreParsedNode parseNodoFin(XElement node)
         {
+            //logger.Info("Inicio parse Nodo Fin");
             var ns = new Node
             {
                 Name = node.Attribute("id").Value,
             };
+            //logger.Info("Fin parse Nodo Fin");
             return new PreParsedNode
             {
                 name = node.Attribute("id").Value,
@@ -226,15 +271,18 @@ namespace Victoria.Shared
             };
         }
 
-        static PreParsedNode parseNodoDiagrama(XElement node, bool isInitializer)
+        static PreParsedNode parseNodoDiagrama(XElement node, bool isInitializer, bool hasBreakPoint)
         {
+            //logger.Info("Inicio Parse Nodo Diagrama");
             var ns = new NodeDiagram
             {
                 Name = node.Attribute("id").Value,
                 DiagramName = node.Attribute("caption").Value,
-                IsInitializer = isInitializer
+                IsInitializer = isInitializer,
+                HasBreakPoint = hasBreakPoint
 
             };
+            //logger.Info("Fin Parse Nodo Diagrama");
             return new PreparsedNodeDiagram
             {
                 name = node.Attribute("id").Value,
@@ -244,13 +292,16 @@ namespace Victoria.Shared
             };
         }
 
-        static PreParsedNode parseNodoCondicion(XElement node)
+        static PreParsedNode parseNodoCondicion(XElement node, bool hasBreakPoint)
         {
+            //logger.Info("Inicio Parse Nodo Condicion");
             var ns = new NodeCondition
             {
                 Name = node.Attribute("id").Value,
-                Code = node.Attribute("caption").Value
+                Code = node.Attribute("caption").Value,
+                HasBreakPoint = hasBreakPoint
             };
+            //logger.Info("Fin Parse Nodo Condicion");
             return new PreParsedNodeCondition
             {
                 name = ns.Name,
@@ -261,10 +312,12 @@ namespace Victoria.Shared
 
         static PreParsedNode parseNodoCondicionCierre(XElement node)
         {
+            //logger.Info("Inicio Parse Nodo Condicion Cierre");
             var ns = new Node
             {
                 Name = node.Attribute("id").Value,
             };
+            //logger.Info("Fin Parse Nodo Condicion Cierre");
             return new PreparsedNodeEndCondition
             {
                 name = node.Attribute("id").Value,
@@ -275,9 +328,12 @@ namespace Victoria.Shared
 
         static PreParsedNode parseNodoReferencia(XElement node)
         {
+            //logger.Info("Inicio Parse Nodo Referencia");
             var ns = new NodeReferencia();
             ns.Code = node.Attribute("caption").Value;
             ns.Name = node.Attribute("id").Value;
+
+            //logger.Info("Inicio Parse Nodo Referencia");
             return new PreParsedNodeReferencia
             {
                 name = node.Attribute("id").Value,
@@ -288,11 +344,14 @@ namespace Victoria.Shared
 
         static PreParsedNode parseNodoResultado(XElement node)
         {
+            //logger.Info("Inicio Parse Nodo Resultado");
             var ns = new NodeResult
             {
                 Name = node.Attribute("id").Value,
                 Variables = node.Attribute("caption").Value.Split(':')
             };
+
+            //logger.Info("Fin Parse Nodo Referencia");
             return new PreParsedNode
             {
                 name = ns.Name,
@@ -303,10 +362,13 @@ namespace Victoria.Shared
 
         static PreParsedNode parseNodoTituloDiagrama(XElement node)
         {
+            //logger.Info("Inicio Parse Nodo Titulo Diagrama");
             var ns = new Node
             {
                 Name = node.Attribute("id").Value,
             };
+
+            //logger.Info("Fin Parse Nodo Titulo Diagrama");
             return new PreParsedNode
             {
                 name = node.Attribute("id").Value,
@@ -317,11 +379,13 @@ namespace Victoria.Shared
 
         static PreParsedNode parseNodoRandom(XElement node)
         {
+            //logger.Info("Inicio Parse Nodo Random");
             var ns = new NodeRandom
             {
                 Name = node.Attribute("id").Value,
                 Code = node.Attribute("caption").Value
             };
+            //logger.Info("Fin Parse Nodo Random");
             return new PreParsedNode
             {
                 name = ns.Name,
@@ -332,28 +396,32 @@ namespace Victoria.Shared
 
         static List<Diagram> posprocesarDiagramas(IEnumerable<PreParsedDiagram> diagramasPreProcesados)
         {
+            //logger.Info("Inicio posprocesar Diagramas");
             var result = new List<Diagram>();
             foreach (PreParsedDiagram preD in diagramasPreProcesados)
             {
                 preD.diagram.Nodes = procesarNodos(preD.nodos, diagramasPreProcesados);
                 result.Add(preD.diagram);
             }
+
+            //logger.Info("Fin posprocesar Diagramas");
             return result;
         }
 
         static ObservableCollection<Node> procesarNodos(Dictionary<string, PreParsedNode> nodos, IEnumerable<PreParsedDiagram> diagramasPreProcesados)
         {
+            //logger.Info("Inicio procesar Nodos");
             var result = new List<Node>();
             foreach (var nodoPreProcesado in nodos.Values)
             {
                 nodoPreProcesado.posprocesar(nodos, result);
             }
-
+            //logger.Info("Fin procesar Nodos");
             return new ObservableCollection<Node>(result);
         }
 
         static List<Stage> parseStages(XElement stages)
-        {
+        {   
             return stages.Descendants("Stage").Select(st => new Stage
             {
                 Name = st.Attribute("Name").Value,

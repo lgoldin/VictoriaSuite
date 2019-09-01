@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Victoria.FormulaParser\Victoria.FormulaParser.csproj">
-      <Project>{E54DC0C5-2EB1-4966-87D7-E74E105AB314}</Project>
+      <Project>{e54dc0c5-2eb1-4966-87d7-e74e105ab314}</Project>
       <Name>Victoria.FormulaParser</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Victoria.Shared.EventArgs;
@@ -8,7 +9,13 @@ namespace Victoria.Shared
 {
     public class Simulation : ISimulation
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         private bool stopExecution { get; set; }
+
+        private bool stopDebugExecution { get; set; }
+
+        private bool debugginMode = false;
 
         private List<Diagram> diagrams { get; set; }
 
@@ -22,41 +29,68 @@ namespace Victoria.Shared
 
         public Simulation(IList<Diagram> diagrams, Dictionary<string, Variable> variables)
         {
+            this.stopDebugExecution = this.debugginMode ? true : false;
+
+            //logger.Info("Inicio Simulacion");
             this.diagrams = diagrams.ToList();
             this.variables = variables.Values.ToList();
             if (!this.variables.Any(v => "T".Equals(v.Name)))
             {
                 this.variables.Insert(0, new Variable() { ActualValue = 0, InitialValue = 0, Name = "T" });
             }
+            //logger.Info("Fin Simulacion");
         }
 
 		public Simulation(List<Diagram> diagramas, Dictionary<string, Variable> variables, List<Stage> stages) : this(diagramas, variables)
 		{
-			this.Stages = stages;
+            this.stopDebugExecution = this.debugginMode ? true : false;
+            this.Stages = stages;
 		}
 
         public bool HasStatusChanged()
         {
+            //logger.Info("Validacion de cambio de estado");
             return this.SimulationStatusChanged != null;
         }
 
         public void ChangeStatus(SimulationStatus status)
         {
+            //logger.Info("Inicio Cambiar de estado");
             this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
+            //logger.Info("Fin Cambiar de estado");
+        }
+
+        // Activa y desactiva el modo debugs
+        public bool DebugginMode()
+        {
+            return this.debugginMode;
+        }
+
+        public void SetDebugMode(bool value){
+            this.debugginMode = value;
         }
 
         public void StopExecution(bool value)
         {
+            //logger.Info("Inicio Parar Execucion");
             this.stopExecution = value;
+            //logger.Info("Fin Parar Execucion");
+        }
+
+        public void StopDebugExecution(bool value)
+        {
+            this.stopDebugExecution = value;
         }
 
         public bool CanContinue()
         {
-            return this.stopExecution == false;
+            //return this.stopExecution == false;
+            return this.debugginMode ? !this.stopDebugExecution : !this.stopExecution;
         }
 
         public void Update(IStageSimulation stageSimulation)
         {
+            //logger.Info("Inicio Actualizar");
             foreach (var variable in stageSimulation.GetVariables())
             {
                 if (variable is StageVariableArray)
@@ -80,15 +114,18 @@ namespace Victoria.Shared
             {
                 this.ChangeStatus(SimulationStatus.Stoped);
             }
+            //logger.Info("Fin Actualizar");
         }
 
         public List<Diagram> GetDiagrams()
         {
+            //logger.Info("Obtener Diagramas");
             return this.diagrams;
         }
 
         public List<Variable> GetVariables()
         {
+            //logger.Info("Obtener Variables");
             return this.variables;
         }
 
@@ -99,6 +136,7 @@ namespace Victoria.Shared
 
         public double GetVariableValue(string name)
         {
+            //logger.Info("Inicio obtener valor variable");
             var regex = new Regex(@"[A-Z0-9a-z]+[(][0-9]+[)]");
             if (regex.IsMatch(name))
             {
@@ -114,7 +152,7 @@ namespace Victoria.Shared
                     }
                 }
             }
-
+            //logger.Info("Fin obtener valor variable");
             return this.GetVariables().First(x => x.Name == name).ActualValue;
         }
     }

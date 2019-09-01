@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Microsoft.Win32;
 using Victoria.DesktopApp;
 using Victoria.Shared;
+using Victoria.Shared.Debug;
 using Victoria.DesktopApp.Behavior;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
@@ -25,6 +26,12 @@ using System.Printing;
 using System.Reflection;
 using Victoria.DesktopApp.DiagramDesigner;
 using Victoria.DesktopApp.Helpers;
+using System.Data;
+using System.Collections.ObjectModel;
+using Victoria.DesktopApp.DiagramDesigner.Commands;
+using Victoria.ViewModelWPF;
+using System.Threading;
+using Victoria.UI.SharedWPF;
 
 namespace DiagramDesigner
 {
@@ -47,14 +54,26 @@ namespace DiagramDesigner
         public static RoutedCommand SelectAll = new RoutedCommand();
 
         public DataGrid dataGridVariables { get; internal set; }
+        public DataGrid dataGridVariablesSimulation { get; internal set; }
+        public Button Continue_btn { get; internal set; }
         public DataGridComboBoxColumn dimensiones { get; internal set; }
-        public ComboBox functionsComboBox { get; internal set; }
-        public AnalisisPrevio analisisPrevio { get; set; }
-        
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
 
+        public GroupBox groupBoxVariablesSimulation { get; internal set; }
+        public List<Button> debugButtonList { get; internal set; }
+        public String previous_node_id { get; internal set; } 
+        public AnalisisPrevio analisisPrevio { get; set; }
+        private bool errorFound = false;
+
+        static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
+
+        private MainWindow mainWindow;
 
     public DesignerCanvas()
         {
+
+            //logger.Info("Inicio Diseñar Canvas");
+
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, Save_Executed));
@@ -63,6 +82,16 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, Copy_Executed, Copy_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, Paste_Executed, Paste_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, Delete_Executed, Delete_Enabled));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Find, Debuger_Executed));
+
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.StepOver, StepOver_Enabled));
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.StepInto, StepInto_Enabled));
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.Continue, Continue_Enabled));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Stop, Stop_Enabled));
+            this.CommandBindings.Add(new CommandBinding(DebugCommands.ConditionedContinue, ConditionedContinue_Enabled));
+
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.Group, Group_Executed, Group_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.Ungroup, Ungroup_Executed, Ungroup_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.BringForward, BringForward_Executed, Order_Enabled));
@@ -78,24 +107,200 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.DistributeHorizontal, DistributeHorizontal_Executed, Distribute_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.DistributeVertical, DistributeVertical_Executed, Distribute_Enabled));
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.SelectAll, SelectAll_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.PrintPreview, Imprimir_Executed));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, Help_Executed));
+
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
+
+            //Capturo cuando se precionan los botones del teclado
+            this.KeyDown += new KeyEventHandler(this.OnKeyDown);
 
             this.AllowDrop = true;
             Clipboard.Clear();
+
+            //logger.Info("Fin Diseñar Canvas");
         }
+
+
+        #region DebugCommands
+        private void Stop_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+          this.StopDebugProcess();
+        }
+
+        // Se hace el metodo publico para que pueda ser llamado cuando se cierra la ventana de diagrama 
+        public void StopDebugProcess()
+        {
+            if (Debug.instance().debugModeOn)
+            {
+                Debug.instance().debugCommand = Debug.Mode.Stop;
+                this.mainWindow.stopDebug();
+
+                Debug.instance().debugModeOn = false;
+                Debug.instance().jumpToNextNode = true;
+
+                this.setDebugButtonsVisibility(Visibility.Hidden);
+                groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
+                dataGridVariablesSimulation.Visibility = Visibility.Hidden;
+
+                DesignerItem.setDebugColor(null);
+            }         
+        }
+
+        
+
+        private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {   
+            this.executeDebugCommand( Debug.Mode.StepOver );
+        }
+
+        private void StepInto_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.executeDebugCommand( Debug.Mode.StepInto );
+        }
+
+        private void Continue_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.executeDebugCommand( Debug.Mode.Continue );
+        }
+
+        private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.showConditionedContinuePopUp();            
+        }
+
+        private void showConditionedContinuePopUp()
+        {
+            ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
+            popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
+            popup.ShowDialog();
+
+            if (popup.Result == DialogResult.Accept)
+            {
+                CCWaitingPopUp infoPopUp = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
+                infoPopUp.Show();
+                Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
+                this.executeDebugCommand(Debug.Mode.ConditionedContinue);
+                infoPopUp.Close();
+
+            }
+        }
+
+        private void executeDebugCommand( Debug.Mode command)
+        {
+            Debug.instance().debugCommand = command;
+            Debug.instance().jumpToNextNode = true;
+
+            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
+            manualResetEvent.WaitOne();
+
+            DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
+        }
+
+        private DesignerItem getNodeByID(string id_to_find)
+        {
+            return id_to_find != null ? this.Children.OfType<DesignerItem>().Where(x => x.ID.ToString() == id_to_find).FirstOrDefault() : null;
+        }
+
+        public void setDebugButtonsVisibility(Visibility _visibility)
+        {
+            foreach (Button b in this.debugButtonList)
+            {
+                b.Visibility = _visibility;
+            }
+        }
+
+        #endregion
+
+        #region Find Command
+
+        private void Debuger_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(this.mainWindow != null && Debug.instance().debugModeOn)
+                this.mainWindow.stopDebug();
+
+            // Creo la  ventan de simulacion y NO la muestro
+            this.ValidarYLanzarSimulador(false);
+
+            if (!this.errorFound)
+            {
+                //Hago visible los botones de Debug
+                this.setDebugButtonsVisibility(Visibility.Visible);
+
+                // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
+                dataGridVariablesSimulation.Items.Clear();
+                ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
+                foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
+                    dataGridVariablesSimulation.Items.Add(variable);
+                }
+
+                this.mainWindow.executeSimulation(true);
+
+                //Muestro Datagrid
+                groupBoxVariablesSimulation.Visibility = Visibility.Visible;
+                dataGridVariablesSimulation.Visibility = Visibility.Visible;
+
+                Debug.instance().initilize();
+                Debug.instance().colorSignalEvent = DesignerCanvas.manualResetEvent;
+
+                //Veo de encontrar el primer nodo con breakpoing si es que existe 
+                if (DesignerItem.ifAnyNodeHasBreakpoint())
+                {
+                    manualResetEvent.WaitOne();
+
+                    //Cambio el color del primer nodo con breakpoint
+                    DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );
+                }
+
+            }
+        }
+
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            Key actualKey = (e.SystemKey == Key.None) ? e.Key : e.SystemKey;
+            switch (actualKey)
+            {
+                case Key.F10:
+                    this.executeDebugCommand(Debug.Mode.StepOver);
+                    break;
+
+                case Key.F11:
+                    this.executeDebugCommand(Debug.Mode.StepInto);
+                    break;
+
+                case Key.F5:
+                    this.executeDebugCommand(Debug.Mode.Continue);
+                    break;
+
+                case Key.F6:
+                    this.showConditionedContinuePopUp();
+                    break;
+
+                case Key.F12:
+                    this.executeDebugCommand(Debug.Mode.Stop);
+                    break;
+            }
+        }
+
+
+        #endregion
 
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+
+            //logger.Info("Inicio Imprimir");
             ScrollViewer scroll = (ScrollViewer)this.Parent;
             scroll.ScrollToTop();
             ImprimirDiagrama();
+            //logger.Info("Fin Imprimir");
         }
 
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+
+            //logger.Info("Inicio Ejecucion Ayuda");
             DarPDFAlUsuario();
+
+            //logger.Info("Fin Ejecucion Ayuda");
         }
 
         #region New Command
@@ -129,7 +334,8 @@ namespace DiagramDesigner
 
         private void Simulate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ValidarYLanzarSimulador();
+            Debug.instance().debugModeOn = false;
+            ValidarYLanzarSimulador(true);
         }
 
         #endregion
@@ -227,17 +433,7 @@ namespace DiagramDesigner
 
         #endregion
 
-        //El comboBox se carga aparte porque la ventana diagramador se crea antes 
-        // de que se generen las funciones FDP que toma como valores
-        public void updateComboBox(AnalisisPrevio analisisPrevio)
-        {
-            this.functionsComboBox.Visibility = Visibility.Visible;
-            this.functionsComboBox.SelectedIndex = 0; //Primer valor es el default
-            this.functionsComboBox.ItemsSource = analisisPrevio.listFDP;
-            //NodeRandomValue.setValue(stringValue);
-        }
-
-       
+    
 
         #region BringForward Command
 
@@ -638,6 +834,7 @@ namespace DiagramDesigner
 
         private XElement SerializarDesignerItems(IEnumerable<DesignerItem> designerItems)
         {
+            //logger.Info("Inicio Serializar Diseñador Items");
             List<Connector> connectors2 = new List<Connector>();
             List<Connection> connectors3 = new List<Connection>();
 
@@ -668,11 +865,14 @@ namespace DiagramDesigner
 
                                               )
                                    ));
+            //logger.Info("Fin Serializar Diseñador Items");
             return serializedItems;
         }
 
         private XElement SerializarConnections(IEnumerable<Connection> connections)
         {
+
+            //logger.Info("Inicio Serializar Conexeiones");
             var serializedConnections = new XElement("Connections",
                            from connection in connections
                            select new XElement("Connection",
@@ -688,11 +888,13 @@ namespace DiagramDesigner
                                      )
                                   );
 
+            //logger.Info("Fin Serializar Conexiones");
             return serializedConnections;
         }
 
         public static DesignerItem DeserializarDesignerItem(XElement itemXML, Guid id, double OffsetX, double OffsetY)
         {
+            //logger.Info("Inicio Deserializar Diseñador Item");
             DesignerItem item = new DesignerItem(id);
             item.Width = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture);
             item.Height = Double.Parse(itemXML.Element("Height").Value, CultureInfo.InvariantCulture);
@@ -703,11 +905,13 @@ namespace DiagramDesigner
             Canvas.SetZIndex(item, Int32.Parse(itemXML.Element("zIndex").Value));
             Object content = XamlReader.Load(XmlReader.Create(new StringReader(itemXML.Element("Content").Value)));
             item.Content = content;
+            //logger.Info("Fin Deserializar Diseñador Item");
             return item;
         }
 
         private void UpdateZIndex()
         {
+            //logger.Info("Inicio Actualizar Indice");
             List<UIElement> ordered = (from UIElement item in this.Children
                                        orderby Canvas.GetZIndex(item as UIElement)
                                        select item as UIElement).ToList();
@@ -716,6 +920,7 @@ namespace DiagramDesigner
             {
                 Canvas.SetZIndex(ordered[i], i);
             }
+            //logger.Info("Fin Actualizar Indice");
         }
 
         private static Rect GetBoundingRectangle(IEnumerable<DesignerItem> items)
@@ -739,6 +944,7 @@ namespace DiagramDesigner
 
         private void GetConnectors(DependencyObject parent, List<Connector> connectors)
         {
+            //logger.Info("Inicio Obtener Conectores");
             int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childrenCount; i++)
             {
@@ -750,17 +956,20 @@ namespace DiagramDesigner
                 else
                     GetConnectors(child, connectors);
             }
+            //logger.Info("Fin Obtener Conectores");
+
         }
 
         public Connector GetConnector(Guid itemID, String connectorName)
         {
+            //logger.Info("Inicio Obtener Conector");
             DesignerItem designerItem = (from item in this.Children.OfType<DesignerItem>()
                                          where item.ID == itemID
                                          select item).FirstOrDefault();
 
             Control connectorDecorator = designerItem.Template.FindName("PART_ConnectorDecorator", designerItem) as Control;
             connectorDecorator.ApplyTemplate();
-
+            //logger.Info("Fin Obtener Conector");
             return connectorDecorator.Template.FindName(connectorName, connectorDecorator) as Connector;
         }
 
@@ -774,13 +983,17 @@ namespace DiagramDesigner
 
         private void ImprimirDiagrama()
         {
+            //logger.Info("Inicio Imprimir Diagrama");
             SelectionService.ClearSelection();
             PrintDialog printDialog = new PrintDialog();
             if (true == printDialog.ShowDialog()) printDialog.PrintVisual(this, "Diagrama");
+            //logger.Info("Fin Imprimir Diagrama");
         }
 
         private void DarPDFAlUsuario()
         {
+
+            //logger.Info("Inicio dar PDF Al Usuario");
             var parentFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var sourcePath = Path.Combine(parentFolder, @"Manual de usuario\Manual de usuario Victoria.pdf");
 
@@ -796,14 +1009,19 @@ namespace DiagramDesigner
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+                    //logger.Error("Error dar PDF Al Usuario "+ex.Message);
                 }
             }
+
+            //logger.Info("Fin dar PDF Al Usuario");
         }
 
         public void AbrirDiagrama()
         {
             try
             {
+
+                //logger.Info("Inicio Abrir Diagrama");
                 XElement root = LoadSerializedDataFromFile();
 
                 if (root == null)
@@ -844,20 +1062,26 @@ namespace DiagramDesigner
                     Canvas.SetZIndex(connection, Int32.Parse(connectionXML.Element("zIndex").Value));
                     this.Children.Add(connection);
                 }
+
+                //logger.Info("Fin Abrir Diagrama");
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Se produjo un error al abrir el diagrama.");
                 viewException.ShowDialog();
+                //logger.Error("Se produjo un error al abrir el diagrama: "+ex.Message);
                 return;
             }
         }
 
         private void BorrarDiagrama()
         {
+
+            //logger.Info("Inicio Borrar Diagrama");
             this.Children.Clear();
             this.SelectionService.ClearSelection();
 
+            //logger.Info("Fin Guardar Diagrama");
             /*var viewDeleteDiagram = new DeleteDiagramPopUp();
             viewDeleteDiagram.ShowDialog();
 
@@ -875,6 +1099,8 @@ namespace DiagramDesigner
 
         private void GuardarDiagrama()
         {
+
+            //logger.Info("Inicio Guardar Diagrama");
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
             IEnumerable<Connection> connections = this.Children.OfType<Connection>();
 
@@ -889,10 +1115,13 @@ namespace DiagramDesigner
             root.Add(helperVic.generarTagDeVariables(variables));
 
             GuardarArchivoDialog(root);
+
+            //logger.Info("Fin Guardar Diagrama");
         }
 
         void GuardarArchivoDialog(XElement xElement)
         {
+            //logger.Info("Inicio Guardar Archivo");
             SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.Filter = "Files (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFile.ShowDialog() == true)
@@ -904,8 +1133,10 @@ namespace DiagramDesigner
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+                    //logger.Error("Error al Guardar Archivo: "+ ex.Message);
                 }
             }
+            //logger.Info("Fin Guardar Archivo");
         }
 
         private XElement LoadSerializedDataFromFile()
@@ -921,38 +1152,62 @@ namespace DiagramDesigner
             return null;
         }
 
-        private void ValidarYLanzarSimulador()
+        private void ValidarYLanzarSimulador(Boolean showWindow)
         {
+            this.createSimulationWindow();
+            if (showWindow && this.mainWindow != null)
+                this.mainWindow.Show();            
+        }
+
+        private void createSimulationWindow(){
+
+            
             try
             {
+                //logger.Info("Inicio Validar y Lanzar Simulador");
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
-                var mainWindow = new MainWindow(root.ToString(), true);
-                mainWindow.Show();
+                this.mainWindow = new MainWindow(root.ToString(), true);
+                //logger.Info("Fin Validar y Lanzar Simulador");
+
+                this.errorFound = false;
             }
             catch (DiagramValidationException ex)
             {
                 var viewException = new AlertPopUp(ex.Message);
                 viewException.ShowDialog();
+                //logger.Error("Validar y Lanzar Simulador: "+ex.Message);
+       
+                this.errorFound = true;
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Error de parseo. Revisa tu diagrama.");
                 viewException.ShowDialog();
+
+                //logger.Error("Error de parseo.Revisa tu diagrama. " + ex.Message);
+
+                this.errorFound = true;
             }
+
         }
 
         private void ValidarDiagrama()
         {
+
+            //logger.Info("Inicio Validar Diagrama");
             var errorList = ValidateUseOfCorrectVariables().Concat(ValidateFinDiagrama());
             if (errorList.Any())
             {
                 throw new DiagramValidationException(String.Join("\n", errorList.ToArray()));
             }
+            //logger.Info("Fin Validar Diagrama");
         }
 
         private HashSet<string> ValidateUseOfCorrectVariables()
         {
+
+            //logger.Info("Inicio Validar Uso Correcto de Variables");
             var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
 
             foreach (var variable in variables)
@@ -1015,11 +1270,14 @@ namespace DiagramDesigner
 
             ValidateReferences(errorList, referencesList);
 
+
+            //logger.Info("Fin Validar Uso Correcto de Variables");
             return errorList;
         }
 
         private void ValidateReferences(HashSet<string> errorLIst, List<string> referencesList)
         {
+            //logger.Info("Inicio Validar Referencias");
             var masDeDosReferencias = referencesList.GroupBy(x => x)
                         .Where(group => group.Count() > 2)
                         .Select(group => group.Key);
@@ -1043,10 +1301,14 @@ namespace DiagramDesigner
                     errorLIst.Add("-No se esta cerrando el uso de la referencia " + '"' + refe + '"' + ".");
                 }
             }
+
+            //logger.Info("Fin Validar Referencias");
         }
 
         private HashSet<string> ValidateFinDiagrama()
         {
+
+            //logger.Info("Inicio Validar Fin Diagrama");
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
             IEnumerable<Connection> connections = this.Children.OfType<Connection>();
             var cantidadNodosFin = 0;
@@ -1083,11 +1345,15 @@ namespace DiagramDesigner
             {
                 errorList.Add("-Tenes " + cantidadDiagramas + " diagrama/s y " + cantidadNodosFin + " nodo/s de cierre. Deben coincidir.");
             }
+
+            //logger.Info("Fin Validar Fin Diagrama");
             return errorList;
         }
         
         private void ValidateUseOfCorrectVariablesInTextBox(HashSet<string> errorLIst, string textBoxText, List<string> variableNames)
         {
+
+            //logger.Info("Inicio Validar Uso Correcto de Variables");
             var regex = "[a-zA-Z0-9]+";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1103,10 +1369,14 @@ namespace DiagramDesigner
                     errorLIst.Add("-Estas utilizando una variable " + '"' + match + '"' + " no declarada.");
                 }
             }
+
+            //logger.Info("Fin Validar Uso Correcto de Variables");
         }
 
         private void ValidateUseOfCorrectCharacters(HashSet<string> errorLIst, string textBoxText)
         {
+
+            //logger.Info("Inicio Validar Uso corecto de Caracteres");
             var regex = @"(?![a-zA-Z0-9\!\&\|\ \<\>\%\^\+\=\-\*\/\(\)\,]+).";
             var matches = Regex.Matches(textBoxText, regex);
 
@@ -1114,10 +1384,12 @@ namespace DiagramDesigner
             {
                 errorLIst.Add("-Estas utilizando un caracter desconocido " + '"' + match + '"' + ".");
             }
+            //logger.Info("Fin Validar Uso correcto de Caracteres");
         }
 
         private void ValidateUseOfValidConditionOperators(HashSet<string> errorLIst, string textBoxText)
         {
+            //logger.Info("Inicio Validar Condiciones y Operadores");
             var regex = @"[^a-zA-Z0-9\ ]+";
             var operatorsUsed = Regex.Matches(textBoxText, regex);
 
@@ -1132,10 +1404,13 @@ namespace DiagramDesigner
                     errorLIst.Add("Para hacer comparaciones utilizá " + '"' + "==" + '"' + ".");
                 }
             }
+
+            //logger.Info("Fin Validar Condiciones y Operadores");
         }
 
         private XElement GenerarVicXmlDelDiagrama()
         {
+            //logger.Info("Inicio Generar Vic XML del diagrama");
             var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
 
             IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
@@ -1149,11 +1424,13 @@ namespace DiagramDesigner
             root.Add(modelo);
             listaDesignerItemsXML.ForEach(root.Add);
 
+            //logger.Info("Fin Generar Vic XML del diagrama");
             return root;
         }
 
         private XElement serializarModelo(IEnumerable<DesignerItem> designerItems, IEnumerable<Connection> connections)
         {
+            //logger.Info("Inicio Sereliazar Modelo");
             XElement modelo = new XElement("Modelo");
             XElement designerItemsXML = SerializarDesignerItems(designerItems);
             XName name = "Name";
@@ -1162,11 +1439,14 @@ namespace DiagramDesigner
             connectionsXML.SetAttributeValue(name, "ModeloAnalisisSensibilidad");
             modelo.Add(designerItemsXML);
             modelo.Add(connectionsXML);
+            //logger.Info("Fin Serializar Modelo");
             return modelo;
+
         }
 
         private void CopiarSeleccionDiagrama()
         {
+            //logger.Info("Inicio Copiar Seleccion Diagrama");
             IEnumerable<DesignerItem> selectedDesignerItems =
                 this.SelectionService.CurrentSelection.OfType<DesignerItem>();
 
@@ -1192,6 +1472,7 @@ namespace DiagramDesigner
                         selectedConnections.Add(connection);
                     }
                 }
+                
             }
 
             XElement designerItemsXML = SerializarDesignerItems(selectedDesignerItems);
@@ -1206,10 +1487,12 @@ namespace DiagramDesigner
 
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Xaml, root);
+            //logger.Info("Fin Copiar Seleccion Diagrama");
         }
 
         private void PegarSeleccionDiagrama()
         {
+            //logger.Info("Inicio Pegar Seleccion Diagrama");
             XElement root = LoadSerializedDataFromClipBoard();
 
             if (root == null)
@@ -1284,10 +1567,12 @@ namespace DiagramDesigner
             root.Attribute("OffsetY").Value = (offsetY + 10).ToString();
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Xaml, root);
+            //logger.Info("Fin Pegar Seleccion Diagrama");
         }
 
         private void BorrarSeleccionDiagrama()
         {
+            //logger.Info("Inicio Borrar Seleccion Diagrama");
             foreach (Connection connection in SelectionService.CurrentSelection.OfType<Connection>())
             {
                 this.Children.Remove(connection);
@@ -1312,6 +1597,7 @@ namespace DiagramDesigner
 
             SelectionService.ClearSelection();
             UpdateZIndex();
+            //logger.Info("Fin Borrar Seleccion Diagrama");
         }
 
         private XElement LoadSerializedDataFromClipBoard()
@@ -1336,6 +1622,7 @@ namespace DiagramDesigner
 
         private void AgruparSeleccionDiagrama()
         {
+            //logger.Info("Inicio Agrupar Seleccion Diagrama");
             var items = from item in this.SelectionService.CurrentSelection.OfType<DesignerItem>()
                         where item.ParentID == Guid.Empty
                         select item;
@@ -1357,10 +1644,12 @@ namespace DiagramDesigner
                 item.ParentID = groupItem.ID;
 
             this.SelectionService.SelectItem(groupItem);
+            //logger.Info("Fin Agrupar Seleccion Diagrama");
         }
 
         private void DesagruparSeleccionDiagrama()
         {
+            //logger.Info("Inicio Desagrupar Seleccion Diagrama");
             var groups = (from item in SelectionService.CurrentSelection.OfType<DesignerItem>()
                           where item.IsGroup && item.ParentID == Guid.Empty
                           select item).ToArray();
@@ -1378,10 +1667,12 @@ namespace DiagramDesigner
                 this.Children.Remove(groupRoot);
                 UpdateZIndex();
             }
+            //logger.Info("Fin Desagrupar Seleccion Diagrama");
+
         }
 
         public string collectionJson()
-        {
+        {   
             var variables = new List<VariableAP>();
 
             foreach (VariableAP d in dataGridVariables.ItemsSource)
