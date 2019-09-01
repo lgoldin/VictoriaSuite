@@ -34,12 +34,7 @@ namespace DiagramDesigner
         {
             return this.MyDesigner;
         } 
-        /*
-        public ToolBar toolBar()
-        {
-            return this.MyToolBar;
-        }
-        */
+
         public void HideWindow(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
@@ -85,7 +80,7 @@ namespace DiagramDesigner
 
         private void CloseRoutine()
         {
-            //var closeDialog = new CloseDialog(((MainViewModel)this.DataContext).IsSimulationOpen);
+
             var closeDialog = new CloseDialog(true);
             closeDialog.ShowDialog();
 
@@ -93,7 +88,8 @@ namespace DiagramDesigner
             {
                 case Victoria.UI.SharedWPF.DialogResult.CloseWithOutSave:
                     {
-                        this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden);
+                        //this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden)
+                        this.diagrama().StopDebugProcess();
                         this.Close();
                     }
                     break;
