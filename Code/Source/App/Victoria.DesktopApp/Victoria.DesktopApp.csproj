@@ -257,6 +257,9 @@
     <Compile Include="View\CCWaitingPopUp.xaml.cs">
       <DependentUpon>CCWaitingPopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\StartDebugPopUp.xaml.cs">
+      <DependentUpon>StartDebugPopUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ConditionedContinuePopUp.xaml.cs">
       <DependentUpon>ConditionedContinuePopUp.xaml</DependentUpon>
     </Compile>
@@ -435,6 +438,10 @@
     <Page Include="View\CCWaitingPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StartDebugPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ConditionedContinuePopUp.xaml">
       <SubType>Designer</SubType>
