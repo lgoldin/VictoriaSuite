@@ -268,7 +268,7 @@ namespace Victoria.DesktopApp.View
             catch (Exception ex)
             {
                 new AlertPopUp(ex.Message).Show();
-                logger.Error("Error Eliminar Dato:" +ex.Message);
+                //logger.Error("Error Eliminar Dato:" +ex.Message);
             }
         }
 
@@ -437,7 +437,7 @@ namespace Victoria.DesktopApp.View
                 if (variable.ToUpper().Equals("TF") || variable.ToUpper().Equals("T") || variable.ToUpper().Equals("HV") || variable.ToUpper().Equals("R") || variable.ToUpper().Equals("I"))
                 {
                     new AlertPopUp("Error. No puede agregarse una variable con ese nombre, se encuentra reservado.").Show();
-                    logger.Error("Error. No puede agregarse una variable con ese nombre, se encuentra reservado.");
+                    //logger.Error("Error. No puede agregarse una variable con ese nombre, se encuentra reservado.");
                     return;
                 }
 
@@ -456,7 +456,7 @@ namespace Victoria.DesktopApp.View
                 else
                 {
                     new AlertPopUp("Error. Ya existe una variable con el nombre especificado.").Show();
-                    logger.Error("Error. Ya existe una variable con el nombre especificado.");
+                    //logger.Error("Error. Ya existe una variable con el nombre especificado.");
                     return;
                 }
             }
@@ -477,7 +477,7 @@ namespace Victoria.DesktopApp.View
                 if (variable.ToUpper().Equals("TF") || variable.ToUpper().Equals("T") || variable.ToUpper().Equals("HV") || variable.ToUpper().Equals("R") || variable.ToUpper().Equals("I") || variable.ToUpper().Equals("N"))
                 {
                     new AlertPopUp("No puede agregarse una variable con ese nombre, se encuentra reservado.").Show();
-                    logger.Error("No puede agregarse una variable con ese nombre, se encuentra reservado");
+                    //logger.Error("No puede agregarse una variable con ese nombre, se encuentra reservado");
                     return;
                 }
 
@@ -491,7 +491,7 @@ namespace Victoria.DesktopApp.View
                 else
                 {
                     new AlertPopUp("Error. Ya existe una variable con el nombre especificado.").Show();
-                    logger.Error("Error. Ya existe una variable con el nombre especificado");
+                    //logger.Error("Error. Ya existe una variable con el nombre especificado");
                     return;
                 }
             }
@@ -606,7 +606,7 @@ namespace Victoria.DesktopApp.View
                 else
                 {
                     new AlertPopUp("Error. Ya existe dicha condición.").Show();
-                    logger.Error("Error. Ya existe dicha condicón.");
+                    //logger.Error("Error. Ya existe dicha condicón.");
                     return;
                 }
             }
@@ -774,13 +774,13 @@ namespace Victoria.DesktopApp.View
             //logger.Info("Inicio Validar Nombre Evento");
             if (this.AnalisisPrevio.EventosEaE.Any(item => item.Nombre == actualEventName))
             {
-                logger.Error("Error. Ya existe un evento con el nombre Especificado");
+                //logger.Error("Error. Ya existe un evento con el nombre Especificado");
                 throw new ValidationException("Error. Ya existe un evento con el nombre especificado.");
             }
 
             if (actualEventName == null || actualEventName.Equals(""))
             {
-                logger.Error("No se puede crear el Evento. El campo Nombre es obligatorio.");
+                //logger.Error("No se puede crear el Evento. El campo Nombre es obligatorio.");
                 throw new ValidationException("No se puede crear el Evento. El campo Nombre es obligatorio.");
             }
             //logger.Info("Fin Validar Nombre Evento");

@@ -63,7 +63,7 @@ namespace DiagramDesigner
         public List<Button> debugButtonList { get; internal set; }
         public String previous_node_id { get; internal set; } 
         public AnalisisPrevio analisisPrevio { get; set; }
-        
+        private bool errorFound = false;
 
         static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
@@ -217,37 +217,40 @@ namespace DiagramDesigner
             if(this.mainWindow != null && Debug.instance().debugModeOn)
                 this.mainWindow.stopDebug();
 
-            //Hago visible los botones de Debug
-            this.setDebugButtonsVisibility(Visibility.Visible);
-
             // Creo la  ventan de simulacion y NO la muestro
             this.ValidarYLanzarSimulador(false);
 
-            // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
-            dataGridVariablesSimulation.Items.Clear();
-            ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
-            foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
-                dataGridVariablesSimulation.Items.Add(variable);
-            }
-
-            this.mainWindow.executeSimulation(true);
-
-            //Muestro Datagrid
-            groupBoxVariablesSimulation.Visibility = Visibility.Visible;
-            dataGridVariablesSimulation.Visibility = Visibility.Visible;
-
-            Debug.instance().initilize();
-            Debug.instance().colorSignalEvent = DesignerCanvas.manualResetEvent;
-
-            //Veo de encontrar el primer nodo con breakpoing si es que existe 
-            if (DesignerItem.ifAnyNodeHasBreakpoint())
+            if (!this.errorFound)
             {
-                manualResetEvent.WaitOne();
+                //Hago visible los botones de Debug
+                this.setDebugButtonsVisibility(Visibility.Visible);
 
-                //Cambio el color del primer nodo con breakpoint
-                DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );
+                // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
+                dataGridVariablesSimulation.Items.Clear();
+                ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
+                foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
+                    dataGridVariablesSimulation.Items.Add(variable);
+                }
+
+                this.mainWindow.executeSimulation(true);
+
+                //Muestro Datagrid
+                groupBoxVariablesSimulation.Visibility = Visibility.Visible;
+                dataGridVariablesSimulation.Visibility = Visibility.Visible;
+
+                Debug.instance().initilize();
+                Debug.instance().colorSignalEvent = DesignerCanvas.manualResetEvent;
+
+                //Veo de encontrar el primer nodo con breakpoing si es que existe 
+                if (DesignerItem.ifAnyNodeHasBreakpoint())
+                {
+                    manualResetEvent.WaitOne();
+
+                    //Cambio el color del primer nodo con breakpoint
+                    DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );
+                }
+
             }
-
         }
 
 
@@ -1006,7 +1009,7 @@ namespace DiagramDesigner
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
-                    logger.Error("Error dar PDF Al Usuario "+ex.Message);
+                    //logger.Error("Error dar PDF Al Usuario "+ex.Message);
                 }
             }
 
@@ -1066,7 +1069,7 @@ namespace DiagramDesigner
             {
                 var viewException = new AlertPopUp("Se produjo un error al abrir el diagrama.");
                 viewException.ShowDialog();
-                logger.Error("Se produjo un error al abrir el diagrama: "+ex.Message);
+                //logger.Error("Se produjo un error al abrir el diagrama: "+ex.Message);
                 return;
             }
         }
@@ -1130,7 +1133,7 @@ namespace DiagramDesigner
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
-                    logger.Error("Error al Guardar Archivo: "+ ex.Message);
+                    //logger.Error("Error al Guardar Archivo: "+ ex.Message);
                 }
             }
             //logger.Info("Fin Guardar Archivo");
@@ -1166,20 +1169,25 @@ namespace DiagramDesigner
                 var root = this.GenerarVicXmlDelDiagrama();
                 this.mainWindow = new MainWindow(root.ToString(), true);
                 //logger.Info("Fin Validar y Lanzar Simulador");
+
+                this.errorFound = false;
             }
             catch (DiagramValidationException ex)
             {
                 var viewException = new AlertPopUp(ex.Message);
                 viewException.ShowDialog();
-                logger.Error("Validar y Lanzar Simulador: "+ex.Message);
-                
+                //logger.Error("Validar y Lanzar Simulador: "+ex.Message);
+       
+                this.errorFound = true;
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Error de parseo. Revisa tu diagrama.");
                 viewException.ShowDialog();
-                logger.Error("Error de parseo.Revisa tu diagrama. " + ex.Message);
 
+                //logger.Error("Error de parseo.Revisa tu diagrama. " + ex.Message);
+
+                this.errorFound = true;
             }
 
         }

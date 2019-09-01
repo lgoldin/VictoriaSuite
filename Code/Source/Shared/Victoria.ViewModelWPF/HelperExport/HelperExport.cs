@@ -107,7 +107,7 @@ namespace Victoria.ViewModelWPF.HelperExport
             }
             catch (Exception e)
             {
-                logger.Error("Error Exportar a Excel:"+e.Message);
+                //logger.Error("Error Exportar a Excel:"+e.Message);
                 throw e;
             }
         }
@@ -200,7 +200,7 @@ namespace Victoria.ViewModelWPF.HelperExport
             }
             catch (Exception e)
             {
-                logger.Error("Error Exportar a PDF:" + e.Message);
+                //logger.Error("Error Exportar a PDF:" + e.Message);
                 throw e;
             }
             finally

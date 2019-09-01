@@ -77,7 +77,7 @@ namespace Victoria.DesktopApp.View
             {
                 var viewExpection = new AlertPopUp("Se produjo un error al abrir la silumación. Para ver detalles, despliegue el control correspondiente.");
                 viewExpection.ShowDialog();
-                logger.Error("Se produjo un error al abrir la silumación: "+ex.Message);
+                //logger.Error("Se produjo un error al abrir la silumación: "+ex.Message);
             }
         }
 

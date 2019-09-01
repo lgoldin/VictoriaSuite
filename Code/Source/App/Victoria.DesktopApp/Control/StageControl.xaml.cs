@@ -50,7 +50,7 @@ namespace Victoria.DesktopApp.Control
             }
             catch
             {
-                logger.Error("Se produjo un error al Agregar un gráfico.");
+                //logger.Error("Se produjo un error al Agregar un gráfico.");
                 var viewException = new AlertPopUp("Se produjo un error al agregar un gráfico. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -74,7 +74,7 @@ namespace Victoria.DesktopApp.Control
             }
             catch (Exception ex)
             {
-                logger.Error("Se produjo un error al exportar el escenario");
+                //logger.Error("Se produjo un error al exportar el escenario");
                 var viewException = new AlertPopUp("Se produjo un error al exportar el escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -90,7 +90,7 @@ namespace Victoria.DesktopApp.Control
             }
             catch
             {
-                logger.Error("Se produjo un error al eliminar un gráfico");
+                //logger.Error("Se produjo un error al eliminar un gráfico");
                 var viewException = new AlertPopUp("Se produjo un error al eliminar un gráfico. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -106,7 +106,7 @@ namespace Victoria.DesktopApp.Control
             }
             catch
             {
-                logger.Error("Se produjo un error al ejecutar el escenario");
+                //logger.Error("Se produjo un error al ejecutar el escenario");
                 var viewException = new AlertPopUp( "Se produjo un error al ejecutar el escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -119,7 +119,7 @@ namespace Victoria.DesktopApp.Control
                 //logger.Info("Inicio Agregar Animación");
                 if (!((StageViewModel)this.DataContext).DllConfigurations.Any())
                 {
-                    logger.Error("No se encontraron animaciones disponbles. Revise la configuración de Victoria");
+                    //logger.Error("No se encontraron animaciones disponbles. Revise la configuración de Victoria");
                     var viewException = new AlertPopUp("No se encontraron animaciones disponibles. Revise la configuración de Victoria.");
                     viewException.ShowDialog();
                     return;
@@ -152,7 +152,7 @@ namespace Victoria.DesktopApp.Control
             }
             catch
             {
-                logger.Error("Se produjo un error al agregar una animación");
+                //logger.Error("Se produjo un error al agregar una animación");
                 var viewException = new AlertPopUp( "Se produjo un error al agregar una animación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -178,13 +178,13 @@ namespace Victoria.DesktopApp.Control
                 }
                 catch
                 {
-                    logger.Error("Se produjo un error al intentar ejecutar las animaciones. Por favor revisa la configuracion de las mismas.");
+                    //logger.Error("Se produjo un error al intentar ejecutar las animaciones. Por favor revisa la configuracion de las mismas.");
                     var viewException = new AlertPopUp("Se produjo un error al intentar ejecutar las animaciones. Por favor revisa la configuración de las mismas.");
                     viewException.ShowDialog();
                 }
             }else
             {
-                logger.Error("No se puede abrir la ventana de animaciones si no se ha ejecutado la simulación o no se han creado animaciones.");
+                //logger.Error("No se puede abrir la ventana de animaciones si no se ha ejecutado la simulación o no se han creado animaciones.");
                 var viewException = new AlertPopUp("No se puede abrir la ventana de animaciones si no se ha ejecutado la simulación o no se han creado animaciones.");
                 viewException.ShowDialog();
             }

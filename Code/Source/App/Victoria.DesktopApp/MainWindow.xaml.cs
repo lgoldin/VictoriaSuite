@@ -193,7 +193,7 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp("Se produjo un error al abrir la simulación. Para obtener más detalles despligue el control.");
                 viewException.ShowDialog();
-                logger.Error("Se produjo un error al abrir la simulación: " + ex.Message);
+                //logger.Error("Se produjo un error al abrir la simulación: " + ex.Message);
             }
 
         }
@@ -220,7 +220,7 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp("Se produjo un error al agregar un escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
-                logger.Error("Se produjo un error al agregar un escenario: " + ex.Message);
+                //logger.Error("Se produjo un error al agregar un escenario: " + ex.Message);
             }
         }
 
@@ -237,7 +237,7 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp("Se produjo un error al guardar la simulación. Para ver datalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
-                logger.Error("Se produjo un error al guardar la simulación: " + ex.Message);
+                //logger.Error("Se produjo un error al guardar la simulación: " + ex.Message);
                 
             }
         }
@@ -262,7 +262,7 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp("Se produjo un error al guardar la simulación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
-                logger.Error("Se produjo un error al guardar la simulación: " + ex.Message);
+                //logger.Error("Se produjo un error al guardar la simulación: " + ex.Message);
             }
         }
         
@@ -287,7 +287,7 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp( "Se produjo un error al exportar la simulación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
-                logger.Error("Se produjo un error al exportar la simulación:" + ex.Message); 
+                //logger.Error("Se produjo un error al exportar la simulación:" + ex.Message); 
             }
         }
 
@@ -330,7 +330,7 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp("Se produjo un error al ejecutar la simulación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
-                logger.Error("Se produjo un error al ejecutar la simulacón: " + ex.Message);
+                //logger.Error("Se produjo un error al ejecutar la simulacón: " + ex.Message);
             }
         }
 

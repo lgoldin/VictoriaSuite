@@ -76,7 +76,7 @@ namespace Victoria.Shared.Actors
             catch (Exception exception) 
             {
                 log.Error("Error Ejecutar:" + exception.Message);
-                this.logger.Error(exception, exception.Message);
+                this.//logger.Error(exception, exception.Message);
                 stageSimulation.StopExecution(true);
                 if(stageSimulation.DebugginMode())
                     stageSimulation.StopDebugExecution(true);

@@ -91,7 +91,7 @@ namespace Victoria.DesktopApp.Control
             catch (Exception ex)
             {   
                 var viewException = new AlertPopUp("Se produjo un error al intentar ejecutar las animaciones. Por favor revisa la configuración de las mismas.");
-                logger.Error("Se produjo un error al intentar ejecutar las animaciones:" + ex.Message);
+                //logger.Error("Se produjo un error al intentar ejecutar las animaciones:" + ex.Message);
                 viewException.ShowDialog();
             }
         }

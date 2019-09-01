@@ -30,7 +30,7 @@ namespace Victoria.FormulaParser
             //logger.Info("Inicio Obtener Operador");
             if (!matrizDeInstancias.ContainsKey(operador))
             {
-                logger.Error("Error: No se encontro el operador");
+                //logger.Error("Error: No se encontro el operador");
                 throw new InvalidOperationException("No se encontró el operador '" + operador + "'.");
             }
 

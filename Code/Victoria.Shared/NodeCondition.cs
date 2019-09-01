@@ -41,7 +41,7 @@ namespace Victoria.Shared
             catch (Exception exception)
             {
 
-                logger.Error("Error Nodo Condicon:" + exception.Message);
+                //logger.Error("Error Nodo Condicon:" + exception.Message);
                 throw new Exception("Nodo Condicion", exception);
             }
         }

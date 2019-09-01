@@ -23,7 +23,7 @@ namespace Victoria.Shared
             }
             catch (Exception ex)
             {
-                logger.Error("Error Execute: " + ex.Message);
+                //logger.Error("Error Execute: " + ex.Message);
                 throw ex;
 
             }

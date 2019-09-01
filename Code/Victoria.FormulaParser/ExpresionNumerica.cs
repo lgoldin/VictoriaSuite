@@ -45,7 +45,7 @@ namespace Victoria.FormulaParser
             }
             else
             {
-                logger.Error("No se pudo convertir a Double el string: "+ this.numero );
+                //logger.Error("No se pudo convertir a Double el string: "+ this.numero );
                 throw new InvalidOperationException("No se pudo convertir a Double el string");
             }
         }

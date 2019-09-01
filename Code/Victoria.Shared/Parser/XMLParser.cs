@@ -73,7 +73,7 @@ namespace Victoria.Shared
             }
             catch (Exception e)
             {
-                logger.Error("Error al parsear la simulacion: "+e.Message);
+                //logger.Error("Error al parsear la simulacion: "+e.Message);
                 throw new ParsingException("Error al parsear la simulacion", e);
             }
 

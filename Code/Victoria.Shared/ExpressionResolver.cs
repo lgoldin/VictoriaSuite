@@ -43,7 +43,7 @@ namespace Victoria.Shared
             }
             catch (Exception exception)
             {   
-                logger.Error("Error Resolver Boolean:" + exception.Message);
+                //logger.Error("Error Resolver Boolean:" + exception.Message);
                 throw exception;
             }
         }

@@ -41,7 +41,7 @@ namespace Victoria.Shared
             }
             catch (Exception exception)
             {
-                logger.Error("Error Nodo Sentencia: " + exception.Message);
+                //logger.Error("Error Nodo Sentencia: " + exception.Message);
                 throw new Exception("Nodo sentencia", exception);
             }
         }
