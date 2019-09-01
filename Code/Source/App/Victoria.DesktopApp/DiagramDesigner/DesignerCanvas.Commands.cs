@@ -123,18 +123,29 @@ namespace DiagramDesigner
         #region DebugCommands
         private void Stop_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.instance().debugCommand = Debug.Mode.Stop;
-            this.mainWindow.stopDebug();
-
-            Debug.instance().debugModeOn = false;
-            Debug.instance().jumpToNextNode = true;
-
-            this.setDebugButtonsVisibility(Visibility.Hidden);
-            groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
-            dataGridVariablesSimulation.Visibility = Visibility.Hidden;
-
-            DesignerItem.setDebugColor(null);
+          this.StopDebugProcess();
         }
+
+        // Se hace el metodo publico para que pueda ser llamado cuando se cierra la ventana de diagrama 
+        public void StopDebugProcess()
+        {
+            if (Debug.instance().debugModeOn)
+            {
+                Debug.instance().debugCommand = Debug.Mode.Stop;
+                this.mainWindow.stopDebug();
+
+                Debug.instance().debugModeOn = false;
+                Debug.instance().jumpToNextNode = true;
+
+                this.setDebugButtonsVisibility(Visibility.Hidden);
+                groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
+                dataGridVariablesSimulation.Visibility = Visibility.Hidden;
+
+                DesignerItem.setDebugColor(null);
+            }         
+        }
+
+        
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {   
