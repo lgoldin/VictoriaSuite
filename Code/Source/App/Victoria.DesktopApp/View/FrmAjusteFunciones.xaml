@@ -118,10 +118,17 @@
                             <Label x:Name="lblTituloFuncion" Content="Funcion" FontWeight="Bold" HorizontalAlignment="Center" FontSize="15" Margin="260,20,250,170" RenderTransformOrigin="0.46,-0.776" />
                             <Label x:Name="lblFuncion" Content="Funcion" FontWeight="SemiBold" HorizontalAlignment="Center" FontSize="15" Margin="260,50,250,140" RenderTransformOrigin="0.46,-0.776" />
                             <DVC:Chart Name="chart1" Width="500" Background="Gray" Margin="258,87,252,404.857" Grid.RowSpan="2">
+                                <DVC:ColumnSeries                                
+                                     IndependentValuePath="Key"  
+                                     DependentValuePath="Value">
+                                </DVC:ColumnSeries>
+
                                 <DVC:LineSeries                                  
                                      IndependentValuePath="Key"  
                                      DependentValuePath="Value">
                                 </DVC:LineSeries>
+
+
 
                             </DVC:Chart>
                             <Label x:Name="lblTituloFuncionInversa" Content="Funcion Inversa" FontWeight="Bold" HorizontalAlignment="Center" FontSize="15" Margin="260,280,250,-90" RenderTransformOrigin="0.46,-0.776" />

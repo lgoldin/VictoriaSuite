@@ -58,11 +58,13 @@ namespace Victoria.DesktopApp.View
             if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
             {
                 rbDtConstante.IsEnabled = false;
+                rbDtConstante.Visibility = Visibility.Hidden;
                 rbEventoAEvento.IsChecked = true;
             }
             else
             {
                 rbEventoAEvento.IsEnabled = false;
+                rbEventoAEvento.Visibility = Visibility.Hidden;
                 rbIntervalos.IsEnabled = false;
                 rbDtConstante.IsChecked = true;
                 rbDia.IsChecked = true;
