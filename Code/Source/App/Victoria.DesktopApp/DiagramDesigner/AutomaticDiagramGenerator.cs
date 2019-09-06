@@ -140,7 +140,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 connectNodes(eventoComprometido, BOTTOM, conditionalClose, TOP);
                 connectNodes(conditionInIf, LEFT, conditionalClose, TOP);
                 lastCenterNode = conditionalClose;
-            }
+            }            
 
             //ACTUALIZAR VARIABLE DE ESTADO
             foreach (VariableAP varEstado in this.analisisPrevio.VariablesEstado)
@@ -219,13 +219,21 @@ namespace Victoria.DesktopApp.DiagramDesigner
             connectNodes(lastCenterNode, BOTTOM, closeDiagram, TOP);
             lastCenterNode = closeDiagram;
 
+            //GENERO LOS SUBDIAGRAMAS DE LOS DATOS
+            double actualPosition = generateDataAndResultsSubDiagrams(getHeight());
+            
             //GENERO LAS SUBRUTINAS VACIAS DE EVENTOS
-            double actualPosition = generateDeltaTEventoComprometidoSubdiagrams(getHeight());
+            //actualPosition = generateDeltaTEventoComprometidoSubdiagrams(getHeight());
+            actualPosition = generateDeltaTEventoComprometidoSubdiagrams(actualPosition);
             actualPosition = generateDeltaTPropiosSubdiagrams(actualPosition);
             actualPosition = generateDeltaTComprometidosAnteriorSubdiagrams(actualPosition);
             actualPosition = generateDeltaTComprometidosFuturoSubdiagrams(actualPosition);
+<<<<<<< HEAD
             actualPosition = generateDeltaTCalcularResultadosSubdiagram(actualPosition);
             //logger.Info("Fin Generar Diagrama Delta T");
+=======
+
+>>>>>>> 56ac2bc575b136cfb509ba957d913e951c8a167c
         }
 
         private double generateDeltaTCalcularResultadosSubdiagram(double nextTopPosition)
