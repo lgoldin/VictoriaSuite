@@ -16,14 +16,14 @@ using Victoria.UI.SharedWPF;
 namespace Victoria.DesktopApp.View
 {
     /// <summary>
-    /// Interaction logic for ConditionedContinuePopUp.xaml
+    /// Interaction logic for StartDebugPopUp.xaml
     /// </summary>
-    public partial class ConditionedContinuePopUp : Window
+    public partial class StartDebugPopUp : Window
     {
 
         public DialogResult Result { get; set; }
 
-        public ConditionedContinuePopUp()
+        public StartDebugPopUp()
         {
             InitializeComponent(); 
         }
@@ -31,11 +31,7 @@ namespace Victoria.DesktopApp.View
         private void btnAccept_OnClick(object sender, RoutedEventArgs e)
         {
             this.Result = UI.SharedWPF.DialogResult.Accept;
-            if (!this.textboxIsWrong())
-            {
-                this.Close();
-            }
-            
+            this.Close();
         }
 
         private void btnCancel_OnClick(object sender, RoutedEventArgs e)
@@ -47,19 +43,6 @@ namespace Victoria.DesktopApp.View
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-        }
-
-        private bool textboxIsWrong()
-        {
-            if (string.IsNullOrEmpty(this.conditionTextBox.Text) || 
-                string.IsNullOrWhiteSpace(this.conditionTextBox.Text)
-               )
-            {
-                this.conditionTextBox.BorderBrush = Brushes.Red;
-                return true;
-            }
-
-            return false;
         }
     }
 }

@@ -524,8 +524,8 @@ namespace Victoria.DesktopApp.View
 
         private void GenerarDiagrama()
         {
-            AutomaticDiagramGenerator.sharedInstance().analisisPrevio = AnalisisPrevio;  
-            AutomaticDiagramGenerator.sharedInstance().generateDiagram(VentanaDiagramador);
+            AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
+            diagramGenerator.generateDiagram(VentanaDiagramador);
         }
 
         private void DarPDFAlUsuario()

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Victoria.Shared.AnalisisPrevio;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using Victoria.DesktopApp.View;
 
 namespace DiagramDesigner
 {
@@ -33,12 +34,7 @@ namespace DiagramDesigner
         {
             return this.MyDesigner;
         } 
-        /*
-        public ToolBar toolBar()
-        {
-            return this.MyToolBar;
-        }
-        */
+
         public void HideWindow(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
@@ -60,19 +56,56 @@ namespace DiagramDesigner
             if (this.WindowState == WindowState.Maximized) 
             {
                 this.WindowState = WindowState.Normal;
-                this.dataGridVariables.Height = 180;
             } 
             else 
             { 
                 this.WindowState = WindowState.Maximized;
-                this.dataGridVariables.Height = 300;
             }
+
+            this.resizeDatagrids(this.WindowState, this.dataGridVariables.Visibility);
+        }
+
+        private void resizeDatagrids(WindowState windowState , Visibility debugGridVisibility)
+        {
+            if (debugGridVisibility != Visibility.Visible)
+            {
+                this.dataGridVariables.Height = windowState == WindowState.Maximized ? 300 : 180;
+            }
+            else
+            {
+                this.dataGridVariables.Height = windowState == WindowState.Maximized ? 230 : 180;
+                this.dataGridVariablesSimulation.Height = windowState == WindowState.Maximized ? 230 : 180;
+            }
+        }
+
+        private void CloseRoutine()
+        {
+
+            var closeDialog = new CloseDialog(true);
+            closeDialog.ShowDialog();
+
+            switch (closeDialog.Result)
+            {
+                case Victoria.UI.SharedWPF.DialogResult.CloseWithOutSave:
+                    {
+                        //this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden)
+                        this.diagrama().StopDebugProcess();
+                        this.Close();
+                    }
+                    break;
+                case Victoria.UI.SharedWPF.DialogResult.Cancel:
+                    {
+                        return;
+                    }
+            }
+            this.Close();
         }
 
         private void BtnClose_OnClick(object sender, RoutedEventArgs e)
         {
-            this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden);
-            this.Close();
+            this.CloseRoutine();
+            //this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden);
+            //this.Close();
         }
 
         private void dataGridVariables_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

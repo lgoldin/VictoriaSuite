@@ -105,19 +105,32 @@ namespace Victoria.Shared.Debug
                 }
                 if (this.debugCommand.Equals(Mode.ConditionedContinue))
                 {
-                    string replacedCondition = ExpressionResolver.GetSentenceToEvaluate(executionVariables, new CultureInfo("en-US"), this.conditionExpresion);
-                    if (!this.conditionResult)
+                    Boolean exerciseHasFinished = ExpressionResolver.ResolveBoolen(
+                        ExpressionResolver.GetSentenceToEvaluate(executionVariables, new CultureInfo("en-US"), "T > TF")
+                        );
+
+                    if (exerciseHasFinished)
                     {
-                        this.conditionResult = ExpressionResolver.ResolveBoolen(replacedCondition);
-                        this.jumpToNextNode = true;
+                        this.conditionResult = false;
+                        this.jumpToNextNode = false;
                     }
                     else
-                    {
-                        if (this.executingNode.HasBreakPoint)
+                    { 
+                        string replacedCondition = ExpressionResolver.GetSentenceToEvaluate(executionVariables , new CultureInfo("en-US"), this.conditionExpresion.ToUpper());
+                    
+                        if (!this.conditionResult)
                         {
-                            this.conditionResult = false;
-                            this.jumpToNextNode = false;
-                        }                    
+                            this.conditionResult = ExpressionResolver.ResolveBoolen(replacedCondition);
+                            this.jumpToNextNode = true;
+                        }
+                        else
+                        {
+                            if (this.executingNode.HasBreakPoint)
+                            {
+                                this.conditionResult = false;
+                                this.jumpToNextNode = false;
+                            }                    
+                        }
                     }
                 }
             }
@@ -145,7 +158,8 @@ namespace Victoria.Shared.Debug
                     }
                     else
                     {
-                        if (this.executingNode.NextNode == null)
+                        //if (this.executingNode.NextNode == null) 
+                       if(this.executingNode.GetType().ToString() == "Victoria.Shared.Node")
                         {
                             this.subDiagramHasStarted = false;
                             this.jumpToNextNode = false;

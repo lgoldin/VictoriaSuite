@@ -33,6 +33,11 @@ namespace Victoria.Shared
             this.stopExecution = value;
         }
 
+        public void StopDebugExecution(bool value)
+        {
+            this.simulation.StopDebugExecution(value);
+        }
+
         public bool CanContinue()
         {
             //return this.stopExecution == false && this.simulation.CanContinue();

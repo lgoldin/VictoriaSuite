@@ -60,6 +60,7 @@ namespace DiagramDesigner
         public GroupBox groupBoxVariablesSimulation { get; internal set; }
         public List<Button> debugButtonList { get; internal set; }
         public String previous_node_id { get; internal set; }
+        private bool errorFound = false;
 
         static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
@@ -102,7 +103,10 @@ namespace DiagramDesigner
             this.CommandBindings.Add(new CommandBinding(DesignerCanvas.SelectAll, SelectAll_Executed));
 
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
-            
+
+            //Capturo cuando se precionan los botones del teclado
+            this.KeyDown += new KeyEventHandler(this.OnKeyDown);
+
             this.AllowDrop = true;
             Clipboard.Clear();
         }
@@ -111,19 +115,29 @@ namespace DiagramDesigner
         #region DebugCommands
         private void Stop_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.instance().debugCommand = Debug.Mode.Stop;
-            this.mainWindow.stopDebug();
-            //this.mainWindow.Close();
-
-            Debug.instance().debugModeOn = false;
-            Debug.instance().jumpToNextNode = true;
-
-            this.setDebugButtonsVisibility(Visibility.Hidden);
-            groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
-            dataGridVariablesSimulation.Visibility = Visibility.Hidden;
-
-            DesignerItem.setDebugColor(null);
+          this.StopDebugProcess();
         }
+
+        // Se hace el metodo publico para que pueda ser llamado cuando se cierra la ventana de diagrama 
+        public void StopDebugProcess()
+        {
+            if (Debug.instance().debugModeOn)
+            {
+                Debug.instance().debugCommand = Debug.Mode.Stop;
+                this.mainWindow.stopDebug();
+
+                Debug.instance().debugModeOn = false;
+                Debug.instance().jumpToNextNode = true;
+
+                this.setDebugButtonsVisibility(Visibility.Hidden);
+                groupBoxVariablesSimulation.Visibility = Visibility.Hidden;
+                dataGridVariablesSimulation.Visibility = Visibility.Hidden;
+
+                DesignerItem.setDebugColor(null);
+            }         
+        }
+
+        
 
         private void StepOver_Enabled(object sender, ExecutedRoutedEventArgs e)
         {   
@@ -142,16 +156,24 @@ namespace DiagramDesigner
 
         private void ConditionedContinue_Enabled(object sender, ExecutedRoutedEventArgs e)
         {
+            this.showConditionedContinuePopUp();            
+        }
+
+        private void showConditionedContinuePopUp()
+        {
             ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
             popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
             popup.ShowDialog();
 
             if (popup.Result == DialogResult.Accept)
             {
+                CCWaitingPopUp infoPopUp = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
+                infoPopUp.Show();
                 Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
                 this.executeDebugCommand(Debug.Mode.ConditionedContinue);
+                infoPopUp.Close();
+
             }
-            
         }
 
         private void executeDebugCommand( Debug.Mode command)
@@ -196,39 +218,54 @@ namespace DiagramDesigner
 
         private void Debuger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(this.mainWindow != null && Debug.instance().debugModeOn)
-                this.mainWindow.stopDebug();
+            if (DesignerItem.ifAnyNodeHasBreakpoint())
+            {
+                this.startDebug();
+            }
+            else
+            {
+                StartDebugPopUp debugPopup = new StartDebugPopUp();
+                debugPopup.ShowDialog();
+                if (debugPopup.Result == DialogResult.Accept)
+                    this.startDebug();
+            }
+              
+        }
 
-            //Hago visible los botones de Debug
-            this.setDebugButtonsVisibility(Visibility.Visible);
+        private void startDebug()
+        {
+            if (this.mainWindow != null && Debug.instance().debugModeOn)
+                this.mainWindow.stopDebug();
 
             // Creo la  ventan de simulacion y NO la muestro
             this.ValidarYLanzarSimulador(false);
 
-            // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
-            dataGridVariablesSimulation.Items.Clear();
-            ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
-            foreach (Victoria.ModelWPF.Variable variable in simulationVariables) {
-                dataGridVariablesSimulation.Items.Add(variable);
-            }
-
-            this.mainWindow.executeSimulation(true);
-
-            //Muestro Datagrid
-            groupBoxVariablesSimulation.Visibility = Visibility.Visible;
-            dataGridVariablesSimulation.Visibility = Visibility.Visible;
-
-            //if (Debug.instance().colorSignalEvent != null)
-            //    Debug.instance().colorSignalEvent.Reset();
-
-            //DesignerCanvas.manualResetEvent = new ManualResetEvent(false);
-            Debug.instance().initilize();
-            Debug.instance().colorSignalEvent = DesignerCanvas.manualResetEvent;
-
-            //Veo de encontrar el primer nodo con breakpoing si es que existe 
-            if (DesignerItem.ifAnyNodeHasBreakpoint())
+            if (!this.errorFound)
             {
-                manualResetEvent.WaitOne();
+                //Hago visible los botones de Debug
+                this.setDebugButtonsVisibility(Visibility.Visible);
+
+                // Cargo el dataGrid de debug con el datagrid de la ventana de simulacion
+                dataGridVariablesSimulation.Items.Clear();
+                ObservableCollection<Victoria.ModelWPF.Variable> simulationVariables = this.mainWindow.getSimulationVariables();
+                foreach (Victoria.ModelWPF.Variable variable in simulationVariables)
+                {
+                    dataGridVariablesSimulation.Items.Add(variable);
+                }
+
+                this.mainWindow.executeSimulation(true);
+
+                //Muestro Datagrid
+                groupBoxVariablesSimulation.Visibility = Visibility.Visible;
+                dataGridVariablesSimulation.Visibility = Visibility.Visible;
+
+                Debug.instance().initilize();
+                Debug.instance().colorSignalEvent = DesignerCanvas.manualResetEvent;
+
+                //Veo de encontrar el primer nodo con breakpoing si es que existe 
+                if (DesignerItem.ifAnyNodeHasBreakpoint())
+                {
+                    manualResetEvent.WaitOne();
 
                 //Cambio el color del primer nodo con breakpoint
                 Point p = DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );                
@@ -236,6 +273,31 @@ namespace DiagramDesigner
                 ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
             }
 
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            Key actualKey = (e.SystemKey == Key.None) ? e.Key : e.SystemKey;
+            switch (actualKey)
+            {
+                case Key.F10:
+                    this.executeDebugCommand(Debug.Mode.StepOver);
+                    break;
+
+                case Key.F11:
+                    this.executeDebugCommand(Debug.Mode.StepInto);
+                    break;
+
+                case Key.F5:
+                    this.executeDebugCommand(Debug.Mode.Continue);
+                    break;
+
+                case Key.F6:
+                    this.showConditionedContinuePopUp();
+                    break;
+
+                case Key.F12:
+                    this.executeDebugCommand(Debug.Mode.Stop);
+                    break;
+            }
         }
 
 
@@ -1068,7 +1130,7 @@ namespace DiagramDesigner
         private void ValidarYLanzarSimulador(Boolean showWindow)
         {
             this.createSimulationWindow();
-            if (showWindow)
+            if (showWindow && this.mainWindow != null)
                 this.mainWindow.Show();            
         }
 
@@ -1080,17 +1142,19 @@ namespace DiagramDesigner
                 ValidarDiagrama();
                 var root = this.GenerarVicXmlDelDiagrama();
                 this.mainWindow = new MainWindow(root.ToString(), true);
-                //this.mainWindow = this.mainWindow == null ? new MainWindow(root.ToString(), true) : this.mainWindow;
+                this.errorFound = false;
             }
             catch (DiagramValidationException ex)
             {
                 var viewException = new AlertPopUp(ex.Message);
                 viewException.ShowDialog();
+                this.errorFound = true;
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Error de parseo. Revisa tu diagrama.");
                 viewException.ShowDialog();
+                this.errorFound = true;
             }
 
         }

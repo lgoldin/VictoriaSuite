@@ -75,7 +75,7 @@
                 <Rectangle Fill="White" HorizontalAlignment="Left" Margin="0,36,0,-16" Stroke="White" Width="1180" Grid.ColumnSpan="2"/>
                 <!-- Toolbox -->
                 <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2" Margin="0,36,889,0">
-                    <StackPanel Grid.Column="0" Height="664" >
+                    <StackPanel Grid.Column="0" Height="800" >
                         <Expander Header="Figuras" Content="{StaticResource ShapeStencils}" IsExpanded="True" Margin="8,10,8,0" Height="239" RenderTransformOrigin="0.457,0.28"/>
                         <GroupBox Header="Inicialización de Variables" Margin="8" Padding="3" Height="Auto">
                             <DataGrid x:Name="dataGridVariables"  HorizontalAlignment="Center" Margin="1,1,1,1" ScrollViewer.VerticalScrollBarVisibility="Auto"  Height="180" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionMode="Single" AutoGenerateColumns="False" SelectionChanged="dataGridVariables_SelectionChanged">
