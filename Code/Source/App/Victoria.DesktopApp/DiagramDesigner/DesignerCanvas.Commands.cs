@@ -267,11 +267,13 @@ namespace DiagramDesigner
                 {
                     manualResetEvent.WaitOne();
 
-                //Cambio el color del primer nodo con breakpoint
-                Point p = DesignerItem.setDebugColor( getNodeByID(Debug.instance().executingNode.Name) );                
+                    //Cambio el color del primer nodo con breakpoint
+                    Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
 
-                ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+                    ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+                }
             }
+        }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
