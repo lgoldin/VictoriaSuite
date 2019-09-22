@@ -24,6 +24,7 @@
     <Feature Id="ProductFeature" Title="$(var.Title)" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="dlls_files" />
+      <ComponentRef Id="Logs" />
       <ComponentGroupRef Id="Responsive_HTML5_files" />
       <ComponentGroupRef Id="Responsive_HTML5_Manual_de_usuario_archivos_files" />
       <ComponentGroupRef Id="Responsive_HTML5_template_Azure_Blue_files" />
@@ -48,6 +49,12 @@
           </Directory>
           <Directory Id="Victoria" Name="$(var.Version)">
             <Directory Id="Resources" Name="Resources" />
+            <Directory Id="Logs" Name="Logs">
+              <Component Id="Logs" Guid="16fcb609-4884-4A01-AA04-84B92D222428" SharedDllRefCount="no" KeyPath="no" 
+                         NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either">
+                <CreateFolder/>
+              </Component>
+            </Directory>                          
             <Directory Id="Responsive_HTML5" Name="Responsive_HTML5">
               <Directory Id="Responsive_HTML5_Manual_de_usuario_archivos" Name="Manual_de_usuario_archivos" />
               <Directory Id="Responsive_HTML5_whxdata" Name="whxdata" />
@@ -70,7 +77,7 @@
     </Directory>
   </Fragment>
 
-  <Fragment>
+  <Fragment>        
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="16fcb609-7357-4d39-b8e0-b5b924f61fc5">
         <Shortcut Id="ApplicationStartMenuShortcutVictoria" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]$(var.Version)/Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
@@ -841,7 +848,7 @@
       <Component Id="Resources_simulacion.png" Guid="8ea8282f-ef69-477d-9497-cf6c19cbc67e">
         <File Id="Resources_simulacion.png" Name="simulacion.png" Source="$(var.Victoria.DesktopApp_TargetDir)Resources\simulacion.png" />
       </Component>
-    </ComponentGroup>
+    </ComponentGroup>    
   </Fragment>
   <Fragment>
     <ComponentGroup Id="Kairos" Directory="Kairos">
