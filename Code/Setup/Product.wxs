@@ -36,7 +36,7 @@
       <ComponentRef Id="ApplicationShortcutDesktop" />
       <ComponentGroupRef Id="Manual_de_usuario_files" />
       <ComponentGroupRef Id="Resources_files" />      
-      <ComponentGroupRef Id="Kairos" />      
+      <ComponentGroupRef Id="Kairos" />           
     </Feature>        
   </Product>
 
@@ -50,9 +50,11 @@
           <Directory Id="Victoria" Name="$(var.Version)">
             <Directory Id="Resources" Name="Resources" />
             <Directory Id="Logs" Name="Logs">
-              <Component Id="Logs" Guid="16fcb609-4884-4A01-AA04-84B92D222428" SharedDllRefCount="no" KeyPath="no" 
-                         NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either">
-                <CreateFolder/>
+              <Component Id="Logs" Guid="16fcb609-4884-4A01-AA04-84B92D222428" >
+                <!--SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either"-->
+                <CreateFolder>
+                  <Permission User="Everyone" GenericAll="yes" ChangePermission="yes"/>
+                </CreateFolder>
               </Component>
             </Directory>                          
             <Directory Id="Responsive_HTML5" Name="Responsive_HTML5">
@@ -126,6 +128,9 @@
       </Component>
       <Component Id="Victoria.ViewModelWPF.dll" Guid="190118ed-ee5f-435a-8cda-102376ccc857">
         <File Id="Victoria.ViewModelWPF.dll" Name="Victoria.ViewModelWPF.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.ViewModelWPF.dll" />
+      </Component>
+      <Component Id="log4net.dll" Guid="fa9844cf-3556-461f-af42-ee0bca125115">
+        <File Id="log4net.dll" Name="log4net.dll" Source="$(var.Victoria.DesktopApp_TargetDir)log4net.dll" />
       </Component>
       <Component Id="Akka.dll" Guid="6353ab7e-02c8-4f64-a31b-d0821f6c6ccc">
         <File Id="Akka.dll" Name="Akka.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Akka.dll" />
