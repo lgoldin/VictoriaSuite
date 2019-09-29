@@ -318,6 +318,9 @@
     <Compile Include="View\AddNameEscenarioPopUp.xaml.cs">
       <DependentUpon>AddNameEscenarioPopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\BreakpointPopUp.xaml.cs">
+      <DependentUpon>BreakpointPopUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CCWaitingPopUp.xaml.cs">
       <DependentUpon>CCWaitingPopUp.xaml</DependentUpon>
     </Compile>
@@ -502,6 +505,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddNameEscenarioPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\BreakpointPopUp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
