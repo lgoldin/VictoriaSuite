@@ -1,13 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using Victoria.Shared;
 using System.Linq;
 using System.Collections.ObjectModel;
-using Victoria.Shared.EventArgs;
+
 using Moq;
 using Victoria.Shared.Interfaces;
 using Victoria.Shared.AnalisisPrevio;
+using Victoria.Shared.EventArgs;
 
 namespace Victoria.Shared.Tests
 {

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+
 using Victoria.UI.SharedWPF;
 using DiagramDesigner;
 using System.ComponentModel;
@@ -6,26 +7,26 @@ using System.Windows.Input;
 using Victoria.Shared.AnalisisPrevio;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using Victoria.DesktopApp.View;
+
 
 namespace DiagramDesigner
 {
     public partial class Window1 : Window
     {
-        
-
         public Window1()
         {
             InitializeComponent();
             Closing += HideWindow;
             this.diagrama().dataGridVariables = this.dataGridVariables;
             this.diagrama().dimensiones = this.dimensiones;
-            this.diagrama().functionsComboBox = this.getFunctionsComboBox();
+
+            this.diagrama().dataGridVariablesSimulation = this.dataGridVariablesSimulation;            
+            this.diagrama().groupBoxVariablesSimulation = this.groupBoxVariablesSimulation; //Solo inicializo este porque necesito el Setter            
+            this.diagrama().debugButtonList = this.getListButtonDebug();
+
         }
 
-        //public void updateFDPPopUps(AnalisisPrevio analisisPrevio)
-        //{
-        //    this.diagrama().updateComboBox(analisisPrevio);
-        //}
 
 
         public DialogResult Result { get; set; }
@@ -36,7 +37,7 @@ namespace DiagramDesigner
         public DesignerCanvas diagrama() 
         {
             return this.MyDesigner;
-        }
+        } 
 
         public void HideWindow(object sender, CancelEventArgs e)
         {
@@ -59,40 +60,78 @@ namespace DiagramDesigner
             if (this.WindowState == WindowState.Maximized) 
             {
                 this.WindowState = WindowState.Normal;
-                this.dataGridVariables.Height = 180;
             } 
             else 
             { 
                 this.WindowState = WindowState.Maximized;
-                this.dataGridVariables.Height = 300;
+            }
+
+            this.resizeDatagrids(this.WindowState, this.dataGridVariables.Visibility);
+        }
+
+        private void resizeDatagrids(WindowState windowState , Visibility debugGridVisibility)
+        {
+            if (debugGridVisibility != Visibility.Visible)
+            {
+                this.dataGridVariables.Height = windowState == WindowState.Maximized ? 300 : 180;
+            }
+            else
+            {
+                this.dataGridVariables.Height = windowState == WindowState.Maximized ? 230 : 180;
+                this.dataGridVariablesSimulation.Height = windowState == WindowState.Maximized ? 230 : 180;
             }
         }
 
-        private void BtnClose_OnClick(object sender, RoutedEventArgs e)
+        private void CloseRoutine()
         {
+
+            var closeDialog = new CloseDialog(true);
+            closeDialog.ShowDialog();
+
+            switch (closeDialog.Result)
+            {
+                case Victoria.UI.SharedWPF.DialogResult.CloseWithOutSave:
+                    {
+                        //this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden)
+                        this.diagrama().StopDebugProcess();
+                        this.Close();
+                    }
+                    break;
+                case Victoria.UI.SharedWPF.DialogResult.Cancel:
+                    {
+                        return;
+                    }
+            }
             this.Close();
         }
 
-        private ComboBox getFunctionsComboBox()
-        {
-            ComboBox functionComboBox = new ComboBox();
-            ToolBar tb = (ToolBar)this.MyToolBar.Content;
-            foreach (Grid g in tb.ItemContainerGenerator.Items)
-            {
-                if (g.Name == "ComboBox")
-                {
-                    foreach (ComboBox b in g.Children)
-                    {
-                        functionComboBox = b;
-                    }
-                }
-            }
 
-            return functionComboBox;
+        private void BtnClose_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.CloseRoutine();
+            //this.MyDesigner.setDebugButtonsVisibility(Visibility.Hidden);
+            //this.Close();
         }
 
         private void dataGridVariables_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+        }
+
+        private List<Button> getListButtonDebug()
+        {
+            List<Button> debugButtonList = new List<Button>();
+            ToolBar tb = (ToolBar)this.MyToolBar.Content;
+            foreach (Grid g in tb.ItemContainerGenerator.Items)
+            {
+                if (g.Name.StartsWith("Debug"))
+                {
+                    foreach (Button b in g.Children)
+                    {
+                        debugButtonList.Add(b);
+                    }
+                }
+            }
+            return debugButtonList;
         }
     }
 }

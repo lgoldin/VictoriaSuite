@@ -9,21 +9,25 @@ namespace Victoria.DesktopApp.Helpers
 {
     class Results
     {
-
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         public String simulationPath { get;  }
         public IList<StageViewModelBase> stages { get; }
         public TimeSpan simulationTotalTime { get;  }
         public String fileName { get;  }
 
-        public Results(String _simulationPath, String _fileName, IList<StageViewModelBase> _stages, TimeSpan _simulationTotalTime) {
+        public Results(String _simulationPath, String _fileName, IList<StageViewModelBase> _stages, TimeSpan _simulationTotalTime)
+        {
+            //logger.Info("Inicio Resultados");
             this.simulationPath = _simulationPath;
             this.stages = _stages;
             this.simulationTotalTime = _simulationTotalTime;
             this.fileName = _fileName;
+            //logger.Info("Fin Resultados");
         }        
 
         public List<DataTable> createResultsTables(IList<StageViewModelBase> stages)
         {
+            //logger.Info("Inicio Crear Tablas de Resultados");
             List<DataTable> tablesList = new List<DataTable>();
 
             foreach (var stg in stages)
@@ -77,7 +81,7 @@ namespace Victoria.DesktopApp.Helpers
                 tablesList.Add(table);
                 tablesList.Add(table2);
             }
-
+            //logger.Info("Fin Crear Tablas de Resultados");
             return tablesList;
         }
     }

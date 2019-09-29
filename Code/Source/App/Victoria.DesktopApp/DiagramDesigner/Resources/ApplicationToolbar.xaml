@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:s="clr-namespace:DiagramDesigner">
+                    xmlns:s="clr-namespace:DiagramDesigner"                    
+                    xmlns:debugCommand="clr-namespace:Victoria.DesktopApp.DiagramDesigner.Commands"
+                    >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles/Shared.xaml"/>
@@ -192,7 +194,8 @@
             <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
                             Command="{x:Static ApplicationCommands.Help}"
-                            CommandTarget="{Binding ElementName=MyDesigner}">
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            >
                 <Button.Content>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -205,20 +208,125 @@
                 </Button.Content>
             </Button>
         </Grid>
-        <Grid Margin="3" Name="ComboBox">
-            <ComboBox Name="Functions_comboBox" Visibility="Hidden">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="{Binding Inversa}" Width="12" Height="8" Margin="0,2,5,2" />
-                            <TextBlock Text="{Binding Inversa}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-                
-            </ComboBox>
+        <Grid Name="Ver" Margin="3">
+            <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="{x:Static ApplicationCommands.Find}"
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            >
+                <Button.Content>
+                    <Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Image Source="Images/debug.png" Width="45"/>
+                            <TextBlock Grid.Row="1" Text="Debug" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
+                </Button.Content>
+            </Button>
+         </Grid>
+        <!-- Botonera de debug -->
+        <!--{Binding DebugCommands.StepOver}"-->
+        <Grid Name="Debug_StepOver" Margin="3">
+            <Button Name="StepOver_btn" Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="debugCommand:DebugCommands.StepOver"          
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True"
+                            Visibility="Hidden">
+                <Button.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="Images/StepOver.png" Width="45"/>
+                        <TextBlock Grid.Row="1" Text="Saltar nodo" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
         </Grid>
-
-
+        <Grid Name="Debug_StepInto" Margin="3">
+            <Button Name="StepInto_btn" Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="debugCommand:DebugCommands.StepInto"          
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True"
+                            Visibility="Hidden">
+                <Button.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="Images/StepInto.png" Width="45"/>
+                        <TextBlock Grid.Row="1" Text="Ingresar en nodo" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <!--CommandTarget="{Binding ElementName=MyDesigner}"-->
+        <Grid Name="Debug_Continue" Margin="3">
+            <Button Name="Continue_btn" Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="debugCommand:DebugCommands.Continue"                                      
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True"
+                            Visibility="Hidden">
+                <Button.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="Images/btnContinue.png" Width="45"/>
+                        <TextBlock Grid.Row="1" Text="Continuar" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <Grid Name="Debug_ConditionalContinue" Margin="3">
+            <Button Name="ConditionalContinue_btn" Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="debugCommand:DebugCommands.ConditionedContinue"          
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True"
+                            Visibility="Hidden">
+                <Button.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="Images/ConditionalContinue.png" Width="45"/>
+                        <TextBlock Grid.Row="1" Text="Continuar" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Text="Condicionado" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <Grid Name="Debug_Stop" Margin="3">
+            <Button Name="Stop_btn" Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="{x:Static ApplicationCommands.Stop}"
+                            CommandTarget="{Binding ElementName=MyDesigner}"
+                            IsEnabled="True"
+                            Visibility="Hidden">
+                <Button.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="Images/Stop.png" Width="45"/>
+                        <TextBlock Grid.Row="1" Text="Detener" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>                        
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
     </ToolBar>
 </ResourceDictionary>

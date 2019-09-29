@@ -34,7 +34,7 @@ namespace Victoria.DesktopApp.View
     public partial class AnalisisSensibilidadPopUp : Window
     {
         private static object _syncLock = new object();
-        private List<ModelWPF.Variable> variablesDeControl;
+        public List<ModelWPF.Variable> variablesDeControl;
         private string simulationFile;
 
         public struct ItemAnalisisSensibilidad
@@ -53,9 +53,9 @@ namespace Victoria.DesktopApp.View
 
         private int numeroEscenarios { get; set; }
 
-        private double factorAlineacionGb {get; set;}
-        
-        private double posicionInicialGb {get; set;}
+        private double factorAlineacionGb { get; set; }
+
+        private double posicionInicialGb { get; set; }
 
         private double posicionInicialBtnNuevoEscenario { get; set; }
 
@@ -66,6 +66,8 @@ namespace Victoria.DesktopApp.View
         private bool primerAgregado { get; set; }
 
         private int gbAgregados { get; set; }
+
+        //public List<ModelWPF.Variable>  variablesDeControl { get;}
 
         public AnalisisSensibilidadPopUp(string simulationFile)
         {

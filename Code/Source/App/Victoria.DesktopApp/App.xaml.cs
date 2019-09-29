@@ -18,13 +18,19 @@ namespace Victoria.DesktopApp
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
+    /// 
     public partial class App : Application
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Application.Current.DispatcherUnhandledException += this.Application_DispatcherUnhandledException;
             //Disable shutdown when the dialog closes
             Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
+            
+             //logger.Info("INICIO VICTORIA SUITE");
+             
 
             if (e.Args.Any() && e.Args[0].IndexOf(".vic", System.StringComparison.Ordinal) > 0)
             {

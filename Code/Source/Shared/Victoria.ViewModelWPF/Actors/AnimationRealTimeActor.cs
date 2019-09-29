@@ -17,7 +17,7 @@ namespace Victoria.ViewModelWPF.Actors
                 switch (message)
                 {
                     default:
-                    case "Exeute":
+                    case "Execute":
                         this.Execute();
                         break;
                     case "Animate":
