@@ -376,6 +376,7 @@ namespace Victoria.DesktopApp.View
 
         }
 
+
         public List<string> leerDelimitadorCaracter(string pathArchivo, string caracter)
         {
             StreamReader objReader = new StreamReader(pathArchivo);
