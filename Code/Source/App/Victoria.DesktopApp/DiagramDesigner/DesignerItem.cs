@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +12,7 @@ using System.Xml;
 using System.Xml.Linq;
 using DiagramDesigner.Controls;
 using Victoria.DesktopApp.DiagramDesigner.Nodes;
+using Victoria.DesktopApp.View;
 using Victoria.Shared;
 using Victoria.Shared.Debug;
 using Node = Victoria.DesktopApp.DiagramDesigner.Nodes.Node;
@@ -221,40 +223,48 @@ namespace DiagramDesigner
             
             if ( (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None )
             {
-                
-                try
+                if (!Debug.instance().debugModeOn) //Evita agregar breakpoints cuando estoy debugueando
                 {
-                    Grid grid = (Grid)this.Content;
-                    Path shape = (Path)grid.Children[0];
-
-                    if (lstNodesToBreakpoint.Contains(shape.ToolTip.ToString()))
+                    try
                     {
-                        //Cambio color del borde a rojo para indicar breakpoint
-                        if (!this.hasBreakpoint)
-                        {
-                            this.originalColor = shape.Stroke;
-                            changeColor(this, Brushes.Red);
-                            nodesWithBreakPoints.Add(this);
-                            nodesWithoutBreakPoints.Remove(this);
-                        }
-                        else
-                        {
-                            changeColor(this, this.originalColor);
-                            nodesWithBreakPoints.Remove(this);
-                            nodesWithoutBreakPoints.Add(this);
-                        }
+                        Grid grid = (Grid)this.Content;
+                        Path shape = (Path)grid.Children[0];
 
-                        grid.Tag = ToogleBreakPoint();
-                        
+                        if (lstNodesToBreakpoint.Contains(shape.ToolTip.ToString()))
+                        {
+                            //Cambio color del borde a rojo para indicar breakpoint
+                            if (!this.hasBreakpoint)
+                            {
+                                this.originalColor = shape.Stroke;
+                                changeColor(this, Brushes.Red);
+                                nodesWithBreakPoints.Add(this);
+                                nodesWithoutBreakPoints.Remove(this);
+                            }
+                            else
+                            {
+                                changeColor(this, this.originalColor);
+                                nodesWithBreakPoints.Remove(this);
+                                nodesWithoutBreakPoints.Add(this);
+                            }
+
+                            grid.Tag = ToogleBreakPoint();
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("No puede agregarse un breakpoint a este nodo");
                     }
                 }
-                catch (Exception ex) {
-                    Console.WriteLine("No puede agregarse un breakpoint a este nodo");
+                else
+                {
+                    BreakpointPopUp bkpMessage = new BreakpointPopUp("No puede agregar breakpoints con modo debug activado");
+                    bkpMessage.ShowDialog();
                 }
-
             }
-
         }
+
+
 
         private static void changeColor(DesignerItem node, Brush color, Double thickness = 1)
         {
