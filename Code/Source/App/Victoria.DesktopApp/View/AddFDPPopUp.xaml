@@ -89,6 +89,7 @@
                             <Label x:Name="label_fila" Content="Fila Inicial" Margin="584,106,356,84.857"/>
 
                             <TextBox x:Name="txtHoja" PreviewTextInput="NumberValidationTextBox" x:FieldModifier="private" Margin="330,110,639,85" Text="1" />
+                            <TextBox x:Name="txtDelimitador" x:FieldModifier="private" Margin="230,110,739,85" Text=";" MaxLength="1" />
                             <TextBox x:Name="txtCol" PreviewTextInput="NumberValidationTextBox"  x:FieldModifier="private" Margin="495,110,473,85" Text="1"/>
                             <TextBox x:Name="txtFila" PreviewTextInput="NumberValidationTextBox"   x:FieldModifier="private" Margin="673,110,300,85" Text="1"/>
 

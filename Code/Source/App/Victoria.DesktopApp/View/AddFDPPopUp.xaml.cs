@@ -17,6 +17,7 @@ using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using System.Data;
+using System.IO;
 
 
 
@@ -110,10 +111,17 @@ namespace Victoria.DesktopApp.View
 
         }
 
-        private String getFileName()
+        private String getFileName(string tipo)
         {
             OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Filter = "Designer Files (*.xls)|*.xlsx|All Files (*.*)|*.*";
+            if (tipo == "Archivo Excel")
+            {
+                openFile.Filter = "Designer Files (*.xls)|*.xlsx|All Files (*.*)|*.*";
+            }
+            else
+            {
+                openFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            }
 
             if (openFile.ShowDialog() == true)
             {
@@ -188,7 +196,7 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
-                rutaFile.Text = getFileName();
+                rutaFile.Text = getFileName(comboBox.SelectedItem.ToString());
             }
             catch
             {
@@ -222,7 +230,9 @@ namespace Victoria.DesktopApp.View
                     txtHoja.Visibility = Visibility.Visible;
                     txtFila.Visibility = Visibility.Visible;
                     txtCol.Visibility = Visibility.Visible;
-                    
+                    txtDelimitador.Visibility = Visibility.Hidden;
+
+
                     pnlPosicion_datos.Visibility = Visibility.Visible;
 
                   break;
@@ -236,9 +246,12 @@ namespace Victoria.DesktopApp.View
                     label_hoja.Visibility = Visibility.Hidden;
                     txtCol.Visibility = Visibility.Hidden;
                     txtFila.Visibility = Visibility.Hidden;
-                    txtHoja.Visibility = Visibility.Visible;
+                    txtHoja.Visibility = Visibility.Hidden;
+                    txtDelimitador.Visibility = Visibility.Visible;
 
-                    
+
+
+
                   break;
             }
            
@@ -260,97 +273,121 @@ namespace Victoria.DesktopApp.View
 
         private void Btnimport_Click(object sender, RoutedEventArgs e)
         {
-           // try
-           // {
-                
-                dgvDatosFdp.ItemsSource = eventos;
-                
-                using (var archivo = new XLWorkbook(rutaFile.Text ))
+            // try
+            // {
+            dgvDatosFdp.ItemsSource = eventos;
+            if (comboBox.SelectedItem.ToString() =="Archivo Excel") 
+            {
+               
+
+                using (var archivo = new XLWorkbook(rutaFile.Text))
                 {
-                    
+
                     int numeroFila = Convert.ToInt32(txtFila.Text);
                     int columna = Convert.ToInt32(txtCol.Text);
-                //Origen nuevoOrigen = new Origen();
+                    //Origen nuevoOrigen = new Origen();
+
+                    try
+                    {
+                        var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
+                        idEvento++;
+                        while (!hoja.Cell(numeroFila, columna).IsEmpty())
+                        {
+                            DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
+                            eventos.Add(new commonFDP.Evento() { fecha = auxFecha, Id = idEvento });//, origen = nuevoOrigen, activo = true });
+                            numeroFila++;
+                            idEvento++;
+                        }
+
+                    }
+
+                    catch
+                    {
+                        
+                        createAlertPopUp("El excel importado no tiene el formato correcto o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
+                        rutaFile.Text = "";
+                        pnlPosicion_datos.Visibility = Visibility.Hidden;
+                       
+                    }
+
+                }
+            }
+            else 
+            {
 
                 try
                 {
-                    var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
-                    idEvento++;
-                    while (!hoja.Cell(numeroFila, columna).IsEmpty())
+                    StreamReader objReader = new StreamReader(rutaFile.Text);
+                    List<string> eventosLeidos = new List<string>();
+                    string todoElArchivo = objReader.ReadToEnd();
+                    objReader.Close();
+                    foreach (var item in todoElArchivo.Split(Convert.ToChar(txtDelimitador.Text)))
                     {
-                            DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
-                            eventos.Add(new commonFDP.Evento() { fecha = auxFecha, Id= idEvento });//, origen = nuevoOrigen, activo = true });
-                            numeroFila++;
-                            idEvento++;
-                    }
-
-                
-                    dgvDatosFdp.Columns[0].Width = 235;
-                    try
-                    {
-                        dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
-                    }
-                    catch
-                    {
+                        DateTime aux = DateTime.ParseExact(item.Replace("\r\n", "").Replace("\n", "").Replace("\r", ""), "dd/MM/yyyy HH:mm:ss", null);
+                                   
+                        eventos.Add(new commonFDP.Evento() { fecha = aux, Id = idEvento });//, origen = nuevoOrigen, activo = true });
 
                     }
-                    dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
-                    dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
-                    dgvDatosFdp.Columns[1].Visibility = Visibility.Visible;
-                    dgvDatosFdp.Columns[1].Header = "Eventos";
-                    dgvDatosFdp.Columns[3].Visibility = Visibility.Hidden;
-                    dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
-                    dgvDatosFdp.Columns[5].Visibility = Visibility.Hidden;
-                    dgvDatosFdp.Visibility = Visibility.Visible;
-                    rbFecha.IsChecked = true;
-                    pnlButtonsGrid.Visibility = Visibility.Visible;
-                    dgvDatosFdp.Items.Refresh();
-                    pnlModificable.Visibility = Visibility.Hidden;
-                    pnlMetodologia.Visibility = Visibility.Visible;
 
-                    if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
-                    {
-                        rbDtConstante.Visibility = Visibility.Hidden;
-                        rbEventoAEvento.IsChecked = true;
-                    }
-                    else
-                    {
-                        rbEventoAEvento.Visibility = Visibility.Hidden;
-                        rbDtConstante.IsChecked = true;
-                    }
-
-                    /*
-                    if (rbDtConstante.IsChecked.Value) 
-                    {
-
-                    }
-                    else
-                    {
-                       
-                    } */
-                    
                 }
-
-                catch
+                catch (Exception ex)
                 {
-                    dgvDatosFdp.Visibility = Visibility.Hidden;
-                    createAlertPopUp("El excel importado no tiene el formato correcto o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
+                    createAlertPopUp("No se pudo obtener los datos, valide que el formato del archivo y de las fechas ingresadas sean corerctos");
                     rutaFile.Text = "";
                     pnlPosicion_datos.Visibility = Visibility.Hidden;
-                    pnlButtonsGrid.Visibility = Visibility.Hidden;
 
-
-                }
+                } 
 
             }
-               
-                
-                
-            //}
-            /*/catch
+
+            dgvDatosFdp.Columns[0].Width = 235;
+            try
             {
-                createAlertPopUp("No se pudo obtener los datos");
-            } /*/
+                dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
+            }
+            catch
+            {
+
+            }
+            dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
+            dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
+            dgvDatosFdp.Columns[1].Visibility = Visibility.Visible;
+            dgvDatosFdp.Columns[1].Header = "Eventos";
+            dgvDatosFdp.Columns[3].Visibility = Visibility.Hidden;
+            dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
+            dgvDatosFdp.Columns[5].Visibility = Visibility.Hidden;
+            dgvDatosFdp.Visibility = Visibility.Visible;
+            rbFecha.IsChecked = true;
+            pnlButtonsGrid.Visibility = Visibility.Visible;
+            dgvDatosFdp.Items.Refresh();
+            pnlModificable.Visibility = Visibility.Hidden;
+            pnlMetodologia.Visibility = Visibility.Visible;
+
+            if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
+            {
+                rbDtConstante.Visibility = Visibility.Hidden;
+                rbEventoAEvento.IsChecked = true;
+            }
+            else
+            {
+                rbEventoAEvento.Visibility = Visibility.Hidden;
+                rbDtConstante.IsChecked = true;
+            }
+
+        }
+
+        public List<string> leerDelimitadorCaracter(string pathArchivo, string caracter)
+        {
+            StreamReader objReader = new StreamReader(pathArchivo);
+            List<string> eventosLeidos = new List<string>();
+            string todoElArchivo = objReader.ReadToEnd();
+            objReader.Close();
+            foreach (var item in todoElArchivo.Split(Convert.ToChar(caracter)))
+            {
+                DateTime aux = DateTime.Parse(item);
+                eventosLeidos.Add(aux.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            }
+            return eventosLeidos;
         }
 
         private void DgvDatosFdp_SelectionChanged(object sender, SelectionChangedEventArgs e)
