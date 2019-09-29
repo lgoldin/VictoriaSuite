@@ -184,7 +184,19 @@ namespace DiagramDesigner
             //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
             manualResetEvent.WaitOne();
 
-            DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
+            Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
+
+            ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+            
+        }
+
+        private void ScrollCanvasToBreakpointNode(Point startOfNode, ScrollViewer scrollViewer)
+        {
+            var x_offset = startOfNode.X - 350 < 0 ? 0 : startOfNode.X - 350;
+            var y_offset = startOfNode.Y - 200 < 0 ? 0 : startOfNode.Y - 200;
+            
+            scrollViewer.ScrollToHorizontalOffset(x_offset);
+            scrollViewer.ScrollToVerticalOffset(y_offset);
         }
 
         private DesignerItem getNodeByID(string id_to_find)
@@ -256,9 +268,10 @@ namespace DiagramDesigner
                     manualResetEvent.WaitOne();
 
                     //Cambio el color del primer nodo con breakpoint
-                    DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
-                }
+                    Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
 
+                    ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+                }
             }
         }
 

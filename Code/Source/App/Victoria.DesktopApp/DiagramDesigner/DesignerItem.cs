@@ -263,10 +263,8 @@ namespace DiagramDesigner
                 }
             }
         }
-
-
-
-        private static void changeColor(DesignerItem node, Brush color, Double thickness = 1)
+        
+        private static Point changeColor(DesignerItem node, Brush color, Double thickness = 1)
         {
             Grid grid = (Grid)node.Content;
             Path shape = grid.Children[0] as Path; // Devuelve null si NO puede castearlo
@@ -276,6 +274,8 @@ namespace DiagramDesigner
                 shape.StrokeThickness = thickness;
             }
 
+            
+            return new Point( node.VisualOffset.X ,node.VisualOffset.Y );
         }
 
         public static Boolean ifAnyNodeHasBreakpoint() {
@@ -286,12 +286,28 @@ namespace DiagramDesigner
          * @exeucting_node: Node que esta ejecutando para ponerle el contorno en azul
          * @previous_node: Ultimo nodo ejecutado para ponerle el contorno a como estaba antes de setearse en azul
          */
-        public static void setDebugColor(DesignerItem executing_node)
+        public static Point setDebugColor(DesignerItem executing_node)
         {
+            Point point = new Point();
             nodesWithBreakPoints.ForEach(n => changeColor(n, Brushes.Red)); //Sin esta linea al debuguear por Continue no despinta todos los nodos
             nodesWithoutBreakPoints.ForEach(n => changeColor(n, Brushes.DarkOrange));
-            if (executing_node != null)
-                DesignerItem.changeColor(executing_node, Brushes.Blue,2.5);               
+            if (executing_node != null) { 
+                point = DesignerItem.changeColor(executing_node, Brushes.Blue, 2.5);
+            }
+
+            return point;
+            //if (previous_node != null)
+            //{
+            //    if (nodesWithBreakPoints.Contains(previous_node))
+            //    {
+            //        changeColor(previous_node, Brushes.Red);
+            //    }
+            //    else
+            //    {
+            //        changeColor(previous_node, Brushes.DarkOrange);
+            //    }                
+            //}
+
         }        
 
         String ToogleBreakPoint()
