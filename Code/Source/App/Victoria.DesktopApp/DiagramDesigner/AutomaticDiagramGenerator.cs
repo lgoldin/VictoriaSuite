@@ -228,12 +228,9 @@ namespace Victoria.DesktopApp.DiagramDesigner
             actualPosition = generateDeltaTPropiosSubdiagrams(actualPosition);
             actualPosition = generateDeltaTComprometidosAnteriorSubdiagrams(actualPosition);
             actualPosition = generateDeltaTComprometidosFuturoSubdiagrams(actualPosition);
-<<<<<<< HEAD
             actualPosition = generateDeltaTCalcularResultadosSubdiagram(actualPosition);
             //logger.Info("Fin Generar Diagrama Delta T");
-=======
 
->>>>>>> 56ac2bc575b136cfb509ba957d913e951c8a167c
         }
 
         private double generateDeltaTCalcularResultadosSubdiagram(double nextTopPosition)
