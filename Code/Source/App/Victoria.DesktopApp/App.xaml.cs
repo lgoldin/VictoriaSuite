@@ -64,8 +64,9 @@ namespace Victoria.DesktopApp
             var appender = (log4net.Appender.FileAppender)log4net.LogManager.GetRepository().GetAppenders()
                                                     .Where(x => x.GetType().ToString().Contains("FileAppender")).First();
 
-            appender.File = path + @"Logs\Registro "+DateTime.Now.ToString("yyyy-MM-dd hh_mm_ss")+".log";
-            
+            //appender.File = path + @"Logs\Registro "+DateTime.Now.ToString("yyyy-MM-dd hh_mm_ss")+".log";
+            appender.File = path + @"Logs\Victoria_V.log";
+
             appender.ActivateOptions();
         }
     }

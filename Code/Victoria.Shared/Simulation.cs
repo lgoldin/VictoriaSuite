@@ -90,8 +90,20 @@ namespace Victoria.Shared
             if (this.stopExecution)
             {
                 this.ChangeStatus(SimulationStatus.Stoped);
+                
+                logger.Info("Simulación Detenida (Listado de Variables): " + VariablesToString());
             }
             logger.Info("Fin Actualizar");
+        }
+
+        public String VariablesToString()
+        {
+            String cadena = String.Empty;
+            foreach(Variable v in this.variables)
+            {
+                cadena += v.Name + ": " + v.ActualValue.ToString() + " | ";// System.Environment.NewLine;
+            }
+            return cadena.Remove(cadena.Length-3);
         }
 
         public List<Diagram> GetDiagrams()
