@@ -36,7 +36,7 @@ namespace Victoria.Shared.Actors
         {
             get
             {
-                log.Info("Inicio Obtener Actor principal de Simulacion");
+                //log.Info("Inicio Obtener Actor principal de Simulacion");
                 if (this.mainSimulationActor == null)
                 {
                     var akkaConfiguration = ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig;
@@ -44,7 +44,7 @@ namespace Victoria.Shared.Actors
 
                     this.mainSimulationActor = system.ActorOf<MainSimulationActor>("mainSimulationActor");
                 }
-                log.Info("Fin Obtener Actor Principal de Simulacion");
+                //log.Info("Fin Obtener Actor Principal de Simulacion");
                 return this.mainSimulationActor;
             }
 

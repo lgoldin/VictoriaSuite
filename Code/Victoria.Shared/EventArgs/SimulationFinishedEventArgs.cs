@@ -11,10 +11,10 @@ namespace Victoria.Shared.EventArgs
 
         public SimulationStatusChangedEventArgs(SimulationStatus status)
         {
-            logger.Info("Inicio Estado de simulación cambiando Args de evento");
+            //logger.Info("Inicio Estado de simulación cambiando Args de evento");
             this.Status = status;
 
-            logger.Info("Fin Estado de simulación cambiando Args de evento");
+            //logger.Info("Fin Estado de simulación cambiando Args de evento");
         }
 
         /// <summary>

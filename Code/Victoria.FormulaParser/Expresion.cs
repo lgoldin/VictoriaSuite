@@ -27,15 +27,15 @@ namespace Victoria.FormulaParser
 
         public Expresion PrimeraExpresion()
         {
-            logger.Info("Inicio Primera Expresion");
+            //logger.Info("Inicio Primera Expresion");
             if (this.ExpresionMadre == null)
             {
 
-                logger.Info("Fin Primera Expresion");
+                //logger.Info("Fin Primera Expresion");
                 return this;
             }
 
-            logger.Info("Fin Primera Expresion");
+            //logger.Info("Fin Primera Expresion");
             return this.ExpresionMadre.PrimeraExpresion();
         }
     }

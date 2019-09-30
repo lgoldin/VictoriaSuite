@@ -8,10 +8,10 @@ namespace Victoria.FormulaParser
 
         public ElementoSeparador(string separador)
         {
-            logger.Info("Inicio Elemento Separador");
+            //logger.Info("Inicio Elemento Separador");
             this.separador = separador;
 
-            logger.Info("Fin Elemento Separador");
+            //logger.Info("Fin Elemento Separador");
         }
 
         public override bool EsNumerico()
