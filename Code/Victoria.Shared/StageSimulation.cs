@@ -16,11 +16,11 @@ namespace Victoria.Shared
 
         public StageSimulation(ISimulation simulation)
         {
-            logger.Info("Inicio Escenario Simulacion");
+            //logger.Info("Inicio Escenario Simulacion");
             this.simulation = simulation;
             this.diagrams = simulation.GetDiagrams().ToList();
             this.Initilize(simulation.GetVariables());
-            logger.Info("Fin Escenario Simulacion");
+            //logger.Info("Fin Escenario Simulacion");
         }
 
         public bool GetExecutionStatus()

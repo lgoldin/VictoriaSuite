@@ -245,7 +245,7 @@ namespace Victoria.Shared
                     Name = node.Attribute("id").Value,
                 };
 
-                logger.Info("Fin Parse Nodo Inicializador");
+                //logger.Info("Fin Parse Nodo Inicializador");
                 return new PreParsedNode
                 {
                     name = node.Attribute("id").Value,

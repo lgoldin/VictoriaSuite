@@ -54,7 +54,7 @@ namespace DiagramDesigner
         public DesignerCanvas()
         {
 
-            logger.Info("Inicio Diseñar Canvas");
+            logger.Info("Abrir Diseñar Canvas");
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
@@ -86,7 +86,7 @@ namespace DiagramDesigner
             this.AllowDrop = true;
             Clipboard.Clear();
 
-            logger.Info("Fin Diseñar Canvas");
+            //logger.Info("Fin Diseñar Canvas");
         }
 
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)
