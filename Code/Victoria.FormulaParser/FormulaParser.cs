@@ -24,7 +24,7 @@ namespace Victoria.FormulaParser
 
         public FormulaParser(string formula)
         {
-            logger.Info("Inicio Formula Parser: " + formula);
+            //logger.Info("Inicio Formula Parser: " + formula);
             this.formula = Regex.Replace(formula, @"\s+", "").ToLower();
 
             this.indice = 0;

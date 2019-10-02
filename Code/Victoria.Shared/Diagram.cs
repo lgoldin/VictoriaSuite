@@ -18,7 +18,7 @@ namespace Victoria.Shared
         {
             try
             {
-                logger.Info("Inicio Execute");
+                //logger.Info("Inicio Execute");
                 return this.Nodes.First().Execute(variables);
 
             }

@@ -295,9 +295,8 @@ namespace Victoria.DesktopApp
         {
             try
             {
-                logger.Info("Inicio Ejecutar Simulación");
-                ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);
-                logger.Info("Fin Ejecutar Simulacón"); 
+                //logger.Info("Inicio Ejecutar Simulación");                
+                ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);                
             }
             catch (Exception ex)
             {

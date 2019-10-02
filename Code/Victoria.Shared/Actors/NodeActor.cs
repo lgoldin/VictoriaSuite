@@ -19,12 +19,20 @@ namespace Victoria.Shared.Actors
 
         public NodeActor(IStageSimulation stageSimulation)
         {
-            log.Info("Inicio Nodo Actor");
-            this.stageSimulation = stageSimulation;
+            try
+            {
+                //log.Info("Inicio Nodo Actor");
+                this.stageSimulation = stageSimulation;
 
-            Receive<Diagram>(diagram => this.Execute(diagram));
-            Receive<Node>(node => this.Execute(node));
-            log.Info("Fin Nodo Actor");
+                Receive<Diagram>(diagram => this.Execute(diagram));
+                Receive<Node>(node => this.Execute(node));
+                //log.Info("Fin Nodo Actor");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public static Props Props(IStageSimulation stageSimulation)
@@ -57,12 +65,13 @@ namespace Victoria.Shared.Actors
         }
 
         private void Execute(Diagram diagram)
-        {
-            log.Info("Inicio Ejecutar");
+        {            
             try
             {
+                //log.Info("Inicio Ejecutar");
                 Node node = diagram.Execute(this.stageSimulation.GetVariables());
                 this.Self.Tell(node);
+                //log.Info("Fin Ejectuar");
             }
             catch (Exception exception) 
             {
@@ -71,36 +80,42 @@ namespace Victoria.Shared.Actors
                 stageSimulation.StopExecution(true);
                 this.MainSimulationActor.Tell(this.stageSimulation);
             }
-            log.Info("Fin Ejectuar");
-
         }
 
         private void Execute(Node node)
         {
-            log.Info("Inicio Ejecutar");
-            if (node != null && this.stageSimulation.CanContinue())
+            try
             {
-                node = node.Execute(this.stageSimulation.GetVariables());
-                    
-                if (node != null)
+                //log.Info("Inicio Ejecutar");            
+                if (node != null && this.stageSimulation.CanContinue())
                 {
-                    this.Self.Tell(node);
+                    node = node.Execute(this.stageSimulation.GetVariables());
+
+                    if (node != null)
+                    {
+                        this.Self.Tell(node);
+                    }
+                    else
+                    {
+                        stageSimulation.StopExecution(true);
+                    }
                 }
                 else
                 {
                     stageSimulation.StopExecution(true);
-                }                    
-            }
-            else
-            {
-                stageSimulation.StopExecution(true);
-            }
+                }
 
-            if (this.stageSimulation.MustNotifyUI())
-            {
-                this.MainSimulationActor.Tell(this.stageSimulation);
+                if (this.stageSimulation.MustNotifyUI())
+                {
+                    this.MainSimulationActor.Tell(this.stageSimulation);
+                }
+                //log.Info("Fin Ejecutar");
             }
-            log.Info("Fin Ejecutar");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
     }
 }

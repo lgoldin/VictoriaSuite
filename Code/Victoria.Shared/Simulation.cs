@@ -42,22 +42,38 @@ namespace Victoria.Shared
 
         public bool HasStatusChanged()
         {
-            logger.Info("Validacion de cambio de estado");
-            return this.SimulationStatusChanged != null;
+            try
+            {
+                //logger.Info("Validacion de cambio de estado");
+                return this.SimulationStatusChanged != null;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public void ChangeStatus(SimulationStatus status)
         {
-            logger.Info("Inicio Cambiar de estado");
-            this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
-            logger.Info("Fin Cambiar de estado");
+            try
+            {
+                //logger.Info("Inicio Cambiar de estado");
+                this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
+                //logger.Info("Fin Cambiar de estado");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public void StopExecution(bool value)
         {
-            logger.Info("Inicio Parar Execucion");
+            //logger.Info("Inicio Parar Execucion");
             this.stopExecution = value;
-            logger.Info("Fin Parar Execucion");
+            //logger.Info("Fin Parar Execucion");
         }
 
         public bool CanContinue()
@@ -67,33 +83,40 @@ namespace Victoria.Shared
 
         public void Update(IStageSimulation stageSimulation)
         {
-            logger.Info("Inicio Actualizar");
-            foreach (var variable in stageSimulation.GetVariables())
-            {
-                if (variable is StageVariableArray)
+            try { 
+                //logger.Info("Inicio Actualizar");
+                foreach (var variable in stageSimulation.GetVariables())
                 {
-                    var stageVariableArray = (StageVariableArray)variable;
-                    var variableArray = (VariableArray)this.variables.First(v => v.Name == variable.Name);
-                    foreach (var v in stageVariableArray.Variables)
+                    if (variable is StageVariableArray)
                     {
-                        variableArray.Variables.First(x => x.Name == v.Name).ActualValue = v.ActualValue;
+                        var stageVariableArray = (StageVariableArray)variable;
+                        var variableArray = (VariableArray)this.variables.First(v => v.Name == variable.Name);
+                        foreach (var v in stageVariableArray.Variables)
+                        {
+                            variableArray.Variables.First(x => x.Name == v.Name).ActualValue = v.ActualValue;
+                        }
+                    }
+                    else
+                    {
+                        this.variables.First(v => v.Name == variable.Name).ActualValue = variable.ActualValue;
                     }
                 }
-                else
+
+                this.stopExecution = stageSimulation.GetExecutionStatus();
+
+                if (this.stopExecution)
                 {
-                    this.variables.First(v => v.Name == variable.Name).ActualValue = variable.ActualValue;
+                    this.ChangeStatus(SimulationStatus.Stoped);
+                  
+                    logger.Info("Simulación Detenida (Listado de Variables): " + VariablesToString());                     
                 }
+                //logger.Info("Fin Actualizar");
             }
-
-            this.stopExecution = stageSimulation.GetExecutionStatus();
-
-            if (this.stopExecution)
+            catch (Exception ex)
             {
-                this.ChangeStatus(SimulationStatus.Stoped);
-                
-                logger.Info("Simulación Detenida (Listado de Variables): " + VariablesToString());
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
             }
-            logger.Info("Fin Actualizar");
         }
 
         public String VariablesToString()

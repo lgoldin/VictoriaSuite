@@ -25,21 +25,45 @@ namespace Victoria.Shared
 
         public bool GetExecutionStatus()
         {
-            logger.Info("Obtener estado Ejecucion");
-            return this.stopExecution;
+            try
+            {
+                //logger.Info("Obtener estado Ejecucion");
+                return this.stopExecution;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public void StopExecution(bool value)
         {
-            logger.Info("Inicio Parar Ejecucion");
-            this.stopExecution = value;
-            logger.Info("Fin Parar Ejecucion");
+            try
+            {
+                //logger.Info("Inicio Parar Ejecucion");
+                this.stopExecution = value;
+                //logger.Info("Fin Parar Ejecucion");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public bool CanContinue()
-        {
-            logger.Info("Validacion puede continuar");
-            return this.stopExecution == false && this.simulation.CanContinue();
+        {            
+            try
+            {
+                //logger.Info("Validacion puede continuar");
+                return this.stopExecution == false && this.simulation.CanContinue();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public List<StageVariable> GetVariables()
@@ -49,8 +73,16 @@ namespace Victoria.Shared
 
         public Diagram GetMainDiagram()
         {
-            logger.Info("Obtener diagrama principal");
-            return this.diagrams.First(x => x.Name == "Principal"); 
+            //logger.Info("Obtener diagrama principal");
+            try
+            {
+                return this.diagrams.First(x => x.Name == "Principal");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public bool MustNotifyUI()
@@ -67,34 +99,42 @@ namespace Victoria.Shared
 
         private void Initilize(List<Variable> variables)
         {
-            logger.Info("Inicio Inicializar");
-            this.stageVariables = new List<StageVariable>();
-
-            foreach (var variable in variables)
+            try
             {
-                if (variable is VariableArray)
+                //logger.Info("Inicio Inicializar");
+                this.stageVariables = new List<StageVariable>();
+
+                foreach (var variable in variables)
                 {
-                    var variableArray = (VariableArray)variable;
-                    
-                    this.stageVariables.Add(new StageVariableArray
+                    if (variable is VariableArray)
                     {
-                        InitialValue = variableArray.InitialValue,
-                        ActualValue = variableArray.ActualValue,
-                        Name = variableArray.Name,
-                        Variables = this.Map(variableArray.Variables)
-                    });
-                }
-                else
-                {
-                    this.stageVariables.Add(new StageVariable
+                        var variableArray = (VariableArray)variable;
+
+                        this.stageVariables.Add(new StageVariableArray
+                        {
+                            InitialValue = variableArray.InitialValue,
+                            ActualValue = variableArray.ActualValue,
+                            Name = variableArray.Name,
+                            Variables = this.Map(variableArray.Variables)
+                        });
+                    }
+                    else
                     {
-                        ActualValue = variable.ActualValue,
-                        InitialValue = variable.InitialValue,
-                        Name = variable.Name
-                    });
+                        this.stageVariables.Add(new StageVariable
+                        {
+                            ActualValue = variable.ActualValue,
+                            InitialValue = variable.InitialValue,
+                            Name = variable.Name
+                        });
+                    }
                 }
+                //logger.Info("Fin Inicializar");
             }
-            logger.Info("Fin Inicializar");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private List<StageVariable> Map(List<Variable> variables)
