@@ -25,14 +25,22 @@ namespace Victoria.Shared
 
         public Simulation(IList<Diagram> diagrams, Dictionary<string, Variable> variables)
         {
-            logger.Info("Inicio Simulacion");
-            this.diagrams = diagrams.ToList();
-            this.variables = variables.Values.ToList();
-            if (!this.variables.Any(v => "T".Equals(v.Name)))
+            try
             {
-                this.variables.Insert(0, new Variable() { ActualValue = 0, InitialValue = 0, Name = "T" });
+                //logger.Info("Inicio Simulacion");
+                this.diagrams = diagrams.ToList();
+                this.variables = variables.Values.ToList();
+                if (!this.variables.Any(v => "T".Equals(v.Name)))
+                {
+                    this.variables.Insert(0, new Variable() { ActualValue = 0, InitialValue = 0, Name = "T" });
+                }
+                //logger.Info("Fin Simulacion");
             }
-            logger.Info("Fin Simulacion");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
 		public Simulation(List<Diagram> diagramas, Dictionary<string, Variable> variables, List<Stage> stages) : this(diagramas, variables)
@@ -103,13 +111,14 @@ namespace Victoria.Shared
                 }
 
                 this.stopExecution = stageSimulation.GetExecutionStatus();
-
+                
                 if (this.stopExecution)
                 {
                     this.ChangeStatus(SimulationStatus.Stoped);
-                  
+                                      
                     logger.Info("Simulación Detenida (Listado de Variables): " + VariablesToString());                     
                 }
+                
                 //logger.Info("Fin Actualizar");
             }
             catch (Exception ex)
@@ -131,13 +140,13 @@ namespace Victoria.Shared
 
         public List<Diagram> GetDiagrams()
         {
-            logger.Info("Obtener Diagramas");
+            //logger.Info("Obtener Diagramas");
             return this.diagrams;
         }
 
         public List<Variable> GetVariables()
         {
-            logger.Info("Obtener Variables");
+            //logger.Info("Obtener Variables");
             return this.variables;
         }
 
@@ -148,7 +157,7 @@ namespace Victoria.Shared
 
         public double GetVariableValue(string name)
         {
-            logger.Info("Inicio obtener valor variable");
+            //logger.Info("Inicio obtener valor variable");
             var regex = new Regex(@"[A-Z0-9a-z]+[(][0-9]+[)]");
             if (regex.IsMatch(name))
             {
@@ -164,7 +173,7 @@ namespace Victoria.Shared
                     }
                 }
             }
-            logger.Info("Fin obtener valor variable");
+            //logger.Info("Fin obtener valor variable");
             return this.GetVariables().First(x => x.Name == name).ActualValue;
         }
     }

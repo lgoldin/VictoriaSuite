@@ -19,7 +19,7 @@ namespace Victoria.Shared
             try
             {
 
-                logger.Info("Inicio Obtener Simulacion");
+                //logger.Info("Inicio Obtener Simulacion");
                 var doc = XElement.Parse(xmlString);
 
                 var diagramasPreProcesados = doc.Descendants("Diagrama").Where(diag => diag.Attribute("Name").Value != "ModeloAnalisisSensibilidad").Select(diag => new PreParsedDiagram
@@ -63,7 +63,7 @@ namespace Victoria.Shared
                     stages = new List<Stage>();
                 }
 
-                logger.Info("Fin Obtener Simulacion");
+                //logger.Info("Fin Obtener Simulacion");
                 return new Simulation(diagramas, variables, stages);
             }
             catch (Exception e)
@@ -114,59 +114,67 @@ namespace Victoria.Shared
 
         static Dictionary<string, Variable> parseVariables(XElement node)
         {
-            logger.Info("Inicio parse Variables");
-            JObject vars = JObject.Parse(node.Value);
-            var result = new Dictionary<string, Variable>();
-            foreach (var variable in vars["variables"])
+            try
             {
-                if (!result.ContainsKey((string)variable["nombre"]))
+                //logger.Info("Inicio parse Variables");
+                JObject vars = JObject.Parse(node.Value);
+                var result = new Dictionary<string, Variable>();
+                foreach (var variable in vars["variables"])
                 {
-                    var nombre = (string)variable["nombre"];
-                    if ((bool)variable["vector"])
+                    if (!result.ContainsKey((string)variable["nombre"]))
                     {
-                        var indexFirstParenthesis = nombre.LastIndexOf('(');
-                        var indexLastParenthesis = nombre.LastIndexOf(')');
-                        var nombreItem = nombre.Remove(indexFirstParenthesis, nombre.Length - indexFirstParenthesis);
-                        var lenght = Convert.ToInt32(nombre.Substring(indexFirstParenthesis + 1, indexLastParenthesis - indexFirstParenthesis - 1));
-
-                        var variableList = new List<Variable>();
-                        for (int i = 1; i <= lenght; i++)
+                        var nombre = (string)variable["nombre"];
+                        if ((bool)variable["vector"])
                         {
-                            var variableItem = new Variable
+                            var indexFirstParenthesis = nombre.LastIndexOf('(');
+                            var indexLastParenthesis = nombre.LastIndexOf(')');
+                            var nombreItem = nombre.Remove(indexFirstParenthesis, nombre.Length - indexFirstParenthesis);
+                            var lenght = Convert.ToInt32(nombre.Substring(indexFirstParenthesis + 1, indexLastParenthesis - indexFirstParenthesis - 1));
+
+                            var variableList = new List<Variable>();
+                            for (int i = 1; i <= lenght; i++)
                             {
-                                Name = new StringBuilder(nombreItem).Append('(').Append(i).Append(')').ToString(),
+                                var variableItem = new Variable
+                                {
+                                    Name = new StringBuilder(nombreItem).Append('(').Append(i).Append(')').ToString(),
+                                    InitialValue = (double)variable["valor"],
+                                    ActualValue = (double)variable["valor"],
+                                    Type = (VariableType)(int)variable["type"]
+                                };
+
+                                variableList.Add(variableItem);
+                            }
+                            //es vector
+                            result.Add(nombre, new VariableArray()
+                            {
+                                Name = nombre,
+                                Variables = variableList,
+                                Dimension = (string)variable["dimension"],
+                                Type = (VariableType)(int)variable["type"]
+                            });
+
+                        }
+                        else
+                        {
+                            result.Add(nombre, new Variable
+                            {
+                                Name = nombre,
                                 InitialValue = (double)variable["valor"],
                                 ActualValue = (double)variable["valor"],
                                 Type = (VariableType)(int)variable["type"]
-                            };
-
-                            variableList.Add(variableItem);
+                            });
                         }
-                        //es vector
-                        result.Add(nombre, new VariableArray()
-                        {
-                            Name = nombre,
-                            Variables = variableList,
-                            Dimension = (string)variable["dimension"],
-                            Type = (VariableType)(int)variable["type"]
-                        });
-
-                    }
-                    else
-                    {
-                        result.Add(nombre, new Variable
-                        {
-                            Name = nombre,
-                            InitialValue = (double)variable["valor"],
-                            ActualValue = (double)variable["valor"],
-                            Type = (VariableType)(int)variable["type"]
-                        });
                     }
                 }
-            }
 
-            logger.Info("Fin parse Variables");
-            return result;
+                //logger.Info("Fin parse Variables");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static IList<string> getNextNodes(XElement node)
@@ -176,220 +184,324 @@ namespace Victoria.Shared
 
         private static PreParsedNode parseNodoIterador(XElement node)
         {
-
-            logger.Info("Inicio parse nodo Iterador");
-            var ns = new NodeIterator();
-            var code = node.Attribute("caption").Value.Trim();
-            code = code.Replace(" ", string.Empty);
-            ns.Name = node.Attribute("id").Value;
-            var parametros = code.Split(';');
-            ns.ValorInicial = Convert.ToInt32(parametros[0]);
-            ns.ValorFinal = Convert.ToInt32(parametros[1]);
-            ns.Incremento = Convert.ToInt32(parametros[2]);
-            ns.VariableName = (parametros.Count() > 3) ? parametros[3] : string.Empty;
-
-            logger.Info("Fin parse nodo Iterador");
-            return new PreParsedNodeIterator()
+            try
             {
-                name = ns.Name,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                //logger.Info("Inicio parse nodo Iterador");
+                var ns = new NodeIterator();
+                var code = node.Attribute("caption").Value.Trim();
+                code = code.Replace(" ", string.Empty);
+                ns.Name = node.Attribute("id").Value;
+                var parametros = code.Split(';');
+                ns.ValorInicial = Convert.ToInt32(parametros[0]);
+                ns.ValorFinal = Convert.ToInt32(parametros[1]);
+                ns.Incremento = Convert.ToInt32(parametros[2]);
+                ns.VariableName = (parametros.Count() > 3) ? parametros[3] : string.Empty;
+
+                //logger.Info("Fin parse nodo Iterador");
+                return new PreParsedNodeIterator()
+                {
+                    name = ns.Name,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoSentencia(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Sentencia");
-            var ns = new NodeSentence();
-            ns.Code = node.Attribute("caption").Value;
-            ns.Name = node.Attribute("id").Value;
-            logger.Info("Fin Parse Nodo Sentencia");
-            return new PreParsedNode
+            try
             {
-                name = ns.Name,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                //logger.Info("Inicio Parse Nodo Sentencia");
+                var ns = new NodeSentence();
+                ns.Code = node.Attribute("caption").Value;
+                ns.Name = node.Attribute("id").Value;
+                //logger.Info("Fin Parse Nodo Sentencia");
+                return new PreParsedNode
+                {
+                    name = ns.Name,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoInicializador(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Inicializador");
-            var ns = new Node
+            try
             {
-                Name = node.Attribute("id").Value,
-            };
+                //logger.Info("Inicio Parse Nodo Inicializador");
+                var ns = new Node
+                {
+                    Name = node.Attribute("id").Value,
+                };
 
-            logger.Info("Fin Parse Nodo Inicializador");
-            return new PreParsedNode
+                logger.Info("Fin Parse Nodo Inicializador");
+                return new PreParsedNode
+                {
+                    name = node.Attribute("id").Value,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
             {
-                name = node.Attribute("id").Value,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoFin(XElement node)
         {
-            logger.Info("Inicio parse Nodo Fin");
-            var ns = new Node
+            try
             {
-                Name = node.Attribute("id").Value,
-            };
-            logger.Info("Fin parse Nodo Fin");
-            return new PreParsedNode
+                //logger.Info("Inicio parse Nodo Fin");
+                var ns = new Node
+                {
+                    Name = node.Attribute("id").Value,
+                };
+                //logger.Info("Fin parse Nodo Fin");
+                return new PreParsedNode
+                {
+                    name = node.Attribute("id").Value,
+                    node = ns,
+                    next = null
+                };
+            }
+            catch (Exception ex)
             {
-                name = node.Attribute("id").Value,
-                node = ns,
-                next = null
-            };
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoDiagrama(XElement node, bool isInitializer)
         {
-            logger.Info("Inicio Parse Nodo Diagrama");
-            var ns = new NodeDiagram
-            {
-                Name = node.Attribute("id").Value,
-                DiagramName = node.Attribute("caption").Value,
-                IsInitializer = isInitializer
 
-            };
-            logger.Info("Fin Parse Nodo Diagrama");
-            return new PreparsedNodeDiagram
+            try
             {
-                name = node.Attribute("id").Value,
-                node = ns,
-                next = getNextNodes(node)
+                //logger.Info("Inicio Parse Nodo Diagrama");
+                var ns = new NodeDiagram
+                {
+                    Name = node.Attribute("id").Value,
+                    DiagramName = node.Attribute("caption").Value,
+                    IsInitializer = isInitializer
 
-            };
+                };
+                //logger.Info("Fin Parse Nodo Diagrama");
+                return new PreparsedNodeDiagram
+                {
+                    name = node.Attribute("id").Value,
+                    node = ns,
+                    next = getNextNodes(node)
+
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoCondicion(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Condicion");
-            var ns = new NodeCondition
+            try
             {
-                Name = node.Attribute("id").Value,
-                Code = node.Attribute("caption").Value
-            };
-            logger.Info("Fin Parse Nodo Condicion");
-            return new PreParsedNodeCondition
+                //logger.Info("Inicio Parse Nodo Condicion");
+                var ns = new NodeCondition
+                {
+                    Name = node.Attribute("id").Value,
+                    Code = node.Attribute("caption").Value
+                };
+                //logger.Info("Fin Parse Nodo Condicion");
+                return new PreParsedNodeCondition
+                {
+                    name = ns.Name,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
             {
-                name = ns.Name,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoCondicionCierre(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Condicion Cierre");
-            var ns = new Node
+            try
             {
-                Name = node.Attribute("id").Value,
-            };
-            logger.Info("Fin Parse Nodo Condicion Cierre");
-            return new PreparsedNodeEndCondition
+                //logger.Info("Inicio Parse Nodo Condicion Cierre");
+                var ns = new Node
+                {
+                    Name = node.Attribute("id").Value,
+                };
+                //logger.Info("Fin Parse Nodo Condicion Cierre");
+                return new PreparsedNodeEndCondition
+                {
+                    name = node.Attribute("id").Value,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
             {
-                name = node.Attribute("id").Value,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoReferencia(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Referencia");
-            var ns = new NodeReferencia();
-            ns.Code = node.Attribute("caption").Value;
-            ns.Name = node.Attribute("id").Value;
-
-            logger.Info("Inicio Parse Nodo Referencia");
-            return new PreParsedNodeReferencia
+            try
             {
-                name = node.Attribute("id").Value,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                //logger.Info("Inicio Parse Nodo Referencia");
+                var ns = new NodeReferencia();
+                ns.Code = node.Attribute("caption").Value;
+                ns.Name = node.Attribute("id").Value;
+
+                //logger.Info("Inicio Parse Nodo Referencia");
+                return new PreParsedNodeReferencia
+                {
+                    name = node.Attribute("id").Value,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoResultado(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Resultado");
-            var ns = new NodeResult
+            try
             {
-                Name = node.Attribute("id").Value,
-                Variables = node.Attribute("caption").Value.Split(':')
-            };
+                //logger.Info("Inicio Parse Nodo Resultado");
+                var ns = new NodeResult
+                {
+                    Name = node.Attribute("id").Value,
+                    Variables = node.Attribute("caption").Value.Split(':')
+                };
 
-            logger.Info("Fin Parse Nodo Referencia");
-            return new PreParsedNode
+                //logger.Info("Fin Parse Nodo Referencia");
+                return new PreParsedNode
+                {
+                    name = ns.Name,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
             {
-                name = ns.Name,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoTituloDiagrama(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Titulo Diagrama");
-            var ns = new Node
+            try
             {
-                Name = node.Attribute("id").Value,
-            };
+                //logger.Info("Inicio Parse Nodo Titulo Diagrama");
+                var ns = new Node
+                {
+                    Name = node.Attribute("id").Value,
+                };
 
-            logger.Info("Fin Parse Nodo Titulo Diagrama");
-            return new PreParsedNode
+                //logger.Info("Fin Parse Nodo Titulo Diagrama");
+                return new PreParsedNode
+                {
+                    name = node.Attribute("id").Value,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
             {
-                name = node.Attribute("id").Value,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static PreParsedNode parseNodoRandom(XElement node)
         {
-            logger.Info("Inicio Parse Nodo Random");
-            var ns = new NodeRandom
+            try
             {
-                Name = node.Attribute("id").Value,
-                Code = node.Attribute("caption").Value
-            };
-            logger.Info("Fin Parse Nodo Random");
-            return new PreParsedNode
+                //logger.Info("Inicio Parse Nodo Random");
+                var ns = new NodeRandom
+                {
+                    Name = node.Attribute("id").Value,
+                    Code = node.Attribute("caption").Value
+                };
+                //logger.Info("Fin Parse Nodo Random");
+                return new PreParsedNode
+                {
+                    name = ns.Name,
+                    node = ns,
+                    next = getNextNodes(node)
+                };
+            }
+            catch (Exception ex)
             {
-                name = ns.Name,
-                node = ns,
-                next = getNextNodes(node)
-            };
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static List<Diagram> posprocesarDiagramas(IEnumerable<PreParsedDiagram> diagramasPreProcesados)
         {
-            logger.Info("Inicio posprocesar Diagramas");
-            var result = new List<Diagram>();
-            foreach (PreParsedDiagram preD in diagramasPreProcesados)
+            try
             {
-                preD.diagram.Nodes = procesarNodos(preD.nodos, diagramasPreProcesados);
-                result.Add(preD.diagram);
-            }
+                //logger.Info("Inicio posprocesar Diagramas");
+                var result = new List<Diagram>();
+                foreach (PreParsedDiagram preD in diagramasPreProcesados)
+                {
+                    preD.diagram.Nodes = procesarNodos(preD.nodos, diagramasPreProcesados);
+                    result.Add(preD.diagram);
+                }
 
-            logger.Info("Fin posprocesar Diagramas");
-            return result;
+                //logger.Info("Fin posprocesar Diagramas");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static ObservableCollection<Node> procesarNodos(Dictionary<string, PreParsedNode> nodos, IEnumerable<PreParsedDiagram> diagramasPreProcesados)
         {
-            logger.Info("Inicio procesar Nodos");
-            var result = new List<Node>();
-            foreach (var nodoPreProcesado in nodos.Values)
+            try
             {
-                nodoPreProcesado.posprocesar(nodos, result);
+                //logger.Info("Inicio procesar Nodos");
+                var result = new List<Node>();
+                foreach (var nodoPreProcesado in nodos.Values)
+                {
+                    nodoPreProcesado.posprocesar(nodos, result);
+                }
+                //logger.Info("Fin procesar Nodos");
+                return new ObservableCollection<Node>(result);
             }
-            logger.Info("Fin procesar Nodos");
-            return new ObservableCollection<Node>(result);
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         static List<Stage> parseStages(XElement stages)

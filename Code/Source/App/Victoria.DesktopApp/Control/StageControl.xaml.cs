@@ -60,7 +60,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Exportar Escenario");
+                //logger.Info("Inicio Exportar Escenario");
                 using (var saveFileDialog = new System.Windows.Forms.SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|PDF files (*.pdf)|*.pdf";
@@ -70,7 +70,8 @@ namespace Victoria.DesktopApp.Control
                     if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         ((StageViewModel)this.DataContext).ExportStageCommand.Execute(saveFileDialog.FileName);
                 }
-                logger.Info("Fin Exportar Escenario");
+                logger.Info("Se ha realizado la exportación del escenario.");
+                //logger.Info("Fin Exportar Escenario");
             }
             catch (Exception ex)
             {
@@ -84,9 +85,9 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Eliminar Gráfico");
+                //logger.Info("Inicio Eliminar Gráfico");
                 ((StageViewModel)this.DataContext).DeleteChartCommand.Execute(null);
-                logger.Info("Fin Eliminar Grafico");
+                //logger.Info("Fin Eliminar Grafico");
             }
             catch
             {
@@ -100,13 +101,13 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio ejecutar Escenario");
+                //logger.Info("Inicio ejecutar Escenario");
                 ((StageViewModel)this.DataContext).StopExecutionStageCommand.Execute(null);
-                logger.Info("Fin Ejecutar Escenario");
+                //logger.Info("Fin Ejecutar Escenario");
             }
             catch
             {
-                logger.Error("Se produjo un error al ejecutar el escenario");
+                logger.Error("Se produjo un error al detener la ejecución del escenario");
                 var viewException = new AlertPopUp( "Se produjo un error al ejecutar el escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -116,7 +117,7 @@ namespace Victoria.DesktopApp.Control
         {
             try
             {
-                logger.Info("Inicio Agregar Animación");
+                //logger.Info("Inicio Agregar Animación");
                 if (!((StageViewModel)this.DataContext).DllConfigurations.Any())
                 {
                     logger.Error("No se encontraron animaciones disponbles. Revise la configuración de Victoria");
@@ -148,7 +149,8 @@ namespace Victoria.DesktopApp.Control
                         }
                         break;
                 }
-                logger.Info("Fin Agregar Animación");
+                //logger.Info("Fin Agregar Animación");
+                logger.Info("Se ha incorporado una nueva animación.");
             }
             catch
             {
