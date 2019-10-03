@@ -54,7 +54,7 @@ namespace DiagramDesigner
         public DesignerCanvas()
         {
 
-            logger.Info("Abrir Diseñar Canvas");
+            logger.Info("Abrir ventana para diseño de diagrama.");
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
@@ -92,20 +92,20 @@ namespace DiagramDesigner
         private void Imprimir_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
-            logger.Info("Inicio Imprimir");
+            //logger.Info("Inicio Imprimir");
             ScrollViewer scroll = (ScrollViewer)this.Parent;
             scroll.ScrollToTop();
             ImprimirDiagrama();
-            logger.Info("Fin Imprimir");
+            logger.Info("Se realizó la impresión del Diagrama.");
         }
 
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
-            logger.Info("Inicio Ejecucion Ayuda");
+            logger.Info("Abrir archivo de ayuda.");
             DarPDFAlUsuario();
 
-            logger.Info("Fin Ejecucion Ayuda");
+            //logger.Info("Fin Ejecucion Ayuda");
         }
 
         #region New Command
@@ -120,7 +120,7 @@ namespace DiagramDesigner
         #region Open Command
 
         public void Open_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
+        {           
             AbrirDiagrama();
         }
 
@@ -139,6 +139,7 @@ namespace DiagramDesigner
 
         private void Simulate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            logger.Info("Abrir ventana de Simulación.");
             ValidarYLanzarSimulador();
         }
 
@@ -915,9 +916,7 @@ namespace DiagramDesigner
                     Connection connection = new Connection(sourceConnector, sinkConnector);
                     Canvas.SetZIndex(connection, Int32.Parse(connectionXML.Element("zIndex").Value));
                     this.Children.Add(connection);
-                }
-
-                //logger.Info("Fin Abrir Diagrama");
+                }                
             }
             catch (Exception ex)
             {
@@ -935,7 +934,7 @@ namespace DiagramDesigner
             this.Children.Clear();
             this.SelectionService.ClearSelection();
 
-            //logger.Info("Fin Guardar Diagrama");
+            logger.Info("Se ha realizado el borrado de todo el diagrama.");
             /*var viewDeleteDiagram = new DeleteDiagramPopUp();
             viewDeleteDiagram.ShowDialog();
 
@@ -998,6 +997,7 @@ namespace DiagramDesigner
                 }
             }
             //logger.Info("Fin Guardar Archivo");
+            logger.Info(String.Format("Se guardo el diagrama actual en el archivo {0}.", saveFile.FileName));
         }
 
         private XElement LoadSerializedDataFromFile()
@@ -1007,9 +1007,10 @@ namespace DiagramDesigner
 
             if (openFile.ShowDialog() == true)
             {
+                logger.Info(String.Format("Se solicita la carga del diagrama alojado en el archivo {0}.", openFile.FileName));
                 return XElement.Load(openFile.FileName);
             }
-
+            
             return null;
         }
 
@@ -1337,7 +1338,7 @@ namespace DiagramDesigner
 
                 Clipboard.Clear();
                 Clipboard.SetData(DataFormats.Xaml, root);
-                //logger.Info("Fin Copiar Seleccion Diagrama");
+                logger.Info("Se ha copiado un elemento del diagrama.");
             }
             catch (Exception ex)
             {
@@ -1425,7 +1426,7 @@ namespace DiagramDesigner
                 root.Attribute("OffsetY").Value = (offsetY + 10).ToString();
                 Clipboard.Clear();
                 Clipboard.SetData(DataFormats.Xaml, root);
-                //logger.Info("Fin Pegar Seleccion Diagrama");
+                logger.Info("Se ha pegado un nuevo elemento en el diagrama.");
             }
             catch (Exception ex)
             {
@@ -1463,7 +1464,7 @@ namespace DiagramDesigner
 
                 SelectionService.ClearSelection();
                 UpdateZIndex();
-                //logger.Info("Fin Borrar Seleccion Diagrama");
+                logger.Info("Se ha borrado el elemento seleccionado.");
             }
             catch (Exception ex)
             {
