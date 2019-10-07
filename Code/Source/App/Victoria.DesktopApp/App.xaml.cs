@@ -47,6 +47,7 @@ namespace Victoria.DesktopApp
                     Application.Current.Shutdown(0);
                 }
             }
+            
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

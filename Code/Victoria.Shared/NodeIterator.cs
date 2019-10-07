@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Victoria.Shared
 {
@@ -19,27 +20,35 @@ namespace Victoria.Shared
 
         public override Node Execute(IList<StageVariable> variables)
         {
-            logger.Info("Inicio Ejecutar Nodo");
-            if (this.variableIteradora == null) InicializarVariableIteradora(variables);
-            if (this.variableIteradora.ActualValue < this.ValorFinal)
+            try
             {
-                this.variableIteradora.ActualValue += this.Incremento;
-                variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
-                logger.Info("Fin Ejecutar Nodo");
-                return this.IterationNode.Execute(variables);
+                //logger.Info("Inicio Ejecutar Nodo");
+                if (this.variableIteradora == null) InicializarVariableIteradora(variables);
+                if (this.variableIteradora.ActualValue < this.ValorFinal)
+                {
+                    this.variableIteradora.ActualValue += this.Incremento;
+                    variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
+                    //logger.Info("Fin Ejecutar Nodo");
+                    return this.IterationNode.Execute(variables);
+                }
+                else
+                {
+                    this.variableIteradora.ActualValue = this.ValorInicial;
+                    variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
+                    //logger.Info("Fin Ejecutar Nodo");
+                    return base.Execute(variables);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.variableIteradora.ActualValue = this.ValorInicial;
-                variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
-                logger.Info("Fin Ejecutar Nodo");
-                return base.Execute(variables);
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
             }
         }
 
         private void InicializarVariableIteradora(IList<StageVariable> variables)
         {
-            logger.Info("Inicio Inicializar Variable Iteradora");
+            //logger.Info("Inicio Inicializar Variable Iteradora");
             var variable = variables.FirstOrDefault(v => v.Name == this.VariableName);
             if (!string.IsNullOrEmpty(this.VariableName) && variable != null)
             {
@@ -53,7 +62,7 @@ namespace Victoria.Shared
 
             this.variableIteradora.InitialValue = this.ValorInicial;
             this.variableIteradora.ActualValue = this.ValorInicial;
-            logger.Info("Fin Incializar Variable Iteradora");
+            //logger.Info("Fin Incializar Variable Iteradora");
         }
     }
 }

@@ -651,7 +651,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         private List<Tuple<double, Node, Node>> generateBranchesManually()
         {
-            logger.Info("Inicio Generar Rama Manualmente");
+            //logger.Info("Inicio Generar Rama Manualmente");
             var tef = analisisPrevio.EventosEaE.Select(item => item).ToArray();
             string tefVar1 = getTEFVariableName(tef[0].TEF);
             var createdBranchesInfo = new List<Tuple<double,Node,Node>>();
@@ -699,13 +699,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
                     connectNodes(subConditional2, LEFT, branchInfo.Item2, TOP);
                 }
             }
-            logger.Info("Fin Generar Rama Manualmente");
+            //logger.Info("Fin Generar Rama Manualmente");
             return createdBranchesInfo;
         }
 
         private Tuple<double, Node, Node> generateBranch(EventoAP evento, double leftPosition, double topPosition, Node lastConnectedNode, string lastConnectedNodePosition)
         {
-            logger.Info("Inicio Generar Rama");
+            //logger.Info("Inicio Generar Rama");
             double actualTopPosition = topPosition;
             Node lastConnectedSubNode;
 
@@ -786,13 +786,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 lastConnectedSubNode = branchInfo.Item2;
             }
 
-            logger.Info("Fin Generar Rama");
+            //logger.Info("Fin Generar Rama");
             return Tuple.Create(actualTopPosition, (Node)sentence, (Node)lastConnectedSubNode);
         }
 
         private Tuple<double, Node> generateConditionBranchesWithDistinctConditions(EventoAP evento, string efc, double leftPosition, double topPosition, Node lastConnectedSubNode)
         {
-            logger.Info("Inicio Generar Ramas con Distintas Condiciones");
+            //logger.Info("Inicio Generar Ramas con Distintas Condiciones");
             double actualTopPosition = topPosition;
 
             Conditional conditionInIf = new Conditional(evento.Condiciones.ElementAt(evento.EventosCondicionados.IndexOf(efc)));
@@ -828,14 +828,14 @@ namespace Victoria.DesktopApp.DiagramDesigner
             lastConnectedSubNode = closeCondition;
 
 
-            logger.Info("Fin Generar Ramas con Distintas Condiciones");
+            //logger.Info("Fin Generar Ramas con Distintas Condiciones");
             return Tuple.Create(actualTopPosition, lastConnectedSubNode);
         }
 
 
         private Tuple<double, Node> generateConditionBranches(EventoAP evento, double leftPosition, double topPosition, Node lastConnectedSubNode)
         {
-            logger.Info("Inicio Generar Condicion de Ramas");
+            //logger.Info("Inicio Generar Condicion de Ramas");
             double actualTopPosition = topPosition;
             Node ifBranchLastNode = lastConnectedSubNode;
 
@@ -874,7 +874,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
             actualTopPosition += topHeightStep;
             ifBranchLastNode = closeCondition;
 
-            logger.Info("Fin Generar Condición de Ramas");
+            //logger.Info("Fin Generar Condición de Ramas");
             return Tuple.Create(actualTopPosition, ifBranchLastNode);
         }
 
@@ -995,7 +995,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         private List<SubdiagramCall> generateVectorSubDiagramCalls()
         {
-            logger.Info("Inicio Generar Vector llamadas Subdiagrama");
+            //logger.Info("Inicio Generar Vector llamadas Subdiagrama");
             var tefReferenceNodes = new List<SubdiagramCall>();
             var vectorEvents = analisisPrevio.EventosEaE.Where(item => item.Vector == true).ToArray();
             if(vectorEvents.Length > 0)
@@ -1017,19 +1017,19 @@ namespace Victoria.DesktopApp.DiagramDesigner
                     firstNode = (firstNode == null) ? referenceNode : firstNode; 
                 }
             }
-            logger.Info("Fin Generar Vector llamadas Subdiagrama");
+            //logger.Info("Fin Generar Vector llamadas Subdiagrama");
 
             return tefReferenceNodes;
         }
 
         private InitPrincipal generateInitNode()
         {
-            logger.Info("Inicio Generar Nodo Inicial");
+            //logger.Info("Inicio Generar Nodo Inicial");
             InitPrincipal init = new InitPrincipal("Diagrama Principal");
             setElementIntoCanvas(init, getCenterPositionForCentralBranch(), getHeightAndIncrement());
 
             this.lastCenterNode = init;
-            logger.Info("Fin Generar Nodo Inicial");
+            //logger.Info("Fin Generar Nodo Inicial");
             return init;
         }
 
@@ -1044,7 +1044,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
 
         private void setupAndShowDiagramWindow(Window1 VentanaDiagramador, AnalisisPrevio AnalisisPrevio)
         {
-            logger.Info("Inicio Configurar y Mostrar Diagrama");
+            //logger.Info("Inicio Configurar y Mostrar Diagrama");
             this.canvas.InvalidateVisual();
 
             VentanaDiagramador.Height = 650;
@@ -1053,12 +1053,13 @@ namespace Victoria.DesktopApp.DiagramDesigner
             VentanaDiagramador.dataGridVariables.ItemsSource = vars;
             VentanaDiagramador.dimensiones.ItemsSource = vars.Where(x => x.type == VariableType.Control);
             VentanaDiagramador.Show();
-            logger.Info("Fin Configurar y Mostrar Diagrama");
+            //logger.Info("Fin Configurar y Mostrar Diagrama");
+            logger.Info(String.Format("Se ha configurado el diagrama {0}."));
         }
 
         private void addFinalVars(List<VariableAP> vars)
         {
-            logger.Info("Inicio Agregar Variables Final");
+            //logger.Info("Inicio Agregar Variables Final");
             vars.Add(new VariableAP() { nombre = "TF", valor = 50000.0, vector = false, i = 0, type = VariableType.Other });
             vars.Add(new VariableAP() { nombre = "HV", valor = 99999999.0, vector = false, i = 0, type = VariableType.Other });
             if (analisisPrevio.EventosEaE.Any(evento => evento.Vector))
@@ -1086,7 +1087,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
                     vars.Add(new VariableAP() { nombre = "Max" + estado.nombre, valor = 0, vector = estado.vector, i = 0, type = VariableType.Other });
                 }
             }
-            logger.Info("Fin Agregar Variables Final");
+            //logger.Info("Fin Agregar Variables Final");
         }
 
         private double getHeightAndIncrement()
