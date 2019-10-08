@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using System.Data;
 using System.IO;
+using System.Collections.ObjectModel;
 
 
 
@@ -43,7 +44,8 @@ namespace Victoria.DesktopApp.View
         public string dateFormat = "yyyy-MM-dd";
         public string hourFormat = "HH:mm:ss";
         public commonFDP.TipoAccionProcesamiento tipoAccion;
-        //private List<commonFDP.Filtro> filtros = null;
+        private List<commonFDP.Filtro> filtros = new List<commonFDP.Filtro>();
+        public  ObservableCollection<commonFDP.Filtro> auxfiltros = new ObservableCollection<commonFDP.Filtro>();
         //private readonly commonFDP.INuevoFiltro filtrador = new commonFDP.FiltroImpl();
         List<double> intervalosParciales;
 
@@ -951,7 +953,7 @@ namespace Victoria.DesktopApp.View
                         createAlertPopUp(mensaje);
                     break;
                 case commonFDP.TipoAccionProcesamiento.FILTRAR:
-                   // agregarFiltro();
+                    agregarFiltro();
                    // filtrar();
                     //mostrarMensaje("Filtro aplicado correctamente", Color.FromArgb(128, 255, 128));
                     //actualizarEstadisticas();
@@ -960,38 +962,38 @@ namespace Victoria.DesktopApp.View
                     break;
             }
         }
-        /*
+        
         private void agregarFiltro()
         {
-            int selectedValue = Convert.ToInt32(cmbTipoFiltro.SelectedValue);
-            Filtro auxFiltro = null;
+            int selectedValue = Convert.ToInt32(comboBoxFilters.SelectedValue);
+            commonFDP.Filtro auxFiltro = null;
             DateTime fecha = DateTime.Now;
             DateTime fecha2 = DateTime.Now;
-            fecha = dtp1.Value;
-            fecha2 = dtp2.Value;
+            fecha = (DateTime)dtp1.Value;
+            fecha2 = (DateTime)dtp2.Value;
             double intervalo = -1;
             double intervalo2 = -1;
-            if (rbFecha.Checked)
+            if (rbFecha.IsChecked.Value)
             {
                 switch (selectedValue)
                 {
                     case 0:
-                        auxFiltro = new Filtro(TipoFiltro.FECHA_MENOR, fecha);
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.FECHA_MENOR, fecha);
                         break;
                     case 1:
-                        auxFiltro = new Filtro(TipoFiltro.FECHA_MAYOR, fecha);
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.FECHA_MAYOR, fecha);
                         break;
                     case 2:
-                        auxFiltro = new Filtro(TipoFiltro.FECHA_ENTRE, fecha, fecha2);
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.FECHA_ENTRE, fecha, fecha2);
                         break;
                     case 3:
-                        auxFiltro = new Filtro(TipoFiltro.HORA_MENOR, fecha);
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.HORA_MENOR, fecha);
                         break;
                     case 4:
-                        auxFiltro = new Filtro(TipoFiltro.HORA_MAYOR, fecha);
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.HORA_MAYOR, fecha);
                         break;
                     case 5:
-                        auxFiltro = new Filtro(TipoFiltro.HORA_ENTRE, fecha, fecha2);
+                        auxFiltro = new commonFDP.Filtro(commonFDP.TipoFiltro.HORA_ENTRE, fecha, fecha2);
                         break;
                     default:
                         auxFiltro = null;
@@ -1000,8 +1002,8 @@ namespace Victoria.DesktopApp.View
             }
             else if (rbIntervalos.IsChecked.Value)
             {
-                //intervalo = Convert.ToDouble(txtIntervalo.Text);
-                //intervalo2 = Convert.ToDouble(txtIntervalo2.Text);
+                intervalo = Convert.ToDouble(txtInterv1.Text);
+                intervalo2 = Convert.ToDouble(txtInterv2.Text);
 
                 switch (selectedValue)
                 {
@@ -1018,10 +1020,31 @@ namespace Victoria.DesktopApp.View
                         break;
                 }
             }
-            filtros.Add(auxFiltro);
-            //setupFiltrosCheckboxList();
-        }
+            auxFiltro.IsChecked = true;
 
+            bool exists = false;
+
+            for (int i = 0; i < this.filtros.Count; i++)
+            {
+
+                if (filtros[i].Name == auxFiltro.Name)
+                {
+;                   exists = true;
+
+                }
+            }
+
+            if (!exists)
+            {
+                filtros.Add(auxFiltro);
+            }
+            else
+            {
+                createAlertPopUp("Error al crear un nuevo filtro : El filtro que se intenta crear ya existe");
+            }
+            setupFiltrosCheckboxList();
+        }
+        /*
         /*private void filtrar()
         {
             if (rbFecha.Checked)
@@ -1058,6 +1081,24 @@ namespace Victoria.DesktopApp.View
         }
         */
 
+        private void setupFiltrosCheckboxList()
+        {
+            CheckListBoxFiltros.DisplayMemberPath = "Name";
+            CheckListBoxFiltros.ValueMemberPath = "IsChecked";
+           
+            for (int i = 0; i < this.filtros.Count; i++)
+            {
+                
+                if (!CheckListBoxFiltros.Items.Contains(filtros[i]))
+                {
+                    CheckListBoxFiltros.Items.Add(filtros[i]);
+                    //commonFDP.Filtro obj = (commonFDP.Filtro)CheckListBoxFiltros.Items[i];
+                    auxfiltros.Add(filtros[i]);
+                    
+                }
+            }
+            CheckListBoxFiltros.SelectedItemsOverride = auxfiltros;
+        }
 
 
         private void BtnClean_Click(object sender, RoutedEventArgs e)
