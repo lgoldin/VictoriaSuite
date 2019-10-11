@@ -17,9 +17,9 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public InitPrincipal()
         {
-            logger.Info("Inicio Inicialización diagrama Principal");
+            //logger.Info("Inicio Inicialización diagrama Principal");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
-            logger.Info("Fin Inicialización diagrama Principal");
+            //logger.Info("Fin Inicialización diagrama Principal");
 
         }
 

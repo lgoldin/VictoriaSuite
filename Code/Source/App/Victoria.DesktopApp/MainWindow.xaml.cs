@@ -142,9 +142,9 @@ namespace Victoria.DesktopApp
 
         private void BtnMinimize_OnClick(object sender, RoutedEventArgs e)
         {
-            logger.Info("Inicio Minimizar aplicacion");
+            logger.Info("Minimizar aplicacion");
             this.WindowState = WindowState.Minimized;
-            logger.Info("Fin Minimizar aplicacion");
+            //logger.Info("Fin Minimizar aplicacion");
 
         }
 
@@ -152,7 +152,7 @@ namespace Victoria.DesktopApp
         {
             try
             {
-                logger.Info("Inicio abrir Simulacion.");
+                logger.Info("Abrir Simulacion.");
                 if (((MainViewModel)this.DataContext).IsSimulationOpen)
                 {
                     var closeSimulationDialog = new CloseSimulationDialog();
@@ -187,7 +187,7 @@ namespace Victoria.DesktopApp
                     }
                 }
 
-                logger.Info("Fin abrir Simulacion.");
+                //logger.Info("Fin abrir Simulacion.");
             }
             catch (Exception ex)
             {
@@ -202,7 +202,7 @@ namespace Victoria.DesktopApp
         {
             try
             {
-                logger.Info("Inicio agregar un escenario.");
+                logger.Info("Agregar un escenario.");
                 var addStagePopUp = new AddStageWindow();
                 addStagePopUp.ShowDialog();
                 switch (addStagePopUp.Result)
@@ -214,7 +214,7 @@ namespace Victoria.DesktopApp
                         break;
                 }
 
-                logger.Info("Fin agregar un escenario.");
+                //logger.Info("Fin agregar un escenario.");
             }
             catch (Exception ex)
             {
@@ -229,7 +229,7 @@ namespace Victoria.DesktopApp
             
             try
             {
-                logger.Info("Inicio Guardar Simulacion.");
+                logger.Info("Guardar Simulacion.");
                 ((MainViewModel)this.DataContext).SaveSimulationCommand.Execute(null);
                 //this.PopupGuardar.IsOpen = false;
             }
@@ -246,7 +246,7 @@ namespace Victoria.DesktopApp
 
             try
             {
-                logger.Info("Inicio Guardar Simulación.");
+                logger.Info("Guardar Simulación.");
                 using (var saveFileDialog = new SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Vic files (*.vic)|*.vic";
@@ -270,7 +270,7 @@ namespace Victoria.DesktopApp
         {
             try
             {
-                logger.Info("Inicio Exportar Simulación");
+                logger.Info("Exportar Simulación");
                 using (var saveFileDialog = new SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|PDF files (*.pdf)|*.pdf";
@@ -281,7 +281,7 @@ namespace Victoria.DesktopApp
                         ((MainViewModel)this.DataContext).ExportSimulationCommand.Execute(saveFileDialog.FileName);
                 }
 
-                logger.Info("Fin Exportar Simulación");
+                //logger.Info("Fin Exportar Simulación");
             }
             catch (Exception ex)
             {
@@ -308,7 +308,7 @@ namespace Victoria.DesktopApp
 
         private void BtnHelp_OnClick(object sender, RoutedEventArgs e)
         {
-            logger.Info("Inicio Help");
+            logger.Info("Descarga de Manual de Usuario.");
             var parentFolder = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var sourcePath = System.IO.Path.Combine(parentFolder, @"Manual de usuario\Manual de usuario Victoria.pdf");
 
@@ -326,7 +326,7 @@ namespace Victoria.DesktopApp
                     System.Windows.MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            logger.Info("Fin Help");
+            //logger.Info("Fin Help");
         }
 
         private void BtnGuardar_OnChecked(object sender, RoutedEventArgs e)
@@ -350,7 +350,7 @@ namespace Victoria.DesktopApp
 
         private void CloseRoutine()
         {
-            logger.Info("Inicio Cerrar Rutina");
+            
             var closeDialog = new CloseDialog(((MainViewModel)this.DataContext).IsSimulationOpen);
             closeDialog.ShowDialog();
 
@@ -375,16 +375,16 @@ namespace Victoria.DesktopApp
                     }
             }
             this.Close();
-            logger.Info("Fin Cerrar Rutina");
+            logger.Info("Cerrar Ventana de Simulación.");
         }
 
         private void BtnAnalisisSensibilidad_OnClick(object sender, RoutedEventArgs e)
         {
-            logger.Info("Inicio Boton Analisis de Sensibilidad");
+            logger.Info("Solicitud generación Analisis de Sensibilidad");
             var sensibilidadWindow = new AnalisisSensibilidadPopUp(((MainViewModel)this.DataContext).SimulationFile);
             sensibilidadWindow.ShowDialog();
             btnAnalisisSensibilidad.Focusable = false;
-            logger.Info("Fin Boton Analisis de Sensibilidad");
+            //logger.Info("Fin Boton Analisis de Sensibilidad");
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)

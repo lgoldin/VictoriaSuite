@@ -68,7 +68,7 @@ namespace Victoria.DesktopApp.View
                         SimulationXML = openFileDialog.FileName;
                         var mainWindow = new MainWindow(SimulationXML, false);
                         mainWindow.Show();
-                        logger.Info(String.Format("Se abrio la simulacion alojada en el archivo ", openFileDialog.FileName));
+                        logger.Info(String.Format("Se abrio la simulacion alojada en el archivo {0}", openFileDialog.FileName));
                     }
                 }
                 
