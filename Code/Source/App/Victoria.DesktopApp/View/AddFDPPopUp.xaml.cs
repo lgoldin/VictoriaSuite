@@ -45,6 +45,7 @@ namespace Victoria.DesktopApp.View
         public string hourFormat = "HH:mm:ss";
         public commonFDP.TipoAccionProcesamiento tipoAccion;
         private List<commonFDP.Filtro> filtros = new List<commonFDP.Filtro>();
+        private List<commonFDP.Filtro> filtrosSeleccionados = new List<commonFDP.Filtro>();
         public  ObservableCollection<commonFDP.Filtro> auxfiltros = new ObservableCollection<commonFDP.Filtro>();
         private readonly commonFDP.INuevoFiltro filtrador = new commonFDP.FiltroImpl();
         List<double> intervalosParciales;
@@ -1024,10 +1025,10 @@ namespace Victoria.DesktopApp.View
 
             bool exists = false;
 
-            for (int i = 0; i < this.filtros.Count; i++)
+            for (int i = 0; i < this.auxfiltros.Count; i++)
             {
 
-                if (filtros[i].Name == auxFiltro.Name)
+                if (auxfiltros[i].Name == auxFiltro.Name)
                 {
 ;                   exists = true;
 
@@ -1051,8 +1052,7 @@ namespace Victoria.DesktopApp.View
             {
                 List<commonFDP.Evento> filtrado = filtrador.FiltrarFechas(0, filtros,eventos);
                 if (filtrado != null)
-                {
-                    eventos = filtrado;
+                {                 
                     dgvDatosFdp.ItemsSource = null;
                     dgvDatosFdp.ItemsSource = filtrado;
                     dgvDatosFdp.Items.Refresh();
@@ -1074,9 +1074,9 @@ namespace Victoria.DesktopApp.View
                 intervalosParciales = filtrado; //para filtros acumulativos
 
                 //leno dataGridView con los intervalos
-                DataTable tabla = new DataTable();
+                
                 List<double> listaInterv = new List<double>();
-                tabla.Columns.Add("Intervalos");
+             
                 foreach (var item in filtrado)
                 {
                     listaInterv.Add(item);
@@ -1267,6 +1267,18 @@ namespace Victoria.DesktopApp.View
             }
         }
 
+        /*
+        private void CheckListBoxFiltros_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
+        {
 
+           
+            filtrosSeleccionados = null;
+            foreach(var item in CheckListBoxFiltros.SelectedValue.ToString())
+            {
+                filtrosSeleccionados.Add(item);
+            }
+            
+            filtrar();
+        }  */
     }
 }
