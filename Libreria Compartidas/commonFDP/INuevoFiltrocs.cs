@@ -8,7 +8,7 @@ namespace commonFDP
 {
     public interface INuevoFiltro
     {
-        List<Evento> FiltrarFechas(int idOrigen, List<Filtro> filtros);
+        List<Evento> FiltrarFechas(int idOrigen, List<Filtro> filtros, List<Evento> eventos);
         List<double> FiltrarIntervalos(List<double> intervalos, int selectedFiltro, int intervalo, int intervalo2);
     }
 }

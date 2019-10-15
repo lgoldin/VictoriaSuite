@@ -46,7 +46,7 @@ namespace Victoria.DesktopApp.View
         public commonFDP.TipoAccionProcesamiento tipoAccion;
         private List<commonFDP.Filtro> filtros = new List<commonFDP.Filtro>();
         public  ObservableCollection<commonFDP.Filtro> auxfiltros = new ObservableCollection<commonFDP.Filtro>();
-        //private readonly commonFDP.INuevoFiltro filtrador = new commonFDP.FiltroImpl();
+        private readonly commonFDP.INuevoFiltro filtrador = new commonFDP.FiltroImpl();
         List<double> intervalosParciales;
 
         public void FDPGenerator(AnalisisPrevio aPrevio)
@@ -557,8 +557,8 @@ namespace Victoria.DesktopApp.View
                 dgvDatosFdp.Visibility = Visibility.Visible;
                 dgvDatosFdp.Items.Refresh();
 
-                //if (eventos != null && tipoAccion == TipoAccionProcesamiento.FILTRAR)
-                // filtrar();
+                if (eventos != null && tipoAccion == commonFDP.TipoAccionProcesamiento.FILTRAR)
+                 filtrar();
             }
             catch
             {
@@ -954,7 +954,7 @@ namespace Victoria.DesktopApp.View
                     break;
                 case commonFDP.TipoAccionProcesamiento.FILTRAR:
                     agregarFiltro();
-                   // filtrar();
+                    filtrar();
                     //mostrarMensaje("Filtro aplicado correctamente", Color.FromArgb(128, 255, 128));
                     //actualizarEstadisticas();
                     break;
@@ -1044,42 +1044,61 @@ namespace Victoria.DesktopApp.View
             }
             setupFiltrosCheckboxList();
         }
-        /*
-        /*private void filtrar()
+        
+        private void filtrar()
         {
-            if (rbFecha.Checked)
+            if (rbFecha.IsChecked.Value)
             {
-                List<Evento> filtrado = filtrador.FiltrarFechas(this.proyecto.Id, filtros);
+                List<commonFDP.Evento> filtrado = filtrador.FiltrarFechas(0, filtros,eventos);
                 if (filtrado != null)
                 {
                     eventos = filtrado;
-                    dgwEventos.DataSource = filtrado;
-                    dgwEventos.Columns[1].Width = 235;
-                    dgwEventos.Columns[0].Visible = false;
-                    dgwEventos.Columns[1].DefaultCellStyle.Format = "dd'/'MM'/'yyyy HH:mm:ss";
+                    dgvDatosFdp.ItemsSource = null;
+                    dgvDatosFdp.ItemsSource = filtrado;
+                    dgvDatosFdp.Items.Refresh();
+                    dgvDatosFdp.Columns[1].ClipboardContentBinding.StringFormat = "dd'/'MM'/'yyyy HH:mm:ss";
+                    dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
+                    dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
+                    dgvDatosFdp.Columns[1].Visibility = Visibility.Visible;
+                    dgvDatosFdp.Columns[1].Header = "Eventos";
+                    dgvDatosFdp.Columns[3].Visibility = Visibility.Hidden;
+                    dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
+                    dgvDatosFdp.Columns[5].Visibility = Visibility.Hidden;
+                    dgvDatosFdp.Visibility = Visibility.Visible;
+
                 }
             }
-            else if (rbIntervalos.Checked)
+            else if (rbIntervalos.IsChecked.Value)
             {
-                List<double> filtrado = filtrador.FiltrarIntervalos(this.intervalosParciales, cmbTipoFiltro.SelectedIndex, Convert.ToInt32(txtIntervalo.Text), Convert.ToInt32(txtIntervalo2.Text));
+                List<double> filtrado = filtrador.FiltrarIntervalos(this.intervalosParciales, comboBoxFilters.SelectedIndex, Convert.ToInt32(txtInterv1.Text), Convert.ToInt32(txtInterv2.Text));
                 intervalosParciales = filtrado; //para filtros acumulativos
 
                 //leno dataGridView con los intervalos
                 DataTable tabla = new DataTable();
+                List<double> listaInterv = new List<double>();
                 tabla.Columns.Add("Intervalos");
                 foreach (var item in filtrado)
                 {
-                    DataRow row = tabla.NewRow();
-                    row["Intervalos"] = item;
-                    tabla.Rows.Add(row);
+                    listaInterv.Add(item);
                 }
-                dgwEventos.DataSource = tabla;
-                dgwEventos.Columns[0].Visible = true;
-                dgwEventos.Columns[0].Width = 235;
+
+                dgvDatosFdp.ItemsSource = null;
+                dgvDatosFdp.ItemsSource = listaInterv;
+                dgvDatosFdp.Items.Refresh();
+
+                dgvDatosFdp.Columns[0].Visibility = Visibility.Hidden;
+                dgvDatosFdp.Columns[2].Visibility = Visibility.Hidden;
+                dgvDatosFdp.Columns[1].Visibility = Visibility.Hidden;
+                dgvDatosFdp.Columns[3].Visibility = Visibility.Hidden;
+                dgvDatosFdp.Columns[4].Visibility = Visibility.Hidden;
+                dgvDatosFdp.Columns[5].Visibility = Visibility.Visible;
+                dgvDatosFdp.Visibility = Visibility.Visible;
+                dgvDatosFdp.Columns[5].Header = "Intervalos";
+
 
             }
         }
-        */
+        
 
         private void setupFiltrosCheckboxList()
         {

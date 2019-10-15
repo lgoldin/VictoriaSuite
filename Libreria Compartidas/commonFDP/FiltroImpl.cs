@@ -8,17 +8,17 @@ namespace commonFDP
 {
     public class FiltroImpl : INuevoFiltro
     {
-        private readonly EventoContexto contexto = new EventoContexto();
+        //private readonly commonFDP.EventoContexto contexto = new commonFDP.EventoContexto();
 
-        public List<Evento> FiltrarFechas(int idOrigen, List<Filtro> filtros)
+        public List<Evento> FiltrarFechas(int idOrigen, List<Filtro> filtros, List<Evento> eventos)
         {
             List<Evento> resultado = null;
             try
             {
                 resultado = new List<Evento>();
-                List<Evento> parcial = new List<Evento>();
-                IQueryable<Evento> query = contexto.Eventos.AsQueryable();
-                parcial = query.Where(x => x.activo == true).Where(x => x.idOrigen == idOrigen).ToList();
+                List<Evento> parcial = eventos;
+               // IQueryable<Evento> query = contexto.Eventos.AsQueryable();
+               // parcial = query.Where(x => x.activo == true).Where(x => x.idOrigen == idOrigen).ToList();
                 if (filtros.Count == 0 || filtros.All(x => !x.IsChecked))
                     resultado = parcial;
                 else
