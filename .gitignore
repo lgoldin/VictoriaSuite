@@ -21,3 +21,6 @@ Code/UpgradeLog*
 /Kairos/.vs/Kairos/v15/Server/sqlite3
 /Code/packages
 *.log*
+/AnalisisSensibilidad
+/Code/Source/Shared/Diagramer/.vs/DiagramDesigner/v15/Server/sqlite3
+/projects for generate DLLs

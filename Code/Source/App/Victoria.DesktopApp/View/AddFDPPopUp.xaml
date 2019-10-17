@@ -187,7 +187,7 @@
                 <ComboBoxItem x:Name="Horas" Content="Horas" />
                 <ComboBoxItem x:Name="Dias" Content="Dias" />
             </ComboBox>
-            <xctk:CheckListBox Name="CheckListBoxFiltros" Margin="33,234,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="51" Width="249" />
+            <xctk:CheckListBox Name="CheckListBoxFiltros" SelectedValue="{Binding SelectedValue}" ItemSelectionChanged="CheckListBoxFiltros_ItemSelectionChanged"  SelectedItemsOverride="{Binding SelectedItems}" Margin="33,234,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="51" Width="249" />
             <Label x:Name="lblFiltrosAplicados" Content="Filtros aplicados" FontWeight="Semibold" FontSize="15" Margin="10,199,273,134.143" RenderTransformOrigin="0.46,-0.776" ></Label>
 
             <Button x:Name="btnAcept" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,199,9.657,131.8" Width="109"  Click="BtnAcept_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -196,7 +196,7 @@
                     <Image Source="/Victoria.UI.SharedWPF;Component/resources/openG.png" HorizontalAlignment="Right" Width="33" Margin="-1,-1,34,1" />
                 </Grid>
             </Button>
-            <Button x:Name="btnClean" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,257,10,77.143" Width="109"  Click="BtnAcept_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+            <Button x:Name="btnClean" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,257,10,77.143" Width="109"  Click="BtnClean_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                 <Grid Height="30" Width="130">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

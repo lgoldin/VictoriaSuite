@@ -636,6 +636,7 @@ namespace Victoria.DesktopApp.View
 
                      lbldtp2.Content = "Hora";
 
+                    dtp1.FormatString = dateFormat;
                     dtp2.FormatString = hourFormat;
                     rbAgregarPorFechaYHora.Visibility = Visibility.Hidden;
                     rbAgregarPorIntervalo.Visibility = Visibility.Hidden;
@@ -884,7 +885,8 @@ namespace Victoria.DesktopApp.View
         private void BtnAcept_Click(object sender, RoutedEventArgs e)
         {
             DateTime fecha;
-            commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
+            commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;            
+
             switch (tipoAccion)
             {
                 case commonFDP.TipoAccionProcesamiento.AGREGAR_REGISTRO:
@@ -954,14 +956,15 @@ namespace Victoria.DesktopApp.View
                         createAlertPopUp(mensaje);
                     break;
                 case commonFDP.TipoAccionProcesamiento.FILTRAR:
-                    agregarFiltro();
-                    filtrar();
+                    agregarFiltro();                    
                     //mostrarMensaje("Filtro aplicado correctamente", Color.FromArgb(128, 255, 128));
                     //actualizarEstadisticas();
-                    break;
+                    break;                
                 default:
                     break;
             }
+
+            filtrar();
         }
         
         private void agregarFiltro()
@@ -1099,6 +1102,20 @@ namespace Victoria.DesktopApp.View
             }
         }
         
+        private void borrarFiltroSeleccionado()
+        {
+
+            System.Collections.IList filtros_seleccionados = this.filtros.Where(x => x.IsChecked).ToList<commonFDP.Filtro>();
+            
+            foreach (commonFDP.Filtro f in filtros_seleccionados)
+            {
+                if (CheckListBoxFiltros.SelectedItems.Contains(f))
+                {
+                    this.filtros.Remove(f);
+                    CheckListBoxFiltros.Items.Remove(f);
+                }
+            }
+        }
 
         private void setupFiltrosCheckboxList()
         {
@@ -1122,7 +1139,10 @@ namespace Victoria.DesktopApp.View
 
         private void BtnClean_Click(object sender, RoutedEventArgs e)
         {
-
+            this.tipoAccion = commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS;
+            borrarFiltroSeleccionado();
+            filtrar();
+            this.tipoAccion = commonFDP.TipoAccionProcesamiento.FILTRAR;
         }
 
 
@@ -1265,6 +1285,23 @@ namespace Victoria.DesktopApp.View
                 default:
                     break;
             }
+        }
+
+        private void CheckListBoxFiltros_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
+        {
+            foreach(commonFDP.Filtro f in filtros)
+            {
+                if (CheckListBoxFiltros.SelectedItemsOverride.Contains(f))
+                {
+                    f.IsChecked = true;
+                }
+                else {
+                    f.IsChecked = false;
+                }
+
+            }
+
+            filtrar();
         }
 
         /*
