@@ -29,16 +29,22 @@ namespace Victoria.Shared
 
         public Simulation(IList<Diagram> diagrams, Dictionary<string, Variable> variables)
         {
-            this.stopDebugExecution = this.debugginMode ? true : false;
-
-            //logger.Info("Inicio Simulacion");
-            this.diagrams = diagrams.ToList();
-            this.variables = variables.Values.ToList();
-            if (!this.variables.Any(v => "T".Equals(v.Name)))
+            try
             {
-                this.variables.Insert(0, new Variable() { ActualValue = 0, InitialValue = 0, Name = "T" });
+                //logger.Info("Inicio Simulacion");
+                this.diagrams = diagrams.ToList();
+                this.variables = variables.Values.ToList();
+                if (!this.variables.Any(v => "T".Equals(v.Name)))
+                {
+                    this.variables.Insert(0, new Variable() { ActualValue = 0, InitialValue = 0, Name = "T" });
+                }
+                //logger.Info("Fin Simulacion");
             }
-            //logger.Info("Fin Simulacion");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
 		public Simulation(List<Diagram> diagramas, Dictionary<string, Variable> variables, List<Stage> stages) : this(diagramas, variables)
@@ -49,15 +55,32 @@ namespace Victoria.Shared
 
         public bool HasStatusChanged()
         {
-            //logger.Info("Validacion de cambio de estado");
-            return this.SimulationStatusChanged != null;
+
+            try
+            {
+                //logger.Info("Validacion de cambio de estado");
+                return this.SimulationStatusChanged != null;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public void ChangeStatus(SimulationStatus status)
         {
-            //logger.Info("Inicio Cambiar de estado");
-            this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
-            //logger.Info("Fin Cambiar de estado");
+            try
+            {
+                //logger.Info("Inicio Cambiar de estado");
+                this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
+                //logger.Info("Fin Cambiar de estado");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         // Activa y desactiva el modo debugs
@@ -90,31 +113,51 @@ namespace Victoria.Shared
 
         public void Update(IStageSimulation stageSimulation)
         {
-            //logger.Info("Inicio Actualizar");
-            foreach (var variable in stageSimulation.GetVariables())
-            {
-                if (variable is StageVariableArray)
+            try { 
+                //logger.Info("Inicio Actualizar");
+                foreach (var variable in stageSimulation.GetVariables())
                 {
-                    var stageVariableArray = (StageVariableArray)variable;
-                    var variableArray = (VariableArray)this.variables.First(v => v.Name == variable.Name);
-                    foreach (var v in stageVariableArray.Variables)
+                    if (variable is StageVariableArray)
                     {
-                        variableArray.Variables.First(x => x.Name == v.Name).ActualValue = v.ActualValue;
+                        var stageVariableArray = (StageVariableArray)variable;
+                        var variableArray = (VariableArray)this.variables.First(v => v.Name == variable.Name);
+                        foreach (var v in stageVariableArray.Variables)
+                        {
+                            variableArray.Variables.First(x => x.Name == v.Name).ActualValue = v.ActualValue;
+                        }
+                    }
+                    else
+                    {
+                        this.variables.First(v => v.Name == variable.Name).ActualValue = variable.ActualValue;
                     }
                 }
-                else
+
+                this.stopExecution = stageSimulation.GetExecutionStatus();
+                
+                if (this.stopExecution)
                 {
-                    this.variables.First(v => v.Name == variable.Name).ActualValue = variable.ActualValue;
+                    this.ChangeStatus(SimulationStatus.Stoped);
+                                      
+                    logger.Info("Simulación Detenida (Listado de Variables): " + VariablesToString());                     
                 }
+                
+                //logger.Info("Fin Actualizar");
             }
-
-            this.stopExecution = stageSimulation.GetExecutionStatus();
-
-            if (this.stopExecution)
+            catch (Exception ex)
             {
-                this.ChangeStatus(SimulationStatus.Stoped);
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
             }
-            //logger.Info("Fin Actualizar");
+        }
+
+        public String VariablesToString()
+        {
+            String cadena = String.Empty;
+            foreach(Variable v in this.variables)
+            {
+                cadena += v.Name + ": " + v.ActualValue.ToString() + " | ";// System.Environment.NewLine;
+            }
+            return cadena.Remove(cadena.Length-3);
         }
 
         public List<Diagram> GetDiagrams()

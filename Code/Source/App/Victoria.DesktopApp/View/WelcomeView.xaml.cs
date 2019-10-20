@@ -68,10 +68,9 @@ namespace Victoria.DesktopApp.View
                         SimulationXML = openFileDialog.FileName;
                         var mainWindow = new MainWindow(SimulationXML, false);
                         mainWindow.Show();
+                        logger.Info(String.Format("Se abrio la simulacion alojada en el archivo {0}", openFileDialog.FileName));
                     }
                 }
-                //logger.Info("Fin Abrir Simulacion");
-
             }
             catch (Exception ex)
             {
@@ -103,7 +102,7 @@ namespace Victoria.DesktopApp.View
             //logger.Info("Inicio Boton Cerrar");
             this.Close();
             //logger.Info("Fin Boton Cerrar");
-            //logger.Info("FIN VICTORIA SUITE");
+            logger.Info("FIN VICTORIA SUITE");
 
         }
 

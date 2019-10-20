@@ -50,7 +50,7 @@ namespace Victoria.ViewModelWPF
 
         #region Properties
 
-
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
         public List<AnimationConfigurationBase> DllConfigurations 
         {
             get
@@ -461,6 +461,7 @@ namespace Victoria.ViewModelWPF
             {
                 this.Simulation.StopExecution(true);
                 this.animationRealTimeActor.Tell(PoisonPill.Instance);
+                logger.Info("Se ha detenido la simulación.");
             }
         }
 

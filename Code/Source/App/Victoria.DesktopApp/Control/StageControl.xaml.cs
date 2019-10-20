@@ -70,6 +70,8 @@ namespace Victoria.DesktopApp.Control
                     if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         ((StageViewModel)this.DataContext).ExportStageCommand.Execute(saveFileDialog.FileName);
                 }
+
+                logger.Info("Se ha realizado la exportación del escenario.");
                 //logger.Info("Fin Exportar Escenario");
             }
             catch (Exception ex)
@@ -106,7 +108,8 @@ namespace Victoria.DesktopApp.Control
             }
             catch
             {
-                //logger.Error("Se produjo un error al ejecutar el escenario");
+
+                logger.Error("Se produjo un error al detener la ejecución del escenario");
                 var viewException = new AlertPopUp( "Se produjo un error al ejecutar el escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
             }
@@ -149,6 +152,8 @@ namespace Victoria.DesktopApp.Control
                         break;
                 }
                 //logger.Info("Fin Agregar Animación");
+
+                logger.Info("Se ha incorporado una nueva animación.");
             }
             catch
             {

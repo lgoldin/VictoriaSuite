@@ -24,29 +24,37 @@ namespace Victoria.DesktopApp.Helpers
         public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         public XDocument CreateVic(string simulationFile, List<Shared.Variable> variables, IList<StageViewModelBase> stagesList)
         {
-            //logger.Info("Inicio Crear Vic");
-            XDocument xmlSimulation = XDocument.Parse(simulationFile);
-            // Conservo el modelo y borro todo el resto del vic original
-            XElement modelo = xmlSimulation.Descendants("Modelo").First();
-            xmlSimulation.Root.RemoveNodes();
-            xmlSimulation.Root.Add(modelo);
+            try
+            {
+                //logger.Info("Inicio Crear Vic");
+                XDocument xmlSimulation = XDocument.Parse(simulationFile);
+                // Conservo el modelo y borro todo el resto del vic original
+                XElement modelo = xmlSimulation.Descendants("Modelo").First();
+                xmlSimulation.Root.RemoveNodes();
+                xmlSimulation.Root.Add(modelo);
 
-            // Genero los nuevos elementos para el vic
-            IList<DesignerItem> designerItems = deserializarDesignerItems(xmlSimulation);
-            IList<Connection> connections = deserializarConnections(xmlSimulation, designerItems);
-            List<VariableAP> variablesAP = transformVariables(variables);
+                // Genero los nuevos elementos para el vic
+                IList<DesignerItem> designerItems = deserializarDesignerItems(xmlSimulation);
+                IList<Connection> connections = deserializarConnections(xmlSimulation, designerItems);
+                List<VariableAP> variablesAP = transformVariables(variables);
 
-            List<XElement> listaDesignerItemsXML = SerializeVic(designerItems, connections, variablesAP);
-            
-            // agrego los nuevos elementos al vic
-            listaDesignerItemsXML.ForEach(xmlSimulation.Root.Add);
+                List<XElement> listaDesignerItemsXML = SerializeVic(designerItems, connections, variablesAP);
 
-            // genero y agrego el nuevo stage
-            XElement newStage = serializarVicNuevoStage(stagesList);
-            xmlSimulation.Root.Add(newStage);
+                // agrego los nuevos elementos al vic
+                listaDesignerItemsXML.ForEach(xmlSimulation.Root.Add);
 
-            //logger.Info("Fin Crear Vic");
-            return xmlSimulation;
+                // genero y agrego el nuevo stage
+                XElement newStage = serializarVicNuevoStage(stagesList);
+                xmlSimulation.Root.Add(newStage);
+
+                //logger.Info("Fin Crear Vic");        
+                return xmlSimulation;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private XElement serializarVicNuevoStage(IList<StageViewModelBase> stagesList)
@@ -277,101 +285,133 @@ namespace Victoria.DesktopApp.Helpers
 
         private IEnumerable<DesignerItem> TraeNodosHijos(Guid itemId, IEnumerable<Connection> connections, List<Guid> listaAncestros)
         {
-            //logger.Info("Inicio Trae Nodos Hijos");
-            listaAncestros.Add(itemId);
-
-            var nodosHijos = from connection in connections where (connection.Source.ParentDesignerItem.ID == itemId) select connection.Sink.ParentDesignerItem;
-            foreach (DesignerItem nodoHijo in nodosHijos)
+            try
             {
-                if (!listaAncestros.Contains(nodoHijo.ID))
+                //logger.Info("Inicio Trae Nodos Hijos");
+                listaAncestros.Add(itemId);
+
+                var nodosHijos = from connection in connections where (connection.Source.ParentDesignerItem.ID == itemId) select connection.Sink.ParentDesignerItem;
+                foreach (DesignerItem nodoHijo in nodosHijos)
                 {
-                    var nodosHijos2 = this.TraeNodosHijos(nodoHijo.ID, connections, listaAncestros);
-                    nodosHijos = nodosHijos.Union(nodosHijos2.Where(x => (x.Tag == null || x.Tag.ToString() != "DIAG")));
+                    if (!listaAncestros.Contains(nodoHijo.ID))
+                    {
+                        var nodosHijos2 = this.TraeNodosHijos(nodoHijo.ID, connections, listaAncestros);
+                        nodosHijos = nodosHijos.Union(nodosHijos2.Where(x => (x.Tag == null || x.Tag.ToString() != "DIAG")));
+                    }
                 }
+                //logger.Info("Fin Trae Nodos Hijos");
+                return nodosHijos;
             }
-            //logger.Info("Fin Trae Nodos Hijos");
-            return nodosHijos;
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private List<VariableAP> transformVariables(List<Shared.Variable> variables)
         {
-            //logger.Info("Inicio Transformar Variables");
-            List<VariableAP> result = new List<VariableAP>();
-            foreach (Shared.Variable variable in variables)
+            try
             {
-                result.Add(transformVariable(variable));
+                //logger.Info("Inicio Transformar Variables");
+                List<VariableAP> result = new List<VariableAP>();
+                foreach (Shared.Variable variable in variables)
+                {
+                    result.Add(transformVariable(variable));
+                }
+                //logger.Info("Fin Transformar Variables");
+                return result;
             }
-            //logger.Info("Fin Transformar Variables");
-            return result;
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private VariableAP transformVariable(Shared.Variable variable)
         {
-            //logger.Info("Inicio Transformar Variable");
-            VariableAP dest = new VariableAP();
-            dest.nombre = variable.Name;
-            dest.valor = variable.InitialValue;
-            dest.vector = false;
-            dest.type = variable.Type;
-            dest.dimension = null;
-            dest.i = 0;
-            if (variable is Victoria.Shared.VariableArray)
+            try
             {
-                Victoria.Shared.VariableArray variableArray = (Victoria.Shared.VariableArray)variable;
-                dest.vector = true;
-                dest.dimension = variableArray.Dimension;
-                dest.i = 1;
+                //logger.Info("Inicio Transformar Variable");
+                VariableAP dest = new VariableAP();
+                dest.nombre = variable.Name;
+                dest.valor = variable.InitialValue;
+                dest.vector = false;
+                dest.type = variable.Type;
+                dest.dimension = null;
+                dest.i = 0;
+                if (variable is Victoria.Shared.VariableArray)
+                {
+                    Victoria.Shared.VariableArray variableArray = (Victoria.Shared.VariableArray)variable;
+                    dest.vector = true;
+                    dest.dimension = variableArray.Dimension;
+                    dest.i = 1;
+                }
+                //logger.Info("Fin Transformar Variable");
+                return dest;
             }
-            //logger.Info("Fin Transformar Variable");
-            return dest;
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public XElement CreateInitializaionDiagram(List<VariableAP> variables)
         {
-            //logger.Info("Inicio Crear Inicializacion Diagrama");
-            int i = 1;
-            var vectores = (from variable in variables
-                            where (variable.vector == true)
-                            select variable);
-            int cantVec = vectores.Count();
-            //logger.Info("Fin Crear Inicializacion Diagrama");
-            return new XElement("Diagrama",
-                new XAttribute("Name", "Inicializar"),
-                    new XElement("flowchart",
-                        new XElement("block",
-                            new XAttribute("id", "Inicializar0"),
-                            new XAttribute("caption", "Inicializar"),
-                            new XAttribute("type", "nodo_titulo_inicializador"),
-                                new XElement("connection",
-                                    new XAttribute("ref", "Inicializar1"))),
-                from variable in variables
-                select
-                    new XElement("block",
-                    new XAttribute("id", "Inicializar" + (i++).ToString()),
-                    // TODO: cambiar nombre si es vector
-                    //new XAttribute("caption", variable.nombre + "=" + variable.valor),
-                    new XAttribute("caption", variable.GetNameForDesigner() + "=" + variable.valor),
-                    new XAttribute("type", "nodo_sentencia"),
-                    new XElement("connection",
-                    new XAttribute("ref", "Inicializar" + (i).ToString()),
-                    new XAttribute("left", (variable.vector ? SetItToVector(variable, (i++)) : (i).ToString())))),
-                from variable in variables
-                where variable.vector
-                select
-                    new XElement("block",
-                    new XAttribute("id", "Inicializar" + variable.i.ToString()),
-                    new XAttribute("caption", GetCaption("nodo_iterador", "1;" + variable.dimension + ";1;I", variables)),
-                    new XAttribute("type", "nodo_iterador"),
-                    new XElement("connection",
-                    new XAttribute("ref", "Inicializar" + ((variable.i) - 1).ToString())),
-                    new XElement("connection",
-                    new XAttribute("ref", "Inicializar" + (++variable.i).ToString()))),
-                    new XElement("block",
-                        new XAttribute("id", "Inicializar" + (variables.Count() + cantVec + 1).ToString()),
-                        new XAttribute("caption", ""),
-                        new XAttribute("type", "nodo_fin"))));
 
-            
+            try
+            {
+                //logger.Info("Inicio Crear Inicializacion Diagrama");
+                int i = 1;
+                var vectores = (from variable in variables
+                                where (variable.vector == true)
+                                select variable);
+                int cantVec = vectores.Count();
+                //logger.Info("Fin Crear Inicializacion Diagrama");
+                return new XElement("Diagrama",
+                    new XAttribute("Name", "Inicializar"),
+                        new XElement("flowchart",
+                            new XElement("block",
+                                new XAttribute("id", "Inicializar0"),
+                                new XAttribute("caption", "Inicializar"),
+                                new XAttribute("type", "nodo_titulo_inicializador"),
+                                    new XElement("connection",
+                                        new XAttribute("ref", "Inicializar1"))),
+                    from variable in variables
+                    select
+                        new XElement("block",
+                        new XAttribute("id", "Inicializar" + (i++).ToString()),
+                        // TODO: cambiar nombre si es vector
+                        //new XAttribute("caption", variable.nombre + "=" + variable.valor),
+                        new XAttribute("caption", variable.GetNameForDesigner() + "=" + variable.valor),
+                        new XAttribute("type", "nodo_sentencia"),
+                        new XElement("connection",
+                        new XAttribute("ref", "Inicializar" + (i).ToString()),
+                        new XAttribute("left", (variable.vector ? SetItToVector(variable, (i++)) : (i).ToString())))),
+                    from variable in variables
+                    where variable.vector
+                    select
+                        new XElement("block",
+                        new XAttribute("id", "Inicializar" + variable.i.ToString()),
+                        new XAttribute("caption", GetCaption("nodo_iterador", "1;" + variable.dimension + ";1;I", variables)),
+                        new XAttribute("type", "nodo_iterador"),
+                        new XElement("connection",
+                        new XAttribute("ref", "Inicializar" + ((variable.i) - 1).ToString())),
+                        new XElement("connection",
+                        new XAttribute("ref", "Inicializar" + (++variable.i).ToString()))),
+                        new XElement("block",
+                            new XAttribute("id", "Inicializar" + (variables.Count() + cantVec + 1).ToString()),
+                            new XAttribute("caption", ""),
+                            new XAttribute("type", "nodo_fin"))));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
+
         }
 
         public string SetItToVector(VariableAP variable, double i)

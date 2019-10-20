@@ -26,12 +26,20 @@ namespace Victoria.Shared.Actors
 
         public NodeActor(IStageSimulation stageSimulation)
         {
-            log.Info("Inicio Nodo Actor");
-            this.stageSimulation = stageSimulation;
+            try
+            {
+                //log.Info("Inicio Nodo Actor");
+                this.stageSimulation = stageSimulation;
 
-            Receive<Diagram>(diagram => this.Execute(diagram));
-            Receive<Node>(node => this.Execute(node));
-            log.Info("Fin Nodo Actor");
+                Receive<Diagram>(diagram => this.Execute(diagram));
+                Receive<Node>(node => this.Execute(node));
+                //log.Info("Fin Nodo Actor");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public static Props Props(IStageSimulation stageSimulation)
@@ -43,7 +51,7 @@ namespace Victoria.Shared.Actors
         {
             get
             {
-                log.Info("Inicio Obtener Actor principal de Simulacion");
+                //log.Info("Inicio Obtener Actor principal de Simulacion");
                 if (this.mainSimulationActor == null)
                 {
                     var akkaConfiguration = ((AkkaConfigurationSection)ConfigurationManager.GetSection("akka")).AkkaConfig;
@@ -51,7 +59,7 @@ namespace Victoria.Shared.Actors
 
                     this.mainSimulationActor = system.ActorOf<MainSimulationActor>("mainSimulationActor");
                 }
-                log.Info("Fin Obtener Actor Principal de Simulacion");
+                //log.Info("Fin Obtener Actor Principal de Simulacion");
                 return this.mainSimulationActor;
             }
 
@@ -65,13 +73,12 @@ namespace Victoria.Shared.Actors
 
         private void Execute(Diagram diagram)
         {
-            DelegateNotifyUI notifyUserInteraceMethod = notifyUserInterace;            
-            log.Info("Inicio Ejecutar");
             try
             {
-                Node node = diagram.Execute(this.stageSimulation.GetVariables(), notifyUserInteraceMethod );
-                this.Self.Tell(node);
-
+                DelegateNotifyUI notifyUserInteraceMethod = notifyUserInterace;
+                log.Info("Inicio Ejecutar");
+                Node node = diagram.Execute(this.stageSimulation.GetVariables(), notifyUserInteraceMethod); this.Self.Tell(node);
+                //log.Info("Fin Ejectuar");
             }
             catch (Exception exception) 
             {
@@ -84,38 +91,44 @@ namespace Victoria.Shared.Actors
                 this.Self.Tell(PoisonPill.Instance);
                 this.MainSimulationActor.Tell(PoisonPill.Instance);
             }
-            log.Info("Fin Ejectuar");
-
         }
 
         private void Execute(Node node)
         {
-            log.Info("Inicio Ejecutar");
-            if (node != null && this.stageSimulation.CanContinue())
+            try
             {
-                DelegateNotifyUI notifyUserInteraceMethod = notifyUserInterace;
-
-                node = node.Execute(this.stageSimulation.GetVariables(), notifyUserInteraceMethod);
-                    
-                if (node != null)
+                //log.Info("Inicio Ejecutar");            
+                if (node != null && this.stageSimulation.CanContinue())
                 {
-                    this.Self.Tell(node);
+                    DelegateNotifyUI notifyUserInteraceMethod = notifyUserInterace;
+
+                    node = node.Execute(this.stageSimulation.GetVariables(), notifyUserInteraceMethod);
+
+                    if (node != null)
+                    {
+                        this.Self.Tell(node);
+                    }
+                    else
+                    {
+                        stageSimulation.StopExecution(true);
+                    }
                 }
                 else
                 {
                     stageSimulation.StopExecution(true);
-                }                    
-            }
-            else
-            {
-                stageSimulation.StopExecution(true);
-            }
+                }
 
-            if (this.stageSimulation.MustNotifyUI())
-            {
-                this.MainSimulationActor.Tell(this.stageSimulation);
+                if (this.stageSimulation.MustNotifyUI())
+                {
+                    this.MainSimulationActor.Tell(this.stageSimulation);
+                }
+                //log.Info("Fin Ejecutar");
             }
-            log.Info("Fin Ejecutar");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
     }
 }

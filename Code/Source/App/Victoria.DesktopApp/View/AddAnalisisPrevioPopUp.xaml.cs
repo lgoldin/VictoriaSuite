@@ -57,15 +57,22 @@ namespace Victoria.DesktopApp.View
 
         public AddAnalisisPrevioPopUp(Window1 diagramador)
         {
-            //logger.Info("Inicio Agregar Analisis Previo");
-            this.InitializeComponent();
-            this.VentanaDiagramador = diagramador;
-            this.comboBox.SelectedItem = EaE;
-            this.comboBox_EventosEaE.SelectedItem = TEI;
-            this.InicializarMetodologia();
-            this.InitializeCollections();
-            this.eventos.Visibility = Visibility.Visible;
-            //logger.Info("Fin Agregar Analisis Previo");
+            try
+            {
+                logger.Info("Generar nuevo diagrama.");
+                this.InitializeComponent();
+                this.VentanaDiagramador = diagramador;
+                this.comboBox.SelectedItem = EaE;
+                this.comboBox_EventosEaE.SelectedItem = TEI;
+                this.InicializarMetodologia();
+                this.InitializeCollections();
+                this.eventos.Visibility = Visibility.Visible;
+                //logger.Info("Fin Agregar Analisis Previo");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);                
+            }
         }
 
         public void InitializeCollections()
@@ -150,8 +157,7 @@ namespace Victoria.DesktopApp.View
         }
 
         private void inicializarORecargarVariablesControl()
-        {
-
+        {            
             //logger.Info("Inicio Inicializar o Recargar Variables de Control");
             var itemsSource = this.AnalisisPrevio.VariablesDeControl.ToList();
             itemsSource.Add(AGREGAR_VARIABLE_CONTROL);
@@ -418,10 +424,8 @@ namespace Victoria.DesktopApp.View
             this.eventosDeltaT.Visibility = tipo.Equals(AnalisisPrevio.Tipo.DeltaT) ? Visibility.Visible : Visibility.Hidden;
             this.nuevoEventoDeltaT.IsEnabled = tipo.Equals(AnalisisPrevio.Tipo.DeltaT);
             this.eliminarEventoDeltaT.IsEnabled = tipo.Equals(AnalisisPrevio.Tipo.DeltaT);
-            this.nuevaCondicion.IsEnabled = tipo.Equals(AnalisisPrevio.Tipo.EaE);
-
+            this.nuevaCondicion.IsEnabled = tipo.Equals(AnalisisPrevio.Tipo.EaE);            
             this.InitializeCollections();
-            //logger.Info("Fin Inicializar Metodologia");
         }
 
         private void Agregar(ObservableCollection<string> collection)
@@ -522,8 +526,10 @@ namespace Victoria.DesktopApp.View
                 foreach (EventoAP evento in AnalisisPrevio.EventosEaE)
                 {
                     this.eliminarEventoEFNC(evento, selected.Nombre);
-                    this.eliminarEventoEFC(evento, selected.Nombre);
+                    this.eliminarEventoEFC(evento, selected.Nombre);                    
                 }
+
+                logger.Info(String.Format("Eliminar Evento: {0}",selected.Nombre));
 
                 this.dataGridEventos.Items.Refresh();
                 this.dataGridEventos.SelectedItem = null;
@@ -547,6 +553,9 @@ namespace Victoria.DesktopApp.View
                     evento.EventosCondicionados.RemoveAt(index);
                     evento.Condiciones.Clear();
                 }
+
+                logger.Info(String.Format("Eliminar Evento: {0}", selected.Nombre));
+
                 this.dataGridEventosIndependientes.Items.Refresh();
                 this.dataGridEventosIndependientes.SelectedItem = null;
 
@@ -600,7 +609,8 @@ namespace Victoria.DesktopApp.View
                 {
                     this.Conditions.Add(condicion);
                     new InformationPopUp("Condición creada con éxito.").ShowDialog();
-                    //logger.Info("Condicion creada con éxito.");
+
+                    logger.Info(String.Format("Condicion creada con éxito: {0}.",condicion));
                     return;
                 }
                 else
@@ -616,10 +626,9 @@ namespace Victoria.DesktopApp.View
         private void GenerarDiagrama()
         {
             ExpressionResolver.listFdpPreviusAnalisis = AnalisisPrevio.listFDP;
-            //logger.Info("Inicio Generar Diagrama");
+            logger.Info("Generar Diagrama.");
             AutomaticDiagramGenerator diagramGenerator = new AutomaticDiagramGenerator(AnalisisPrevio);
             diagramGenerator.generateDiagram(VentanaDiagramador);
-            //logger.Info("Fin Generar Diagrama");
         }
 
         private void GenerarFDP()

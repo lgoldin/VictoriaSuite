@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Victoria.Shared
 {
@@ -25,27 +26,32 @@ namespace Victoria.Shared
 
         public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
-            Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
+
             
-            //logger.Info("Inicio Ejecutar Nodo");
-            if (this.variableIteradora == null)
-                    InicializarVariableIteradora(variables);
-
-            if (this.variableIteradora.ActualValue < this.ValorFinal)
+            try
             {
-                this.variableIteradora.ActualValue += this.Incremento;
-                variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
-
-                return this.IterationNode.Execute(variables, NotifyUIMethod);
-                //logger.Info("Fin Ejecutar Nodo");
+                Debug.Debug.instance().execute(this, NotifyUIMethod, variables);
+                //logger.Info("Inicio Ejecutar Nodo");
+                if (this.variableIteradora == null) InicializarVariableIteradora(variables);
+                if (this.variableIteradora.ActualValue < this.ValorFinal)
+                {
+                    this.variableIteradora.ActualValue += this.Incremento;
+                    variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
+                    //logger.Info("Fin Ejecutar Nodo");
+                    return this.IterationNode.Execute(variables, NotifyUIMethod);
+                }
+                else
+                {
+                    this.variableIteradora.ActualValue = this.ValorInicial;
+                    variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
+                    //logger.Info("Fin Ejecutar Nodo");
+                    return base.Execute(variables, NotifyUIMethod);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.variableIteradora.ActualValue = this.ValorInicial;
-                variables.First(v => v.Name == this.VariableName).ActualValue = this.variableIteradora.ActualValue;
-
-                return base.Execute(variables, NotifyUIMethod);
-                //logger.Info("Fin Ejecutar Nodo");
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
             }
         }
 

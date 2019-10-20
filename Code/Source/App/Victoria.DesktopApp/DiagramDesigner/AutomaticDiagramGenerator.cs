@@ -49,24 +49,33 @@ namespace Victoria.DesktopApp.DiagramDesigner
         public void generateDiagram(Window1 diagramWindow)
         {
 
-            //logger.Info("Inicio Generar Diagrama");
-            if (analisisPrevio.TipoDeEjercicio.Equals(AnalisisPrevio.Tipo.EaE))
+            try
             {
-                generateEaEDiagram(diagramWindow);
-            }
-            else
-            {
-                generateDeltaTDiagram(diagramWindow);
-            }
-        
-            //logger.Info("Fin Generar Diagrama");
+                if (analisisPrevio.TipoDeEjercicio.Equals(AnalisisPrevio.Tipo.EaE))
+                {
+                    generateEaEDiagram(diagramWindow);
+                }
+                else
+                {
+                    generateDeltaTDiagram(diagramWindow);
+                }
 
-            setupAndShowDiagramWindow(diagramWindow, this.analisisPrevio);
+                //logger.Info("Fin Generar Diagrama");
+
+                setupAndShowDiagramWindow(diagramWindow, this.analisisPrevio);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private void generateDeltaTDiagram(Window1 diagramWindow)
         {
             //logger.Info("Inicio Generar Diagrama Delta T");
+
+            logger.Info("Generación de Diagrama - Metodología Delta T");
             initialSetupForDeltaT(diagramWindow);
             generateInitNode();
 
@@ -228,9 +237,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
             actualPosition = generateDeltaTPropiosSubdiagrams(actualPosition);
             actualPosition = generateDeltaTComprometidosAnteriorSubdiagrams(actualPosition);
             actualPosition = generateDeltaTComprometidosFuturoSubdiagrams(actualPosition);
-            actualPosition = generateDeltaTCalcularResultadosSubdiagram(actualPosition);
-            //logger.Info("Fin Generar Diagrama Delta T");
-
+            actualPosition = generateDeltaTCalcularResultadosSubdiagram(actualPosition);            
         }
 
         private double generateDeltaTCalcularResultadosSubdiagram(double nextTopPosition)
@@ -304,8 +311,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 lastCenterNode = close;
                 actualPosition += topHeightStep;
             }
-
-
+            
             //logger.Info("Fin Generar Delta T Evento Comprometido Subdiagramas");
             return actualPosition;
         }
@@ -379,7 +385,9 @@ namespace Victoria.DesktopApp.DiagramDesigner
         private void generateEaEDiagram(Window1 diagramWindow)
         {
             //logger.Info("Inicio Generar Diagrama EaE");
-            initialSetupForEaE(diagramWindow);
+
+            logger.Info("Generación de Diagrama - Metodología Evento a Evento.");
+            initialSetupForEaE(diagramWindow);            
 
             generateInitNode();
             var subDiagramCalls = generateVectorSubDiagramCalls();
@@ -1064,7 +1072,6 @@ namespace Victoria.DesktopApp.DiagramDesigner
             VentanaDiagramador.dataGridVariables.ItemsSource = vars;
             VentanaDiagramador.dimensiones.ItemsSource = vars.Where(x => x.type == VariableType.Control);
             VentanaDiagramador.Show();
-            //logger.Info("Fin Configurar y Mostrar Diagrama");
         }
 
         private void addFinalVars(List<VariableAP> vars)

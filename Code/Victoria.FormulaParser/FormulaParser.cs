@@ -24,7 +24,6 @@ namespace Victoria.FormulaParser
 
         public FormulaParser(string formula)
         {
-            //logger.Info("Inicio Formula Parser");
             this.formula = Regex.Replace(formula, @"\s+", "").ToLower();
 
             this.indice = 0;
@@ -212,266 +211,275 @@ namespace Victoria.FormulaParser
 
         private Expresion ConstruirExpresion(bool unaria, bool argumento)
         {
-
-            //logger.Info("Inicio Construir Expresion");
-            Elemento elemento;
-
-            Expresion expresionMadre = null;
-            Expresion expresionActual = null;
-
-            Estado estado = Estado.EsperandoTerminoIzquierdo;
-
-            elemento = this.ProximoElemento();
-            while (elemento != null)
+            
+            try
             {
-                if (estado == Estado.EsperandoTerminoIzquierdo)
+                //logger.Info("Inicio Construir Expresion");
+                Elemento elemento;
+
+                Expresion expresionMadre = null;
+                Expresion expresionActual = null;
+
+                Estado estado = Estado.EsperandoTerminoIzquierdo;
+
+                elemento = this.ProximoElemento();
+                while (elemento != null)
                 {
-                    if (elemento.EsInicioDeAgrupacion())
+                    if (estado == Estado.EsperandoTerminoIzquierdo)
                     {
-                        expresionActual = this.ConstruirExpresion();
-                        expresionActual.Agrupada = true;
-                        expresionActual.ExpresionMadre = expresionMadre;
-                    }
-                    else if (elemento.DeterminaSigno())
-                    {
-                        expresionActual = new ExpresionUnaria(
-                            expresionMadre,
-                            this.ConstruirExpresion(true),
-                            (ElementoOperador)elemento);
-                    }
-                    else if (elemento.EsNumerico())
-                    {
-                        expresionActual = new ExpresionNumerica(
-                            expresionMadre,
-                            elemento.Valor());
-                    }
-                    else if (elemento.EsFuncion())
-                    {
-                        ExpresionFuncion expresionFuncion = new ExpresionFuncion(
-                            expresionMadre,
-                            (ElementoFuncion)elemento);
-
-                        elemento = this.ProximoElemento();
-                        if (!elemento.EsInicioDeAgrupacion())
+                        if (elemento.EsInicioDeAgrupacion())
                         {
-                            //logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
-                            throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
+                            expresionActual = this.ConstruirExpresion();
+                            expresionActual.Agrupada = true;
+                            expresionActual.ExpresionMadre = expresionMadre;
                         }
-
-                        Expresion expresionArgumento = this.ConstruirExpresion(
-                            unaria: false, 
-                            argumento: true);
-
-                        while (expresionArgumento != null)
+                        else if (elemento.DeterminaSigno())
                         {
-                            expresionArgumento.ExpresionMadre = expresionFuncion;
-                            expresionFuncion.AgregarArgumento(expresionArgumento);
+                            expresionActual = new ExpresionUnaria(
+                                expresionMadre,
+                                this.ConstruirExpresion(true),
+                                (ElementoOperador)elemento);
+                        }
+                        else if (elemento.EsNumerico())
+                        {
+                            expresionActual = new ExpresionNumerica(
+                                expresionMadre,
+                                elemento.Valor());
+                        }
+                        else if (elemento.EsFuncion())
+                        {
+                            ExpresionFuncion expresionFuncion = new ExpresionFuncion(
+                                expresionMadre,
+                                (ElementoFuncion)elemento);
+
+                            elemento = this.ProximoElemento();
+                            if (!elemento.EsInicioDeAgrupacion())
+                            {
+                                logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
+                                throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
+                            }
+
+                            Expresion expresionArgumento = this.ConstruirExpresion(
+                                unaria: false,
+                                argumento: true);
+
+                            while (expresionArgumento != null)
+                            {
+                                expresionArgumento.ExpresionMadre = expresionFuncion;
+                                expresionFuncion.AgregarArgumento(expresionArgumento);
 
                                 this.RetrocedecerElemento();
 
-                            elemento = this.ProximoElemento();
+                                elemento = this.ProximoElemento();
 
-                            if (elemento == null)
-                            {
-                                expresionArgumento = null;
-                            }
-                            else
-                            {
-                                if (elemento.EsFinDeAgrupacion())
+                                if (elemento == null)
                                 {
                                     expresionArgumento = null;
                                 }
-                                else if (elemento.EsSeparador())
+                                else
                                 {
-                                    expresionArgumento = this.ConstruirExpresion(
-                                        unaria: false,
-                                        argumento: true);
+                                    if (elemento.EsFinDeAgrupacion())
+                                    {
+                                        expresionArgumento = null;
+                                    }
+                                    else if (elemento.EsSeparador())
+                                    {
+                                        expresionArgumento = this.ConstruirExpresion(
+                                            unaria: false,
+                                            argumento: true);
+                                    }
+                                    else
+                                    {
+                                        logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+
+                                        throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+                                    }
+                                }
+                            }
+
+                            expresionActual = expresionFuncion;
+                        }
+                        else if (elemento.EsFinDeAgrupacion() && argumento)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            logger.Error("Estado EsperandoTerminoIzquierdo => Se esperaba inicio de agrupación, signo o valor numérico.");
+                            throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Se esperaba inicio de agrupación, signo o valor numérico.");
+                        }
+
+                        if (unaria)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            estado = Estado.EsperandoOperador;
+                        }
+                    }
+                    else if (estado == Estado.EsperandoOperador)
+                    {
+                        if (elemento.EsFinDeAgrupacion())
+                        {
+                            break;
+                        }
+                        else if (elemento.EsOperador())
+                        {
+                            if (expresionActual.EsBinaria())
+                            {
+                                if (((ExpresionBinaria)expresionActual).Agrupada ||
+                                    ((ExpresionBinaria)expresionActual).Operador.TienePrecedencia((ElementoOperador)elemento))
+                                {
+                                    while (expresionActual.ExpresionMadre != null &&
+                                          !expresionActual.Agrupada &&
+                                          expresionActual.ExpresionMadre.EsBinaria() &&
+                                           ((ExpresionBinaria)expresionActual.ExpresionMadre).Operador.TienePrecedencia((ElementoOperador)elemento))
+                                    {
+                                        expresionActual = expresionActual.ExpresionMadre;
+                                    }
+
+                                    ExpresionBinaria expresionNueva = new ExpresionBinaria(
+                                        expresionActual.ExpresionMadre,
+                                        expresionActual,
+                                        (ElementoOperador)elemento,
+                                        null);
+
+                                    if (expresionNueva.ExpresionMadre != null)
+                                    {
+                                        ((ExpresionBinaria)expresionNueva.ExpresionMadre).TerminoDerecho = expresionNueva;
+                                    }
+
+                                    expresionActual.ExpresionMadre = expresionNueva;
+                                    expresionActual = expresionNueva;
                                 }
                                 else
                                 {
-                                    //logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba fin de agrupación o separador.");
-          
-                                    throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+                                    ExpresionBinaria nuevaExpresion = new ExpresionBinaria(
+                                        expresionActual,
+                                        ((ExpresionBinaria)expresionActual).TerminoDerecho,
+                                        (ElementoOperador)elemento,
+                                        null);
+
+                                    ((ExpresionBinaria)expresionActual).TerminoDerecho.ExpresionMadre = nuevaExpresion;
+                                    ((ExpresionBinaria)expresionActual).TerminoDerecho = nuevaExpresion;
+                                    expresionActual = nuevaExpresion;
                                 }
                             }
-                        }
-
-                        expresionActual = expresionFuncion;
-                    }
-                    else if (elemento.EsFinDeAgrupacion() && argumento)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        //logger.Error("Estado EsperandoTerminoIzquierdo => Se esperaba inicio de agrupación, signo o valor numérico.");  
-                        throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Se esperaba inicio de agrupación, signo o valor numérico.");
-                    }
-
-                    if (unaria)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        estado = Estado.EsperandoOperador;
-                    }
-                }
-                else if (estado == Estado.EsperandoOperador)
-                {
-                    if (elemento.EsFinDeAgrupacion())
-                    {
-                        break;
-                    }
-                    else if (elemento.EsOperador())
-                    {
-                        if (expresionActual.EsBinaria())
-                        {
-                            if (((ExpresionBinaria)expresionActual).Agrupada ||
-                                ((ExpresionBinaria)expresionActual).Operador.TienePrecedencia((ElementoOperador)elemento))
+                            else
                             {
-                                while (expresionActual.ExpresionMadre != null &&
-                                      !expresionActual.Agrupada &&
-                                      expresionActual.ExpresionMadre.EsBinaria() &&
-                                       ((ExpresionBinaria)expresionActual.ExpresionMadre).Operador.TienePrecedencia((ElementoOperador)elemento))
-                                {
-                                    expresionActual = expresionActual.ExpresionMadre;
-                                }
-
-                                ExpresionBinaria expresionNueva = new ExpresionBinaria(
+                                Expresion nuevaExpresion = new ExpresionBinaria(
                                     expresionActual.ExpresionMadre,
                                     expresionActual,
                                     (ElementoOperador)elemento,
                                     null);
 
-                                if (expresionNueva.ExpresionMadre != null)
-                                {
-                                    ((ExpresionBinaria)expresionNueva.ExpresionMadre).TerminoDerecho = expresionNueva;
-                                }
-
-                                expresionActual.ExpresionMadre = expresionNueva;
-                                expresionActual = expresionNueva;
-                            }
-                            else
-                            {
-                                ExpresionBinaria nuevaExpresion = new ExpresionBinaria(
-                                    expresionActual,
-                                    ((ExpresionBinaria)expresionActual).TerminoDerecho,
-                                    (ElementoOperador)elemento,
-                                    null);
-
-                                ((ExpresionBinaria)expresionActual).TerminoDerecho.ExpresionMadre = nuevaExpresion;
-                                ((ExpresionBinaria)expresionActual).TerminoDerecho = nuevaExpresion;
+                                expresionActual.ExpresionMadre = nuevaExpresion;
                                 expresionActual = nuevaExpresion;
                             }
+
+                            estado = Estado.EsperandoTerminoDerecho;
+                        }
+                        else if (elemento.EsSeparador() && argumento)
+                        {
+                            break;
                         }
                         else
                         {
-                            Expresion nuevaExpresion = new ExpresionBinaria(
-                                expresionActual.ExpresionMadre,
+                            logger.Error("Estado EsperandoOperador => Se esperaba un elemento fin de agrupacion u operador.");
+                            throw new InvalidOperationException("Estado EsperandoOperador => Se esperaba un elemento fin de agrupacion u operador.");
+                        }
+                    }
+                    else if (estado == Estado.EsperandoTerminoDerecho)
+                    {
+
+                        if (elemento.EsInicioDeAgrupacion())
+                        {
+                            ((ExpresionBinaria)expresionActual).TerminoDerecho = this.ConstruirExpresion();
+                        }
+                        else if (elemento.EsNumerico())
+                        {
+                            ((ExpresionBinaria)expresionActual).TerminoDerecho = new ExpresionNumerica(
                                 expresionActual,
-                                (ElementoOperador)elemento,
-                                null);
-
-                            expresionActual.ExpresionMadre = nuevaExpresion;
-                            expresionActual = nuevaExpresion;
+                                elemento.Valor());
                         }
-
-                        estado = Estado.EsperandoTerminoDerecho;
-                    }
-                    else if (elemento.EsSeparador() && argumento)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        //logger.Error("Estado EsperandoOperador => Se esperaba un elemento fin de agrupacion u operador.");
-                        throw new InvalidOperationException("Estado EsperandoOperador => Se esperaba un elemento fin de agrupacion u operador.");
-                    }
-                }
-                else if (estado == Estado.EsperandoTerminoDerecho)
-                {
-                    if (elemento.EsInicioDeAgrupacion())
-                    {
-                        ((ExpresionBinaria)expresionActual).TerminoDerecho = this.ConstruirExpresion();
-                    }
-                    else if (elemento.EsNumerico())
-                    {
-                        ((ExpresionBinaria)expresionActual).TerminoDerecho = new ExpresionNumerica(
-                            expresionActual,
-                            elemento.Valor());
-                    }
-                    else if (elemento.EsFuncion())
-                    {
-                        ExpresionFuncion expresionFuncion = new ExpresionFuncion(
-                            expresionActual,
-                            (ElementoFuncion)elemento);
-
-                        elemento = this.ProximoElemento();
-                        if (!elemento.EsInicioDeAgrupacion())
+                        else if (elemento.EsFuncion())
                         {
-                            //logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
-                            throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
-                        }
-
-                        Expresion expresionArgumento = this.ConstruirExpresion(
-                            unaria: false,
-                            argumento: true);
-
-                        while (expresionArgumento != null)
-                        {
-                            expresionArgumento.ExpresionMadre = expresionFuncion;
-                            expresionFuncion.AgregarArgumento(expresionArgumento);
-
-                            this.RetrocedecerElemento();
+                            ExpresionFuncion expresionFuncion = new ExpresionFuncion(
+                                expresionActual,
+                                (ElementoFuncion)elemento);
 
                             elemento = this.ProximoElemento();
-
-                            if (elemento == null)
+                            if (!elemento.EsInicioDeAgrupacion())
                             {
-                                expresionArgumento = null;
+                                logger.Error("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
+                                throw new InvalidOperationException("Estado EsperandoTerminoIzquierdo => Elemento Funcion => Se esperaba inicio de agrupación.");
                             }
-                            else
+
+                            Expresion expresionArgumento = this.ConstruirExpresion(
+                                unaria: false,
+                                argumento: true);
+
+                            while (expresionArgumento != null)
                             {
-                                if (elemento.EsFinDeAgrupacion())
+                                expresionArgumento.ExpresionMadre = expresionFuncion;
+                                expresionFuncion.AgregarArgumento(expresionArgumento);
+
+                                this.RetrocedecerElemento();
+
+                                elemento = this.ProximoElemento();
+
+                                if (elemento == null)
                                 {
                                     expresionArgumento = null;
                                 }
-                                else if (elemento.EsSeparador())
-                                {
-                                    expresionArgumento = this.ConstruirExpresion(
-                                        unaria: false,
-                                        argumento: true);
-                                }
                                 else
                                 {
-                                    //logger.Error("Estado EsperandoTerminoDerecho => Elemento Funcion => Se esperaba fin de agrupación o separador.");
-                                    throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+                                    if (elemento.EsFinDeAgrupacion())
+                                    {
+                                        expresionArgumento = null;
+                                    }
+                                    else if (elemento.EsSeparador())
+                                    {
+                                        expresionArgumento = this.ConstruirExpresion(
+                                            unaria: false,
+                                            argumento: true);
+                                    }
+                                    else
+                                    {
+                                        logger.Error("Estado EsperandoTerminoDerecho => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+                                        throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Elemento Funcion => Se esperaba fin de agrupación o separador.");
+                                    }
                                 }
                             }
+
+                            ((ExpresionBinaria)expresionActual).TerminoDerecho = expresionFuncion;
                         }
-
-                        ((ExpresionBinaria)expresionActual).TerminoDerecho = expresionFuncion;
+                        else
+                        {
+                            logger.Error("Estado EsperandoTerminoDerecho => Se esperaba inicio de agrupación o valor numérico.");
+                            throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Se esperaba inicio de agrupación o valor numérico.");
+                        }
+                        
+                        estado = Estado.EsperandoOperador;
                     }
-                    else
-                    {
-                        //logger.Error("Estado EsperandoTerminoDerecho => Se esperaba inicio de agrupación o valor numérico.");
-                        throw new InvalidOperationException("Estado EsperandoTerminoDerecho => Se esperaba inicio de agrupación o valor numérico.");
-                    }
 
-                    estado = Estado.EsperandoOperador;
+                    elemento = this.ProximoElemento();
                 }
 
-                elemento = this.ProximoElemento();
-            }
+                if (expresionActual == null && argumento)
+                {
+                    return null;
+                }
 
-            if (expresionActual == null && argumento)
+                //logger.Info("Fin Construir Expresion");
+                return expresionActual.PrimeraExpresion();
+            }
+            catch (Exception ex)
             {
-                return null;
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
             }
-
-            //logger.Info("Fin Construir Expresion");
-            return expresionActual.PrimeraExpresion();
         }
     }
 }

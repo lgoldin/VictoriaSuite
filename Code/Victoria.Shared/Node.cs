@@ -25,18 +25,36 @@ namespace Victoria.Shared
 
         public virtual Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {   
-            //logger.Info("Inicio Ejecutar Nodo");
-            if (this.NextNode != null)
+       
+            try
             {
-                //logger.Info("Fin Ejecutar Nodo");
+                //logger.Info("Inicio Ejecutar Nodo");
+                if (this.NextNode != null)
+                {
+                    //logger.Info("Fin Ejecutar Nodo");
 
                     return this.NextNode.Execute(variables, NotifyUIMethod);
+                }
+
+                return null;
             }
-            //logger.Info("Fin Ejecutar Nodo null");
+            catch (Exception ex)
+            {
+                logger.Error(String.Format("Ocurrio un error en la ejecución"));
+                logger.Error(String.Format("Estado de Variables: {0}",VariablesToString(variables)));
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
+        }
 
-
-            Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
-            return null;
+        public String VariablesToString(IList<StageVariable> _variables)
+        {
+            String cadena = String.Empty;
+            foreach (StageVariable v in _variables)
+            {
+                cadena += v.Name + ": " + v.ActualValue.ToString() + " | ";// System.Environment.NewLine;
+            }
+            return cadena.Remove(cadena.Length - 3);
         }
     }
 }
