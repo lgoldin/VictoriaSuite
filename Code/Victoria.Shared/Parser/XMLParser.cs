@@ -245,6 +245,7 @@ namespace Victoria.Shared
                 var ns = new NodeSentence();
                 ns.Code = node.Attribute("caption").Value;
                 ns.Name = node.Attribute("id").Value;
+                ns.HasBreakPoint = hasBreakPoint;
                 //logger.Info("Fin Parse Nodo Sentencia");
                 return new PreParsedNode
                 {
@@ -319,7 +320,8 @@ namespace Victoria.Shared
                 {
                     Name = node.Attribute("id").Value,
                     DiagramName = node.Attribute("caption").Value,
-                    IsInitializer = isInitializer
+                    IsInitializer = isInitializer,
+                    HasBreakPoint = hasBreakPoint
 
                 };
                 //logger.Info("Fin Parse Nodo Diagrama");
@@ -346,7 +348,8 @@ namespace Victoria.Shared
                 var ns = new NodeCondition
                 {
                     Name = node.Attribute("id").Value,
-                    Code = node.Attribute("caption").Value
+                    Code = node.Attribute("caption").Value,
+                    HasBreakPoint = hasBreakPoint
                 };
                 //logger.Info("Fin Parse Nodo Condicion");
                 return new PreParsedNodeCondition
