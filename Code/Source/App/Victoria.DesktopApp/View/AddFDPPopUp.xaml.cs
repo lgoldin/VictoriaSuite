@@ -48,55 +48,77 @@ namespace Victoria.DesktopApp.View
         private List<commonFDP.Filtro> filtrosSeleccionados = new List<commonFDP.Filtro>();
         public  ObservableCollection<commonFDP.Filtro> auxfiltros = new ObservableCollection<commonFDP.Filtro>();
         private readonly commonFDP.INuevoFiltro filtrador = new commonFDP.FiltroImpl();
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         List<double> intervalosParciales;
 
         public void FDPGenerator(AnalisisPrevio aPrevio)
         {
-            comboBox.ItemsSource = origenes;
-            origenes.Add("Archivo Excel");
-            origenes.Add("Archivo txt");
-            this.analisisPrevio = aPrevio;
-            dgvDatosFdp.ItemsSource = null;
-            comboBox.SelectedItem = comboBox.Items[0];
-            rbFecha.IsChecked = true;
-            if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
+            try
             {
-                rbDtConstante.IsEnabled = false;
-                rbDtConstante.Visibility = Visibility.Hidden;
-                rbEventoAEvento.IsChecked = true;
-            }
-            else
+                comboBox.ItemsSource = origenes;
+                origenes.Add("Archivo Excel");
+                origenes.Add("Archivo txt");
+                this.analisisPrevio = aPrevio;
+                dgvDatosFdp.ItemsSource = null;
+                comboBox.SelectedItem = comboBox.Items[0];
+                rbFecha.IsChecked = true;
+                if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
+                {
+                    rbDtConstante.IsEnabled = false;
+                    rbDtConstante.Visibility = Visibility.Hidden;
+                    rbEventoAEvento.IsChecked = true;
+                }
+                else
+                {
+                    rbEventoAEvento.IsEnabled = false;
+                    rbEventoAEvento.Visibility = Visibility.Hidden;
+                    rbIntervalos.IsEnabled = false;
+                    rbDtConstante.IsChecked = true;
+                    rbDia.IsChecked = true;
+                }
+            }catch(Exception ex)
             {
-                rbEventoAEvento.IsEnabled = false;
-                rbEventoAEvento.Visibility = Visibility.Hidden;
-                rbIntervalos.IsEnabled = false;
-                rbDtConstante.IsChecked = true;
-                rbDia.IsChecked = true;
+                //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}",ex.Source,ex.Message));                
             }
 
         }
 
         public AddFDPPopUp()
         {
-            InitializeComponent();
-            pnlButtonsGrid.Visibility = Visibility.Visible;
-            pnlMetodologia.Visibility = Visibility.Visible;
+            try
+            {
+                InitializeComponent();
+                pnlButtonsGrid.Visibility = Visibility.Visible;
+                pnlMetodologia.Visibility = Visibility.Visible;
+            }catch(Exception ex)
+            {
+                //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));                
+            }
 
-        }
+}
 
 
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //ComboBoxItem typeItem = (ComboBoxItem)comboBox.SelectedItem;
-            string value = comboBox.SelectedValue.ToString();
-            if (value == "Archivo Excel" || value == "Archivo txt")
-            {
-                rutaFile.Text = "";
-                pnlPosicion_datos.Visibility = Visibility.Hidden;
-                Archivo.Visibility = Visibility.Visible;
-                rutaFile.IsReadOnly = true;
+            try { 
+                string value = comboBox.SelectedValue.ToString();
+                if (value == "Archivo Excel" || value == "Archivo txt")
+                {
+                    rutaFile.Text = "";
+                    pnlPosicion_datos.Visibility = Visibility.Hidden;
+                    Archivo.Visibility = Visibility.Visible;
+                    rutaFile.IsReadOnly = true;
                
+                }
+            }
+            catch (Exception ex)
+            {
+                //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
             }
         }
 
@@ -107,12 +129,18 @@ namespace Victoria.DesktopApp.View
 
         private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            try
             {
-                DragMove();
+                if (Mouse.LeftButton == MouseButtonState.Pressed)
+                {
+                    DragMove();
+                }
+            }catch(Exception ex)
+            {
+                //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));                
             }
-
-        }
+}
 
         private String getFileName(string tipo)
         {
@@ -148,48 +176,55 @@ namespace Victoria.DesktopApp.View
         
         private void btnCalcularFDP_OnClick(object sender, RoutedEventArgs e)
         {
-            
-            if (eventos.Count() >= 15)
+            try
             {
-                try
+                if (eventos.Count() >= 15)
                 {
-                    commonFDP.MetodologiaAjuste metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
-                    commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
-                    int flagIntervalos = 0;
-
-                    if (rbFecha.IsChecked.Value)
+                    try
                     {
-                        metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : commonFDP.MetodologiaAjuste.DT_CONSTANTE;
-                        segmentacion = rbDia.IsChecked.Value ? commonFDP.Segment.Segmentacion.DIA : (rbHora.IsChecked.Value ? commonFDP.Segment.Segmentacion.HORA : (rbMinuto.IsChecked.Value ? commonFDP.Segment.Segmentacion.MINUTO : commonFDP.Segment.Segmentacion.SEGUNDO));
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null, this.analisisPrevio);
-                        this.Visibility = Visibility.Hidden;
-                        frm.ShowDialog();
-                        this.Visibility = Visibility.Visible;
+                        commonFDP.MetodologiaAjuste metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
+                        commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
+                        int flagIntervalos = 0;
+
+                        if (rbFecha.IsChecked.Value)
+                        {
+                            metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : commonFDP.MetodologiaAjuste.DT_CONSTANTE;
+                            segmentacion = rbDia.IsChecked.Value ? commonFDP.Segment.Segmentacion.DIA : (rbHora.IsChecked.Value ? commonFDP.Segment.Segmentacion.HORA : (rbMinuto.IsChecked.Value ? commonFDP.Segment.Segmentacion.MINUTO : commonFDP.Segment.Segmentacion.SEGUNDO));
+                            FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null, this.analisisPrevio);
+                            this.Visibility = Visibility.Hidden;
+                            frm.ShowDialog();
+                            this.Visibility = Visibility.Visible;
+                        }
+                        else if (rbIntervalos.IsChecked.Value)
+                        {
+                            metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
+                            flagIntervalos = 1;
+                            FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, null, this.analisisPrevio);
+                            this.Visibility = Visibility.Hidden;
+                            frm.ShowDialog();
+                            this.Visibility = Visibility.Visible;
+                        }
+
+
+
                     }
-                    else if (rbIntervalos.IsChecked.Value)
+                    catch
                     {
-                        metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
-                        flagIntervalos = 1;
-                        FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, intervalosParciales, flagIntervalos, null, this.analisisPrevio);
-                        this.Visibility = Visibility.Hidden;
-                        frm.ShowDialog();
-                        this.Visibility = Visibility.Visible;
+                        createAlertPopUp("Error al calcular funciones");
                     }
-
-
-                
+                    this.Close();
                 }
-                catch
+                else
                 {
-                    createAlertPopUp("Error al calcular funciones");
+                    createAlertPopUp("Debe haber al menos 15 eventos para poder calcular la FDP");
                 }
-                this.Close();
             }
-            else
+            catch (Exception ex)
             {
-                createAlertPopUp("Debe haber al menos 15 eventos para poder calcular la FDP");
+                //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
             }
-            
+
         } 
        
         
@@ -772,19 +807,25 @@ namespace Victoria.DesktopApp.View
             {
                 tipoAccion = commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS;
                 modificarLayout(tipoAccion);
-                //botonSeleccionado(deleteRegistersGrid);
+                //botonSeleccionado(deleteRegistersGrid);                
+                
                 System.Collections.IList itemsToDelete = dgvDatosFdp.SelectedItems;
+                
                 foreach (var itemToDelete in itemsToDelete)
                 {
 
                     commonFDP.Evento eventToDelete = (commonFDP.Evento)itemToDelete;
-                    eventos.Remove(eventToDelete);
-                }
-                dgvDatosFdp.Items.Refresh();
-            }
-            catch
-            {
+                    eventos.Remove(eventToDelete);                    
 
+                    logger.Info(String.Format("Se ha eliminado el evento '{0}'.",eventToDelete.fecha.ToString()));
+                }
+
+                dgvDatosFdp.Items.Refresh();
+                
+            }
+            catch(Exception ex)
+            {
+                createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
             }
             //botonSeleccionado(deleteRegistersGrid);
         }
@@ -897,6 +938,8 @@ namespace Victoria.DesktopApp.View
                         fecha = new DateTime(fechaMSelected.Year, fechaMSelected.Month, fechaMSelected.Day, horaMSelected.Hour, horaMSelected.Minute, horaMSelected.Second);
                         idEvento++;
                         eventos.Add(new commonFDP.Evento() { fecha = fecha, Id = idEvento });
+
+                        logger.Info(String.Format("Se Agrega Registro por Fecha y Hora: {0} {1}.",fechaMSelected.ToShortDateString(), horaMSelected.ToShortTimeString()));
                     }
                     else if (rbAgregarPorIntervalo.IsChecked.Value)
                     {
@@ -921,6 +964,8 @@ namespace Victoria.DesktopApp.View
                         }
                         idEvento++;
                         nuevoPorIntervalo(Convert.ToInt32(nudAgregarPorIntervalo.Value), segmentacion, idEvento );
+
+                        logger.Info(String.Format("Se Agrega Registro por Intervalo {0}.",segmentacion));
                     }
                     //mostrarMensaje("Registro agregado correctamente", Color.FromArgb(128, 255, 128));
                     cargarEventos();
@@ -938,7 +983,14 @@ namespace Victoria.DesktopApp.View
                     {
                         commonFDP.Evento eventToModify = (commonFDP.Evento)dgvDatosFdp.SelectedItem;
                         commonFDP.Evento obj = eventos.FirstOrDefault(x => x.Id == eventToModify.Id);
-                        if (obj != null) obj.fecha = fecha;
+                        
+                        if (obj != null)
+                        {
+                            DateTime fecha_modificada = obj.fecha;
+                            obj.fecha = fecha;
+
+                            logger.Info(String.Format("Se ha Modificado la fecha [{0}] por la fecha [{1}].",fecha_modificada.ToString(),fecha.ToString()));
+                        }
                         cargarEventos();
                         break;
                         //actualizarEstadisticas();
@@ -1041,6 +1093,7 @@ namespace Victoria.DesktopApp.View
             if (!exists)
             {
                 filtros.Add(auxFiltro);
+                logger.Info(String.Format("Se ha agregado el filtro '{0}'.", auxFiltro.Name));
             }
             else
             {
@@ -1143,6 +1196,7 @@ namespace Victoria.DesktopApp.View
             borrarFiltroSeleccionado();
             filtrar();
             this.tipoAccion = commonFDP.TipoAccionProcesamiento.FILTRAR;
+            logger.Info(String.Format("Se han eliminado los filtros seleccionados."));
         }
 
 
