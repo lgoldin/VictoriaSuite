@@ -27,6 +27,8 @@ namespace Victoria.Shared
 
         public List<Stage> Stages { get; set; }
 
+        private SimulationStatus simulationStatus { get; set; }
+
         public Simulation(IList<Diagram> diagrams, Dictionary<string, Variable> variables)
         {
             try
@@ -74,6 +76,7 @@ namespace Victoria.Shared
             {
                 //logger.Info("Inicio Cambiar de estado");
                 this.SimulationStatusChanged(this, new SimulationStatusChangedEventArgs(status));
+                this.simulationStatus = status;
                 //logger.Info("Fin Cambiar de estado");
             }
             catch (Exception ex)
@@ -138,7 +141,8 @@ namespace Victoria.Shared
                 {
                     this.ChangeStatus(SimulationStatus.Stoped);
                                       
-                    logger.Info("Simulación Detenida (Listado de Variables): " + VariablesToString());                     
+                    if (this.simulationStatus == SimulationStatus.Stoped) 
+                        logger.Info("Simulación Detenida (Listado de Variables): " + VariablesToString());                     
                 }
                 
                 //logger.Info("Fin Actualizar");

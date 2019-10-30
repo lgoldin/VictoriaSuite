@@ -223,12 +223,13 @@ namespace DiagramDesigner
 
         #endregion
 
-        #region Find Command
+        #region Debug Command
 
         private void Debuger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (DesignerItem.ifAnyNodeHasBreakpoint())
             {
+                logger.Info("Inicio del Debugueo de la simulación");
                 this.startDebug();
             }
             else
@@ -236,7 +237,10 @@ namespace DiagramDesigner
                 StartDebugPopUp debugPopup = new StartDebugPopUp();
                 debugPopup.ShowDialog();
                 if (debugPopup.Result == DialogResult.Accept)
+                {
+                    logger.Info("Inicio del Debugueo de la simulación");
                     this.startDebug();
+                }
             }
               
         }
