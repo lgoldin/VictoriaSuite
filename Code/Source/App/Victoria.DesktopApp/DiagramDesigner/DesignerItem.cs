@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Linq;
 using DiagramDesigner.Controls;
+using Victoria.DesktopApp;
 using Victoria.DesktopApp.DiagramDesigner.Nodes;
 using Victoria.DesktopApp.View;
 using Victoria.Shared;
@@ -28,6 +29,8 @@ namespace DiagramDesigner
 
     public class DesignerItem : ContentControl, ISelectable, IGroupable
     {
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
+
         #region ID
         private Guid id;
         public Guid ID
@@ -229,6 +232,7 @@ namespace DiagramDesigner
                     {
                         Grid grid = (Grid)this.Content;
                         Path shape = (Path)grid.Children[0];
+                        TextBox txtBox = (TextBox)grid.Children[1];
 
                         if (lstNodesToBreakpoint.Contains(shape.ToolTip.ToString()))
                         {
@@ -239,6 +243,7 @@ namespace DiagramDesigner
                                 changeColor(this, Brushes.Red);
                                 nodesWithBreakPoints.Add(this);
                                 nodesWithoutBreakPoints.Remove(this);
+                                logger.Info(String.Format("[BREAKPOINT] Tipo de Nodo:'{0}'; Texto: '{1}'.",grid.ToolTip,txtBox.Text));
                             }
                             else
                             {
@@ -253,7 +258,10 @@ namespace DiagramDesigner
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("No puede agregarse un breakpoint a este nodo");
+                        //Console.WriteLine("No puede agregarse un breakpoint a este nodo");
+                        logger.Error("No puede agregarse un breakpoint a este nodo");
+                        AlertPopUp alert = new AlertPopUp("No puede agregarse un breakpoint a este nodo");
+                        alert.Show();
                     }
                 }
                 else

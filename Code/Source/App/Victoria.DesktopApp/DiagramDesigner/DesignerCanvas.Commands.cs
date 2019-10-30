@@ -170,33 +170,49 @@ namespace DiagramDesigner
 
         private void showConditionedContinuePopUp()
         {
-            ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
-            popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
-            popup.ShowDialog();
-
-            if (popup.Result == DialogResult.Accept)
+            try
             {
-                CCWaitingPopUp infoPopUp = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
-                infoPopUp.Show();
-                Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
-                this.executeDebugCommand(Debug.Mode.ConditionedContinue);
-                infoPopUp.Close();
+                ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
+                popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
+                popup.ShowDialog();
+                logger.Info(String.Format("[CONTINUAR CONDICIONADO] Se estableció la condición: {0}", popup.conditionTextBox.Text));
+                if (popup.Result == DialogResult.Accept)
+                {
+                    CCWaitingPopUp infoPopUp = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
+                    infoPopUp.Show();
+                    Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
+                    this.executeDebugCommand(Debug.Mode.ConditionedContinue);
+                    infoPopUp.Close();
 
+                }
+            }catch(Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                AlertPopUp alert = new AlertPopUp(String.Format("Ha ocurrido un error: {0}",ex.Message));
+                alert.Show();
             }
         }
 
         private void executeDebugCommand( Debug.Mode command)
         {
-            Debug.instance().debugCommand = command;
-            Debug.instance().jumpToNextNode = true;
+            logger.Info(String.Format("Comando Debug: {0}.",command.ToString().ToUpper()));
+            try
+            {
+                Debug.instance().debugCommand = command;
+                Debug.instance().jumpToNextNode = true;
 
-            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-            manualResetEvent.WaitOne();
+                //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
+                manualResetEvent.WaitOne();
 
-            Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
+                Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
 
-            ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
-            
+                ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+            }catch(Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                AlertPopUp Alert = new AlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
+                Alert.Show();                
+            }
         }
 
         private void ScrollCanvasToBreakpointNode(Point startOfNode, ScrollViewer scrollViewer)
