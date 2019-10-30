@@ -808,9 +808,9 @@ namespace Victoria.DesktopApp.View
                 tipoAccion = commonFDP.TipoAccionProcesamiento.BORRAR_SELECCIONADOS;
                 modificarLayout(tipoAccion);
                 //botonSeleccionado(deleteRegistersGrid);                
-                
+
                 System.Collections.IList itemsToDelete = dgvDatosFdp.SelectedItems;
-                
+
                 foreach (var itemToDelete in itemsToDelete)
                 {
 
@@ -821,6 +821,8 @@ namespace Victoria.DesktopApp.View
                 }
 
                 dgvDatosFdp.Items.Refresh();
+
+                filtrar();
                 
             }
             catch(Exception ex)
