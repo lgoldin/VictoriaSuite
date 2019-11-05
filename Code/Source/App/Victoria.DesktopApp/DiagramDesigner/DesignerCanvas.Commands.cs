@@ -71,8 +71,9 @@ namespace DiagramDesigner
 
         public DesignerCanvas()
         {
+            
+            logger.Info("Abrir ventana para diseño de diagrama.");
 
-            //logger.Info("Inicio Diseñar Canvas");
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Erase_Executed));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed));
@@ -169,30 +170,58 @@ namespace DiagramDesigner
 
         private void showConditionedContinuePopUp()
         {
-            ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
-            popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
-            popup.ShowDialog();
-
-            if (popup.Result == DialogResult.Accept)
+            try
             {
-                CCWaitingPopUp infoPopUp = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
-                infoPopUp.Show();
-                Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
-                this.executeDebugCommand(Debug.Mode.ConditionedContinue);
-                infoPopUp.Close();
+                ConditionedContinuePopUp popup = new ConditionedContinuePopUp();
+                popup.conditionTextBox.Text = Debug.instance().conditionExpresion;
+                popup.ShowDialog();
+                logger.Info(String.Format("[CONTINUAR CONDICIONADO] Se estableció la condición: {0}", popup.conditionTextBox.Text));
+                if (popup.Result == DialogResult.Accept)
+                {
+                    CCWaitingPopUp infoPopUp = new CCWaitingPopUp("Esperando que se cumpla la condicion : " + popup.conditionTextBox.Text);
+                    infoPopUp.Show();
+                    Debug.instance().conditionExpresion = popup.conditionTextBox.Text;
+                    this.executeDebugCommand(Debug.Mode.ConditionedContinue);
+                    infoPopUp.Close();
 
+                }
+            }catch(Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                AlertPopUp alert = new AlertPopUp(String.Format("Ha ocurrido un error: {0}",ex.Message));
+                alert.Show();
             }
         }
 
         private void executeDebugCommand( Debug.Mode command)
         {
-            Debug.instance().debugCommand = command;
-            Debug.instance().jumpToNextNode = true;
+            logger.Info(String.Format("Comando Debug: {0}.",command.ToString().ToUpper()));
+            try
+            {
+                Debug.instance().debugCommand = command;
+                Debug.instance().jumpToNextNode = true;
 
-            //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-            manualResetEvent.WaitOne();
+                //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
+                manualResetEvent.WaitOne();
 
-            DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
+                Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
+
+                ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+            }catch(Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                AlertPopUp Alert = new AlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
+                Alert.Show();                
+            }
+        }
+
+        private void ScrollCanvasToBreakpointNode(Point startOfNode, ScrollViewer scrollViewer)
+        {
+            var x_offset = startOfNode.X - 350 < 0 ? 0 : startOfNode.X - 350;
+            var y_offset = startOfNode.Y - 200 < 0 ? 0 : startOfNode.Y - 200;
+            
+            scrollViewer.ScrollToHorizontalOffset(x_offset);
+            scrollViewer.ScrollToVerticalOffset(y_offset);
         }
 
         private DesignerItem getNodeByID(string id_to_find)
@@ -210,12 +239,13 @@ namespace DiagramDesigner
 
         #endregion
 
-        #region Find Command
+        #region Debug Command
 
         private void Debuger_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (DesignerItem.ifAnyNodeHasBreakpoint())
             {
+                logger.Info("Inicio del Debugueo de la simulación");
                 this.startDebug();
             }
             else
@@ -223,7 +253,10 @@ namespace DiagramDesigner
                 StartDebugPopUp debugPopup = new StartDebugPopUp();
                 debugPopup.ShowDialog();
                 if (debugPopup.Result == DialogResult.Accept)
+                {
+                    logger.Info("Inicio del Debugueo de la simulación");
                     this.startDebug();
+                }
             }
               
         }
@@ -264,9 +297,10 @@ namespace DiagramDesigner
                     manualResetEvent.WaitOne();
 
                     //Cambio el color del primer nodo con breakpoint
-                    DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
-                }
+                    Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
 
+                    ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+                }
             }
         }
 
@@ -307,13 +341,14 @@ namespace DiagramDesigner
             ScrollViewer scroll = (ScrollViewer)this.Parent;
             scroll.ScrollToTop();
             ImprimirDiagrama();
-            //logger.Info("Fin Imprimir");
+
+            logger.Info("Se realizó la impresión del Diagrama.");
         }
 
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
-            //logger.Info("Inicio Ejecucion Ayuda");
+            
+            logger.Info("Abrir archivo de ayuda.");
             DarPDFAlUsuario();
 
             //logger.Info("Fin Ejecucion Ayuda");
@@ -331,7 +366,7 @@ namespace DiagramDesigner
         #region Open Command
 
         public void Open_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
+        {           
             AbrirDiagrama();
         }
 
@@ -352,6 +387,7 @@ namespace DiagramDesigner
         {
             Debug.instance().debugModeOn = false;
             ValidarYLanzarSimulador(true);
+            logger.Info("Abrir ventana de Simulación.");
         }
 
         #endregion
@@ -850,62 +886,76 @@ namespace DiagramDesigner
 
         private XElement SerializarDesignerItems(IEnumerable<DesignerItem> designerItems)
         {
-            //logger.Info("Inicio Serializar Diseñador Items");
-            List<Connector> connectors2 = new List<Connector>();
-            List<Connection> connectors3 = new List<Connection>();
-
-
-            foreach (DesignerItem item in designerItems)
+            try
             {
-                Control cd = item.Template.FindName("PART_ConnectorDecorator", item) as Control;
-                GetConnectors(cd, connectors2);
+                //logger.Info("Inicio Serializar Diseñador Items");
+                List<Connector> connectors2 = new List<Connector>();
+                List<Connection> connectors3 = new List<Connection>();
+
+                foreach (DesignerItem item in designerItems)
+                {
+                    Control cd = item.Template.FindName("PART_ConnectorDecorator", item) as Control;
+                    GetConnectors(cd, connectors2);
+                }
+
+                XElement serializedItems = new XElement("Diagrama",
+                                           new XElement("Flowchart",
+                                           from item in designerItems
+                                           let contentXaml = XamlWriter.Save(((DesignerItem)item).Content)
+                                           select new XElement("DesignerItem",
+                                                      new XElement("Left", Canvas.GetLeft(item)),
+                                                      new XElement("Top", Canvas.GetTop(item)),
+                                                      new XElement("Width", item.Width),
+                                                      new XElement("Height", item.Height),
+                                                      new XElement("ID", item.ID),
+                                                      new XElement("Tag", item.Tag),
+                                                      new XElement("Uid", item.Uid),
+                                                      new XElement("zIndex", Canvas.GetZIndex(item)),
+                                                      new XElement("IsGroup", item.IsGroup),
+                                                      new XElement("ParentID", item.ParentID),
+                                                      new XElement("Content", contentXaml),
+                                                      new XElement("Connection", connectors2)
+
+                                                  )
+                                       ));
+                //logger.Info("Fin Serializar Diseñador Items");
+                return serializedItems;
             }
-
-            XElement serializedItems = new XElement("Diagrama",
-                                       new XElement("Flowchart",
-                                       from item in designerItems
-                                       let contentXaml = XamlWriter.Save(((DesignerItem)item).Content)
-                                       select new XElement("DesignerItem",
-                                                  new XElement("Left", Canvas.GetLeft(item)),
-                                                  new XElement("Top", Canvas.GetTop(item)),
-                                                  new XElement("Width", item.Width),
-                                                  new XElement("Height", item.Height),
-                                                  new XElement("ID", item.ID),
-                                                  new XElement("Tag", item.Tag),
-                                                  new XElement("Uid", item.Uid),
-                                                  new XElement("zIndex", Canvas.GetZIndex(item)),
-                                                  new XElement("IsGroup", item.IsGroup),
-                                                  new XElement("ParentID", item.ParentID),
-                                                  new XElement("Content", contentXaml),
-                                                  new XElement("Connection", connectors2)
-
-                                              )
-                                   ));
-            //logger.Info("Fin Serializar Diseñador Items");
-            return serializedItems;
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private XElement SerializarConnections(IEnumerable<Connection> connections)
         {
+            try
+            {
+                //logger.Info("Inicio Serializar Conexeiones");
+                var serializedConnections = new XElement("Connections",
+                               from connection in connections
+                               select new XElement("Connection",
+                                          new XElement("SourceID", connection.Source.ParentDesignerItem.ID),
+                                          new XElement("SinkID", connection.Sink.ParentDesignerItem.ID),
+                                          new XElement("SourceConnectorName", connection.Source.Name),
+                                          new XElement("SinkConnectorName", connection.Sink.Name),
+                                          new XElement("SourceOrientation", connection.Source.Orientation),
+                                          new XElement("SinkOrientation", connection.Sink.Orientation),
+                                          new XElement("SourceArrowSymbol", connection.SourceArrowSymbol),
+                                          new XElement("SinkArrowSymbol", connection.SinkArrowSymbol),
+                                          new XElement("zIndex", Canvas.GetZIndex(connection))
+                                         )
+                                      );
 
-            //logger.Info("Inicio Serializar Conexeiones");
-            var serializedConnections = new XElement("Connections",
-                           from connection in connections
-                           select new XElement("Connection",
-                                      new XElement("SourceID", connection.Source.ParentDesignerItem.ID),
-                                      new XElement("SinkID", connection.Sink.ParentDesignerItem.ID),
-                                      new XElement("SourceConnectorName", connection.Source.Name),
-                                      new XElement("SinkConnectorName", connection.Sink.Name),
-                                      new XElement("SourceOrientation", connection.Source.Orientation),
-                                      new XElement("SinkOrientation", connection.Sink.Orientation),
-                                      new XElement("SourceArrowSymbol", connection.SourceArrowSymbol),
-                                      new XElement("SinkArrowSymbol", connection.SinkArrowSymbol),
-                                      new XElement("zIndex", Canvas.GetZIndex(connection))
-                                     )
-                                  );
-
-            //logger.Info("Fin Serializar Conexiones");
-            return serializedConnections;
+                //logger.Info("Fin Serializar Conexiones");
+                return serializedConnections;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public static DesignerItem DeserializarDesignerItem(XElement itemXML, Guid id, double OffsetX, double OffsetY)
@@ -927,16 +977,24 @@ namespace DiagramDesigner
 
         private void UpdateZIndex()
         {
-            //logger.Info("Inicio Actualizar Indice");
-            List<UIElement> ordered = (from UIElement item in this.Children
-                                       orderby Canvas.GetZIndex(item as UIElement)
-                                       select item as UIElement).ToList();
-
-            for (int i = 0; i < ordered.Count; i++)
+            try
             {
-                Canvas.SetZIndex(ordered[i], i);
+                //logger.Info("Inicio Actualizar Indice");
+                List<UIElement> ordered = (from UIElement item in this.Children
+                                           orderby Canvas.GetZIndex(item as UIElement)
+                                           select item as UIElement).ToList();
+
+                for (int i = 0; i < ordered.Count; i++)
+                {
+                    Canvas.SetZIndex(ordered[i], i);
+                }
+                //logger.Info("Fin Actualizar Indice");
             }
-            //logger.Info("Fin Actualizar Indice");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private static Rect GetBoundingRectangle(IEnumerable<DesignerItem> items)
@@ -960,33 +1018,49 @@ namespace DiagramDesigner
 
         private void GetConnectors(DependencyObject parent, List<Connector> connectors)
         {
-            //logger.Info("Inicio Obtener Conectores");
-            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < childrenCount; i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                if (child is Connector)
-                {
-                    connectors.Add(child as Connector);
-                }
-                else
-                    GetConnectors(child, connectors);
-            }
-            //logger.Info("Fin Obtener Conectores");
 
+            try
+            {
+                //logger.Info("Inicio Obtener Conectores");
+                int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+                for (int i = 0; i < childrenCount; i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                    if (child is Connector)
+                    {
+                        connectors.Add(child as Connector);
+                    }
+                    else
+                        GetConnectors(child, connectors);
+                }
+                //logger.Info("Fin Obtener Conectores");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public Connector GetConnector(Guid itemID, String connectorName)
         {
-            //logger.Info("Inicio Obtener Conector");
-            DesignerItem designerItem = (from item in this.Children.OfType<DesignerItem>()
-                                         where item.ID == itemID
-                                         select item).FirstOrDefault();
+            try
+            {
+                //logger.Info("Inicio Obtener Conector");
+                DesignerItem designerItem = (from item in this.Children.OfType<DesignerItem>()
+                                             where item.ID == itemID
+                                             select item).FirstOrDefault();
 
-            Control connectorDecorator = designerItem.Template.FindName("PART_ConnectorDecorator", designerItem) as Control;
-            connectorDecorator.ApplyTemplate();
-            //logger.Info("Fin Obtener Conector");
-            return connectorDecorator.Template.FindName(connectorName, connectorDecorator) as Connector;
+                Control connectorDecorator = designerItem.Template.FindName("PART_ConnectorDecorator", designerItem) as Control;
+                connectorDecorator.ApplyTemplate();
+                //logger.Info("Fin Obtener Conector");
+                return connectorDecorator.Template.FindName(connectorName, connectorDecorator) as Connector;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private bool BelongToSameGroup(IGroupable item1, IGroupable item2)
@@ -999,44 +1073,57 @@ namespace DiagramDesigner
 
         private void ImprimirDiagrama()
         {
-            //logger.Info("Inicio Imprimir Diagrama");
-            SelectionService.ClearSelection();
-            PrintDialog printDialog = new PrintDialog();
-            if (true == printDialog.ShowDialog()) printDialog.PrintVisual(this, "Diagrama");
-            //logger.Info("Fin Imprimir Diagrama");
+            try
+            {
+                //logger.Info("Inicio Imprimir Diagrama");
+                SelectionService.ClearSelection();
+                PrintDialog printDialog = new PrintDialog();
+                if (true == printDialog.ShowDialog()) printDialog.PrintVisual(this, "Diagrama");
+                //logger.Info("Fin Imprimir Diagrama");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private void DarPDFAlUsuario()
         {
-
-            //logger.Info("Inicio dar PDF Al Usuario");
-            var parentFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var sourcePath = Path.Combine(parentFolder, @"Manual de usuario\Manual de usuario Victoria.pdf");
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = "Manual de usuario Victoria.pdf";
-            saveFileDialog.Filter = "Files (*.pdf)|*.pdf|All Files (*.*)|*.*";
-            if (saveFileDialog.ShowDialog() == true)
+            try
             {
-                try
-                {
-                    File.Copy(sourcePath, saveFileDialog.FileName, true);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
-                    //logger.Error("Error dar PDF Al Usuario "+ex.Message);
-                }
-            }
+                //logger.Info("Inicio dar PDF Al Usuario");
+                var parentFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var sourcePath = Path.Combine(parentFolder, @"Manual de usuario\Manual de usuario Victoria.pdf");
 
-            //logger.Info("Fin dar PDF Al Usuario");
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.FileName = "Manual de usuario Victoria.pdf";
+                saveFileDialog.Filter = "Files (*.pdf)|*.pdf|All Files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    try
+                    {
+                        File.Copy(sourcePath, saveFileDialog.FileName, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+                        logger.Error("Error dar PDF Al Usuario " + ex.Message);
+                    }
+                }
+                //logger.Info("Fin dar PDF Al Usuario");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public void AbrirDiagrama()
         {
             try
             {
-
                 //logger.Info("Inicio Abrir Diagrama");
                 XElement root = LoadSerializedDataFromFile();
 
@@ -1076,10 +1163,8 @@ namespace DiagramDesigner
 
                     Connection connection = new Connection(sourceConnector, sinkConnector);
                     Canvas.SetZIndex(connection, Int32.Parse(connectionXML.Element("zIndex").Value));
-                    this.Children.Add(connection);
-                }
-
-                //logger.Info("Fin Abrir Diagrama");
+                    this.Children.Add(connection);  
+                }                
             }
             catch (Exception ex)
             {
@@ -1096,8 +1181,8 @@ namespace DiagramDesigner
             //logger.Info("Inicio Borrar Diagrama");
             this.Children.Clear();
             this.SelectionService.ClearSelection();
-
-            //logger.Info("Fin Guardar Diagrama");
+            
+            logger.Info("Se ha realizado el borrado de todo el diagrama.");
             /*var viewDeleteDiagram = new DeleteDiagramPopUp();
             viewDeleteDiagram.ShowDialog();
 
@@ -1115,24 +1200,31 @@ namespace DiagramDesigner
 
         private void GuardarDiagrama()
         {
+            try
+            {
+                //logger.Info("Inicio Guardar Diagrama");
+                IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
+                IEnumerable<Connection> connections = this.Children.OfType<Connection>();
 
-            //logger.Info("Inicio Guardar Diagrama");
-            IEnumerable<DesignerItem> designerItems = this.Children.OfType<DesignerItem>();
-            IEnumerable<Connection> connections = this.Children.OfType<Connection>();
+                XElement designerItemsXML = SerializarDesignerItems(designerItems);
+                XElement connectionsXML = SerializarConnections(connections);
 
-            XElement designerItemsXML = SerializarDesignerItems(designerItems);
-            XElement connectionsXML = SerializarConnections(connections);
+                XElement root = new XElement("Simulacion");
+                root.Add(designerItemsXML);
+                root.Add(connectionsXML);
+                var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
+                HelperVIC helperVic = new HelperVIC();
+                root.Add(helperVic.generarTagDeVariables(variables));
 
-            XElement root = new XElement("Simulacion");
-            root.Add(designerItemsXML);
-            root.Add(connectionsXML);
-            var variables = JsonConvert.DeserializeObject<List<VariableAP>>(collectionJson());
-            HelperVIC helperVic = new HelperVIC();
-            root.Add(helperVic.generarTagDeVariables(variables));
-
-            GuardarArchivoDialog(root);
-
-            //logger.Info("Fin Guardar Diagrama");
+                GuardarArchivoDialog(root);
+                
+                //logger.Info("Fin Guardar Diagrama");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         void GuardarArchivoDialog(XElement xElement)
@@ -1153,6 +1245,9 @@ namespace DiagramDesigner
                 }
             }
             //logger.Info("Fin Guardar Archivo");
+
+            logger.Info(String.Format("Se guardo el diagrama actual en el archivo {0}.", saveFile.FileName));
+
         }
 
         private XElement LoadSerializedDataFromFile()
@@ -1162,9 +1257,10 @@ namespace DiagramDesigner
 
             if (openFile.ShowDialog() == true)
             {
+                logger.Info(String.Format("Se solicita la carga del diagrama alojado en el archivo {0}.", openFile.FileName));
                 return XElement.Load(openFile.FileName);
             }
-
+            
             return null;
         }
 
@@ -1285,7 +1381,6 @@ namespace DiagramDesigner
             }
 
             ValidateReferences(errorList, referencesList);
-
 
             //logger.Info("Fin Validar Uso Correcto de Variables");
             return errorList;
@@ -1462,158 +1557,183 @@ namespace DiagramDesigner
 
         private void CopiarSeleccionDiagrama()
         {
-            //logger.Info("Inicio Copiar Seleccion Diagrama");
-            IEnumerable<DesignerItem> selectedDesignerItems =
-                this.SelectionService.CurrentSelection.OfType<DesignerItem>();
-
-            List<Connection> selectedConnections =
-                this.SelectionService.CurrentSelection.OfType<Connection>().ToList();
-
-            foreach (Connection connection in this.Children.OfType<Connection>())
+            try
             {
-                if (!selectedConnections.Contains(connection))
+                //logger.Info("Inicio Copiar Seleccion Diagrama");
+                IEnumerable<DesignerItem> selectedDesignerItems =
+                    this.SelectionService.CurrentSelection.OfType<DesignerItem>();
+
+                List<Connection> selectedConnections =
+                    this.SelectionService.CurrentSelection.OfType<Connection>().ToList();
+
+                foreach (Connection connection in this.Children.OfType<Connection>())
                 {
-                    DesignerItem sourceItem = (from item in selectedDesignerItems
-                                               where item.ID == connection.Source.ParentDesignerItem.ID
-                                               select item).FirstOrDefault();
-
-                    DesignerItem sinkItem = (from item in selectedDesignerItems
-                                             where item.ID == connection.Sink.ParentDesignerItem.ID
-                                             select item).FirstOrDefault();
-
-                    if (sourceItem != null &&
-                        sinkItem != null &&
-                        BelongToSameGroup(sourceItem, sinkItem))
+                    if (!selectedConnections.Contains(connection))
                     {
-                        selectedConnections.Add(connection);
+                        DesignerItem sourceItem = (from item in selectedDesignerItems
+                                                   where item.ID == connection.Source.ParentDesignerItem.ID
+                                                   select item).FirstOrDefault();
+
+                        DesignerItem sinkItem = (from item in selectedDesignerItems
+                                                 where item.ID == connection.Sink.ParentDesignerItem.ID
+                                                 select item).FirstOrDefault();
+
+                        if (sourceItem != null &&
+                            sinkItem != null &&
+                            BelongToSameGroup(sourceItem, sinkItem))
+                        {
+                            selectedConnections.Add(connection);
+                        }
                     }
+
                 }
+
+                XElement designerItemsXML = SerializarDesignerItems(selectedDesignerItems);
+                XElement connectionsXML = SerializarConnections(selectedConnections);
+
+                XElement root = new XElement("Root");
+                root.Add(designerItemsXML);
+                root.Add(connectionsXML);
+
+                root.Add(new XAttribute("OffsetX", 10));
+                root.Add(new XAttribute("OffsetY", 10));
                 
+                Clipboard.Clear();
+                Clipboard.SetData(DataFormats.Xaml, root);
+                logger.Info("Se ha copiado un elemento del diagrama.");
             }
-
-            XElement designerItemsXML = SerializarDesignerItems(selectedDesignerItems);
-            XElement connectionsXML = SerializarConnections(selectedConnections);
-
-            XElement root = new XElement("Root");
-            root.Add(designerItemsXML);
-            root.Add(connectionsXML);
-
-            root.Add(new XAttribute("OffsetX", 10));
-            root.Add(new XAttribute("OffsetY", 10));
-
-            Clipboard.Clear();
-            Clipboard.SetData(DataFormats.Xaml, root);
-            //logger.Info("Fin Copiar Seleccion Diagrama");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private void PegarSeleccionDiagrama()
         {
-            //logger.Info("Inicio Pegar Seleccion Diagrama");
-            XElement root = LoadSerializedDataFromClipBoard();
 
-            if (root == null)
-                return;
-
-            // create DesignerItems
-            Dictionary<Guid, Guid> mappingOldToNewIDs = new Dictionary<Guid, Guid>();
-            List<ISelectable> newItems = new List<ISelectable>();
-            IEnumerable<XElement> itemsXML = root.Elements("Diagrama").Elements("Flowchart").Elements("DesignerItem");
-
-            double offsetX = Double.Parse(root.Attribute("OffsetX").Value, CultureInfo.InvariantCulture);
-            double offsetY = Double.Parse(root.Attribute("OffsetY").Value, CultureInfo.InvariantCulture);
-
-            foreach (XElement itemXML in itemsXML)
+            try
             {
-                Guid oldID = new Guid(itemXML.Element("ID").Value);
-                Guid newID = Guid.NewGuid();
-                mappingOldToNewIDs.Add(oldID, newID);
-                DesignerItem item = DeserializarDesignerItem(itemXML, newID, offsetX, offsetY);
-                this.Children.Add(item);
-                SetConnectorDecoratorTemplate(item);
-                newItems.Add(item);
-            }
+                //logger.Info("Inicio Pegar Seleccion Diagrama");
+                XElement root = LoadSerializedDataFromClipBoard();
 
-            // update group hierarchy
-            SelectionService.ClearSelection();
-            foreach (DesignerItem el in newItems)
-            {
-                if (el.ParentID != Guid.Empty)
-                    el.ParentID = mappingOldToNewIDs[el.ParentID];
-            }
+                if (root == null)
+                    return;
 
+                // create DesignerItems
+                Dictionary<Guid, Guid> mappingOldToNewIDs = new Dictionary<Guid, Guid>();
+                List<ISelectable> newItems = new List<ISelectable>();
+                IEnumerable<XElement> itemsXML = root.Elements("Diagrama").Elements("Flowchart").Elements("DesignerItem");
 
-            foreach (DesignerItem item in newItems)
-            {
-                if (item.ParentID == Guid.Empty)
+                double offsetX = Double.Parse(root.Attribute("OffsetX").Value, CultureInfo.InvariantCulture);
+                double offsetY = Double.Parse(root.Attribute("OffsetY").Value, CultureInfo.InvariantCulture);
+
+                foreach (XElement itemXML in itemsXML)
                 {
-                    SelectionService.AddToSelection(item);
+                    Guid oldID = new Guid(itemXML.Element("ID").Value);
+                    Guid newID = Guid.NewGuid();
+                    mappingOldToNewIDs.Add(oldID, newID);
+                    DesignerItem item = DeserializarDesignerItem(itemXML, newID, offsetX, offsetY);
+                    this.Children.Add(item);
+                    SetConnectorDecoratorTemplate(item);
+                    newItems.Add(item);
                 }
-            }
 
-            // create Connections
-            IEnumerable<XElement> connectionsXML = root.Elements("Connections").Elements("Connection");
-            foreach (XElement connectionXML in connectionsXML)
-            {
-                Guid oldSourceID = new Guid(connectionXML.Element("SourceID").Value);
-                Guid oldSinkID = new Guid(connectionXML.Element("SinkID").Value);
-
-                if (mappingOldToNewIDs.ContainsKey(oldSourceID) && mappingOldToNewIDs.ContainsKey(oldSinkID))
+                // update group hierarchy
+                SelectionService.ClearSelection();
+                foreach (DesignerItem el in newItems)
                 {
-                    Guid newSourceID = mappingOldToNewIDs[oldSourceID];
-                    Guid newSinkID = mappingOldToNewIDs[oldSinkID];
-
-                    String sourceConnectorName = connectionXML.Element("SourceConnectorName").Value;
-                    String sinkConnectorName = connectionXML.Element("SinkConnectorName").Value;
-
-                    Connector sourceConnector = GetConnector(newSourceID, sourceConnectorName);
-                    Connector sinkConnector = GetConnector(newSinkID, sinkConnectorName);
-
-                    Connection connection = new Connection(sourceConnector, sinkConnector);
-                    Canvas.SetZIndex(connection, Int32.Parse(connectionXML.Element("zIndex").Value));
-                    this.Children.Add(connection);
-
-                    SelectionService.AddToSelection(connection);
+                    if (el.ParentID != Guid.Empty)
+                        el.ParentID = mappingOldToNewIDs[el.ParentID];
                 }
+
+
+                foreach (DesignerItem item in newItems)
+                {
+                    if (item.ParentID == Guid.Empty)
+                    {
+                        SelectionService.AddToSelection(item);
+                    }
+                }
+
+                // create Connections
+                IEnumerable<XElement> connectionsXML = root.Elements("Connections").Elements("Connection");
+                foreach (XElement connectionXML in connectionsXML)
+                {
+                    Guid oldSourceID = new Guid(connectionXML.Element("SourceID").Value);
+                    Guid oldSinkID = new Guid(connectionXML.Element("SinkID").Value);
+
+                    if (mappingOldToNewIDs.ContainsKey(oldSourceID) && mappingOldToNewIDs.ContainsKey(oldSinkID))
+                    {
+                        Guid newSourceID = mappingOldToNewIDs[oldSourceID];
+                        Guid newSinkID = mappingOldToNewIDs[oldSinkID];
+
+                        String sourceConnectorName = connectionXML.Element("SourceConnectorName").Value;
+                        String sinkConnectorName = connectionXML.Element("SinkConnectorName").Value;
+
+                        Connector sourceConnector = GetConnector(newSourceID, sourceConnectorName);
+                        Connector sinkConnector = GetConnector(newSinkID, sinkConnectorName);
+
+                        Connection connection = new Connection(sourceConnector, sinkConnector);
+                        Canvas.SetZIndex(connection, Int32.Parse(connectionXML.Element("zIndex").Value));
+                        this.Children.Add(connection);
+
+                        SelectionService.AddToSelection(connection);
+                    }
+                }
+
+                DesignerCanvas.BringToFront.Execute(null, this);
+
+                // update paste offset
+                root.Attribute("OffsetX").Value = (offsetX + 10).ToString();
+                root.Attribute("OffsetY").Value = (offsetY + 10).ToString();
+                Clipboard.Clear();
+                Clipboard.SetData(DataFormats.Xaml, root);
+                logger.Info("Se ha pegado un nuevo elemento en el diagrama.");
             }
-
-            DesignerCanvas.BringToFront.Execute(null, this);
-
-            // update paste offset
-            root.Attribute("OffsetX").Value = (offsetX + 10).ToString();
-            root.Attribute("OffsetY").Value = (offsetY + 10).ToString();
-            Clipboard.Clear();
-            Clipboard.SetData(DataFormats.Xaml, root);
-            //logger.Info("Fin Pegar Seleccion Diagrama");
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private void BorrarSeleccionDiagrama()
         {
-            //logger.Info("Inicio Borrar Seleccion Diagrama");
-            foreach (Connection connection in SelectionService.CurrentSelection.OfType<Connection>())
+            try
             {
-                this.Children.Remove(connection);
-            }
-
-            foreach (DesignerItem item in SelectionService.CurrentSelection.OfType<DesignerItem>())
-            {
-                Control cd = item.Template.FindName("PART_ConnectorDecorator", item) as Control;
-
-                List<Connector> connectors = new List<Connector>();
-                GetConnectors(cd, connectors);
-
-                foreach (Connector connector in connectors)
+                //logger.Info("Inicio Borrar Seleccion Diagrama");
+                foreach (Connection connection in SelectionService.CurrentSelection.OfType<Connection>())
                 {
-                    foreach (Connection con in connector.Connections)
-                    {
-                        this.Children.Remove(con);
-                    }
+                    this.Children.Remove(connection);
                 }
-                this.Children.Remove(item);
-            }
 
-            SelectionService.ClearSelection();
-            UpdateZIndex();
-            //logger.Info("Fin Borrar Seleccion Diagrama");
+                foreach (DesignerItem item in SelectionService.CurrentSelection.OfType<DesignerItem>())
+                {
+                    Control cd = item.Template.FindName("PART_ConnectorDecorator", item) as Control;
+
+                    List<Connector> connectors = new List<Connector>();
+                    GetConnectors(cd, connectors);
+
+                    foreach (Connector connector in connectors)
+                    {
+                        foreach (Connection con in connector.Connections)
+                        {
+                            this.Children.Remove(con);
+                        }
+                    }
+                    this.Children.Remove(item);
+                }
+                
+                SelectionService.ClearSelection();
+                UpdateZIndex();
+                logger.Info("Se ha borrado el elemento seleccionado.");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private XElement LoadSerializedDataFromClipBoard()
@@ -1638,29 +1758,37 @@ namespace DiagramDesigner
 
         private void AgruparSeleccionDiagrama()
         {
-            //logger.Info("Inicio Agrupar Seleccion Diagrama");
-            var items = from item in this.SelectionService.CurrentSelection.OfType<DesignerItem>()
-                        where item.ParentID == Guid.Empty
-                        select item;
+            try
+            {
+                //logger.Info("Inicio Agrupar Seleccion Diagrama");
+                var items = from item in this.SelectionService.CurrentSelection.OfType<DesignerItem>()
+                            where item.ParentID == Guid.Empty
+                            select item;
 
-            Rect rect = GetBoundingRectangle(items);
+                Rect rect = GetBoundingRectangle(items);
 
-            DesignerItem groupItem = new DesignerItem();
-            groupItem.IsGroup = true;
-            groupItem.Width = rect.Width;
-            groupItem.Height = rect.Height;
-            Canvas.SetLeft(groupItem, rect.Left);
-            Canvas.SetTop(groupItem, rect.Top);
-            Canvas groupCanvas = new Canvas();
-            groupItem.Content = groupCanvas;
-            Canvas.SetZIndex(groupItem, this.Children.Count);
-            this.Children.Add(groupItem);
+                DesignerItem groupItem = new DesignerItem();
+                groupItem.IsGroup = true;
+                groupItem.Width = rect.Width;
+                groupItem.Height = rect.Height;
+                Canvas.SetLeft(groupItem, rect.Left);
+                Canvas.SetTop(groupItem, rect.Top);
+                Canvas groupCanvas = new Canvas();
+                groupItem.Content = groupCanvas;
+                Canvas.SetZIndex(groupItem, this.Children.Count);
+                this.Children.Add(groupItem);
 
-            foreach (DesignerItem item in items)
-                item.ParentID = groupItem.ID;
+                foreach (DesignerItem item in items)
+                    item.ParentID = groupItem.ID;
 
-            this.SelectionService.SelectItem(groupItem);
-            //logger.Info("Fin Agrupar Seleccion Diagrama");
+                this.SelectionService.SelectItem(groupItem);
+                //logger.Info("Fin Agrupar Seleccion Diagrama");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private void DesagruparSeleccionDiagrama()

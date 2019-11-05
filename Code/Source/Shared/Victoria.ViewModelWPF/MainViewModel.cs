@@ -34,8 +34,10 @@ namespace Victoria.ViewModelWPF
 
         public delegate DialogResult MostrarMensajeCerrarSimulacionDelegate();
         public MostrarMensajeCerrarSimulacionDelegate MostrarMensajeCerrarSimulacion;
-        public bool debugginMode{get; set;}
 
+        public bool debugginMode{get; set;}
+        
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
 
         public string SimulationUri
         {
@@ -274,7 +276,7 @@ namespace Victoria.ViewModelWPF
             {
                 s.StopDebugStageCommand.Execute(null);
             }
-        }
+        }        
 
         private void ExportSimulation(object simulacionFileName)
         {

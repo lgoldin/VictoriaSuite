@@ -51,13 +51,21 @@ namespace Victoria.Shared.AnalisisPrevio
 
         public AnalisisPrevio(Tipo tipo, TipoEvento tipoDeEaE)
         {
-            //logger.Info("Inicio Analisis Previo");
-            this.InicializarColecciones();
-            this.TipoDeEjercicio = tipo;
-            if (tipo == AnalisisPrevio.Tipo.EaE) this.TipoDeEaE = tipoDeEaE; 
-            this.InicializarAnalisisPrevioPorDefecto();
-            //logger.Info("Fin Analisis Previo");
 
+            //logger.Info("Inicio Analisis Previo");       
+            try
+            {
+                this.InicializarColecciones();
+                this.TipoDeEjercicio = tipo;
+                if (tipo == AnalisisPrevio.Tipo.EaE) this.TipoDeEaE = tipoDeEaE;
+                this.InicializarAnalisisPrevioPorDefecto();
+                //logger.Info("Fin Analisis Previo");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private void InicializarColecciones() 
@@ -219,50 +227,75 @@ namespace Victoria.Shared.AnalisisPrevio
 
         public List<VariableAP> ObtenerVariablesAP() 
         {
-            //logger.Info("Inicio Obtener Variables AP");
-            var variables = new List<VariableAP>();
-            
-            variables.AddRange(this.VariablesEstado);
-            variables.AddRange(this.VariablesResultado);
-            variables.AddRange(this.ObtenerVariablesAPDeEventosEaE());
-            variables.AddRange(this.ObtenerVariablesAPDeVariablesSimples());
+            try
+            {
+                //logger.Info("Inicio Obtener Variables AP");
+                var variables = new List<VariableAP>();
 
-            //logger.Info("Fin Obtener Variables AP");
-            return variables;
+                variables.AddRange(this.VariablesEstado);
+                variables.AddRange(this.VariablesResultado);
+                variables.AddRange(this.ObtenerVariablesAPDeEventosEaE());
+                variables.AddRange(this.ObtenerVariablesAPDeVariablesSimples());
+
+                //logger.Info("Fin Obtener Variables AP");
+                return variables;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private List<VariableAP> ObtenerVariablesAPDeEventosEaE() 
         {
-            //logger.Info("Inicio Obtener Variables AP de Eventos Eae");
-            var variablesEnEventos = new List<VariableAP>();
 
-            foreach (EventoAP evento in this.EventosEaE)
+            try
             {
-                variablesEnEventos.Add(evento.getAsVariableAP());
-            }
+                //logger.Info("Inicio Obtener Variables AP de Eventos Eae");
+                var variablesEnEventos = new List<VariableAP>();
 
-            //logger.Info("Fin Obtener Variables AP de Eventos Eae");
-            return variablesEnEventos;
+                foreach (EventoAP evento in this.EventosEaE)
+                {
+                    variablesEnEventos.Add(evento.getAsVariableAP());
+                }
+
+                //logger.Info("Fin Obtener Variables AP de Eventos Eae");
+                return variablesEnEventos;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         private List<VariableAP> ObtenerVariablesAPDeVariablesSimples()
         {
-            //logger.Info("Inicio Obtener Variables AP De Variables Simples");
-            var variablesAP = new List<VariableAP>();
-
-            foreach (string variableSimple in this.Datos)
+            try
             {
-                variablesAP.Add((new VariableAP { nombre = variableSimple, valor = 0.0, vector = false, i = 0, type = VariableType.Data }));
-            }
+                //logger.Info("Inicio Obtener Variables AP De Variables Simples");
+                var variablesAP = new List<VariableAP>();
 
-            foreach (string variableSimple in this.VariablesDeControl)
+                foreach (string variableSimple in this.Datos)
+                {
+                    variablesAP.Add((new VariableAP { nombre = variableSimple, valor = 0.0, vector = false, i = 0, type = VariableType.Data }));
+                }
+
+                foreach (string variableSimple in this.VariablesDeControl)
+                {
+                    //TODO: cambiar cuando se tenga implementada la funcionalidad de grupos de vectores asociados a distintas variables de control
+                    variablesAP.Add((new VariableAP { nombre = variableSimple, valor = 0.0, vector = false, i = 0, type = VariableType.Control }));
+                }
+
+                //logger.Info("Fin Obtener Variables AP De Variables Simples");
+                return variablesAP;
+            }
+            catch (Exception ex)
             {
-                //TODO: cambiar cuando se tenga implementada la funcionalidad de grupos de vectores asociados a distintas variables de control
-                variablesAP.Add((new VariableAP { nombre = variableSimple, valor = 0.0, vector = false, i = 0, type = VariableType.Control }));
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
             }
-
-            //logger.Info("Fin Obtener Variables AP De Variables Simples");
-            return variablesAP;
         }
  
         public Boolean TieneVectores() 

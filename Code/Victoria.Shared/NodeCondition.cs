@@ -27,7 +27,7 @@ namespace Victoria.Shared
                 Debug.Debug.instance().execute(this, NotifyUIMethod, variables);
 
                 //logger.Info("Inicio Nodo Condicion");
-
+                
                 var cultureInfo = new CultureInfo("en-US");
                 
                 string sentence = ExpressionResolver.GetSentenceToEvaluate(variables, cultureInfo, this.Code);
@@ -37,6 +37,7 @@ namespace Victoria.Shared
                 return result ? this.ChildNodeFalse.Execute(variables, NotifyUIMethod) : this.ChilNodeTrue.Execute(variables, NotifyUIMethod);
 
                 //logger.Info("Fin Nodo Condicion");
+
             }
             catch (Exception exception)
             {

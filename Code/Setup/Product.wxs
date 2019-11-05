@@ -24,6 +24,7 @@
     <Feature Id="ProductFeature" Title="$(var.Title)" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="dlls_files" />
+      <ComponentRef Id="Logs" />
       <ComponentGroupRef Id="Responsive_HTML5_files" />
       <ComponentGroupRef Id="Responsive_HTML5_Manual_de_usuario_archivos_files" />
       <ComponentGroupRef Id="Responsive_HTML5_template_Azure_Blue_files" />
@@ -35,7 +36,7 @@
       <ComponentRef Id="ApplicationShortcutDesktop" />
       <ComponentGroupRef Id="Manual_de_usuario_files" />
       <ComponentGroupRef Id="Resources_files" />      
-      <ComponentGroupRef Id="Kairos" />      
+      <ComponentGroupRef Id="Kairos" />           
     </Feature>        
   </Product>
 
@@ -48,6 +49,14 @@
           </Directory>
           <Directory Id="Victoria" Name="$(var.Version)">
             <Directory Id="Resources" Name="Resources" />
+            <Directory Id="Logs" Name="Logs">
+              <Component Id="Logs" Guid="16fcb609-4884-4A01-AA04-84B92D222428" >
+                <!--SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either"-->
+                <CreateFolder>
+                  <Permission User="Everyone" GenericAll="yes" ChangePermission="yes"/>
+                </CreateFolder>
+              </Component>
+            </Directory>                          
             <Directory Id="Responsive_HTML5" Name="Responsive_HTML5">
               <Directory Id="Responsive_HTML5_Manual_de_usuario_archivos" Name="Manual_de_usuario_archivos" />
               <Directory Id="Responsive_HTML5_whxdata" Name="whxdata" />
@@ -70,7 +79,7 @@
     </Directory>
   </Fragment>
 
-  <Fragment>
+  <Fragment>        
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="16fcb609-7357-4d39-b8e0-b5b924f61fc5">
         <Shortcut Id="ApplicationStartMenuShortcutVictoria" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]$(var.Version)/Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
@@ -119,6 +128,9 @@
       </Component>
       <Component Id="Victoria.ViewModelWPF.dll" Guid="190118ed-ee5f-435a-8cda-102376ccc857">
         <File Id="Victoria.ViewModelWPF.dll" Name="Victoria.ViewModelWPF.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.ViewModelWPF.dll" />
+      </Component>
+      <Component Id="log4net.dll" Guid="fa9844cf-3556-461f-af42-ee0bca125115">
+        <File Id="log4net.dll" Name="log4net.dll" Source="$(var.Victoria.DesktopApp_TargetDir)log4net.dll" />
       </Component>
       <Component Id="Akka.dll" Guid="6353ab7e-02c8-4f64-a31b-d0821f6c6ccc">
         <File Id="Akka.dll" Name="Akka.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Akka.dll" />
@@ -841,7 +853,7 @@
       <Component Id="Resources_simulacion.png" Guid="8ea8282f-ef69-477d-9497-cf6c19cbc67e">
         <File Id="Resources_simulacion.png" Name="simulacion.png" Source="$(var.Victoria.DesktopApp_TargetDir)Resources\simulacion.png" />
       </Component>
-    </ComponentGroup>
+    </ComponentGroup>    
   </Fragment>
   <Fragment>
     <ComponentGroup Id="Kairos" Directory="Kairos">

@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{7D7E645B-97AE-48F4-868A-54BEF948503F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Victoria.DesktopApp", "Source\App\Victoria.DesktopApp\Victoria.DesktopApp.csproj", "{27CED651-AD69-4090-8E8A-DFDE0CB64920}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65} = {9A654FB3-631D-43BA-A4F7-9761A0AE1F65}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E9D06350-B3E1-4831-A4DF-39DDEEBEF034}"
 EndProject
@@ -29,18 +32,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FED53D
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Victoria.Shared", "Victoria.Shared\Victoria.Shared.csproj", "{04C5CEFB-AD91-42A7-A493-20B2EEA918DC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65} = {9A654FB3-631D-43BA-A4F7-9761A0AE1F65}
+	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixproj", "{A52B6316-59EB-445D-A946-CBBA0AA0AEE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Victoria.Shared.Tests", "Victoria.Shared.Tests\Victoria.Shared.Tests.csproj", "{DE1D303F-DC88-48F7-87DF-00F80ABE1EA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Victoria.FormulaParser", "Victoria.FormulaParser\Victoria.FormulaParser.csproj", "{E54DC0C5-2EB1-4966-87D7-E74E105AB314}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65} = {9A654FB3-631D-43BA-A4F7-9761A0AE1F65}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Victoria.FormulaParser.Tests", "Victoria.FormulaParser.Tests\Victoria.FormulaParser.Tests.csproj", "{0EA3E5E1-2431-4626-AE83-60D8939DD53E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kairos", "Kairos", "{FC2FD7DB-3446-49C0-8F0D-D3E69BA358E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kairos", "..\Kairos\Kairos\Kairos.csproj", "{64FDA1D1-B3C5-4263-A37A-D7964732943E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commonFDP", "commonFDP\commonFDP.csproj", "{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -418,6 +429,46 @@ Global
 		{64FDA1D1-B3C5-4263-A37A-D7964732943E}.SingleImage|x64.Build.0 = Release|x64
 		{64FDA1D1-B3C5-4263-A37A-D7964732943E}.SingleImage|x86.ActiveCfg = Release|x86
 		{64FDA1D1-B3C5-4263-A37A-D7964732943E}.SingleImage|x86.Build.0 = Release|x86
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|Mixed Platforms.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|x64.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|x64.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|x86.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.CD_ROM|x86.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|x64.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Debug|x86.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|x64.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|x64.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|x86.ActiveCfg = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.DVD-5|x86.Build.0 = Debug|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|x64.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|x64.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.Release|x86.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|x64.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|x64.Build.0 = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|x86.ActiveCfg = Release|Any CPU
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65}.SingleImage|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -432,6 +483,7 @@ Global
 		{E54DC0C5-2EB1-4966-87D7-E74E105AB314} = {E9D06350-B3E1-4831-A4DF-39DDEEBEF034}
 		{0EA3E5E1-2431-4626-AE83-60D8939DD53E} = {CF3A5A11-3C7F-4DAF-8983-43B43D7F7A2F}
 		{64FDA1D1-B3C5-4263-A37A-D7964732943E} = {FC2FD7DB-3446-49C0-8F0D-D3E69BA358E5}
+		{9A654FB3-631D-43BA-A4F7-9761A0AE1F65} = {E9D06350-B3E1-4831-A4DF-39DDEEBEF034}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55A9A240-6FA5-4C88-B03F-93D4B5ED0689}

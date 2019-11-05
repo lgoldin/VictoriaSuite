@@ -31,8 +31,16 @@ namespace Victoria.Shared.AnalisisPrevio
 
         public string GetNameForDesigner() 
         {
-            //logger.Info("Obtener Nombre para Diseñador");
-            return this.vector ? this.nombre.Split('(')[0] + "(I)" : this.nombre;
+            try
+            {
+                //logger.Info("Obtener Nombre para Diseñador");
+                return this.vector ? this.nombre.Split('(')[0] + "(I)" : this.nombre;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
 
         public override string ToString()

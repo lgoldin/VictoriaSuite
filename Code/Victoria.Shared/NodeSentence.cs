@@ -20,7 +20,7 @@ namespace Victoria.Shared
             try
             {
                 Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
-
+                
                 //logger.Info("Inicio Nodo Sentencia");
                 var cultureInfo = new CultureInfo("en-US");
                 int indexEqual = this.Code.IndexOf("=");
@@ -35,13 +35,11 @@ namespace Victoria.Shared
                 
                 return base.Execute(variables, NotifyUIMethod);
 
-                ExpressionResolver.Resolve(variable, sentence);
-
-                //logger.Info("Fin Nodo Sentencia");
             }
             catch (Exception exception)
             {
                 //logger.Error("Error Nodo Sentencia: " + exception.Message);
+                logger.Error(exception.Source + " - " + exception.Message + ": " + exception.StackTrace);
                 throw new Exception("Nodo sentencia", exception);
             }
         }

@@ -124,10 +124,6 @@
     <Reference Include="ClosedXML, Version=0.94.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\ClosedXML.0.94.2\lib\net40\ClosedXML.dll</HintPath>
     </Reference>
-    <Reference Include="commonFDP, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libreria Compartidas\commonFDP\bin\Debug\commonFDP.dll</HintPath>
-    </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
@@ -318,6 +314,9 @@
     <Compile Include="View\AddNameEscenarioPopUp.xaml.cs">
       <DependentUpon>AddNameEscenarioPopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\BreakpointPopUp.xaml.cs">
+      <DependentUpon>BreakpointPopUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CCWaitingPopUp.xaml.cs">
       <DependentUpon>CCWaitingPopUp.xaml</DependentUpon>
     </Compile>
@@ -502,6 +501,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddNameEscenarioPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\BreakpointPopUp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -745,6 +748,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\commonFDP\commonFDP.csproj">
+      <Project>{9a654fb3-631d-43ba-a4f7-9761a0ae1f65}</Project>
+      <Name>commonFDP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Victoria.ModelWPF\Victoria.ModelWPF.csproj">
       <Project>{d5469314-5082-4bd7-acd3-86552fa568b6}</Project>
       <Name>Victoria.ModelWPF</Name>

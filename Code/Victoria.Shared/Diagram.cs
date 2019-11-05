@@ -20,6 +20,7 @@ namespace Victoria.Shared
             try
             {
                 return this.Nodes.First().Execute(variables, NotifyUIMethod);
+                
             }
             catch (Exception ex)
             {

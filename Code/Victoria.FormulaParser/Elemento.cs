@@ -26,13 +26,13 @@ namespace Victoria.FormulaParser
 
         protected double EvaluacionNaN(double resultado)
         {
-            //logger.Info("Inicio Evaluacion Numero a Numero");
             if (double.IsNaN(resultado) ||
                 double.IsInfinity(resultado) ||
                 double.IsNegativeInfinity(resultado) ||
                 double.IsPositiveInfinity(resultado))
             {
-                //logger.Error("Error: Evaluacion Numero a Numero");
+                logger.Error("Error: Evaluacion Numero a Numero (" + this.Valor() + " - " + resultado.ToString() );                
+
                 throw new IndefinicionMatematicaException(this.Valor(), resultado);
             }
             //logger.Info("Fin Evaluacion Numero a Numero");
