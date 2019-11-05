@@ -7,7 +7,7 @@ using Victoria.ViewModelWPF;
 
 namespace Victoria.DesktopApp.Helpers
 {
-    class Results
+    public class Results
     {
         public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         public String simulationPath { get;  }
