@@ -65,7 +65,6 @@ namespace Victoria.DesktopApp.View
                 rbFecha.IsChecked = true;
                 if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
                 {
-                  
                     //rbDtConstante.IsEnabled = false;
                     //rbDtConstante.Visibility = Visibility.Hidden;
                     rbEventoAEvento.IsChecked = true;
