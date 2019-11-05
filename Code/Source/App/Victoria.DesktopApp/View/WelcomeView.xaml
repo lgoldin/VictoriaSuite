@@ -39,7 +39,7 @@
                 <Border  Background="{StaticResource MainColor}" MouseLeftButtonDown="mainBorder_OnMouseDown" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="550" MinHeight="350" Width="550" Height="340">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="144,-60,152,14">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label  Content="Victoria IV" Foreground="White" FontSize="26" HorizontalAlignment="Center"  Height="50"/>
+                            <Label  Content="Victoria V" Foreground="White" FontSize="26" HorizontalAlignment="Center"  Height="50"/>
                         </StackPanel>
                         <TextBlock HorizontalAlignment="Center" Height="13"><!--<Hyperlink NavigateUri="http://www.simuladorvictoria.com.ar" RequestNavigate="Hyperlink_RequestNavigate" Foreground="White"><Run Text="www.simuladorvictoria.com.ar"/></Hyperlink>--></TextBlock>
                         <Button Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="btnAnalisisPrevio_OnClick" Width="252">
