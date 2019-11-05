@@ -55,6 +55,7 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
+
                 comboBox.ItemsSource = origenes;
                 origenes.Add("Archivo Excel");
                 origenes.Add("Archivo txt");
@@ -64,23 +65,24 @@ namespace Victoria.DesktopApp.View
                 rbFecha.IsChecked = true;
                 if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
                 {
-                    rbDtConstante.IsEnabled = false;
-                    rbDtConstante.Visibility = Visibility.Hidden;
+                    //rbDtConstante.IsEnabled = false;
+                    //rbDtConstante.Visibility = Visibility.Hidden;
                     rbEventoAEvento.IsChecked = true;
                 }
                 else
                 {
-                    rbEventoAEvento.IsEnabled = false;
-                    rbEventoAEvento.Visibility = Visibility.Hidden;
-                    rbIntervalos.IsEnabled = false;
+                    //rbEventoAEvento.IsEnabled = false;
+                    //rbEventoAEvento.Visibility = Visibility.Hidden;
+                    //rbIntervalos.IsEnabled = false;
                     rbDtConstante.IsChecked = true;
                     rbDia.IsChecked = true;
                 }
-            }catch(Exception ex)
-            {
+            }catch(Exception ex) { 
+
                 //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                 createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}",ex.Source,ex.Message));                
             }
+            
 
         }
 
@@ -401,7 +403,7 @@ namespace Victoria.DesktopApp.View
             pnlModificable.Visibility = Visibility.Hidden;
             pnlMetodologia.Visibility = Visibility.Visible;
 
-            if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
+           /* if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
             {
                 rbDtConstante.Visibility = Visibility.Hidden;
                 rbEventoAEvento.IsChecked = true;
@@ -410,7 +412,7 @@ namespace Victoria.DesktopApp.View
             {
                 rbEventoAEvento.Visibility = Visibility.Hidden;
                 rbDtConstante.IsChecked = true;
-            }
+            } */
 
         }
 
