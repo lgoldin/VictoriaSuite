@@ -155,6 +155,7 @@
     <Resource Include="Resources\help.png" />
     <Resource Include="Resources\add2Green.png" />
     <Resource Include="Resources\engranajesG.png" />
+    <Resource Include="Resources\icono_funcion.png" />
     <Content Include="Resources\simulacion.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

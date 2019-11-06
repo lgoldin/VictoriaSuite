@@ -554,7 +554,12 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 //if (!analisisPrevio.Datos.ElementAt(i).Contains("="))
                 //    sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + " = R");
                 commonFDP.ResultadoAjuste associatedInverse = analisisPrevio.listFDP.FirstOrDefault(x => x.DatoAsociado == analisisPrevio.Datos.ElementAt(i));
+
                 string inverse = associatedInverse == null ? "R" : associatedInverse.Inversa.Split('=')[1];
+                if (associatedInverse != null && associatedInverse.Inversa.Split('=').Count() > 2)
+                {
+                    inverse = associatedInverse.Inversa.Split('=')[1] + "=" + associatedInverse.Inversa.Split('=')[2];
+                }
                 Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + "= " +  inverse);
                 //analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + " = R";
                 //Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i));
