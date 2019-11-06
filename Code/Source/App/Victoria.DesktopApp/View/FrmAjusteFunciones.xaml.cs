@@ -324,9 +324,13 @@ namespace Victoria.DesktopApp.View
             }
             try
             {
+
                 resultadoSeleccionado.DatoAsociado = comboBox.SelectedValue.ToString();
                 analisisPrevio.addFDPToList(resultadoSeleccionado);
-
+                if (resultadoSeleccionado.Inversa.Contains('Σ'))
+                {
+                    createAlertPopUp("Selecciono una FDP que contiene el operador Σ, para ejecutar correctamente la simulacion deberá reemplazarlo por el que figura en el manual de usuario.");
+                }
                 this.Close();
             }
             catch
