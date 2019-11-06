@@ -55,6 +55,7 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
+
                 comboBox.ItemsSource = origenes;
                 origenes.Add("Archivo Excel");
                 origenes.Add("Archivo txt");
@@ -64,23 +65,24 @@ namespace Victoria.DesktopApp.View
                 rbFecha.IsChecked = true;
                 if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
                 {
-                    rbDtConstante.IsEnabled = false;
-                    rbDtConstante.Visibility = Visibility.Hidden;
+                    //rbDtConstante.IsEnabled = false;
+                    //rbDtConstante.Visibility = Visibility.Hidden;
                     rbEventoAEvento.IsChecked = true;
                 }
                 else
                 {
-                    rbEventoAEvento.IsEnabled = false;
-                    rbEventoAEvento.Visibility = Visibility.Hidden;
-                    rbIntervalos.IsEnabled = false;
+                    //rbEventoAEvento.IsEnabled = false;
+                    //rbEventoAEvento.Visibility = Visibility.Hidden;
+                    //rbIntervalos.IsEnabled = false;
                     rbDtConstante.IsChecked = true;
                     rbDia.IsChecked = true;
                 }
-            }catch(Exception ex)
-            {
+            }catch(Exception ex) { 
+
                 //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                 createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}",ex.Source,ex.Message));                
             }
+            
 
         }
 
@@ -316,40 +318,42 @@ namespace Victoria.DesktopApp.View
             dgvDatosFdp.ItemsSource = eventos;
             if (comboBox.SelectedItem.ToString() =="Archivo Excel") 
             {
-               
-
-                using (var archivo = new XLWorkbook(rutaFile.Text))
+                try
                 {
 
-                    int numeroFila = Convert.ToInt32(txtFila.Text);
-                    int columna = Convert.ToInt32(txtCol.Text);
-                    //Origen nuevoOrigen = new Origen();
-
-                    try
+                        using (var archivo = new XLWorkbook(rutaFile.Text))
                     {
-                        var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
-                        idEvento++;
-                        while (!hoja.Cell(numeroFila, columna).IsEmpty())
-                        {
-                            DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
-                            eventos.Add(new commonFDP.Evento() { fecha = auxFecha, Id = idEvento });//, origen = nuevoOrigen, activo = true });
-                            numeroFila++;
+
+                        int numeroFila = Convert.ToInt32(txtFila.Text);
+                        int columna = Convert.ToInt32(txtCol.Text);
+                        //Origen nuevoOrigen = new Origen();
+
+
+                            var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
                             idEvento++;
-                        }
+                            while (!hoja.Cell(numeroFila, columna).IsEmpty())
+                            {
+                                DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
+                                eventos.Add(new commonFDP.Evento() { fecha = auxFecha, Id = idEvento });//, origen = nuevoOrigen, activo = true });
+                                numeroFila++;
+                                idEvento++;
+                            }
+
+
 
                     }
+                }
 
-                    catch
-                    {
-                        
-                        createAlertPopUp("El excel importado no tiene el formato correcto o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
-                        rutaFile.Text = "";
-                        pnlPosicion_datos.Visibility = Visibility.Hidden;
-                       
-                    }
+                catch
+                {
+
+                    createAlertPopUp("El excel importado no es valido, o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
+                    rutaFile.Text = "";
+                    pnlPosicion_datos.Visibility = Visibility.Hidden;
 
                 }
             }
+
             else 
             {
 
@@ -401,7 +405,7 @@ namespace Victoria.DesktopApp.View
             pnlModificable.Visibility = Visibility.Hidden;
             pnlMetodologia.Visibility = Visibility.Visible;
 
-            if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
+           /* if (analisisPrevio.TipoDeEjercicio == AnalisisPrevio.Tipo.EaE)
             {
                 rbDtConstante.Visibility = Visibility.Hidden;
                 rbEventoAEvento.IsChecked = true;
@@ -410,9 +414,10 @@ namespace Victoria.DesktopApp.View
             {
                 rbEventoAEvento.Visibility = Visibility.Hidden;
                 rbDtConstante.IsChecked = true;
-            }
+            } */
 
         }
+
 
         public List<string> leerDelimitadorCaracter(string pathArchivo, string caracter)
         {
