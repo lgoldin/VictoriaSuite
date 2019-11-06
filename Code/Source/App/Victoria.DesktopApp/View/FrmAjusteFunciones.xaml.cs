@@ -410,11 +410,21 @@ namespace Victoria.DesktopApp.View
         }
 
         private void GraficarLineaFDP(commonFDP.FuncionDensidadProbabilidad fdp)
-        {
+        {            
             Dictionary<double, double> lGenerados;
+            Dictionary<double, double> result = new Dictionary<double, double>();
             try
             {
                 lGenerados = fdp.ObtenerDensidad(eventosSimplificados.ToDictionary(x => Convert.ToDouble(x.Key), x => x.Value));
+
+                foreach (var i in lGenerados)
+                {
+                    if (!i.Value.Equals(double.PositiveInfinity))
+                    {
+                        //Se redondea a 0 porque el grafico no puede representar valores muy chicos.
+                        result.Add(i.Key, Math.Round((double)i.Value, 5));
+                    }
+                }
 
             }
             catch (Exception)
@@ -424,9 +434,8 @@ namespace Victoria.DesktopApp.View
 
             }
 
-            ((ColumnSeries)chart1.Series[0]).ItemsSource = lGenerados;
-            ((LineSeries)chart1.Series[1]).ItemsSource = lGenerados;
-
+            ((ColumnSeries)chart1.Series[0]).ItemsSource = result;
+            ((LineSeries)chart1.Series[1]).ItemsSource = result;            
         } 
 
     }
