@@ -318,40 +318,42 @@ namespace Victoria.DesktopApp.View
             dgvDatosFdp.ItemsSource = eventos;
             if (comboBox.SelectedItem.ToString() =="Archivo Excel") 
             {
-               
-
-                using (var archivo = new XLWorkbook(rutaFile.Text))
+                try
                 {
 
-                    int numeroFila = Convert.ToInt32(txtFila.Text);
-                    int columna = Convert.ToInt32(txtCol.Text);
-                    //Origen nuevoOrigen = new Origen();
-
-                    try
+                        using (var archivo = new XLWorkbook(rutaFile.Text))
                     {
-                        var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
-                        idEvento++;
-                        while (!hoja.Cell(numeroFila, columna).IsEmpty())
-                        {
-                            DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
-                            eventos.Add(new commonFDP.Evento() { fecha = auxFecha, Id = idEvento });//, origen = nuevoOrigen, activo = true });
-                            numeroFila++;
+
+                        int numeroFila = Convert.ToInt32(txtFila.Text);
+                        int columna = Convert.ToInt32(txtCol.Text);
+                        //Origen nuevoOrigen = new Origen();
+
+
+                            var hoja = archivo.Worksheet(Convert.ToInt32(txtHoja.Text));
                             idEvento++;
-                        }
+                            while (!hoja.Cell(numeroFila, columna).IsEmpty())
+                            {
+                                DateTime auxFecha = hoja.Cell(numeroFila, columna).GetDateTime();
+                                eventos.Add(new commonFDP.Evento() { fecha = auxFecha, Id = idEvento });//, origen = nuevoOrigen, activo = true });
+                                numeroFila++;
+                                idEvento++;
+                            }
+
+
 
                     }
+                }
 
-                    catch
-                    {
-                        
-                        createAlertPopUp("El excel importado no tiene el formato correcto o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
-                        rutaFile.Text = "";
-                        pnlPosicion_datos.Visibility = Visibility.Hidden;
-                       
-                    }
+                catch
+                {
+
+                    createAlertPopUp("El excel importado no es valido, o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
+                    rutaFile.Text = "";
+                    pnlPosicion_datos.Visibility = Visibility.Hidden;
 
                 }
             }
+
             else 
             {
 
