@@ -29,6 +29,7 @@ namespace Victoria.DesktopApp.View
     /// </summary>
     public partial class FrmAjusteFunciones : Window
     {
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         private commonFDP.Origen proyecto = new commonFDP.Origen();
         private commonFDP.MetodologiaAjuste metodologia;
         private commonFDP.Segment.Segmentacion segmentacion;
@@ -88,12 +89,19 @@ namespace Victoria.DesktopApp.View
 
         private void FrmAjusteFunciones_Load()
         {
-            comboBox.ItemsSource = this.analisisPrevio.Datos;
-            comboBox.SelectedValue = comboBox.Items[0]; 
-            CalcularEventosSimplificados();
-            CalcularYOrdenarFunciones();
-            OrdenarFuncionesEnVista();
-            SetupGraficoFuncion();
+            try
+            {
+                comboBox.ItemsSource = this.analisisPrevio.Datos;
+                comboBox.SelectedValue = comboBox.Items[0];
+                CalcularEventosSimplificados();
+                CalcularYOrdenarFunciones();
+                OrdenarFuncionesEnVista();
+                SetupGraficoFuncion();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+            }
         }
 
         private void CalcularEventosSimplificados()
@@ -175,9 +183,10 @@ namespace Victoria.DesktopApp.View
             lResultadosOrdenados = lResultadosOrdenados.OrderBy(x => x.Value.FDP.CalcularDesvio(eventosSimplificados)).ToDictionary(x => x.Key, y => y.Value);
 
              }
-             catch
+             catch(Exception ex)
              {
-                 createAlertPopUp("Error al calcular y ordenar las funciones");
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp("Error al calcular y ordenar las funciones");
              }
         }
 

@@ -232,6 +232,15 @@
       <Component Id="Xceed.Wpf.Toolkit.dll" Guid="ba31e591-b9e9-4cd1-baf8-84e2b5862708">
         <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Xceed.Wpf.Toolkit.dll" />
       </Component>
+      <Component Id="Victoria_Accord.Statistics.dll" Guid="c1331f15-8b76-43e9-80e1-977ca416f1c5">
+        <File Id="Victoria_Accord.Statistics.dll" Name="Accord.Statistics.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Accord.Statistics.dll" />
+      </Component>
+      <Component Id="Victoria_Accord.Math.dll" Guid="33211b50-f72c-444d-8e8d-19c7dda3d0c7">
+        <File Id="Victoria_Accord.Math.dll" Name="Accord.Math.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Accord.Math.dll" />
+      </Component>
+      <Component Id="Victoria_Accord.dll" Guid="8b00eb76-4b77-4908-8136-95c25d895444">
+        <File Id="Victoria_Accord.dll" Name="Accord.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Accord.dll" />
+      </Component>
     </ComponentGroup>
   </Fragment>
 
