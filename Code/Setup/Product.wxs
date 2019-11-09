@@ -4,6 +4,7 @@
   <?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
   <?define Version="Victoria V"?>
   <?define Title="Victoria Suite"?>
+  <!--<?define commonFDP_TargetDir=$(var.commonFDP.TargetDir)?>-->
   <Product Id="*" Name="$(var.Title)" Language="1033" Version="5.0.0.1" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
@@ -36,7 +37,7 @@
       <ComponentRef Id="ApplicationShortcutDesktop" />
       <ComponentGroupRef Id="Manual_de_usuario_files" />
       <ComponentGroupRef Id="Resources_files" />      
-      <ComponentGroupRef Id="Kairos" />           
+      <ComponentGroupRef Id="Kairos" />      
     </Feature>        
   </Product>
 
@@ -50,10 +51,10 @@
           <Directory Id="Victoria" Name="$(var.Version)">
             <Directory Id="Resources" Name="Resources" />
             <Directory Id="Logs" Name="Logs">
-              <Component Id="Logs" Guid="16fcb609-4884-4A01-AA04-84B92D222428" >
+              <Component Id="Logs" Guid="16fcb609-4884-4A01-AA04-84B92D222428">
                 <!--SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either"-->
                 <CreateFolder>
-                  <Permission User="Everyone" GenericAll="yes" ChangePermission="yes"/>
+                  <Permission User="Everyone" GenericAll="yes" ChangePermission="yes" />
                 </CreateFolder>
               </Component>
             </Directory>                          
@@ -224,6 +225,12 @@
       </Component>
       <Component Id="FastMember.dll" Guid="e9e1170b-64ba-469b-9be9-f1ceba86ca46">
         <File Id="FastMember.dll" Name="FastMember.dll" Source="$(var.Victoria.DesktopApp_TargetDir)FastMember.dll" />
+      </Component>
+      <Component Id="commonFDP.dll" Guid="043ea5de-5e52-4b1e-8005-01af62828893">
+        <File Id="commonFDP.dll" Name="commonFDP.dll" Source="$(var.Victoria.DesktopApp_TargetDir)commonFDP.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.Toolkit.dll" Guid="ba31e591-b9e9-4cd1-baf8-84e2b5862708">
+        <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Xceed.Wpf.Toolkit.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
