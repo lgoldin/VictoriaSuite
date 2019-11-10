@@ -187,12 +187,14 @@ namespace Victoria.DesktopApp.View
                         commonFDP.MetodologiaAjuste metodologia = commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO;
                         commonFDP.Segment.Segmentacion segmentacion = commonFDP.Segment.Segmentacion.SEGUNDO;
                         int flagIntervalos = 0;
-
+                        
                         if (rbFecha.IsChecked.Value)
                         {
+                            List<commonFDP.Evento> eventosAcalcular= new List<commonFDP.Evento>();
+                            eventosAcalcular = (List<commonFDP.Evento>)dgvDatosFdp.ItemsSource ;
                             metodologia = rbEventoAEvento.IsChecked.Value ? commonFDP.MetodologiaAjuste.EVENTO_A_EVENTO : commonFDP.MetodologiaAjuste.DT_CONSTANTE;
                             segmentacion = rbDia.IsChecked.Value ? commonFDP.Segment.Segmentacion.DIA : (rbHora.IsChecked.Value ? commonFDP.Segment.Segmentacion.HORA : (rbMinuto.IsChecked.Value ? commonFDP.Segment.Segmentacion.MINUTO : commonFDP.Segment.Segmentacion.SEGUNDO));
-                            FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventos, flagIntervalos, null, this.analisisPrevio);
+                            FrmAjusteFunciones frm = new FrmAjusteFunciones(metodologia, segmentacion, eventosAcalcular, flagIntervalos, null, this.analisisPrevio);
                             this.Visibility = Visibility.Hidden;
                             frm.ShowDialog();
                             this.Visibility = Visibility.Visible;
@@ -482,6 +484,7 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
+                
                 if (dgvDatosFdp.Items.Count <= 1)
                 {
                     rbFecha.IsChecked = true;
@@ -496,6 +499,8 @@ namespace Victoria.DesktopApp.View
                         var tipoAccion = commonFDP.TipoAccionProcesamiento.FILTRAR;
 
                         modificarLayout(tipoAccion);
+
+                        
 
                         //rbDtConstante.Visibility = Visibility.Hidden;
                         pnlSegmentacion.Visibility = Visibility.Hidden;
@@ -515,7 +520,9 @@ namespace Victoria.DesktopApp.View
                                 interv.Clear();
                             }
 
-                            var eventosOrdenados = eventos.OrderBy(x => x.fecha);
+
+                            List<commonFDP.Evento> eventosAintervalos = (List<commonFDP.Evento>)dgvDatosFdp.ItemsSource;
+                            var eventosOrdenados = eventosAintervalos.OrderBy(x => x.fecha);
                             List<double> lista = new List<double>();
 
                             lista = eventosOrdenados.Select(x => x.fecha.TimeOfDay)
@@ -524,7 +531,7 @@ namespace Victoria.DesktopApp.View
                             .Select(x => Math.Abs(x.TimeOfDay.TotalSeconds))
                             .ToList();
                             List<double> intervalos = lista; //para limpir los filtros y volver al original
-                            List<double> intervalosParciales = lista; //para los filtros consecutivos
+                            this.intervalosParciales = lista; //para los filtros consecutivos
 
 
 
@@ -568,6 +575,7 @@ namespace Victoria.DesktopApp.View
 
                             //modificarLayout(commonFDP.commonFDP.TipoAccionProcesamiento.FILTRAR);
                             pnlModificable.Visibility = Visibility.Hidden;
+                            
 
                         }
 
@@ -591,8 +599,10 @@ namespace Victoria.DesktopApp.View
         {
             try
             {
-
+                dgvDatosFdp.ItemsSource = null;
                 dgvDatosFdp.ItemsSource = eventos;
+                dgvDatosFdp.Items.Refresh();
+
                 dgvDatosFdp.Columns[0].Width = 235;
                 try
                 {
@@ -623,9 +633,10 @@ namespace Victoria.DesktopApp.View
 
         private void rbFecha_CheckedChanged(object sender, EventArgs e)
         {
+            
             if (rbFecha.IsChecked.Value)
             {
-                //quitarFiltrosIntervalos();
+                quitarFiltrosIntervalos();
                 
                 //rbDtConstante.Visibility = Visibility.Visible;
                 if (eventos.Count() > 0)
@@ -712,7 +723,8 @@ namespace Victoria.DesktopApp.View
                      else
                      {     
                          lbldtp1.Content = "Intervalo";
-                         dtp1.Visibility = Visibility.Visible;
+                         dtp1.Visibility = Visibility.Hidden;
+                         dtp2.Visibility = Visibility.Hidden;
                         // txtIntervalo.Visible = true; 
                      }
                      lbldtp2.Content = "Hora";
@@ -896,6 +908,30 @@ namespace Victoria.DesktopApp.View
                 lbldtp2.Visibility = Visibility.Hidden;
             }
         }
+
+        public void quitarFiltrosIntervalos()
+        {
+            List<commonFDP.Filtro> filtrosAux = new List<commonFDP.Filtro>();
+            
+            foreach ( commonFDP.Filtro item in filtros)
+            {
+                if (item.Name.Contains("Intervalo"))
+                {
+                    CheckListBoxFiltros.Items.Remove(item);
+                }
+                else
+                {
+                    filtrosAux.Add(item);
+                }
+
+            }
+            filtros = filtrosAux;
+            
+            
+
+        }
+
+
 
 
 
@@ -1152,11 +1188,12 @@ namespace Victoria.DesktopApp.View
 
                 //leno dataGridView con los intervalos
                 
-                List<double> listaInterv = new List<double>();
-             
+                List<commonFDP.Evento> listaInterv = new List<commonFDP.Evento>();
+
+
                 foreach (var item in filtrado)
                 {
-                    listaInterv.Add(item);
+                    listaInterv.Add(new commonFDP.Evento() { vIntervalo = item });
                 }
 
                 dgvDatosFdp.ItemsSource = null;
