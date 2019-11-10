@@ -29,6 +29,7 @@ namespace Victoria.DesktopApp.View
     /// </summary>
     public partial class FrmAjusteFunciones : Window
     {
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         private commonFDP.Origen proyecto = new commonFDP.Origen();
         private commonFDP.MetodologiaAjuste metodologia;
         private commonFDP.Segment.Segmentacion segmentacion;
@@ -88,12 +89,19 @@ namespace Victoria.DesktopApp.View
 
         private void FrmAjusteFunciones_Load()
         {
-            comboBox.ItemsSource = this.analisisPrevio.Datos;
-            comboBox.SelectedValue = comboBox.Items[0]; 
-            CalcularEventosSimplificados();
-            CalcularYOrdenarFunciones();
-            OrdenarFuncionesEnVista();
-            SetupGraficoFuncion();
+            try
+            {
+                comboBox.ItemsSource = this.analisisPrevio.Datos;
+                comboBox.SelectedValue = comboBox.Items[0];
+                CalcularEventosSimplificados();
+                CalcularYOrdenarFunciones();
+                OrdenarFuncionesEnVista();
+                SetupGraficoFuncion();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+            }
         }
 
         private void CalcularEventosSimplificados()
@@ -175,9 +183,10 @@ namespace Victoria.DesktopApp.View
             lResultadosOrdenados = lResultadosOrdenados.OrderBy(x => x.Value.FDP.CalcularDesvio(eventosSimplificados)).ToDictionary(x => x.Key, y => y.Value);
 
              }
-             catch
+             catch(Exception ex)
              {
-                 createAlertPopUp("Error al calcular y ordenar las funciones");
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp("Error al calcular y ordenar las funciones");
              }
         }
 
@@ -414,11 +423,21 @@ namespace Victoria.DesktopApp.View
         }
 
         private void GraficarLineaFDP(commonFDP.FuncionDensidadProbabilidad fdp)
-        {
+        {            
             Dictionary<double, double> lGenerados;
+            Dictionary<double, double> result = new Dictionary<double, double>();
             try
             {
                 lGenerados = fdp.ObtenerDensidad(eventosSimplificados.ToDictionary(x => Convert.ToDouble(x.Key), x => x.Value));
+
+                foreach (var i in lGenerados)
+                {
+                    if (!i.Value.Equals(double.PositiveInfinity))
+                    {
+                        //Se redondea a 0 porque el grafico no puede representar valores muy chicos.
+                        result.Add(i.Key, Math.Round((double)i.Value, 5));
+                    }
+                }
 
             }
             catch (Exception)
@@ -428,9 +447,8 @@ namespace Victoria.DesktopApp.View
 
             }
 
-            ((ColumnSeries)chart1.Series[0]).ItemsSource = lGenerados;
-            ((LineSeries)chart1.Series[1]).ItemsSource = lGenerados;
-
+            ((ColumnSeries)chart1.Series[0]).ItemsSource = result;
+            ((LineSeries)chart1.Series[1]).ItemsSource = result;            
         } 
 
     }

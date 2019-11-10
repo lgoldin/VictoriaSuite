@@ -111,7 +111,7 @@
                                 </Button>
                             </Grid>
                             <Grid x:Name="pnlFunction12" Background="Gray" Cursor="Hand"  HorizontalAlignment="Right" Margin="0,200,786,225.143" Width="197"  Grid.Row="1">
-                                <Button x:Name="btnFuncionWEIBULL5" Content="Weibull5" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                <Button x:Name="btnFuncionWEIBULL5" Content="Weibull5" Foreground="White" Height="30" Width="197" Background="Transparent" BorderThickness="0"  Click="btnFuncionWeibull5_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" VerticalAlignment="Top">
                                 </Button>
                             </Grid>
 

@@ -79,7 +79,7 @@ namespace Victoria.DesktopApp.View
                 }
             }catch(Exception ex) { 
 
-                //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                 createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}",ex.Source,ex.Message));                
             }
             

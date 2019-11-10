@@ -211,6 +211,7 @@ namespace DiagramDesigner
             {
                 logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                 AlertPopUp Alert = new AlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
+                StopDebugProcess();
                 Alert.Show();                
             }
         }
