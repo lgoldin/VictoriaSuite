@@ -195,25 +195,34 @@ namespace DiagramDesigner
 
         private void executeDebugCommand( Debug.Mode command)
         {
-            logger.Info(String.Format("Comando Debug: {0}.",command.ToString().ToUpper()));
-            try
+            if (Debug.instance().debugCommand == Debug.Mode.Finished)
             {
-                Debug.instance().debugCommand = command;
-                Debug.instance().jumpToNextNode = true;
-
-                //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
-                manualResetEvent.WaitOne();
-
-                Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
-
-                ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
-            }catch(Exception ex)
-            {
-                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
-                AlertPopUp Alert = new AlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
-                StopDebugProcess();
-                Alert.Show();                
+                this.StopDebugProcess();
             }
+            else
+            {
+                logger.Info(String.Format("Comando Debug: {0}.", command.ToString().ToUpper()));
+                try
+                {
+                    Debug.instance().debugCommand = command;
+                    Debug.instance().jumpToNextNode = true;
+
+                    //Espero a que la ejecucion necesite un comando de debug para continuar (stepInto,stepOver,etc..)
+                    manualResetEvent.WaitOne();
+
+                    Point p = DesignerItem.setDebugColor(getNodeByID(Debug.instance().executingNode.Name));
+
+                    ScrollCanvasToBreakpointNode(p, (ScrollViewer)this.Parent);
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                    AlertPopUp Alert = new AlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
+                    StopDebugProcess();
+                    Alert.Show();
+                }
+            }
+            
         }
 
         private void ScrollCanvasToBreakpointNode(Point startOfNode, ScrollViewer scrollViewer)
@@ -271,8 +280,8 @@ namespace DiagramDesigner
 
         private void startDebug()
         {
-            if (this.mainWindow != null && Debug.instance().debugModeOn)
-                this.mainWindow.stopDebug();
+            if ((this.mainWindow != null && Debug.instance().debugModeOn) || Debug.instance().debugCommand == Debug.Mode.Finished)
+                this.StopDebugProcess();
 
             // Creo la  ventan de simulacion y NO la muestro
             this.ValidarYLanzarSimulador(false);

@@ -42,7 +42,8 @@ namespace Victoria.Shared.Debug
             StepInto,
             StepOver,
             Continue,
-            ConditionedContinue
+            ConditionedContinue,
+            Finished
         }
 
         public Mode debugCommand { get; set; } = Mode.None;
@@ -93,6 +94,10 @@ namespace Victoria.Shared.Debug
         {    
             this.executingNode = node;
 
+            Boolean exerciseHasFinished = ExpressionResolver.ResolveBoolen(
+                                                ExpressionResolver.GetSentenceToEvaluate(executionVariables, new CultureInfo("en-US"), "T > TF")
+                                                );
+            
             if (!this.executingNode.canBeDebugged && !this.subDiagramHasStarted)
             {
                 this.jumpToNextNode = true;
@@ -105,10 +110,6 @@ namespace Victoria.Shared.Debug
                 }
                 if (this.debugCommand.Equals(Mode.ConditionedContinue))
                 {
-                    Boolean exerciseHasFinished = ExpressionResolver.ResolveBoolen(
-                        ExpressionResolver.GetSentenceToEvaluate(executionVariables, new CultureInfo("en-US"), "T > TF")
-                        );
-
                     if (exerciseHasFinished)
                     {
                         this.conditionResult = false;
@@ -134,6 +135,8 @@ namespace Victoria.Shared.Debug
                     }
                 }
             }
+
+            this.debugCommand = exerciseHasFinished ? Debug.Mode.Finished : this.debugCommand;
 
             //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc)
             while (!this.jumpToNextNode)
