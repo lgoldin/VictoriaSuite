@@ -155,9 +155,9 @@
                 </Button.Content>
             </Button>
         </Grid>
-        
-        <Grid Margin="3">
-            <Button Margin="1" Padding="4" HorizontalContentAlignment="Left"
+
+        <Grid Name="Simular" Margin="3">
+            <Button Name="Simular_btn" Margin="1" Padding="4" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
                             Command="{x:Static ApplicationCommands.Print}"
                             CommandTarget="{Binding ElementName=MyDesigner}">

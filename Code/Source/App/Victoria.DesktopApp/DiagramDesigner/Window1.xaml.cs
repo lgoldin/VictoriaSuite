@@ -123,7 +123,7 @@ namespace DiagramDesigner
             ToolBar tb = (ToolBar)this.MyToolBar.Content;
             foreach (Grid g in tb.ItemContainerGenerator.Items)
             {
-                if (g.Name.StartsWith("Debug"))
+                if (g.Name.StartsWith("Debug") || g.Name.StartsWith("Simular"))
                 {
                     foreach (Button b in g.Children)
                     {

@@ -234,7 +234,15 @@ namespace DiagramDesigner
         {
             foreach (Button b in this.debugButtonList)
             {
-                b.Visibility = _visibility;
+                if (b.Name == "Simular_btn")
+                {
+                    b.Visibility = _visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden;
+                }
+                else
+                {
+                    b.Visibility = _visibility;
+                }
+                
             }
         }
 
