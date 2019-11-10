@@ -64,6 +64,9 @@ namespace Victoria.DesktopApp.Helpers
              *      - La segunda tabla NO contiene un TableName, pero contiene datos de las variables de Resultado 
              *      (que se pueden visualizar recorriendo las filas y columnas).
              */
+
+            ubi_col_variables = CreateDictionaryOfVariables(resultsTable);
+
             foreach (var tbl in resultsTable)
             {
                 if (tbl.TableName != "")
@@ -106,20 +109,23 @@ namespace Victoria.DesktopApp.Helpers
 
                         tieneTituloVariables = true;
                     }
-                    //Setea el nombre de las variables
-                    if (ws.Cell(index_row_header, index_col).Value.ToString() == String.Empty)
-                    {
-                        ws.Cell(index_row_header, index_col).Value = tbl.Rows[i][0].ToString();
-                        ws.Cell(index_row_header, index_col).Style.Font.SetBold(true);
-                        ws.Cell(index_row_header, index_col).Style.Font.SetItalic(true);
-                        ws.Cell(index_row_header, index_col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    //Obtengo la ubicacion de la variable a insertar
+                    ubi_col_variables.TryGetValue(tbl.Rows[i][0].ToString(), out int columna_a_insertar);
 
-                        ubi_col_variables.Add(tbl.Rows[i][0].ToString(), index_col);
+                    //Setea el nombre de las variables
+                    if (ws.Cell(index_row_header, columna_a_insertar).Value.ToString() == String.Empty)
+                    {
+                        ws.Cell(index_row_header, columna_a_insertar).Value = tbl.Rows[i][0].ToString();
+                        ws.Cell(index_row_header, columna_a_insertar).Style.Font.SetBold(true);
+                        ws.Cell(index_row_header, columna_a_insertar).Style.Font.SetItalic(true);
+                        ws.Cell(index_row_header, columna_a_insertar).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                        //ubi_col_variables.Add(tbl.Rows[i][0].ToString(), index_col);
                     }
 
                     //Setea el valor que tomaron las variables y lo coloca en filas diferentes en funcion del escenario.                    
-                    ubi_col_variables.TryGetValue(tbl.Rows[i][0].ToString(), out int val);
-                    ws.Cell(index_row_header + cant_escenarios, val).Value = decimal.Parse(tbl.Rows[i][1].ToString());                    
+                    
+                    ws.Cell(index_row_header + cant_escenarios, columna_a_insertar).Value = decimal.Parse(tbl.Rows[i][1].ToString());                    
 
                     //Setea el valor que tomaron las variables y lo coloca en filas diferentes en funcion del escenario.
                     //ws.Cell(index_row_header + cant_escenarios, index_col).Value = decimal.Parse(tbl.Rows[i][1].ToString(), NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.CurrentCulture);
@@ -179,6 +185,35 @@ namespace Victoria.DesktopApp.Helpers
             rango.Style.Border.LeftBorderColor = XLColor.Black;
             rango.Style.Border.RightBorderColor = XLColor.Black;
             rango.Style.Border.TopBorderColor = XLColor.Black;
+        }
+
+        private Dictionary<String,int> CreateDictionaryOfVariables(List<DataTable> resultsTable)
+        {
+            Dictionary<String, int> dictionary = new Dictionary<string, int>();
+
+            foreach (var tbl in resultsTable)
+            {
+                if (tbl.TableName != "")
+                    index_col = 1;
+
+                for (int i = 0; i < tbl.Rows.Count; i++)
+                {
+                    index_col++;
+                    if (!dictionary.Keys.Contains(tbl.Rows[i][0].ToString()))
+                        dictionary.Add(tbl.Rows[i][0].ToString(), index_col);
+
+                    dictionary.TryGetValue(tbl.Rows[i][0].ToString(), out int val);
+
+                    if (dictionary.Keys.Contains(tbl.Rows[i][0].ToString()) && index_col != val)
+                    {
+                        dictionary.Remove(tbl.Rows[i][0].ToString());
+                        dictionary.Add(tbl.Rows[i][0].ToString(), index_col);
+                    }
+                }
+
+            }
+
+            return dictionary;
         }
     }
 
