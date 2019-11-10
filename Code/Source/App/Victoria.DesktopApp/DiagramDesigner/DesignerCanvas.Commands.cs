@@ -253,11 +253,10 @@ namespace DiagramDesigner
             {
                 StartDebugPopUp debugPopup = new StartDebugPopUp();
                 debugPopup.ShowDialog();
-                if (debugPopup.Result == DialogResult.Accept)
-                {
-                    logger.Info("Inicio del Debugueo de la simulación");
-                    this.startDebug();
-                }
+                //if (debugPopup.Result == DialogResult.Accept)
+                //{
+                //    logger.Info("Inicio del Debugueo de la simulación");
+                //}
             }
               
         }

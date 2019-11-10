@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
 
             <TextBox BorderThickness="0" Grid.Row="0" Foreground="White" Background="Transparent" FontSize="17" Height="77" Width="555" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Grid.ColumnSpan="4" Margin="10,0,9.667,22.333" Grid.RowSpan="4">
-                No a ingresado ningun breakpoint, seguir de todas formas?
+                No se puede iniciar debug si no se ha ingresado ningun breakpoint
             </TextBox>
             <Grid Grid.Row="1" Grid.ColumnSpan="4" Margin="0,0,0,49.333" Grid.RowSpan="3">
                 <Grid.ColumnDefinitions>
@@ -43,14 +43,14 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Name="btnCancel" Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Right" Margin="5" Click="btnCancel_OnClick" Width="89">
+                <!--<Button Name="btnCancel" Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Right" Margin="5" Click="btnCancel_OnClick" Width="89">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal" Width="84">
                             <Image Source="/Victoria.UI.SharedWPF;Component/resources/delete.png" Height="32" Width="32"/>
                             <TextBlock Text="Cancelar"   Foreground="White" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Button.Content>
-                </Button>
+                </Button>-->
             </StackPanel>
         </Grid>
     </Border>
