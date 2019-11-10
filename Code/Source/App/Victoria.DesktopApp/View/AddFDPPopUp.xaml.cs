@@ -388,7 +388,7 @@ namespace Victoria.DesktopApp.View
                     }
                     catch (Exception ex)
                     {
-                        createAlertPopUp("No se pudo obtener los datos, valide que el formato del archivo y de las fechas ingresadas sean corerctos");
+                        createAlertPopUp("No se pudo obtener los datos, valide que el formato del archivo y de las fechas ingresadas sean correctos");
                         rutaFile.Text = "";
                         pnlPosicion_datos.Visibility = Visibility.Hidden;
 
