@@ -210,8 +210,9 @@ namespace Victoria.DesktopApp.View
 
 
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                         createAlertPopUp("Error al calcular funciones");
                     }
                     this.Close();
@@ -223,7 +224,7 @@ namespace Victoria.DesktopApp.View
             }
             catch (Exception ex)
             {
-                //logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                 createAlertPopUp(String.Format("Ha ocurrido un error: {0} - {1}", ex.Source, ex.Message));
             }
 
@@ -238,8 +239,9 @@ namespace Victoria.DesktopApp.View
             {
                 rutaFile.Text = getFileName(comboBox.SelectedItem.ToString());
             }
-            catch
+            catch (Exception ex)
             {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                 createAlertPopUp("No se pudo obtener el archivo, intente nuevamente con un formato valido");
             }
 
@@ -578,8 +580,9 @@ namespace Victoria.DesktopApp.View
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
                 createAlertPopUp("Error al calcular los intervalos");
             }
         }

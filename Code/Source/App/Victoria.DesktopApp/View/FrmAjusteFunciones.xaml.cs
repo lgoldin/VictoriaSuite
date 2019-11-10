@@ -129,9 +129,10 @@ namespace Victoria.DesktopApp.View
                     eventosParaAjuste = intervalos.ToArray();
                 }
             }
-             catch
+             catch (Exception ex)
              {
-                 createAlertPopUp("Error al calcular los intervalos");
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                createAlertPopUp("Error al calcular los intervalos");
              } 
 
 
