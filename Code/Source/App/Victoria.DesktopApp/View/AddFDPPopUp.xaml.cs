@@ -356,29 +356,35 @@ namespace Victoria.DesktopApp.View
 
             else 
             {
-
-                try
+                if (txtDelimitador.Text =="")
                 {
-                    StreamReader objReader = new StreamReader(rutaFile.Text);
-                    List<string> eventosLeidos = new List<string>();
-                    string todoElArchivo = objReader.ReadToEnd();
-                    objReader.Close();
-                    foreach (var item in todoElArchivo.Split(Convert.ToChar(txtDelimitador.Text)))
+                    createAlertPopUp("Por favor defina un delimitador para el archivo txt y vuelva a intentarlo");
+                }
+                else
+                {
+                    try
                     {
-                        DateTime aux = DateTime.ParseExact(item.Replace("\r\n", "").Replace("\n", "").Replace("\r", ""), "dd/MM/yyyy HH:mm:ss", null);
-                                   
-                        eventos.Add(new commonFDP.Evento() { fecha = aux, Id = idEvento });//, origen = nuevoOrigen, activo = true });
+                        StreamReader objReader = new StreamReader(rutaFile.Text);
+                        List<string> eventosLeidos = new List<string>();
+                        string todoElArchivo = objReader.ReadToEnd();
+                        objReader.Close();
+                        foreach (var item in todoElArchivo.Split(Convert.ToChar(txtDelimitador.Text)))
+                        {
+                            DateTime aux = DateTime.ParseExact(item.Replace("\r\n", "").Replace("\n", "").Replace("\r", ""), "dd/MM/yyyy HH:mm:ss", null);
+
+                            eventos.Add(new commonFDP.Evento() { fecha = aux, Id = idEvento });//, origen = nuevoOrigen, activo = true });
+
+                        }
 
                     }
+                    catch (Exception ex)
+                    {
+                        createAlertPopUp("No se pudo obtener los datos, valide que el formato del archivo y de las fechas ingresadas sean corerctos");
+                        rutaFile.Text = "";
+                        pnlPosicion_datos.Visibility = Visibility.Hidden;
 
+                    }
                 }
-                catch (Exception ex)
-                {
-                    createAlertPopUp("No se pudo obtener los datos, valide que el formato del archivo y de las fechas ingresadas sean corerctos");
-                    rutaFile.Text = "";
-                    pnlPosicion_datos.Visibility = Visibility.Hidden;
-
-                } 
 
             }
 
