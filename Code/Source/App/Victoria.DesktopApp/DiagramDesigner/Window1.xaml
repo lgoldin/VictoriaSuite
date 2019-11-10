@@ -92,9 +92,9 @@
                             <!--<ScrollViewer VerticalScrollBarVisibility="Visible"></ScrollViewer> -->
                                 <DataGrid x:Name="dataGridVariablesSimulation" Height="163" Canvas.Left="-277" Canvas.Top="455" Width="255" Visibility="Hidden">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Variable" Width="60" Binding="{Binding Name}"/>
-                                        <DataGridTextColumn Header="Valor Inicial" Width="80" Binding="{Binding InitialValue}"/>
-                                    <DataGridTextColumn Header="Valor Simulacion" Width="60*" Binding="{Binding ActualValue}"/>
+                                        <DataGridTextColumn Header="Variable" Width="60" Binding="{Binding Name}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Valor Inicial" Width="80" Binding="{Binding InitialValue}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Valor Simulacion" Width="60*" Binding="{Binding ActualValue}" IsReadOnly="True"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             
