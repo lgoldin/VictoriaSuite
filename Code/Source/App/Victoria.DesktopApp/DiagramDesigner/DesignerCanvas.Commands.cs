@@ -280,7 +280,7 @@ namespace DiagramDesigner
 
         private void startDebug()
         {
-            if ((this.mainWindow != null && Debug.instance().debugModeOn) || Debug.instance().debugCommand == Debug.Mode.Finished)
+            if ((this.mainWindow != null && Debug.instance().debugModeOn) || (Debug.instance().debugCommand == Debug.Mode.Finished) )
                 this.StopDebugProcess();
 
             // Creo la  ventan de simulacion y NO la muestro

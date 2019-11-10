@@ -560,7 +560,7 @@ namespace Victoria.DesktopApp.DiagramDesigner
                 {
                     inverse = associatedInverse.Inversa.Split('=')[1] + "=" + associatedInverse.Inversa.Split('=')[2];
                 }
-                Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + "= " +  inverse);
+                Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i) + "= " +  inverse.Replace(".",","));
                 //analisisPrevio.Datos[i] = analisisPrevio.Datos[i] + " = R";
                 //Sentence sentence = new Sentence(analisisPrevio.Datos.ElementAt(i));
                 setElementIntoCanvas(sentence, getLeftPositionForBranch(i), actualPosition);
