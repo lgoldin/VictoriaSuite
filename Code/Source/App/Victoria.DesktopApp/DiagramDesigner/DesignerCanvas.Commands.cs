@@ -1302,10 +1302,18 @@ namespace DiagramDesigner
             }
             catch (Exception ex)
             {
-                var viewException = new AlertPopUp("Error de parseo. Revisa tu diagrama.");
-                viewException.ShowDialog();
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
 
-                //logger.Error("Error de parseo.Revisa tu diagrama. " + ex.Message);
+                if (ex is System.Reflection.ReflectionTypeLoadException)
+                {
+                    var typeLoadException = ex as ReflectionTypeLoadException;
+                    var loaderExceptions = typeLoadException.LoaderExceptions;
+                    
+                    logger.Error("Loader Exceptions: " + loaderExceptions.ToString());                    
+                }
+
+                var viewException = new AlertPopUp("Error de parseo. Revisa tu diagrama.");
+                viewException.ShowDialog();               
 
                 this.errorFound = true;
             }
