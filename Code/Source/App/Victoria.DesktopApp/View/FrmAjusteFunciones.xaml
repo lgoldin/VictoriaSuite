@@ -118,6 +118,16 @@
                             <Label x:Name="lblTituloFuncion" Content="Funcion" FontWeight="Bold" HorizontalAlignment="Center" FontSize="15" Margin="260,20,250,170" RenderTransformOrigin="0.46,-0.776" />
                             <Label x:Name="lblFuncion" Content="Funcion" FontWeight="SemiBold" HorizontalAlignment="Center" FontSize="15" Margin="260,50,250,140" RenderTransformOrigin="0.46,-0.776" />
                             <DVC:Chart Name="chart1" Width="500" Background="Gray" Margin="258,87,252,404.857" Grid.RowSpan="2">
+
+                                <!-- Comienzo - Esconder Measure Names -->
+                                <DVC:Chart.LegendStyle>
+                                    <Style TargetType="Control">
+                                        <Setter Property="Width" Value="0"/>
+                                        <Setter Property="Height" Value="0"/>
+                                    </Style>
+                                </DVC:Chart.LegendStyle>
+                                <!-- Fin - Esconder Measure Names -->
+                                
                                 <DVC:ColumnSeries                                
                                      IndependentValuePath="Key"  
                                      DependentValuePath="Value">
@@ -136,8 +146,17 @@
 
 
                             <DVC:Chart Canvas.Top="100" Canvas.Left="10" Name="chart2" Background="Gray" Margin="258,120.143,102,152.857" Grid.Row="1">
-                               
-                                    <DVC:LineSeries                                  
+
+                                <!-- Comienzo - Esconder Measure Names -->
+                                <DVC:Chart.LegendStyle>
+                                    <Style TargetType="Control">
+                                        <Setter Property="Width" Value="0"/>
+                                        <Setter Property="Height" Value="0"/>
+                                    </Style>
+                                </DVC:Chart.LegendStyle>
+                                <!-- Fin - Esconder Measure Names -->
+                                
+                                <DVC:LineSeries                                  
                                      IndependentValuePath="Key"  
                                      DependentValuePath="Value">
                                     </DVC:LineSeries>
