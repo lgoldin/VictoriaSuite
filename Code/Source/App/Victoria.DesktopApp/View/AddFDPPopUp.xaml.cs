@@ -323,7 +323,7 @@ namespace Victoria.DesktopApp.View
                 try
                 {
 
-                        using (var archivo = new XLWorkbook(rutaFile.Text))
+                    using (var archivo = new XLWorkbook(rutaFile.Text))
                     {
 
                         int numeroFila = Convert.ToInt32(txtFila.Text);
@@ -340,16 +340,21 @@ namespace Victoria.DesktopApp.View
                                 numeroFila++;
                                 idEvento++;
                             }
-
-
-
                     }
                 }
 
-                catch
+                catch(Exception ex)
                 {
 
-                    createAlertPopUp("El excel importado no es valido, o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
+                    if (ex.Message.ToString().Contains("it is being used by another process"))
+                    {
+                        createAlertPopUp("Cierre el archivo excel antes de importarlo");
+                    }
+                    else
+                    {
+                        createAlertPopUp("El excel importado no es valido, o no se definieron correctamente los parametros de lectura. Por favor seleccione otro archivo o verifique los parametros ingresados y vuelva a intentarlo");
+                    }
+                    
                     rutaFile.Text = "";
                     pnlPosicion_datos.Visibility = Visibility.Hidden;
 

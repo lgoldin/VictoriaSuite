@@ -407,7 +407,7 @@
                                     <ColumnDefinition Width="27*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Generar FDP" Height="28" HorizontalAlignment="Left" Width="82" Margin="10,2,0,0" RenderTransformOrigin="0.539,1.316" Grid.ColumnSpan="2" />
-                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/icono_funcion.png" HorizontalAlignment="Right" Width="34"  Margin="0,1,10,1" RenderTransformOrigin="-0.053,0.487" Grid.Column="1" />
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/icono_funcion.png" HorizontalAlignment="Right" Width="22"  Margin="0,3,22,0" RenderTransformOrigin="-0.053,0.487" Grid.Column="1" />
                             </Grid>
                         </Button>
                     </Grid>
