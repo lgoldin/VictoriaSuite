@@ -308,27 +308,35 @@ namespace DiagramDesigner
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             Key actualKey = (e.SystemKey == Key.None) ? e.Key : e.SystemKey;
-            switch (actualKey)
+            if (Debug.instance().debugModeOn)
             {
-                case Key.F10:
-                    this.executeDebugCommand(Debug.Mode.StepOver);
-                    break;
+                switch (actualKey)
+                {
+                    case Key.F10:
+                        this.executeDebugCommand(Debug.Mode.StepOver);
+                        break;
 
-                case Key.F11:
-                    this.executeDebugCommand(Debug.Mode.StepInto);
-                    break;
+                    case Key.F11:
+                        this.executeDebugCommand(Debug.Mode.StepInto);
+                        break;
 
-                case Key.F5:
-                    this.executeDebugCommand(Debug.Mode.Continue);
-                    break;
+                    case Key.F5:
+                        this.executeDebugCommand(Debug.Mode.Continue);
+                        break;
 
-                case Key.F6:
-                    this.showConditionedContinuePopUp();
-                    break;
+                    case Key.F6:
+                        this.showConditionedContinuePopUp();
+                        break;
 
-                case Key.F12:
-                    this.executeDebugCommand(Debug.Mode.Stop);
-                    break;
+                    case Key.F12:
+                        this.executeDebugCommand(Debug.Mode.Stop);
+                        break;
+                }
+            }
+            else
+            {
+                if(actualKey == Key.F5)
+                    this.Debuger_Executed(null, null);
             }
         }
 
