@@ -136,7 +136,12 @@ namespace Victoria.Shared.Debug
                 }
             }
 
-            this.debugCommand = exerciseHasFinished ? Debug.Mode.Finished : this.debugCommand;
+            if (exerciseHasFinished)
+            {
+                this.debugCommand  = Debug.Mode.Finished ;
+                this.jumpToNextNode = false;
+            }
+            
 
             //Tengo que esperar hasta que se se tome una accion si estoy en debug (stepOver,StepInto,etc)
             while (!this.jumpToNextNode)
