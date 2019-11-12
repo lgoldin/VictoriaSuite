@@ -658,6 +658,7 @@ namespace Victoria.DesktopApp.View
                 modificarLayout(tipoAccion);
                 //botonSeleccionado(btnFiltrar);
                 lbldtp1.Visibility = Visibility.Hidden;
+                lbldtp1.Content = "Fecha";
                 lbldtp2.Visibility = Visibility.Hidden;
                 txtInterv1.Visibility = Visibility.Hidden;
                 txtInterv2.Visibility = Visibility.Hidden;
@@ -725,8 +726,10 @@ namespace Victoria.DesktopApp.View
                          lbldtp1.Content = "Intervalo";
                          dtp1.Visibility = Visibility.Hidden;
                          dtp2.Visibility = Visibility.Hidden;
+                         txtInterv1.Visibility = Visibility.Hidden;
+                         txtInterv2.Visibility = Visibility.Hidden;
                         // txtIntervalo.Visible = true; 
-                     }
+                    }
                      lbldtp2.Content = "Hora";
                      dtp2.FormatString = hourFormat;
                      rbAgregarPorFechaYHora.Visibility = Visibility.Hidden;
@@ -1310,6 +1313,7 @@ namespace Victoria.DesktopApp.View
                         btnAcept.Visibility = Visibility.Visible;
                         lblTituloAccion.Visibility = Visibility.Visible;
                         lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Visibility = Visibility.Visible;
                         lbldtp1.Content = "Fecha";
                         dtp1.Visibility = Visibility.Visible;
                         lbldtp2.Visibility = Visibility.Hidden;
@@ -1320,7 +1324,8 @@ namespace Victoria.DesktopApp.View
                         btnAcept.Visibility = Visibility.Visible;
                         lblTituloAccion.Visibility = Visibility.Visible;
                         lblTituloAccion.Content = "Filtrar";
-                        lbldtp1.Content = "Fecha desde";
+                        lbldtp1.Visibility = Visibility.Visible;
+                        lbldtp1.Content = "Fecha desde";          
                         dtp1.Visibility = Visibility.Visible;
                         lbldtp2.Visibility = Visibility.Visible;
                         lbldtp2.Content = "Fecha hasta";
@@ -1332,6 +1337,7 @@ namespace Victoria.DesktopApp.View
                         btnAcept.Visibility = Visibility.Visible;
                         lblTituloAccion.Visibility = Visibility.Visible;
                         lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Visibility = Visibility.Visible;
                         lbldtp1.Content = "Hora";
                         dtp1.Visibility = Visibility.Visible;
                         lbldtp2.Visibility = Visibility.Hidden;
@@ -1342,6 +1348,7 @@ namespace Victoria.DesktopApp.View
                         btnAcept.Visibility = Visibility.Visible;
                         lblTituloAccion.Visibility = Visibility.Visible;
                         lblTituloAccion.Content = "Filtrar";
+                        lbldtp1.Visibility= Visibility.Visible;
                         lbldtp1.Content = "Hora";
                         dtp1.Visibility = Visibility.Visible;
                         lbldtp2.Visibility = Visibility.Hidden;
@@ -1352,7 +1359,8 @@ namespace Victoria.DesktopApp.View
                         btnAcept.Visibility = Visibility.Visible;
                         lblTituloAccion.Visibility = Visibility.Visible;
                         lblTituloAccion.Content = "Filtrar";
-                        lbldtp1.Content = "Hora desde";
+                        lbldtp1.Visibility = Visibility.Visible;
+                        lbldtp1.Content = "Hora desde";                      
                         dtp1.Visibility = Visibility.Visible;
                         lbldtp2.Visibility = Visibility.Visible;
                         lbldtp2.Content = "Hora hasta";
