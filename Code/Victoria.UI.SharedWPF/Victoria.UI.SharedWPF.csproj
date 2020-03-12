@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Victoria.UI.SharedWPF</RootNamespace>
     <AssemblyName>Victoria.UI.SharedWPF</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -155,6 +155,7 @@
     <Resource Include="Resources\help.png" />
     <Resource Include="Resources\add2Green.png" />
     <Resource Include="Resources\engranajesG.png" />
+    <Resource Include="Resources\icono_funcion.png" />
     <Content Include="Resources\simulacion.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

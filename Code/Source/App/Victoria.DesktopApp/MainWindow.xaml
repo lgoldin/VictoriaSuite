@@ -37,7 +37,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0"  HorizontalAlignment="Stretch" Grid.ColumnSpan="5" >
-                    <Label  Content="Victoria IV"   Foreground="White" FontSize="20" HorizontalAlignment="Center" />
+                    <Label  Content="Victoria V"   Foreground="White" FontSize="20" HorizontalAlignment="Center" />
                 </StackPanel>
                 <Button Grid.Column="2" Name="btnHelp" Background="Transparent" Cursor="Hand" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" Click="BtnHelp_OnClick">
                     <Button.Content>
@@ -70,7 +70,7 @@
                         <Setter Property="FontSize" Value="11"/>
                         <Setter Property="FontWeight" Value="Normal"/>
                         <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisualStyte}" />
+                        <!-- <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisualStyte}" /> -->
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -202,7 +202,7 @@
                 </TabControl.ItemTemplate>
                 <behavior:TabContent.Template>
                     <DataTemplate>
-                        <control:StageControl></control:StageControl>
+                        <control:StageControl></control:StageControl> <!--Se agrega la vista de los elementos de mainWindow-->
                     </DataTemplate>
                 </behavior:TabContent.Template>
             </TabControl>

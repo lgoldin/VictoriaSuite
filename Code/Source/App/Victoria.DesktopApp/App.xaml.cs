@@ -18,14 +18,21 @@ namespace Victoria.DesktopApp
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
+    /// 
     public partial class App : Application
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
         private void Application_Startup(object sender, StartupEventArgs e)
-        {
+        {            
             Application.Current.DispatcherUnhandledException += this.Application_DispatcherUnhandledException;
             //Disable shutdown when the dialog closes
             Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
 
+            Inicializar_Logger();
+
+            logger.Info("INICIO VICTORIA SUITE");
+            
             if (e.Args.Any() && e.Args[0].IndexOf(".vic", System.StringComparison.Ordinal) > 0)
             {
                 var simulationXmlURI = e.Args[0];
@@ -40,6 +47,7 @@ namespace Victoria.DesktopApp
                     Application.Current.Shutdown(0);
                 }
             }
+            
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -50,5 +58,17 @@ namespace Victoria.DesktopApp
             MessageBox.Show(realerror.Message);
         }
 
+        private void Inicializar_Logger()
+        {
+            String path = AppDomain.CurrentDomain.BaseDirectory;//System.Reflection.Assembly.GetExecutingAssembly().Location;
+            
+            var appender = (log4net.Appender.FileAppender)log4net.LogManager.GetRepository().GetAppenders()
+                                                    .Where(x => x.GetType().ToString().Contains("FileAppender")).First();
+
+            //appender.File = path + @"Logs\Registro "+DateTime.Now.ToString("yyyy-MM-dd hh_mm_ss")+".log";
+            appender.File = path + @"Logs\Victoria_V.log";
+
+            appender.ActivateOptions();
+        }
     }
 }

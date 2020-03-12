@@ -33,10 +33,23 @@ namespace Victoria.ViewModelWPF
         protected DelegateCommand addChartCommand;
         protected DelegateCommand deleteChartCommand;
         protected DelegateCommand executeStageCommand;
+        protected DelegateCommand debugStageCommand;
         protected DelegateCommand stopExecutionStageCommand;
         protected DelegateCommand exportStageCommand;
         protected DelegateCommand addAnimationToCanvasCommand;
         protected DelegateCommand executeAnimationsCommand;
+
+        public bool debugginMode
+        {
+            get
+            {
+                return this.simulation.DebugginMode();
+            }
+            set
+            { 
+                this.simulation.SetDebugMode(value);
+            }
+        }
 
         public string Name
         {
@@ -168,6 +181,17 @@ namespace Victoria.ViewModelWPF
             get
             {
                 return this.executeStageCommand;
+            }
+        }
+
+        /// <summary>
+        /// Gets ExecuteSimulationCommand.
+        /// </summary>
+        public ICommand DebugStageCommand
+        {
+            get
+            {
+                return this.debugStageCommand;
             }
         }
 

@@ -14,6 +14,7 @@ namespace Victoria.DesktopApp.DiagramDesigner.Nodes
 
         public ReferenceNode()
         {
+            //logger.Info("Nodo Referencia");
             this.designerItem.Content = XamlReader.Parse(CONTENT);
         }
 

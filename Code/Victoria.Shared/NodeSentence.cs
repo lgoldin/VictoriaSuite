@@ -9,11 +9,19 @@ namespace Victoria.Shared
     public class NodeSentence : Node
     {
         public string Code { get; set; }
-        
-        public override Node Execute(IList<StageVariable> variables)
+
+        public override bool canBeDebugged
+        {
+            get { return true; }
+        }
+
+        public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
         {
             try
             {
+                Debug.Debug.instance().execute(this, NotifyUIMethod,variables);
+                
+                //logger.Info("Inicio Nodo Sentencia");
                 var cultureInfo = new CultureInfo("en-US");
                 int indexEqual = this.Code.IndexOf("=");
                 
@@ -23,18 +31,22 @@ namespace Victoria.Shared
                 string variableStr = this.Code.Substring(0, indexEqual).Trim();
                 StageVariable variable = this.GetVariable(variables, cultureInfo, variableStr);
 
-                ExpressionResolver.Resolve(variable, sentence);
+                ExpressionResolver.Resolve(variable, sentence, new Random().NextDouble());
                 
-                return base.Execute(variables);
+                return base.Execute(variables, NotifyUIMethod);
+
             }
             catch (Exception exception)
             {
+                //logger.Error("Error Nodo Sentencia: " + exception.Message);
+                logger.Error(exception.Source + " - " + exception.Message + ": " + exception.StackTrace);
                 throw new Exception("Nodo sentencia", exception);
             }
         }
 
         private StageVariable GetVariable(IList<StageVariable> variables, CultureInfo cultureInfo, string variableStr)
         {
+            //logger.Info("Inicio Obtener Variable");
             StageVariable variable = null;
 
             if (variableStr.Contains("(") && variableStr.Contains(")"))
@@ -61,24 +73,30 @@ namespace Victoria.Shared
                 variable = variables.First(x => x.Name == variableStr);
             }
 
+            //logger.Info("Fin Obtener Variable");
             return variable;
         }
 
         private string GetSentenceToEvaluate(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
         {
+            //logger.Info("Inicio Obtener Sentencia a Evaluar");
             sentence = this.ReplaceCommonVariablesInSentence(variables, cultureInfo, sentence);
             sentence = this.ReplaceArraysVariablesInSentence(variables, cultureInfo, sentence);
 
             if (sentence.Contains("R"))
             {
                 sentence = sentence.Replace("R", new Random().NextDouble().ToString("F6", cultureInfo));
+                //sentence = sentence.Replace("R", NodeRandomValue.getValue(cultureInfo));
             }
 
+
+            //logger.Info("Fin Obtener Sentencia a Evaluar");
             return sentence;
         }
 
         private string ReplaceCommonVariablesInSentence(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
         {
+            //logger.Info("Inicio Reemplazar Variables en Sentencia");
             var regex = new Regex(@"[A-Za-z]+[A-Za-z0-9]*");
             MatchCollection matches = regex.Matches(sentence);
             int previousPosition = 0;
@@ -100,11 +118,13 @@ namespace Victoria.Shared
                 }
             }
 
+            //logger.Info("Fin Reemplazar Variables en Sentencia");
             return sentence;
         }
 
         private string ReplaceArraysVariablesInSentence(IList<StageVariable> variables, CultureInfo cultureInfo, string sentence)
         {
+            //logger.Info("Inicio Reemplazar Variables en Array");
             var regex = new Regex(@"[A-Z0-9a-z]+[(][0-9]+[)]");
             MatchCollection matches = regex.Matches(sentence);
             int previousPosition = 0;
@@ -122,7 +142,7 @@ namespace Victoria.Shared
                     }
                 }
             }
-
+            //logger.Info("Fin Reemplazar Variables en Array");
             return sentence;
         }
     }

@@ -10,7 +10,7 @@
     <Border CornerRadius="30" Padding="10" Background="{StaticResource SecondaryColor}" Width="300" Height="150">
 
         <StackPanel VerticalAlignment="Center"  >
-            <Label Content="Ingrese el Nombre del Escenario:" HorizontalAlignment="Center" VerticalAlignment="Center"   Foreground="White" FontSize="15"></Label>
+            <Label Content="Ingrese la condicion de paro:" HorizontalAlignment="Center" VerticalAlignment="Center"   Foreground="White" FontSize="15"></Label>
             <TextBox Name="txtStageName2" Text="{Binding StageName, ElementName=StageNamePopUp2, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Margin="0,5,0,0"    FontSize="25" VerticalAlignment="Center"></TextBox>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">

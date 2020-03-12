@@ -26,7 +26,8 @@
     <Setter Property="Stretch" Value="Fill"/>
     <Setter Property="IsHitTestVisible" Value="False"/>
     <Setter Property="SnapsToDevicePixels" Value="True"/>
-    <!--<Setter Property="BitmapEffect">
+
+        <!--<Setter Property="BitmapEffect">
       <Setter.Value>
         <DropShadowBitmapEffect Color="#AAA" Direction="315" ShadowDepth="10"
                                 Softness="0.5" Opacity="0.6"/>

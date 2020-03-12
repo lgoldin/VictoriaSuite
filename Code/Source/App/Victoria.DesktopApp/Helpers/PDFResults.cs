@@ -15,8 +15,9 @@ using Victoria.ViewModelWPF;
 
 namespace Victoria.DesktopApp.Helpers
 {
-    class PDFResults : Results, IResults
+    public class PDFResults : Results, IResults
     {
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
 
         public PDFResults(String _simulationPath,String _fileName, IList<StageViewModelBase> _stages, TimeSpan _simulationTotalTime) 
             : base(_simulationPath, _fileName, _stages,_simulationTotalTime)
@@ -25,7 +26,7 @@ namespace Victoria.DesktopApp.Helpers
 
         public void Print()
         {
-            
+            //logger.Info("Inicio Imprimir Resultados");
             List<DataTable> resultsTable = createResultsTables(stages);
 
             //var fileName = simulationPath + "\\resultados.pdf";
@@ -105,6 +106,7 @@ namespace Victoria.DesktopApp.Helpers
             document.Close();
             writer.Close();
             fs.Close();
+            //logger.Info("Fin Imprimir Resultados");
         }
     }
 }

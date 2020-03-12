@@ -394,10 +394,20 @@
 
 
                         </Grid>
-                        <Button x:Name="btnchart" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,537,43,95" Click="btnGenerarDiagrama_OnClick" Width="135" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1">
+                        <Button x:Name="btnchart" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="Right" Margin="0,538,43,95" Click="btnGenerarDiagrama_OnClick" Width="135" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1">
                             <Grid Height="30" Width="130">
-                                <Label Content="Generar diagrama" Height="28" HorizontalAlignment="Left" Width="105" Margin="0,1,2,1" />
-                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/flowchart.png" HorizontalAlignment="Right" Width="33" Margin="-1,-1,0,1" />
+                                <Label Content="Generar diagrama" HorizontalAlignment="Left" Width="105" Height="30" VerticalAlignment="Top" Margin="0,-3,0,0" />
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/flowchart.png" HorizontalAlignment="Right" Width="41" Margin="0,-3,0,0" />
+                            </Grid>
+                        </Button>
+                        <Button x:Name="fdpgenerator" Background="Transparent" Cursor="Hand" BorderThickness="0" HorizontalAlignment="right" Margin="0,534,180,95" Click="btnGenerarFDP_OnClick" Width="135" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1">
+                            <Grid Height="30" Width="130">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="38*"/>
+                                    <ColumnDefinition Width="27*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Generar FDP" Height="28" HorizontalAlignment="Left" Width="82" Margin="10,2,0,0" RenderTransformOrigin="0.539,1.316" Grid.ColumnSpan="2" />
+                                <Image Source="/Victoria.UI.SharedWPF;Component/resources/icono_funcion.png" HorizontalAlignment="Right" Width="22"  Margin="0,3,22,0" RenderTransformOrigin="-0.053,0.487" Grid.Column="1" />
                             </Grid>
                         </Button>
                     </Grid>

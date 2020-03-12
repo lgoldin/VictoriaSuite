@@ -9,9 +9,25 @@ namespace Victoria.Shared
     {
         public string Code { get; set; }
 
-        public override Node Execute(IList<StageVariable> variables)
+        public override bool canBeDebugged
         {
-            return this.NextNode;
+            get { return false; }
+        }
+
+        public override Node Execute(IList<StageVariable> variables, Delegate NotifyUIMethod)
+        {
+
+            //logger.Info("Ejecutar");
+            try
+            {
+                Debug.Debug.instance().execute(this, NotifyUIMethod, variables);
+                return this.NextNode;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);
+                throw ex;
+            }
         }
     }
 }

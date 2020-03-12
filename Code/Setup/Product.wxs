@@ -4,6 +4,7 @@
   <?define Kairos_TargetDir=$(var.Kairos.TargetDir)?>
   <?define Version="Victoria V"?>
   <?define Title="Victoria Suite"?>
+  <!--<?define commonFDP_TargetDir=$(var.commonFDP.TargetDir)?>-->
   <Product Id="*" Name="$(var.Title)" Language="1033" Version="5.0.0.1" Manufacturer="UTN" UpgradeCode="16fcb609-7357-4d39-b8e0-b5b924f61fc4">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
@@ -24,6 +25,7 @@
     <Feature Id="ProductFeature" Title="$(var.Title)" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="dlls_files" />
+      <ComponentRef Id="Logs" />
       <ComponentGroupRef Id="Responsive_HTML5_files" />
       <ComponentGroupRef Id="Responsive_HTML5_Manual_de_usuario_archivos_files" />
       <ComponentGroupRef Id="Responsive_HTML5_template_Azure_Blue_files" />
@@ -48,6 +50,14 @@
           </Directory>
           <Directory Id="Victoria" Name="$(var.Version)">
             <Directory Id="Resources" Name="Resources" />
+            <Directory Id="Logs" Name="Logs">
+              <Component Id="Logs" Guid="16fcb609-4884-4A01-AA04-84B92D222428">
+                <!--SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no" Win64="no" Location="either"-->
+                <CreateFolder>
+                  <Permission User="Everyone" GenericAll="yes" ChangePermission="yes" />
+                </CreateFolder>
+              </Component>
+            </Directory>                          
             <Directory Id="Responsive_HTML5" Name="Responsive_HTML5">
               <Directory Id="Responsive_HTML5_Manual_de_usuario_archivos" Name="Manual_de_usuario_archivos" />
               <Directory Id="Responsive_HTML5_whxdata" Name="whxdata" />
@@ -70,7 +80,7 @@
     </Directory>
   </Fragment>
 
-  <Fragment>
+  <Fragment>        
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="16fcb609-7357-4d39-b8e0-b5b924f61fc5">
         <Shortcut Id="ApplicationStartMenuShortcutVictoria" Name="Victoria" Description="Victoria is a software to simulate everything" Target="[INSTALLFOLDER]$(var.Version)/Victoria.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
@@ -119,6 +129,9 @@
       </Component>
       <Component Id="Victoria.ViewModelWPF.dll" Guid="190118ed-ee5f-435a-8cda-102376ccc857">
         <File Id="Victoria.ViewModelWPF.dll" Name="Victoria.ViewModelWPF.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Victoria.ViewModelWPF.dll" />
+      </Component>
+      <Component Id="log4net.dll" Guid="fa9844cf-3556-461f-af42-ee0bca125115">
+        <File Id="log4net.dll" Name="log4net.dll" Source="$(var.Victoria.DesktopApp_TargetDir)log4net.dll" />
       </Component>
       <Component Id="Akka.dll" Guid="6353ab7e-02c8-4f64-a31b-d0821f6c6ccc">
         <File Id="Akka.dll" Name="Akka.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Akka.dll" />
@@ -212,6 +225,21 @@
       </Component>
       <Component Id="FastMember.dll" Guid="e9e1170b-64ba-469b-9be9-f1ceba86ca46">
         <File Id="FastMember.dll" Name="FastMember.dll" Source="$(var.Victoria.DesktopApp_TargetDir)FastMember.dll" />
+      </Component>
+      <Component Id="commonFDP.dll" Guid="043ea5de-5e52-4b1e-8005-01af62828893">
+        <File Id="commonFDP.dll" Name="commonFDP.dll" Source="$(var.Victoria.DesktopApp_TargetDir)commonFDP.dll" />
+      </Component>
+      <Component Id="Xceed.Wpf.Toolkit.dll" Guid="ba31e591-b9e9-4cd1-baf8-84e2b5862708">
+        <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Xceed.Wpf.Toolkit.dll" />
+      </Component>
+      <Component Id="Victoria_Accord.Statistics.dll" Guid="c1331f15-8b76-43e9-80e1-977ca416f1c5">
+        <File Id="Victoria_Accord.Statistics.dll" Name="Accord.Statistics.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Accord.Statistics.dll" />
+      </Component>
+      <Component Id="Victoria_Accord.Math.dll" Guid="33211b50-f72c-444d-8e8d-19c7dda3d0c7">
+        <File Id="Victoria_Accord.Math.dll" Name="Accord.Math.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Accord.Math.dll" />
+      </Component>
+      <Component Id="Victoria_Accord.dll" Guid="8b00eb76-4b77-4908-8136-95c25d895444">
+        <File Id="Victoria_Accord.dll" Name="Accord.dll" Source="$(var.Victoria.DesktopApp_TargetDir)Accord.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
@@ -841,7 +869,7 @@
       <Component Id="Resources_simulacion.png" Guid="8ea8282f-ef69-477d-9497-cf6c19cbc67e">
         <File Id="Resources_simulacion.png" Name="simulacion.png" Source="$(var.Victoria.DesktopApp_TargetDir)Resources\simulacion.png" />
       </Component>
-    </ComponentGroup>
+    </ComponentGroup>    
   </Fragment>
   <Fragment>
     <ComponentGroup Id="Kairos" Directory="Kairos">

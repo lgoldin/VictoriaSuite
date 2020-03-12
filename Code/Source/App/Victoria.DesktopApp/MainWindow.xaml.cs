@@ -29,12 +29,15 @@ using Victoria.Shared.AnalisisPrevio;
 namespace Victoria.DesktopApp
 {
 
-
+    
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(App));
+
         #region Fields
         private bool isMaximized = true;
 
@@ -74,7 +77,7 @@ namespace Victoria.DesktopApp
                 ((MainViewModel)this.DataContext).OpenSimulationCommand.Execute(simulation);
             }
 
-            this.Loaded += MainWindow_Loaded;
+            this.Loaded += MainWindow_Loaded; 
         }
 
         #endregion
@@ -139,13 +142,18 @@ namespace Victoria.DesktopApp
 
         private void BtnMinimize_OnClick(object sender, RoutedEventArgs e)
         {
+            logger.Info("Minimizar aplicacion");
+
             this.WindowState = WindowState.Minimized;
+            //logger.Info("Fin Minimizar aplicacion");
+
         }
 
         private void btnOpenSimulation_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
+                logger.Info("Abrir Simulacion.");
                 if (((MainViewModel)this.DataContext).IsSimulationOpen)
                 {
                     var closeSimulationDialog = new CloseSimulationDialog();
@@ -179,11 +187,14 @@ namespace Victoria.DesktopApp
                         ((MainViewModel)this.DataContext).OpenSimulationCommand.Execute(openFileDialog.FileName);
                     }
                 }
+
+                //logger.Info("Fin abrir Simulacion.");
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Se produjo un error al abrir la simulación. Para obtener más detalles despligue el control.");
                 viewException.ShowDialog();
+                //logger.Error("Se produjo un error al abrir la simulación: " + ex.Message);
             }
 
         }
@@ -192,6 +203,8 @@ namespace Victoria.DesktopApp
         {
             try
             {
+                logger.Info("Agregar un escenario.");
+
                 var addStagePopUp = new AddStageWindow();
                 addStagePopUp.ShowDialog();
                 switch (addStagePopUp.Result)
@@ -202,19 +215,24 @@ namespace Victoria.DesktopApp
                         }
                         break;
                 }
+
+                //logger.Info("Fin agregar un escenario.");
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Se produjo un error al agregar un escenario. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
+                //logger.Error("Se produjo un error al agregar un escenario: " + ex.Message);
             }
         }
 
         private void btnSaveSimulation_OnClick(object sender, RoutedEventArgs e)
         {
-
+            
             try
             {
+
+                logger.Info("Guardar Simulacion.");
                 ((MainViewModel)this.DataContext).SaveSimulationCommand.Execute(null);
                 //this.PopupGuardar.IsOpen = false;
             }
@@ -222,6 +240,8 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp("Se produjo un error al guardar la simulación. Para ver datalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
+                //logger.Error("Se produjo un error al guardar la simulación: " + ex.Message);
+                
             }
         }
         private void btnSaveAsSimulation_OnClick(object sender, RoutedEventArgs e)
@@ -229,6 +249,8 @@ namespace Victoria.DesktopApp
 
             try
             {
+
+                logger.Info("Guardar Simulación.");
                 using (var saveFileDialog = new SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Vic files (*.vic)|*.vic";
@@ -244,6 +266,7 @@ namespace Victoria.DesktopApp
             {
                 var viewException = new AlertPopUp("Se produjo un error al guardar la simulación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
+                //logger.Error("Se produjo un error al guardar la simulación: " + ex.Message);
             }
         }
         
@@ -251,6 +274,7 @@ namespace Victoria.DesktopApp
         {
             try
             {
+                logger.Info("Exportar Simulación");
                 using (var saveFileDialog = new SaveFileDialog())
                 {
                     saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|PDF files (*.pdf)|*.pdf";
@@ -260,29 +284,60 @@ namespace Victoria.DesktopApp
                     if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         ((MainViewModel)this.DataContext).ExportSimulationCommand.Execute(saveFileDialog.FileName);
                 }
+
+                //logger.Info("Fin Exportar Simulación");
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp( "Se produjo un error al exportar la simulación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
+                //logger.Error("Se produjo un error al exportar la simulación:" + ex.Message); 
             }
         }
 
         private void BtnExecuteSimulationCommand_OnClick(object sender, RoutedEventArgs e)
         {
+            this.executeSimulation(false);
+        }
+
+        public void stopDebug()
+        {
             try
             {
-                ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);
+                ((MainViewModel)this.DataContext).StopDebugCommand.Execute(null);
+            }
+            catch (Exception ex)
+            {
+                var viewException = new AlertPopUp("Se produjo un error al parar la simulacion");
+                viewException.ShowDialog();
+            }
+        }
+
+        public void executeSimulation(bool debugginMode)
+        {
+            try
+            {
+                if (debugginMode)
+                {
+                    ((MainViewModel)this.DataContext).DebugSimulationCommand.Execute(null);
+                }
+                else
+                {
+                    ((MainViewModel)this.DataContext).ExecuteSimulationCommand.Execute(null);
+                }
+                        
             }
             catch (Exception ex)
             {
                 var viewException = new AlertPopUp("Se produjo un error al ejecutar la simulación. Para ver detalles, despliegue el control correspondiente.");
                 viewException.ShowDialog();
+                //logger.Error("Se produjo un error al ejecutar la simulacón: " + ex.Message);
             }
         }
 
         private void BtnHelp_OnClick(object sender, RoutedEventArgs e)
         {
+            logger.Info("Descarga de Manual de Usuario.");
             var parentFolder = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var sourcePath = System.IO.Path.Combine(parentFolder, @"Manual de usuario\Manual de usuario Victoria.pdf");
 
@@ -300,6 +355,7 @@ namespace Victoria.DesktopApp
                     System.Windows.MessageBox.Show(ex.StackTrace, ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            //logger.Info("Fin Help");
         }
 
         private void BtnGuardar_OnChecked(object sender, RoutedEventArgs e)
@@ -347,18 +403,35 @@ namespace Victoria.DesktopApp
                     }
             }
             this.Close();
+            logger.Info("Cerrar Ventana de Simulación.");
         }
 
         private void BtnAnalisisSensibilidad_OnClick(object sender, RoutedEventArgs e)
         {
+            logger.Info("Solicitud generación Analisis de Sensibilidad");
             var sensibilidadWindow = new AnalisisSensibilidadPopUp(((MainViewModel)this.DataContext).SimulationFile);
             sensibilidadWindow.ShowDialog();
             btnAnalisisSensibilidad.Focusable = false;
+            //logger.Info("Fin Boton Analisis de Sensibilidad");
         }
+
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            btnAnalisisSensibilidad.IsEnabled = ((MainViewModel)this.DataContext).Stages.Count(x => x.Simulation.GetVariables().Count(y => y.Type == VariableType.Control) > 0) > 0;
+            btnAnalisisSensibilidad.IsEnabled = ((MainViewModel)this.DataContext).Stages.Count(x => x.Simulation.GetVariables().Count(y => y.Type == VariableType.Control) > 0) > 0;                
         }
+
+        public ObservableCollection<Victoria.ModelWPF.Variable> getSimulationVariables() {
+
+            ObservableCollection<Victoria.ModelWPF.Variable> variablesList = new ObservableCollection<Victoria.ModelWPF.Variable>();
+            foreach (StageViewModel stageViewModel in ((MainViewModel)this.DataContext).Stages){
+                variablesList = stageViewModel.getVariables;
+            }
+            
+            return variablesList;
+        }
+
+      
+
     }
 }

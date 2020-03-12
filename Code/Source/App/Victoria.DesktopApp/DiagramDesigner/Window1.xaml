@@ -63,7 +63,7 @@
                     <Image Source="/Victoria.UI.SharedWPF;Component/resources/corona.png" Width="36" HorizontalAlignment="Center" Margin="15,5,1045,-2" RenderTransformOrigin="3.821,0.438" />
                     <Label  Content="Diagrama de Simulación"  Foreground="White" FontSize="18" HorizontalAlignment="Center"  Width="238" Margin="348,0,266,1"/>
                 </Grid>
-                <ContentControl Content="{StaticResource MyToolbar}" Height="100"/>
+                <ContentControl Name="MyToolBar"  Content="{StaticResource MyToolbar}" Height="100"/>
             </StackPanel>
 
             <Grid Margin="0,88.55,0,41.45" Grid.RowSpan="2">
@@ -74,27 +74,42 @@
                 <!-- Toolbox -->
                 <Rectangle Fill="White" HorizontalAlignment="Left" Margin="0,36,0,-16" Stroke="White" Width="1180" Grid.ColumnSpan="2"/>
                 <!-- Toolbox -->
-                <StackPanel Grid.Column="0" Margin="4,51,6,0" >
-                    <Expander Header="Figuras" Content="{StaticResource ShapeStencils}" IsExpanded="True" Margin="8,10,8,0"/>
-                    <GroupBox Header="Inicialización de Variables" Margin="8" Padding="3" Height="Auto">
-                        <DataGrid x:Name="dataGridVariables"  HorizontalAlignment="Center" Margin="1,1,1,1" ScrollViewer.VerticalScrollBarVisibility="Auto"  Height="180" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionMode="Single" AutoGenerateColumns="False" SelectionChanged="dataGridVariables_SelectionChanged">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding nombre}"  Header="Variable"  Width="60" />
-                                <DataGridTextColumn Binding="{Binding valor}" Header="Valor Inicial" Width="70"/>
-                                <DataGridCheckBoxColumn Binding="{Binding vector}" Header="Vector" Width="50"/>
-                                <DataGridComboBoxColumn x:Name="dimensiones" DisplayMemberPath="nombre" SelectedItemBinding="{Binding dimension}" TextBinding="{Binding dimension}"  Header="Dimensión" Width="80" />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </GroupBox>
-                    <!-- Descomentar para hacer aparecer el toolbox -->
-                </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2" Margin="0,36,889,0">
+                    <StackPanel Grid.Column="0" Height="800" >
+                        <Expander Header="Figuras" Content="{StaticResource ShapeStencils}" IsExpanded="True" Margin="8,10,8,0" Height="239" RenderTransformOrigin="0.457,0.28"/>
+                        <GroupBox Header="Inicialización de Variables" Margin="8" Padding="3" Height="Auto">
+                            <DataGrid x:Name="dataGridVariables"  HorizontalAlignment="Center" Margin="1,1,1,1" ScrollViewer.VerticalScrollBarVisibility="Auto"  Height="180" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionMode="Single" AutoGenerateColumns="False" SelectionChanged="dataGridVariables_SelectionChanged">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding nombre}"  Header="Variable"  Width="60" />
+                                    <DataGridTextColumn Binding="{Binding valor}" Header="Valor Inicial" Width="70"/>
+                                    <DataGridCheckBoxColumn Binding="{Binding vector}" Header="Vector" Width="50"/>
+                                    <DataGridComboBoxColumn x:Name="dimensiones" DisplayMemberPath="nombre" SelectedItemBinding="{Binding dimension}" TextBinding="{Binding dimension}"  Header="Dimensión" Width="80" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                        </GroupBox>
+                        <GroupBox x:Name="groupBoxVariablesSimulation" Header="Debug de Variables" Margin="8" Padding="3" Height="Auto" Visibility="Hidden">
+                            <!--<ScrollViewer VerticalScrollBarVisibility="Visible"></ScrollViewer> -->
+                                <DataGrid x:Name="dataGridVariablesSimulation" Height="163" Canvas.Left="-277" Canvas.Top="455" Width="255" Visibility="Hidden">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Variable" Width="60" Binding="{Binding Name}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Valor Inicial" Width="80" Binding="{Binding InitialValue}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Valor Simulacion" Width="60*" Binding="{Binding ActualValue}" IsReadOnly="True"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            
+                        </GroupBox>
+                        <!-- Descomentar para hacer aparecer el toolbox -->
+                    </StackPanel>
+                </ScrollViewer>
                 <!-- Designer -->
                 <Grid  Margin="3,56,0,0" Grid.Column="1">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto" Margin="0,10,14,-11">
                         <s:DesignerCanvas Focusable="true" x:Name="MyDesigner"
                             Background="{StaticResource WindowBackgroundBrush}" FocusVisualStyle="{x:Null}"
-                            ContextMenu="{StaticResource DesignerCanvasContextMenu}"/>
+                            ContextMenu="{StaticResource DesignerCanvasContextMenu}">
+                        </s:DesignerCanvas>
                     </ScrollViewer>
                 </Grid>
                 <Button x:Name="button" Width="45" Padding="3" Height="70" Style="{StaticResource ToolBarButtonBaseStyle}"

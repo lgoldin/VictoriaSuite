@@ -9,6 +9,7 @@ namespace Victoria.ViewModelWPF.Actors
 {
     public class AnimationRealTimeActor : ReceiveActor
     {
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(System.AppDomain));
         public AnimationRealTimeActor()
         {
             Receive<AnimationRealTimeExecution>(animationRealTime => this.PrepareExecution(animationRealTime));
@@ -17,7 +18,7 @@ namespace Victoria.ViewModelWPF.Actors
                 switch (message)
                 {
                     default:
-                    case "Exeute":
+                    case "Execute":
                         this.Execute();
                         break;
                     case "Animate":
@@ -66,30 +67,39 @@ namespace Victoria.ViewModelWPF.Actors
 
         private void Animate()
         {
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            try
             {
-                try
+                System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    foreach (var singleAnimation in this.Animations.Where(x => x.AnimationConfig.CanExecute))
+                    try
                     {
-                        foreach (var animationVariable in singleAnimation.AnimationConfig.Variables)
+                        foreach (var singleAnimation in this.Animations.Where(x => x.AnimationConfig.CanExecute))
                         {
-                            animationVariable.Values.Add(this.Simulation.GetVariableValue(animationVariable.Name));
-                        }
+                            foreach (var animationVariable in singleAnimation.AnimationConfig.Variables)
+                            {
+                                animationVariable.Values.Add(this.Simulation.GetVariableValue(animationVariable.Name));
+                            }
 
-                        singleAnimation.BindSimulationVariableValues();
-                        singleAnimation.DoAnimation(this.Index);
+                            singleAnimation.BindSimulationVariableValues();
+                            singleAnimation.DoAnimation(this.Index);
+                        }
+                    }
+                    catch
+                    {
+                        //TODO:Something
+                    }
+                    finally
+                    {
+                        this.Index++;
                     }
                 }
-                catch
-                {
-                    //TODO:Something
-                }
-                finally
-                {
-                    this.Index++;
-                }
-            }));
+                ));
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Source + " - " + ex.Message + ": " + ex.StackTrace);                                
+            }
+
         }
     }
 }

@@ -8,10 +8,16 @@ namespace Victoria.FormulaParser
 {
     public class IndefinicionMatematicaException : Exception
     {
+
+        public static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AppDomain));
+
         public IndefinicionMatematicaException(string mensaje, string operador, double valorNoNumerico) : base(mensaje)
         {
+
+            //logger.Info("Inicio Indefinicion Matematica");
             this.Operador = operador;
             this.ValorNoNumerico = valorNoNumerico;
+            //logger.Info("Fin Indefinicion Matematica");
         }
 
         public IndefinicionMatematicaException(string operador, double valorNoNumerico)
