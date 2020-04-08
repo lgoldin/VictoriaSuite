@@ -377,12 +377,15 @@ namespace Victoria.DesktopApp.View
                         List<string> eventosLeidos = new List<string>();
                         string todoElArchivo = objReader.ReadToEnd();
                         objReader.Close();
-                        foreach (var item in todoElArchivo.Split(Convert.ToChar(txtDelimitador.Text)))
+                        DateTime aux;                                           
+
+                        foreach (var item in splitTextFormFile(todoElArchivo))
                         {
-                            DateTime aux = DateTime.ParseExact(item.Replace("\r\n", "").Replace("\n", "").Replace("\r", ""), "dd/MM/yyyy HH:mm:ss", null);
-
+                            
+                            convertToDateTime(item,out aux);
+                            
                             eventos.Add(new commonFDP.Evento() { fecha = aux, Id = idEvento });//, origen = nuevoOrigen, activo = true });
-
+                            
                         }
 
                     }
@@ -433,6 +436,48 @@ namespace Victoria.DesktopApp.View
 
         }
 
+        private void convertToDateTime(String fecha, out DateTime result)
+        {
+            result = DateTime.MinValue;
+            Boolean flagConvertDate = false;
+            string[] convertFormats = { "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss" };
+
+            foreach (var format in convertFormats)
+            {
+                if (!flagConvertDate)
+                    flagConvertDate = DateTime.TryParseExact(fecha.Replace("\r\n", "").Replace("\n", "").Replace("\r", "")
+                                                            ,format
+                                                            , null
+                                                            , System.Globalization.DateTimeStyles.None
+                                                            , out result);
+            }
+
+            if (!flagConvertDate)
+                throw new Exception("El formato de fecha no es correcto.");
+        }
+
+        private string[] splitTextFormFile(string todoElArchivo)
+        {
+            Boolean flagSplitString = false;
+            string[] array = { };
+
+            if (todoElArchivo.Contains(txtDelimitador.Text))
+            {
+                array = todoElArchivo.Split(Convert.ToChar(txtDelimitador.Text));
+                flagSplitString = true;
+            }
+
+            if (todoElArchivo.Contains('\r') && !flagSplitString)
+            {
+                array = todoElArchivo.Split(Convert.ToChar('\r'));
+                flagSplitString = true;
+            }
+
+            if (!flagSplitString)
+                throw new Exception("El delimitador de los datos esta mal seteado.");
+
+            return array;
+        }
 
         public List<string> leerDelimitadorCaracter(string pathArchivo, string caracter)
         {
